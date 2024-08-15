@@ -2,7 +2,6 @@
 
 import crypto from 'crypto';
 import { getFirestore } from 'firebase-admin/firestore';
-import { NextResponse } from 'next/server';
 
 import { replyToUser } from '@/utils/ReplyHelper';
 
@@ -46,17 +45,14 @@ function parseMessagePayload(payload: any) {
 }
 
 export async function GET(request: Request) {
-  console.log('request: ', JSON.stringify(request, null, 2));
   const url = new URL(request.url);
+  console.log('request URL: ', url);
   const mode = url.searchParams.get('hub.mode');
   const token = url.searchParams.get('hub.verify_token');
   const challenge = url.searchParams.get('hub.challenge');
-  console.log('mode: ', mode);
-  console.log('token: ', token);
-  console.log('challenge: ', challenge);
-  console.log('env: ', process.env.WEBHOOK_VERIFY_TOKEN);
   if (mode === 'subscribe' && token === process.env.WEBHOOK_VERIFY_TOKEN) {
-    return NextResponse.json(challenge, {
+    console.log('webhook success');
+    return new Response(challenge, {
       status: 200,
       headers: {
         'Content-Type': 'text/plain',

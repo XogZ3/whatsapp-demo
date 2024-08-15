@@ -2,7 +2,6 @@
 
 import crypto from 'crypto';
 import { getFirestore } from 'firebase-admin/firestore';
-import type { NextApiRequest } from 'next';
 import { NextResponse } from 'next/server';
 
 import { replyToUser } from '@/utils/ReplyHelper';
@@ -46,10 +45,13 @@ function parseMessagePayload(payload: any) {
   };
 }
 
-export async function GET(request: NextApiRequest) {
-  const mode = request.query['hub.mode'];
-  const token = request.query['hub.verify_token'];
-  const challenge = request.query['hub.challenge'];
+export async function GET(request: Request) {
+  const url = new URL(request.url);
+  const mode = url.searchParams.get('hub.mode');
+  const token = url.searchParams.get('hub.verify_token');
+  const challenge = url.searchParams.get('hub.challenge');
+  console.log(token);
+  console.log(process.env.WEBHOOK_VERIFY_TOKEN);
   if (mode === 'subscribe' && token === process.env.WEBHOOK_VERIFY_TOKEN) {
     return NextResponse.json(challenge, { status: 200 });
   }

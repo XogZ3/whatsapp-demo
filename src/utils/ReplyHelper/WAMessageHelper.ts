@@ -1,8 +1,9 @@
 import * as admin from 'firebase-admin';
-import { getFirestore } from 'firebase-admin/firestore';
 
 import { Env } from '@/libs/Env.mjs';
 import { makeRequestToWhatsapp } from '@/modules/whatsapp/whatsapp';
+
+import { db } from '../Firebase';
 
 function createMessagePayload(
   msgtype: string,
@@ -71,7 +72,7 @@ export async function saveMessageToDB(
     msg,
   );
   if (messageObject && messageObject.clientid && messageObject.timestamp) {
-    const clientDoc = getFirestore()
+    const clientDoc = db
       .collection('apps')
       .doc(wabaId as string)
       .collection('clients')
@@ -85,7 +86,7 @@ export async function saveMessageToDB(
 }
 export async function saveCreditsUsed(clientid: any) {
   const wabaId = Env.WABA_ID;
-  const clientDoc = getFirestore()
+  const clientDoc = db
     .collection('apps')
     .doc(wabaId as string)
     .collection('clients')
@@ -98,7 +99,7 @@ export async function saveCreditsUsed(clientid: any) {
 
 export async function checkCredits(clientid: any) {
   const wabaId = Env.WABA_ID;
-  const clientDoc = getFirestore()
+  const clientDoc = db
     .collection('apps')
     .doc(wabaId as string)
     .collection('clients')

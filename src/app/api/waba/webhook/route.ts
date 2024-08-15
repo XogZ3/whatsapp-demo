@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 
 import crypto from 'crypto';
-import { getFirestore } from 'firebase-admin/firestore';
 
 import { Env } from '@/libs/Env.mjs';
+import { db } from '@/utils/Firebase';
 import { replyToUser } from '@/utils/ReplyHelper';
 
 const corsHeaders = {
@@ -95,7 +95,7 @@ export async function POST(request: Request) {
           messageObject.timestamp &&
           (messageObject.type === 'message' || messageObject.type === 'status')
         ) {
-          const clientDoc = getFirestore()
+          const clientDoc = db
             .collection('apps')
             .doc(wabaId as string)
             .collection('clients')

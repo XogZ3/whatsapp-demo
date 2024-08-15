@@ -1,5 +1,6 @@
 import * as admin from 'firebase-admin';
 import { getApp, initializeApp } from 'firebase-admin/app';
+import { getFirestore } from 'firebase-admin/firestore';
 
 import { Env } from '@/libs/Env.mjs';
 
@@ -17,4 +18,7 @@ const createFirebaseApp = () => {
   }
 };
 
-createFirebaseApp();
+const app = createFirebaseApp();
+const db = getFirestore(app);
+
+export { app, db };

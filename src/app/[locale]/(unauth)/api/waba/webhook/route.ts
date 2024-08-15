@@ -46,6 +46,7 @@ function parseMessagePayload(payload: any) {
 }
 
 export async function GET(request: Request) {
+  console.log('GET FUNCTION');
   const url = new URL(request.url);
   const mode = url.searchParams.get('hub.mode');
   const token = url.searchParams.get('hub.verify_token');

@@ -1,0 +1,85 @@
+{
+  "Header": {
+    "phone_number": "{appPhone}"
+  },
+  "Index": {
+    "meta_title": "{appName} - Gerador de texto para vídeo de IA mais rápido",
+    "meta_description": "Crie Shorts de IA em 10 segundos. Não precisa mais esperar de 5 a 10 minutos."
+  },
+  "HeroSection": {
+    "header_1": "Crie shorts virais em apenas",
+    "header_2": "segundos",
+    "subheader": "VideoGPT AI - O gerador de shorts AI mais rápido do planeta",
+    "web_cta": "Experimente Agora",
+    "mobile_cta_google": "Baixe na Playstore",
+    "mobile_cta_apple": "Baixe na AppStore",
+    "support": "Para qualquer suporte ou ajuda, escreva para nós em"
+  },
+  "FooterSection": {
+    "Title_1": {
+      "label": "Empresa",
+      "Privacy": {
+        "label": "Privacidade",
+        "description": "Leia nossa política de privacidade para entender como lidamos com seus dados."
+      },
+      "Terms": {
+        "label": "Termos e Condições",
+        "description": "Leia nossos termos e condições para usar nossos serviços."
+      },
+      "Sitemap": {
+        "label": "Mapa do Site",
+        "description": "Explore o mapa do nosso site para uma navegação fácil."
+      }
+    },
+    "Title_2": {
+      "label": "Contato",
+      "Email": {
+        "label": "Email",
+        "description": "Entre em contato conosco por email para qualquer dúvida ou solicitação de suporte."
+      }
+    },
+    "Copyright": {
+      "text_1": "Direitos Autorais",
+      "text_2": "Todos os Direitos Reservados",
+      "text_3": "Feito com ❤️ Por"
+    }
+  },
+  "About": {
+    "meta_title": "About",
+    "meta_description": "About page description",
+    "about_paragraph_1": "{appName}, your one-stop solution"
+  },
+  "Terms": {
+    "meta_title": "{appName} - Terms",
+    "meta_description": "Here are the terms of {appName} service for your reference."
+  },
+  "Privacy": {
+    "meta_title": "{appName} - Privacy Policy",
+    "meta_description": "Here is the Privacy Policy of {appName} service for your reference."
+  },
+  "NotFound": {
+    "meta_title": "Not Found",
+    "meta_description": "This page could not be found.",
+    "header": "404",
+    "paragraph": "This page could not be found."
+  },
+  "Sidebar": {
+    "home": "Início",
+    "library": "Biblioteca",
+    "page": "Página",
+    "logout": "Sair"
+  },
+  "Dashboard": {
+    "select_template": "Selecionar Modelo de Vídeo",
+    "select_style": "Selecionar Estilo",
+    "select_voice": "Selecionar Voz",
+    "cta_create_video": "Criar Vídeo",
+    "cta_creating_video": "Criando Vídeo...",
+    "select_animation": "Selecionar Animação(ões)",
+    "select_transition": "Selecionar Transição(ões)",
+    "select_caption": "Selecionar Legenda",
+    "select_music": "Selecionar Música",
+    "cta_export_video": "Exportar Vídeo",
+    "cta_exporting_video": "Exportando Vídeo..."
+  }
+}

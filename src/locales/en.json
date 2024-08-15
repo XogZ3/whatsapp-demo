@@ -1,0 +1,91 @@
+{
+  "Header": {
+    "phone_number": "{appPhone}"
+  },
+  "Index": {
+    "meta_title": "{appName} - Fastest AI text-to-video Generator",
+    "meta_description": "Create AI Shorts in 10 seconds. Don't need to wait 5-10 minutes anymore."
+  },
+  "HeroSection": {
+    "header_1": "Make viral shorts in just",
+    "header_2": "seconds",
+    "subheader": "VideoGPT AI - The fastest AI shorts generator on the planet",
+    "web_cta": "Try Now",
+    "mobile_cta_google": "Get it on Playstore",
+    "mobile_cta_apple": "Download on AppStore",
+    "support": "For any support or help write to us at"
+  },
+  "FooterSection": {
+    "Title_1": {
+      "label": "Company",
+      "Privacy": {
+        "label": "Privacy",
+        "description": "Read our privacy policy to understand how we handle your data."
+      },
+      "Terms": {
+        "label": "Terms & Conditions",
+        "description": "Read our terms and conditions for using our services."
+      },
+      "Sitemap": {
+        "label": "Sitemap",
+        "description": "Explore our website's sitemap for easy navigation."
+      }
+    },
+    "Title_2": {
+      "label": "Contact",
+      "Email": {
+        "label": "Email",
+        "description": "Contact us via email for any questions or support inquiries."
+      }
+    },
+    "Copyright": {
+      "text_1": "Copyrights",
+      "text_2": "All Rights Reserved",
+      "text_3": "Made with ❤️ By"
+    }
+  },
+  "About": {
+    "meta_title": "About",
+    "meta_description": "About page description",
+    "about_paragraph_1": "{appName}, your one-stop solution"
+  },
+  "Terms": {
+    "meta_title": "{appName} - Terms",
+    "meta_description": "Here are the terms of {appName} service for your reference."
+  },
+  "Privacy": {
+    "meta_title": "{appName} - Privacy Policy",
+    "meta_description": "Here is the Privacy Policy of {appName} service for your reference."
+  },
+  "NotFound": {
+    "meta_title": "Not Found",
+    "meta_description": "This page could not be found.",
+    "header": "404",
+    "paragraph": "This page could not be found."
+  },
+  "Sidebar": {
+    "home": "Home",
+    "library": "Library",
+    "page": "Page",
+    "logout": "Log Out"
+  },
+  "Dashboard": {
+    "select_template": "Select Video Template",
+    "select_style": "Select Style",
+    "select_voice": "Select Voice",
+    "cta_create_video": "Create Video",
+    "cta_creating_video": "Creating Video...",
+    "select_animation": "Select Animation(s)",
+    "select_transition": "Select Transition(s)",
+    "select_caption": "Select Caption",
+    "select_music": "Select Music",
+    "cta_export_video": "Export Video",
+    "cta_exporting_video": "Exporting Video..."
+  },
+  "Library": {
+    "download_button": "Download",
+    "downloading_state": "Downloading",
+    "downloaded": "Downloaded",
+    "error_message": "video not ready"
+  }
+}

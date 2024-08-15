@@ -46,12 +46,10 @@ function parseMessagePayload(payload: any) {
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
-  console.log('request URL: ', url);
   const mode = url.searchParams.get('hub.mode');
   const token = url.searchParams.get('hub.verify_token');
   const challenge = url.searchParams.get('hub.challenge');
   if (mode === 'subscribe' && token === process.env.WEBHOOK_VERIFY_TOKEN) {
-    console.log('webhook success');
     return new Response(challenge, {
       status: 200,
       headers: {
@@ -63,7 +61,9 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  console.log('request: ', JSON.stringify(request, null, 2));
   const body = await request.text();
+  console.log('body: ', body);
   const url = new URL(request.url);
   const signature = url.searchParams.get('x-hub-signature')?.toString();
 

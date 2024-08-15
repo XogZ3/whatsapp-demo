@@ -63,10 +63,9 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const body = await request.text();
-  console.log('body: ', body);
-  const url = new URL(request.url);
-  console.log('url: ', url);
-  const signature = url.searchParams.get('x-hub-signature')?.toString();
+  // const signature = url.searchParams.get('x-hub-signature')?.toString();
+  console.log('request.headers: ', JSON.stringify(request.headers, null, 2));
+  const signature = request.headers.get('x-hub-signature')?.toString();
   console.log('signature: ', signature);
 
   // Verify payload

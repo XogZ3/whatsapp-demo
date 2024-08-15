@@ -50,6 +50,10 @@ export async function GET(request: Request) {
   const mode = url.searchParams.get('hub.mode');
   const token = url.searchParams.get('hub.verify_token');
   const challenge = url.searchParams.get('hub.challenge');
+  console.log('mode: ', mode);
+  console.log('token: ', token);
+  console.log('challenge: ', challenge);
+  console.log('env: ', process.env.WEBHOOK_VERIFY_TOKEN);
   if (mode === 'subscribe' && token === process.env.WEBHOOK_VERIFY_TOKEN) {
     return NextResponse.json(challenge, {
       status: 200,

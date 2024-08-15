@@ -6,6 +6,12 @@ import { z } from 'zod';
 export const Env = createEnv({
   server: {
     FIREBASE_SERVICE_ACCOUNT_KEY: z.string().min(1),
+    FACEBOOK_APP_SECRET: z.string().min(1),
+    WEBHOOK_VERIFY_TOKEN: z.string().min(1),
+    WHATSAPP_TOKEN: z.string().min(1),
+    PHONE_ID: z.string().min(1),
+    WABA_ID: z.string().min(1),
+    PHONE_NUMBER: z.string().min(1),
   },
   client: {
     NEXT_PUBLIC_EMAIL: z.string().optional(),
@@ -41,5 +47,11 @@ export const Env = createEnv({
       process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
     NEXT_PUBLIC_FIREBASE_APP_ID: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
     FIREBASE_SERVICE_ACCOUNT_KEY: process.env.FIREBASE_SERVICE_ACCOUNT_KEY,
+    FACEBOOK_APP_SECRET: process.env.FACEBOOK_APP_SECRET,
+    WEBHOOK_VERIFY_TOKEN: process.env.WEBHOOK_VERIFY_TOKEN,
+    WHATSAPP_TOKEN: process.env.WHATSAPP_TOKEN,
+    PHONE_ID: process.env.PHONE_ID,
+    WABA_ID: process.env.WABA_ID,
+    PHONE_NUMBER: process.env.PHONE_NUMBER,
   },
 });

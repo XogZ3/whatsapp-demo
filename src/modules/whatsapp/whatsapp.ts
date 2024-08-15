@@ -1,7 +1,9 @@
 /* eslint-disable no-console */
 
+import { Env } from '@/libs/Env.mjs';
+
 export async function makeRequestToWhatsapp(data: any) {
-  const URL = `https://graph.facebook.com/v15.0/${process.env.PHONE_ID}/messages?access_token=${process.env.WHATSAPP_TOKEN}`;
+  const URL = `https://graph.facebook.com/v15.0/${Env.PHONE_ID}/messages?access_token=${Env.WHATSAPP_TOKEN}`;
   try {
     const ret = await fetch(URL, {
       method: 'POST',

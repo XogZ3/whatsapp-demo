@@ -3,6 +3,7 @@
 import crypto from 'crypto';
 import { getFirestore } from 'firebase-admin/firestore';
 
+import { Env } from '@/libs/Env.mjs';
 import { replyToUser } from '@/utils/ReplyHelper';
 
 const corsHeaders = {
@@ -49,7 +50,7 @@ export async function GET(request: Request) {
   const mode = url.searchParams.get('hub.mode');
   const token = url.searchParams.get('hub.verify_token');
   const challenge = url.searchParams.get('hub.challenge');
-  if (mode === 'subscribe' && token === process.env.WEBHOOK_VERIFY_TOKEN) {
+  if (mode === 'subscribe' && token === Env.WEBHOOK_VERIFY_TOKEN) {
     return new Response(challenge, {
       status: 200,
       headers: {
@@ -69,10 +70,7 @@ export async function POST(request: Request) {
   console.log('signature: ', signature);
 
   // Verify payload
-  const hmac = crypto.createHmac(
-    'sha1',
-    process.env.FACEBOOK_APP_SECRET || 'N/A',
-  );
+  const hmac = crypto.createHmac('sha1', Env.FACEBOOK_APP_SECRET || 'N/A');
   hmac.update(body, 'ascii');
   const expectedSignature = `sha1=${hmac.digest('hex')}`;
   console.log('expectedSignature: ', expectedSignature);
@@ -89,7 +87,7 @@ export async function POST(request: Request) {
       if (
         subscriptionObject === 'whatsapp_business_account' &&
         field === 'messages' &&
-        wabaId === process.env.WABA_ID
+        wabaId === Env.WABA_ID
       ) {
         const messageObject = parseMessagePayload(payload);
 

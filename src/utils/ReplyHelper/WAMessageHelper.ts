@@ -1,7 +1,7 @@
 import * as admin from 'firebase-admin';
 import { getFirestore } from 'firebase-admin/firestore';
-import process from 'process';
 
+import { Env } from '@/libs/Env.mjs';
 import { makeRequestToWhatsapp } from '@/modules/whatsapp/whatsapp';
 
 function createMessagePayload(
@@ -59,9 +59,9 @@ export async function saveMessageToDB(
   phoneId: any,
   msg: string,
 ) {
-  const wabaId = process.env.WABA_ID;
+  const wabaId = Env.WABA_ID;
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  const display_phone_number = process.env.PHONE_NUMBER;
+  const display_phone_number = Env.PHONE_NUMBER;
   const messageObject = createMessagePayload(
     msgtype,
     message_id,
@@ -84,7 +84,7 @@ export async function saveMessageToDB(
   }
 }
 export async function saveCreditsUsed(clientid: any) {
-  const wabaId = process.env.WABA_ID;
+  const wabaId = Env.WABA_ID;
   const clientDoc = getFirestore()
     .collection('apps')
     .doc(wabaId as string)
@@ -97,7 +97,7 @@ export async function saveCreditsUsed(clientid: any) {
 }
 
 export async function checkCredits(clientid: any) {
-  const wabaId = process.env.WABA_ID;
+  const wabaId = Env.WABA_ID;
   const clientDoc = getFirestore()
     .collection('apps')
     .doc(wabaId as string)
@@ -136,7 +136,7 @@ export async function sendIndividualMessageToWhatsapp(
   //   //   'text',
   //   //   res?.data?.messages[0].id,
   //   //   res?.data?.contacts[0].wa_id,
-  //   //   process.env.PHONE_ID,
+  //   //   Env.PHONE_ID,
   //   //   message
   //   // );
   //   return res && res.status === 200;
@@ -188,7 +188,7 @@ export async function sendQuickReplyMessageToWhatsapp(
   //     'text',
   //     res?.data?.messages[0].id,
   //     res?.data?.contacts[0].wa_id,
-  //     process.env.PHONE_ID,
+  //     Env.PHONE_ID,
   //     message,
   //   );
   // }

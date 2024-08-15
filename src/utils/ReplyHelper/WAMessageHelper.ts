@@ -1,9 +1,8 @@
 import * as admin from 'firebase-admin';
 
-import { Env } from '@/libs/Env.mjs';
 import { makeRequestToWhatsapp } from '@/modules/whatsapp/whatsapp';
 
-import { db } from '../Firebase';
+import { firestore } from '../firebase';
 
 function createMessagePayload(
   msgtype: string,
@@ -60,9 +59,9 @@ export async function saveMessageToDB(
   phoneId: any,
   msg: string,
 ) {
-  const wabaId = Env.WABA_ID;
+  const wabaId = process.env.WABA_ID;
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  const display_phone_number = Env.PHONE_NUMBER;
+  const display_phone_number = process.env.PHONE_NUMBER;
   const messageObject = createMessagePayload(
     msgtype,
     message_id,
@@ -72,7 +71,7 @@ export async function saveMessageToDB(
     msg,
   );
   if (messageObject && messageObject.clientid && messageObject.timestamp) {
-    const clientDoc = db
+    const clientDoc = firestore
       .collection('apps')
       .doc(wabaId as string)
       .collection('clients')
@@ -85,8 +84,8 @@ export async function saveMessageToDB(
   }
 }
 export async function saveCreditsUsed(clientid: any) {
-  const wabaId = Env.WABA_ID;
-  const clientDoc = db
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
     .collection('apps')
     .doc(wabaId as string)
     .collection('clients')
@@ -98,8 +97,8 @@ export async function saveCreditsUsed(clientid: any) {
 }
 
 export async function checkCredits(clientid: any) {
-  const wabaId = Env.WABA_ID;
-  const clientDoc = db
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
     .collection('apps')
     .doc(wabaId as string)
     .collection('clients')
@@ -137,7 +136,7 @@ export async function sendIndividualMessageToWhatsapp(
   //   //   'text',
   //   //   res?.data?.messages[0].id,
   //   //   res?.data?.contacts[0].wa_id,
-  //   //   Env.PHONE_ID,
+  //   //   process.env.PHONE_ID,
   //   //   message
   //   // );
   //   return res && res.status === 200;
@@ -189,7 +188,7 @@ export async function sendQuickReplyMessageToWhatsapp(
   //     'text',
   //     res?.data?.messages[0].id,
   //     res?.data?.contacts[0].wa_id,
-  //     Env.PHONE_ID,
+  //     process.env.PHONE_ID,
   //     message,
   //   );
   // }

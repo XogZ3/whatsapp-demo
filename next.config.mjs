@@ -1,7 +1,13 @@
-/* eslint-disable import/no-extraneous-dependencies, import/extensions */
-import './src/libs/Env.mjs';
+/* eslint-disable import/no-extraneous-dependencies */
+// eslint-disable-next-line import/extensions
+import { fileURLToPath } from 'node:url';
+
 import withBundleAnalyzer from '@next/bundle-analyzer';
 import withNextIntl from 'next-intl/plugin';
+import createJiti from 'jiti';
+
+const jiti = createJiti(fileURLToPath(import.meta.url));
+jiti('./src/libs/Env');
 
 const withNextIntlConfig = withNextIntl('./src/libs/i18n.ts');
 
@@ -15,6 +21,7 @@ export default bundleAnalyzer(
     eslint: {
       dirs: ['.'],
     },
+    // transpilePackages: ['@t3-oss/env-nextjs', '@t3-oss/env-core'],
     poweredByHeader: false,
     reactStrictMode: true,
     images: {

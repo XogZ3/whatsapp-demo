@@ -10,7 +10,6 @@ import * as React from 'react';
 import Balancer from 'react-wrap-balancer';
 
 import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
-import { Env } from '@/libs/Env.mjs';
 
 import { Container } from '../GeneralContainers';
 import { Icons } from '../Icons';
@@ -142,8 +141,11 @@ export default function HeroSection() {
       /> */}
       <p className="hero__glow text-center font-semibold opacity-0">
         {t('support')}{' '}
-        <a href={`mailto:${Env.NEXT_PUBLIC_EMAIL}`} className="text-purple-500">
-          {Env.NEXT_PUBLIC_EMAIL}
+        <a
+          href={`mailto:${process.env.NEXT_PUBLIC_EMAIL}`}
+          className="text-purple-500"
+        >
+          {process.env.NEXT_PUBLIC_EMAIL}
         </a>
       </p>
     </div>

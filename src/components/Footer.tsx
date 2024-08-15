@@ -2,9 +2,9 @@
 
 import { useTranslations } from 'next-intl';
 import { Link } from 'next-view-transitions';
+import process from 'process';
 import React, { useEffect, useState } from 'react';
 
-import { Env } from '@/libs/Env.mjs';
 import { AppConfig } from '@/utils/appConfig';
 
 import { Container } from './GeneralContainers';
@@ -100,8 +100,11 @@ export function Footer() {
             © {t('Copyright.text_1')} {defaultYear} {AppConfig.name}.{' '}
             {t('Copyright.text_2')}.
           </span>
-          <Link target="_blank" href={Env.NEXT_PUBLIC_COMPANY_URL}>
-            {t('Copyright.text_3')} {Env.NEXT_PUBLIC_COMPANY}
+          <Link
+            target="_blank"
+            href={process.env.NEXT_PUBLIC_COMPANY_URL as string}
+          >
+            {t('Copyright.text_3')} {process.env.NEXT_PUBLIC_COMPANY}
           </Link>
         </div>
       </Container>

@@ -1,6 +1,4 @@
-import { Env } from '@/libs/Env.mjs';
-
-import { db } from '../Firebase';
+import { firestore } from '../firebase';
 import * as ReplyConstants from './ReplyConstants';
 
 interface MessageObject {
@@ -65,8 +63,8 @@ export async function isMessageLatest(
   clientid: any,
   message: any,
 ): Promise<boolean> {
-  const wabaId = Env.WABA_ID;
-  const clientDoc = db
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
     .collection('apps')
     .doc(wabaId as string)
     .collection('clients')

@@ -9,17 +9,14 @@ import { extractText } from './MessageParsers';
 
 // eslint-disable-next-line consistent-return
 export async function replyToUser(messageObject: any) {
-  console.log(JSON.stringify(messageObject, null, 2));
+  const senderPhoneNumber =
+    messageObject?.message?.from || process.env.TEST_PHONE_NUMBER;
   const message = extractText(messageObject);
-  console.log(message);
-  // const message = messageObject.message?.text?.body;
-  const { TEST_PHONE_NUMBER } = process.env;
   const payload: ICreateMessagePayload = {
-    phoneNumber: TEST_PHONE_NUMBER,
-    template: true,
-    templateName: 'hello_world',
-    templateLanguageCode: 'en_US',
+    phoneNumber: senderPhoneNumber,
+    text: true,
+    msgBody: `ECHO: ${message}`,
   };
-  const res = await sendMessageToWhatsapp(payload);
-  console.log(JSON.stringify(res, null, 2));
+
+  await sendMessageToWhatsapp(payload);
 }

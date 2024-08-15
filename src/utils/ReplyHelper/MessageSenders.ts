@@ -1,13 +1,11 @@
-import { Env } from '@/libs/Env.mjs';
-
-import { db } from '../Firebase';
+import { firestore } from '../firebase';
 
 export async function setLatestMessage(
   clientid: any,
   message: any,
 ): Promise<void> {
-  const wabaId = Env.WABA_ID;
-  const clientDoc = db
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
     .collection('apps')
     .doc(wabaId as string)
     .collection('clients')

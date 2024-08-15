@@ -29,6 +29,13 @@ export const Env = createEnv({
   },
   // You need to destructure all the keys manually
   runtimeEnv: {
+    FIREBASE_SERVICE_ACCOUNT_KEY: process.env.FIREBASE_SERVICE_ACCOUNT_KEY,
+    FACEBOOK_APP_SECRET: process.env.FACEBOOK_APP_SECRET,
+    WEBHOOK_VERIFY_TOKEN: process.env.WEBHOOK_VERIFY_TOKEN,
+    WHATSAPP_TOKEN: process.env.WHATSAPP_TOKEN,
+    PHONE_ID: process.env.PHONE_ID,
+    WABA_ID: process.env.WABA_ID,
+    PHONE_NUMBER: process.env.PHONE_NUMBER,
     NEXT_PUBLIC_EMAIL: process.env.NEXT_PUBLIC_EMAIL,
     NEXT_PUBLIC_COMPANY: process.env.NEXT_PUBLIC_COMPANY,
     NEXT_PUBLIC_COMPANY_URL: process.env.NEXT_PUBLIC_COMPANY_URL,
@@ -46,12 +53,5 @@ export const Env = createEnv({
     NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID:
       process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
     NEXT_PUBLIC_FIREBASE_APP_ID: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-    FIREBASE_SERVICE_ACCOUNT_KEY: process.env.FIREBASE_SERVICE_ACCOUNT_KEY,
-    FACEBOOK_APP_SECRET: process.env.FACEBOOK_APP_SECRET,
-    WEBHOOK_VERIFY_TOKEN: process.env.WEBHOOK_VERIFY_TOKEN,
-    WHATSAPP_TOKEN: process.env.WHATSAPP_TOKEN,
-    PHONE_ID: process.env.PHONE_ID,
-    WABA_ID: process.env.WABA_ID,
-    PHONE_NUMBER: process.env.PHONE_NUMBER,
   },
 });

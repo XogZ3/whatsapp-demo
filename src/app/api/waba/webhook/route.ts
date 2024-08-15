@@ -2,8 +2,8 @@
 
 import crypto from 'crypto';
 
-import { Env } from '@/libs/Env.mjs';
-import { db } from '@/utils/Firebase';
+import { firestore } from '@/utils/firebase';
+import { parseMessagePayload } from '@/utils/payloadParser';
 import { replyToUser } from '@/utils/ReplyHelper';
 
 const corsHeaders = {
@@ -12,45 +12,12 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
-function parseMessagePayload(payload: any) {
-  let timestamp = Date.now();
-  if (payload.errors) timestamp = payload.errors[0].timestamp * 1e3;
-  if (payload.messages) timestamp = payload.messages[0].timestamp * 1e3;
-  if (payload.statuses) timestamp = payload.statuses[0].timestamp * 1e3;
-
-  let type = 'error';
-  if (payload.statuses) type = 'status';
-  if (payload.messages) type = 'message';
-
-  let clientid = null;
-  if (payload.statuses) clientid = payload.statuses[0].recipient_id;
-  if (payload.messages) clientid = payload.messages[0].from;
-
-  return {
-    timestamp,
-    type,
-    clientid,
-    messaging_product: payload.messaging_product,
-    metadata: payload.metadata,
-    // status messages
-    status_raw: payload.statuses ? payload.statuses[0] : null,
-    pricing: payload.statuses ? payload.statuses[0].pricing || null : null,
-    status: payload.statuses ? payload.statuses[0].status || null : null,
-    origin: payload.statuses ? payload.statuses[0].origin?.type || null : null,
-    // incoming message
-    message: payload.messages ? payload.messages[0] : null,
-    contact: payload.contacts ? payload.contacts[0] : null,
-    // error
-    error: payload.errors ? payload.errors[0] : null,
-  };
-}
-
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const mode = url.searchParams.get('hub.mode');
   const token = url.searchParams.get('hub.verify_token');
   const challenge = url.searchParams.get('hub.challenge');
-  if (mode === 'subscribe' && token === Env.WEBHOOK_VERIFY_TOKEN) {
+  if (mode === 'subscribe' && token === process.env.WEBHOOK_VERIFY_TOKEN) {
     return new Response(challenge, {
       status: 200,
       headers: {
@@ -63,22 +30,21 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const body = await request.text();
-  // const signature = url.searchParams.get('x-hub-signature')?.toString();
-  console.log('request.headers: ', JSON.stringify(request.headers, null, 2));
   const signature = request.headers.get('x-hub-signature')?.toString();
-  console.log('signature: ', signature);
 
   // Verify payload
-  const hmac = crypto.createHmac('sha1', Env.FACEBOOK_APP_SECRET || 'N/A');
+  const hmac = crypto.createHmac(
+    'sha1',
+    process.env.FACEBOOK_APP_SECRET || 'N/A',
+  );
   hmac.update(body, 'ascii');
   const expectedSignature = `sha1=${hmac.digest('hex')}`;
-  console.log('expectedSignature: ', expectedSignature);
 
   if (signature === expectedSignature) {
     console.log('signature match');
     try {
       const data = JSON.parse(body);
-      console.log('data', data);
+      console.log('data', JSON.stringify(data, null, 2));
       const subscriptionObject = data.object;
       const wabaId = data.entry[0].id;
       const { field, value: payload } = data.entry[0].changes[0];
@@ -86,7 +52,7 @@ export async function POST(request: Request) {
       if (
         subscriptionObject === 'whatsapp_business_account' &&
         field === 'messages' &&
-        wabaId === Env.WABA_ID
+        wabaId === process.env.WABA_ID
       ) {
         const messageObject = parseMessagePayload(payload);
 
@@ -95,7 +61,7 @@ export async function POST(request: Request) {
           messageObject.timestamp &&
           (messageObject.type === 'message' || messageObject.type === 'status')
         ) {
-          const clientDoc = db
+          const clientDoc = firestore
             .collection('apps')
             .doc(wabaId as string)
             .collection('clients')

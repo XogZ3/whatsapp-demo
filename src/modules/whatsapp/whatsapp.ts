@@ -1,16 +1,20 @@
 /* eslint-disable no-console */
 
-import { Env } from '@/libs/Env.mjs';
-
 export async function makeRequestToWhatsapp(data: any) {
-  const URL = `https://graph.facebook.com/v15.0/${Env.PHONE_ID}/messages?access_token=${Env.WHATSAPP_TOKEN}`;
+  const URL = `https://graph.facebook.com/v20.0/${process.env.PHONE_ID}/messages?access_token=${process.env.WHATSAPP_TOKEN}`;
   try {
     const ret = await fetch(URL, {
       method: 'POST',
-      body: data,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
     });
-    console.log(ret?.status === 200 ? 'success' : 'failure');
-    console.log('response', JSON.stringify(ret, null, 2));
+    console.log('fetch response', JSON.stringify(ret, null, 2));
+    if (ret.ok) {
+      const responseData = await ret.json();
+      console.log('success', responseData);
+      return responseData;
+    }
+    console.log('failure', ret.statusText);
     return ret;
   } catch (error) {
     console.log('WHATSAPP SERVICE FAILED', error);
@@ -422,7 +426,6 @@ async function createWAMessagePayload(payload: PropsFormatted) {
 export async function sendMessageToWhatsapp(payload: any) {
   const data = await createWAMessagePayload(payload);
   const res = await makeRequestToWhatsapp(data);
-  console.log(JSON.stringify(res, null, 2));
   if (res) return true;
   // if (res?.data?.messages?.length) {
   //   // eslint-disable-next-line no-console

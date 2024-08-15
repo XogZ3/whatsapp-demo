@@ -14,15 +14,11 @@ const intlMiddleware = createMiddleware({
 export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Check if the request is for an API route
-  if (pathname.match(/^\/[^\/]+\/api\//)) {
-    // For API routes, remove the locale prefix and forward the request
-    const newUrl = new URL(request.url);
-    newUrl.pathname = pathname.replace(/^\/[^\/]+\/api/, '/api');
-    return NextResponse.rewrite(newUrl);
+  // Exclude API routes from language handling
+  if (pathname.startsWith('/api/')) {
+    return NextResponse.next();
   }
 
-  // For non-API routes, use the intl middleware
   return intlMiddleware(request);
 }
 

@@ -61,11 +61,12 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  console.log('request: ', JSON.stringify(request, null, 2));
   const body = await request.text();
   console.log('body: ', body);
   const url = new URL(request.url);
+  console.log('url: ', url);
   const signature = url.searchParams.get('x-hub-signature')?.toString();
+  console.log('signature: ', signature);
 
   // Verify payload
   const hmac = crypto.createHmac(
@@ -74,10 +75,13 @@ export async function POST(request: Request) {
   );
   hmac.update(body, 'ascii');
   const expectedSignature = `sha1=${hmac.digest('hex')}`;
+  console.log('expectedSignature: ', expectedSignature);
 
   if (signature === expectedSignature) {
+    console.log('signature match');
     try {
       const data = JSON.parse(body);
+      console.log('data', data);
       const subscriptionObject = data.object;
       const wabaId = data.entry[0].id;
       const { field, value: payload } = data.entry[0].changes[0];

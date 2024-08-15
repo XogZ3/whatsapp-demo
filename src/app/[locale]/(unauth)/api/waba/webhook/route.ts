@@ -50,10 +50,13 @@ export async function GET(request: Request) {
   const mode = url.searchParams.get('hub.mode');
   const token = url.searchParams.get('hub.verify_token');
   const challenge = url.searchParams.get('hub.challenge');
-  console.log(token);
-  console.log(process.env.WEBHOOK_VERIFY_TOKEN);
   if (mode === 'subscribe' && token === process.env.WEBHOOK_VERIFY_TOKEN) {
-    return NextResponse.json(challenge, { status: 200 });
+    return NextResponse.json(challenge, {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/plain',
+      },
+    });
   }
   return new Response(JSON.stringify('Invalid verify_token'), { status: 403 });
 }

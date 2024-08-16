@@ -41,10 +41,9 @@ export async function POST(request: Request) {
   const expectedSignature = `sha1=${hmac.digest('hex')}`;
 
   if (signature === expectedSignature) {
-    console.log('signature match');
     try {
       const data = JSON.parse(body);
-      console.log('data', JSON.stringify(data, null, 2));
+      // console.log('data', JSON.stringify(data, null, 2));
       const subscriptionObject = data.object;
       const wabaId = data.entry[0].id;
       const { field, value: payload } = data.entry[0].changes[0];
@@ -96,7 +95,6 @@ export async function POST(request: Request) {
             messageObject.type === 'message' &&
             messageObject.timestamp > Date.now() / 1000 - 180
           ) {
-            console.log('sending response');
             await replyToUser(messageObject);
           }
         }

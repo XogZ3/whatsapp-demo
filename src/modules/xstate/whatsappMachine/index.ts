@@ -12,7 +12,7 @@ const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 // Function to convert the current interpreter state to a string
 function actorToString(actor: AnyActorRef) {
   const snapshot = actor.getSnapshot();
-  console.log(Date.now(), 'actorToString', snapshot.value, snapshot.context);
+  // console.log(Date.now(), 'actorToString', snapshot.value, snapshot.context);
   return JSON.stringify(snapshot);
 }
 

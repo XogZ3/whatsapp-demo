@@ -19,7 +19,7 @@ export const machineFactory = (config: IMachineConfig): any => {
         creditsRemaining: 0,
       } as IMachineContext,
       on: {
-        UNKNOWN_ISSUE: 'onBoarding',
+        UNKNOWN_ISSUE: '.onBoarding',
       },
       states: {
         onBoarding: {

@@ -7,7 +7,7 @@ const createFirebaseApp = () => {
   try {
     return getApp();
   } catch (e) {
-    console.log('Firebase app not initialized yet, attempting to initialize.');
+    // console.log('Firebase app not initialized yet, attempting to initialize.');
     try {
       const firebaseServiceAccountKey =
         process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
@@ -49,7 +49,7 @@ const createFirebaseApp = () => {
 
 try {
   createFirebaseApp();
-  console.log('Firebase app initialized successfully.');
+  // console.log('Firebase app initialized successfully.');
 } catch (error) {
   console.error('Error during Firebase app initialization:', error);
 }

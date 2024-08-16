@@ -8,13 +8,10 @@ export async function makeRequestToWhatsapp(data: any) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
-    console.log('fetch response', JSON.stringify(ret, null, 2));
     if (ret.ok) {
       const responseData = await ret.json();
-      console.log('success', responseData);
       return responseData;
     }
-    console.log('failure', ret.statusText);
     return ret;
   } catch (error) {
     console.log('WHATSAPP SERVICE FAILED', error);

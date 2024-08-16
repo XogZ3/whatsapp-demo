@@ -12,6 +12,8 @@ require('dotenv').config({
 
 jest.setTimeout(20000);
 
+const INPUT_MESSAGE = 'Model Generated';
+
 describe('ReplyHelper tests', () => {
   describe('replyToUser', () => {
     // it('should send hello_world template', async () => {
@@ -40,7 +42,7 @@ describe('ReplyHelper tests', () => {
           timestamp: Math.floor(Date.now() / 1e3),
           type: 'text',
           text: {
-            body: `where`,
+            body: INPUT_MESSAGE,
           },
           id: 'wamid.HBgMOTE4NzU0NTM1ODU5FQIAEhgUM0ExRDE1RTg4QkYxNzgwMjAzODMA',
         },

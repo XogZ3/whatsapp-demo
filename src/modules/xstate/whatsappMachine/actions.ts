@@ -71,18 +71,6 @@ export const actionsFactory = (config: IMachineConfig): any => {
       };
       await config.whatsappInstance.send(payload);
     },
-    sendGreeting: async () => {
-      const message = `HELLOOOO 🙋‍♂️`;
-      const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.phonenumber,
-        quickReply: true,
-        button1: 'FAQ',
-        button2: 'Pricing',
-        button3: 'Tutorial',
-        msgBody: message,
-      };
-      await config.whatsappInstance.send(payload);
-    },
     sendFAQ: async () => {
       const message = `🙋‍♂️🙋‍♂️🙋‍♂️🙋‍♂️🙋‍♂️`;
       const payload: ICreateMessagePayload = {
@@ -158,6 +146,18 @@ export const actionsFactory = (config: IMachineConfig): any => {
         config.userMetaData.phonenumber,
       );
     },
+    sendUnpaidUserOptions: async () => {
+      const message = 'Wanna make your own photos?';
+      const payload: ICreateMessagePayload = {
+        phoneNumber: config.userMetaData.phonenumber,
+        quickReply: true,
+        button1: 'Buy Credits',
+        button2: 'Bypass',
+        button3: 'Cancel',
+        msgBody: message,
+      };
+      await config.whatsappInstance.send(payload);
+    },
     sendPaymentInstructions: async () => {
       const message = 'STRIPE link..';
       const payload: ICreateMessagePayload = {
@@ -202,6 +202,9 @@ export const actionsFactory = (config: IMachineConfig): any => {
       };
       await config.whatsappInstance.send(payload);
     },
+    echoEvent: assign({
+      message: (context: any) => `Echooo: ${context.message}`,
+    }),
     sendCredits: () => {
       // Logic to send remaining credits
     },

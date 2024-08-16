@@ -38,6 +38,7 @@ export const machineFactory = (config: IMachineConfig): any => {
             },
             MAIN_MENU: {
               target: 'onBoarding',
+              reenter: true,
             },
           },
         },
@@ -72,13 +73,14 @@ export const machineFactory = (config: IMachineConfig): any => {
               target: 'modelGeneratedUnpaid',
             },
             BYPASS: {
-              actions: ['sendModelGeneratedSuccess'],
+              actions: ['sendModelGeneratedSuccess', 'sendSamplePhotos'],
               target: 'modelGeneratedUnpaid',
             },
             CANCEL: 'onBoarding',
           },
         },
         modelGeneratedUnpaid: {
+          entry: ['sendUnpaidUserOptions'],
           on: {
             BUY_CREDITS: {
               actions: ['sendPaymentInstructions'],
@@ -87,7 +89,11 @@ export const machineFactory = (config: IMachineConfig): any => {
               target: 'modelGeneratedPaid',
               reenter: true,
             },
-            CANCEL: 'modelGeneratedUnpaid',
+            CANCEL: {
+              target: 'modelGeneratedUnpaid',
+              reenter: true,
+            },
+            // TODO: Code payments
             PAYMENT_CONFIRMED: {
               actions: ['sendPaymentConfirmation'],
               target: 'modelGeneratedPaid',
@@ -99,13 +105,19 @@ export const machineFactory = (config: IMachineConfig): any => {
           on: {
             CREATE_PHOTO: 'photoPrompting',
             BYPASS: 'photoPrompting',
-            CANCEL: 'modelGeneratedPaid',
+            CANCEL: {
+              target: 'modelGeneratedPaid',
+              reenter: true,
+            },
           },
         },
         photoPrompting: {
           entry: ['sendPromptingInstruction'],
           on: {
             CANCEL: 'modelGeneratedPaid',
+            '*': {
+              actions: ['echoEvent'],
+            },
             PROMPT_PHOTO_REQUESTED: [
               {
                 target: 'photoPrompting',

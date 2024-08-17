@@ -1,4 +1,6 @@
-import { firestore } from '../firebase';
+import firebase from '@/modules/firebase';
+
+const firestore = firebase.getFirestore();
 
 export async function setLatestMessage(
   clientid: any,

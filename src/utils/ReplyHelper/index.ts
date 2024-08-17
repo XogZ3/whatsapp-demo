@@ -1,10 +1,12 @@
 /* eslint-disable unused-imports/no-unused-vars */
 
+import firebase from '@/modules/firebase';
 import { whatsappStateTransition } from '@/modules/xstate/whatsappMachine';
 import type { IUserMetaData } from '@/modules/xstate/whatsappMachine/types';
 
-import { firestore } from '../firebase';
 import { extractText } from './MessageParsers';
+
+const firestore = firebase.getFirestore();
 
 async function setUserState(state: string, clientid: string) {
   const wabaId = process.env.WABA_ID;
@@ -36,16 +38,6 @@ async function getUserDetails(clientid: string) {
 // eslint-disable-next-line consistent-return
 export async function replyToUser(messageObject: any) {
   const message = extractText(messageObject);
-
-  // const senderPhoneNumber =
-  //   messageObject?.message?.from || process.env.TEST_PHONE_NUMBER;
-  // const payload: ICreateMessagePayload = {
-  //   phoneNumber: senderPhoneNumber,
-  //   text: true,
-  //   msgBody: `ECHO: ${message}`,
-  // };
-  // await sendMessageToWhatsapp(payload);
-
   const { clientid } = messageObject;
   const userDetails = await getUserDetails(clientid);
   const { state, name, phonenumber } = userDetails;

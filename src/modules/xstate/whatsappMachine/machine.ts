@@ -23,14 +23,14 @@ export const machineFactory = (config: IMachineConfig): any => {
       },
       states: {
         onBoarding: {
-          entry: ['sendIntroOptionsMessage'],
+          entry: ['sendIntroOptionsMessage', 'assignDefaultValues'],
           on: {
             UPLOAD_PHOTOS: {
               target: 'imagesIncomplete',
             },
             PRICING: {
+              actions: ['assignMessage', 'sendPricing'],
               target: 'onBoarding',
-              actions: ['sendPricing'],
             },
             TUTORIAL: {
               target: 'onBoarding',

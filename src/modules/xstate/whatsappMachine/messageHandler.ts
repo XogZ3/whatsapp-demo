@@ -59,7 +59,10 @@ export const handleMessage = async (
   } else {
     const event =
       STATE_ACTION_EVENT_MAP[state][userActionId] || 'UNKNOWN_ISSUE';
-
+    console.log(
+      'actor sending: ',
+      JSON.stringify({ type: event, message, userMetaData }),
+    );
     actor.send({
       type: event,
       message,

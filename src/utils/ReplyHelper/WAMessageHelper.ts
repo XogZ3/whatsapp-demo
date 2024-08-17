@@ -1,8 +1,9 @@
 import * as admin from 'firebase-admin';
 
+import firebase from '@/modules/firebase';
 import { makeRequestToWhatsapp } from '@/modules/whatsapp/whatsapp';
 
-import { firestore } from '../firebase';
+const firestore = firebase.getFirestore();
 
 function createMessagePayload(
   msgtype: string,

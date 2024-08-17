@@ -1,5 +1,8 @@
-import { firestore } from '../firebase';
+import firebase from '@/modules/firebase';
+
 import * as ReplyConstants from './ReplyConstants';
+
+const firestore = firebase.getFirestore();
 
 interface MessageObject {
   timestamp: number;

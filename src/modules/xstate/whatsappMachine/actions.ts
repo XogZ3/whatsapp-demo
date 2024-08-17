@@ -20,6 +20,21 @@ async function sendMessage(
 
 export const actionsFactory = (config: IMachineConfig): any => {
   return {
+    // assignMessage: assign({
+    //   message: (context: any, event: any) => event?.message || context?.message,
+    // }),
+    assignDefaultValues: assign({
+      message: () => '',
+      processing: () => false,
+      pendingPhotos: () => 0,
+      creditsRemaining: () => 0,
+    }),
+    assignMessage: assign((_, event: any) => {
+      console.log(JSON.stringify(event, null, 2));
+      return {
+        message: event?.message || 'woops',
+      };
+    }),
     assignIdleValues: assign({
       message: () => '',
       processing: () => false,

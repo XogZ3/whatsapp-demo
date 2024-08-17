@@ -2,10 +2,11 @@
 
 import crypto from 'crypto';
 
-import { firestore } from '@/utils/firebase';
+import firebase from '@/modules/firebase';
 import { parseMessagePayload } from '@/utils/payloadParser';
 import { replyToUser } from '@/utils/ReplyHelper';
 
+const firestore = firebase.getFirestore();
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST',
@@ -39,11 +40,12 @@ export async function POST(request: Request) {
   );
   hmac.update(body, 'ascii');
   const expectedSignature = `sha1=${hmac.digest('hex')}`;
+  console.log('expectedSignature', expectedSignature);
 
   if (signature === expectedSignature) {
     try {
       const data = JSON.parse(body);
-      // console.log('data', JSON.stringify(data, null, 2));
+      console.log('incoming data', JSON.stringify(data, null, 2));
       const subscriptionObject = data.object;
       const wabaId = data.entry[0].id;
       const { field, value: payload } = data.entry[0].changes[0];

@@ -50,7 +50,7 @@ export async function generateImagesUploadToFirebaseGetURL(
       }),
     });
 
-    console.log('[+] runpod res: ', response);
+    console.log('[+] runpod res: ', JSON.stringify(response, null, 2));
 
     if (!response.ok) {
       throw new Error(`Runpod request failed with status: ${response.status}`);

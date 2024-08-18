@@ -126,5 +126,5 @@ export async function POST(request: Request) {
     console.error('Invalid signature');
   }
 
-  return immediateResponse; // Return immediately after verifying the signature
+  return immediateResponse;
 }

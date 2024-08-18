@@ -234,25 +234,28 @@ Generating image for your prompt: ${prompt}`;
         config.userMetaData.phonenumber,
       );
 
-      const generatedImageURLs: string[] =
-        await generateImagesUploadToFirebaseGetURL(
-          prompt,
-          config.userMetaData.phonenumber,
-        );
+      async function doStuff() {
+        const generatedImageURLs: string[] =
+          await generateImagesUploadToFirebaseGetURL(
+            prompt,
+            config.userMetaData.phonenumber,
+          );
 
-      console.log('[+] receveid runpod urls: ', generatedImageURLs);
+        console.log('[+] receveid runpod urls: ', generatedImageURLs);
 
-      const sendPromises = generatedImageURLs.map(async (url) => {
-        const payload: ICreateMessagePayload = {
-          phoneNumber: config.userMetaData.phonenumber,
-          image: true,
-          imageLink: url,
-        };
-        await config.whatsappInstance.send(payload);
-      });
-      await Promise.all(sendPromises);
+        const sendPromises = generatedImageURLs.map(async (url) => {
+          const payload: ICreateMessagePayload = {
+            phoneNumber: config.userMetaData.phonenumber,
+            image: true,
+            imageLink: url,
+          };
+          await config.whatsappInstance.send(payload);
+        });
+        await Promise.all(sendPromises);
 
-      console.log('All images sent successfully.');
+        console.log('All images sent successfully.');
+      }
+      doStuff().then(() => console.log('[+] doStuff done'));
     },
     sendNextStep: async () => {
       const message = 'Cool photo! Just send another prompt.';

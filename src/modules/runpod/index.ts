@@ -2,6 +2,7 @@
 import * as fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 
+import { getImprovedPromptFromGroq } from '@/utils/groq';
 import {
   getUserLoraDetails,
   uploadFileToFirebase,
@@ -33,6 +34,9 @@ export async function generateImagesUploadToFirebaseGetURL(
 
     console.log('[+] got file name: ', lora_filename);
 
+    const improvedPromptFromGroq = await getImprovedPromptFromGroq(prompt);
+    console.log('[+] got improved prompt: ', improvedPromptFromGroq);
+
     const response = await fetch(runpodURL, {
       method: 'POST',
       headers: {
@@ -43,7 +47,7 @@ export async function generateImagesUploadToFirebaseGetURL(
         input: {
           num_images: 1,
           api_key: runpodApiKey,
-          prompt,
+          prompt: improvedPromptFromGroq,
           lora_url,
           lora_filename,
         },

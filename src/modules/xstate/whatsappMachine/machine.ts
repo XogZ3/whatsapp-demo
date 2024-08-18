@@ -130,7 +130,6 @@ export const machineFactory = (config: IMachineConfig): any => {
               actions: [
                 // 'decrementCredits',
                 'sendPromptedPhoto',
-                'sendNextStep',
               ],
               // guard: 'hasSufficientCredits',
               reenter: true,

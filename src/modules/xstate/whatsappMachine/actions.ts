@@ -226,8 +226,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const prompt = event?.event?.message || 'aesthetic face';
       console.log('[+] action: send photo for prompt: ', prompt);
 
-      const message = `Please wait 20-30 seconds...
-Generating image for your prompt: ${prompt}`;
+      let message = `Generating image, please wait 30 seconds...`;
       await sendMessage(
         config.whatsappInstance,
         message,
@@ -254,18 +253,14 @@ Generating image for your prompt: ${prompt}`;
         await Promise.all(sendPromises);
 
         console.log('All images sent successfully.');
+        message = `Cool photo! Just send another prompt.`;
+        await sendMessage(
+          config.whatsappInstance,
+          message,
+          config.userMetaData.phonenumber,
+        );
       }
       doStuff().then(() => console.log('[+] doStuff done'));
-    },
-    sendNextStep: async () => {
-      const message = 'Cool photo! Just send another prompt.';
-      const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.phonenumber,
-        quickReply: true,
-        button1: 'Cancel',
-        msgBody: message,
-      };
-      await config.whatsappInstance.send(payload);
     },
     sendCredits: () => {
       // Logic to send remaining credits

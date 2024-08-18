@@ -48,16 +48,17 @@ export const handleMessage = async (
     },
     [State.photoPrompting]: {
       cancel: 'CANCEL',
+      prompt: 'PROMPT',
     },
   };
 
   const state = actor.getSnapshot().value as string;
-  console.log('state: ', state);
+  console.log('Current state: ', state);
 
   let event;
 
-  if (state === 'photoPrompting') {
-    event = 'PROMPT';
+  if (state === 'photoPrompting' && userActionId !== 'create photo') {
+    event = STATE_ACTION_EVENT_MAP[state].prompt;
     console.log('Prompt: ', message);
   } else if (STATE_ACTION_EVENT_MAP[state]) {
     event = STATE_ACTION_EVENT_MAP[state][userActionId] || 'UNKNOWN_ISSUE';

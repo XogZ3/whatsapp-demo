@@ -1,7 +1,10 @@
 import * as fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 
-import { uploadFileToFirebase } from '@/utils/ReplyHelper/FirebaseHelpers';
+import {
+  getUserLoraDetails,
+  uploadFileToFirebase,
+} from '@/utils/ReplyHelper/FirebaseHelpers';
 
 const runpodURL = process.env.RUNPOD_URL as string;
 const runpodBearerToken = process.env.RUNPOD_BEARER_TOKEN as string;
@@ -16,11 +19,11 @@ export async function saveImageToDisk(base64Content: string, filename: string) {
 }
 
 export async function generateImagesUploadToFirebaseGetURL(
-  loraURL: string,
-  loraFilename: string,
   prompt: string,
-  clientid?: string,
+  clientid: string,
 ): Promise<string[]> {
+  const clientLoraInfo = await getUserLoraDetails(clientid);
+
   const response = await fetch(runpodURL, {
     method: 'POST',
     headers: {
@@ -32,8 +35,8 @@ export async function generateImagesUploadToFirebaseGetURL(
         num_images: 1,
         api_key: runpodApiKey,
         prompt,
-        lora_url: loraURL,
-        lora_filename: loraFilename,
+        lora_url: clientLoraInfo.loraURL,
+        lora_filename: clientLoraInfo.loraFilename,
       },
     }),
   });

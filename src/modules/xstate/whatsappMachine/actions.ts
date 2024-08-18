@@ -4,11 +4,7 @@ import { generateImagesUploadToFirebaseGetURL } from '@/modules/runpod';
 import type { ICreateMessagePayload } from '@/modules/whatsapp/whatsapp';
 import { TRAINING_IMAGES_LIMIT } from '@/utils/constants';
 
-import type {
-  IMachineConfig,
-  IMachineContext,
-  IWhatsappInstance,
-} from './types';
+import type { IMachineConfig, IWhatsappInstance } from './types';
 
 async function sendMessage(
   whatsappInstance: IWhatsappInstance,
@@ -228,14 +224,20 @@ export const actionsFactory = (config: IMachineConfig): any => {
     echoEvent: assign({
       message: (context: any) => `Echooo: ${context.message}`,
     }),
-    sendPromptedPhoto: async (context: IMachineContext, event: any) => {
-      const prompt = event?.message || 'woooops no prompt';
-      console.log('Prompt:', prompt);
+    sendPromptedPhoto: async (event: any) => {
+      const prompt = event?.event?.message || 'aesthetic face';
+      console.log('[+] action: send photo for prompt: ', prompt);
+
+      const message = `Please wait 20-30 seconds...
+Generating image for your prompt: ${prompt}`;
+      await sendMessage(
+        config.whatsappInstance,
+        message,
+        config.userMetaData.phonenumber,
+      );
 
       const generatedImageURLs: string[] =
         await generateImagesUploadToFirebaseGetURL(
-          context.loraURL,
-          context.loraFilename,
           prompt,
           config.userMetaData.phonenumber,
         );
@@ -248,8 +250,6 @@ export const actionsFactory = (config: IMachineConfig): any => {
         };
         await config.whatsappInstance.send(payload);
       });
-
-      // Wait for all send operations to complete
       await Promise.all(sendPromises);
 
       console.log('All images sent successfully.');

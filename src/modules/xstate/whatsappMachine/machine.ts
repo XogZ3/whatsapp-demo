@@ -17,8 +17,6 @@ export const machineFactory = (config: IMachineConfig): any => {
         processing: false,
         photosUploaded: 0,
         creditsRemaining: 1,
-        loraURL: '',
-        loraFilename: '',
       } as IMachineContext,
       on: {
         UNKNOWN_ISSUE: '.onBoarding',
@@ -58,6 +56,7 @@ export const machineFactory = (config: IMachineConfig): any => {
               },
             ],
             BYPASS: {
+              actions: assign({ message: () => 'Bypass imagesIncomplete' }),
               target: 'generatingModel',
             },
             CANCEL: {
@@ -76,19 +75,24 @@ export const machineFactory = (config: IMachineConfig): any => {
               target: 'modelGeneratedUnpaid',
             },
             BYPASS: {
-              actions: ['sendModelGeneratedSuccess', 'sendSamplePhotos'],
+              actions: [
+                'sendModelGeneratedSuccess',
+                'sendSamplePhotos',
+                assign({ message: () => 'Bypass generatingModel' }),
+              ],
               target: 'modelGeneratedUnpaid',
             },
             CANCEL: 'onBoarding',
           },
         },
         modelGeneratedUnpaid: {
-          entry: ['sendSamplePhotos', 'sendUnpaidUserOptions'],
+          entry: ['sendUnpaidUserOptions'],
           on: {
             BUY_CREDITS: {
               actions: ['sendPaymentInstructions'],
             },
             BYPASS: {
+              actions: assign({ message: () => 'Bypass modelGeneratedUnpaid' }),
               target: 'modelGeneratedPaid',
             },
             CANCEL: {
@@ -106,7 +110,12 @@ export const machineFactory = (config: IMachineConfig): any => {
           entry: ['sendPaidUserOptions'],
           on: {
             CREATE_PHOTO: 'photoPrompting',
-            BYPASS: 'photoPrompting',
+            BYPASS: {
+              target: 'photoPrompting',
+              actions: assign({
+                message: (_: any, event: any) => event?.message,
+              }),
+            },
             CANCEL: {
               target: 'modelGeneratedPaid',
               reenter: true,
@@ -123,7 +132,8 @@ export const machineFactory = (config: IMachineConfig): any => {
                 'sendPromptedPhoto',
                 'sendNextStep',
               ],
-              guard: 'hasCredits',
+              // guard: 'hasSufficientCredits',
+              reenter: true,
             },
           },
         },

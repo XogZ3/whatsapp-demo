@@ -92,6 +92,24 @@ export async function addTrainingImageURL(clientid: string, imageURL: string) {
   await clientDoc.set({ trainingImageURLs: updatedURLs }, { merge: true });
 }
 
+export async function getUserLoraDetails(clientid: string): Promise<{
+  loraURL: any;
+  loraFilename: any;
+}> {
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid);
+  const clientData = await clientDoc.get();
+  const { loraURL, loraFilename } = clientData.data() || {};
+  return {
+    loraURL,
+    loraFilename,
+  };
+}
+
 export async function uploadFileToFirebase(
   base64Content: string,
   filename: string,

@@ -20,8 +20,6 @@ export interface IMachineContext {
   photosUploaded: number;
   creditsRemaining: number;
   modelGenerated: boolean;
-  loraURL: string;
-  loraFilename: string;
 }
 
 export interface IUserMetaData {

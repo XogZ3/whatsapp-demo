@@ -36,7 +36,7 @@ export async function POST(request: Request) {
       // Hard transition xstate
       const updates: any = {
         state:
-          '{"status":"stopped","context":{"message":"Model Generated","processing":false,"pendingPhotos":0,"creditsRemaining":1},"value":"modelGeneratedUnpaid","children":{},"historyValue":{},"tags":[]}',
+          '{"status":"stopped","context":{"processing":false,"photosUploaded":0,"creditsRemaining":1,"loraURL":"","loraFilename":""},"value":"photoPrompting","children":{},"historyValue":{},"tags":[]}',
         loraURL,
         loraFilename,
       };

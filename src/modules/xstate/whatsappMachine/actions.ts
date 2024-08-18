@@ -27,6 +27,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
     // }),
     assignDefaultValues: assign({
       message: () => '',
+      latestPrompt: () => '',
       processing: () => false,
       photosUploaded: () => 0,
       creditsRemaining: () => 1,
@@ -222,8 +223,23 @@ export const actionsFactory = (config: IMachineConfig): any => {
     echoEvent: assign({
       message: (context: any) => `Echooo: ${context.message}`,
     }),
+    sendPromptConfirmation: async (event: any) => {
+      const prompt = event?.event?.message;
+      console.log('[+] action: send confirmation for prompt: ', prompt);
+
+      const message = `Do you want to generate image with following prompt?
+    ${prompt}`;
+      const payload: ICreateMessagePayload = {
+        phoneNumber: config.userMetaData.phonenumber,
+        quickReply: true,
+        button1: 'Yes',
+        button2: 'No',
+        msgBody: message,
+      };
+      await config.whatsappInstance.send(payload);
+    },
     sendPromptedPhoto: async (event: any) => {
-      const prompt = event?.event?.message || 'aesthetic face';
+      const prompt = event?.context?.latestPrompt;
       console.log('[+] action: send photo for prompt: ', prompt);
 
       let message = `Generating image, please wait 30 seconds...`;
@@ -253,14 +269,25 @@ export const actionsFactory = (config: IMachineConfig): any => {
         await Promise.all(sendPromises);
 
         console.log('All images sent successfully.');
+
         message = `Cool photo! Just send another prompt.`;
-        await sendMessage(
-          config.whatsappInstance,
-          message,
-          config.userMetaData.phonenumber,
-        );
+        const payload: ICreateMessagePayload = {
+          phoneNumber: config.userMetaData.phonenumber,
+          text: true,
+          msgBody: message,
+        };
+        await config.whatsappInstance.send(payload);
       }
       doStuff().then(() => console.log('[+] doStuff done'));
+    },
+    sendRequestNewPrompt: async () => {
+      const message = 'Alright, send a new prompt. :)';
+      const payload: ICreateMessagePayload = {
+        phoneNumber: config.userMetaData.phonenumber,
+        text: true,
+        msgBody: message,
+      };
+      await config.whatsappInstance.send(payload);
     },
     sendCredits: () => {
       // Logic to send remaining credits

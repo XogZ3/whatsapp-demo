@@ -14,6 +14,7 @@ export const machineFactory = (config: IMachineConfig): any => {
       initial: 'onBoarding',
       context: {
         message: '',
+        latestPrompt: '',
         processing: false,
         photosUploaded: 0,
         creditsRemaining: 1,
@@ -113,7 +114,7 @@ export const machineFactory = (config: IMachineConfig): any => {
             BYPASS: {
               target: 'photoPrompting',
               actions: assign({
-                message: (_: any, event: any) => event?.message,
+                message: (event: any) => event?.event?.message,
               }),
             },
             CANCEL: {
@@ -129,10 +130,20 @@ export const machineFactory = (config: IMachineConfig): any => {
             PROMPT: {
               actions: [
                 // 'decrementCredits',
-                'sendPromptedPhoto',
+                assign({
+                  message: ({ event }) => event?.message,
+                  latestPrompt: ({ event }) => event?.message,
+                }),
+                'sendPromptConfirmation',
               ],
               // guard: 'hasSufficientCredits',
-              reenter: true,
+              // reenter: true,
+            },
+            YES: {
+              actions: ['sendPromptedPhoto'],
+            },
+            NO: {
+              actions: 'sendRequestNewPrompt',
             },
           },
         },

@@ -49,6 +49,8 @@ export const handleMessage = async (
     [State.photoPrompting]: {
       cancel: 'CANCEL',
       prompt: 'PROMPT',
+      yes: 'YES',
+      no: 'NO',
     },
   };
 
@@ -57,7 +59,10 @@ export const handleMessage = async (
 
   let event;
 
-  if (state === 'photoPrompting' && userActionId !== 'create photo') {
+  if (
+    state === 'photoPrompting' &&
+    !['create photo', 'yes', 'no'].includes(userActionId)
+  ) {
     event = STATE_ACTION_EVENT_MAP[state].prompt;
     console.log('Prompt: ', message);
   } else if (STATE_ACTION_EVENT_MAP[state]) {

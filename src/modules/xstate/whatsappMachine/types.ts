@@ -16,6 +16,7 @@ export interface IWhatsappInstance {
 
 export interface IMachineContext {
   message: string;
+  latestPrompt: string;
   processing: boolean;
   photosUploaded: number;
   creditsRemaining: number;

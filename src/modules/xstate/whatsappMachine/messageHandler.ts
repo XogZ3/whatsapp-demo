@@ -58,6 +58,7 @@ export const handleMessage = async (
 
   if (state === 'photoPrompting') {
     event = 'PROMPT';
+    console.log('Prompt: ', message);
   } else if (STATE_ACTION_EVENT_MAP[state]) {
     event = STATE_ACTION_EVENT_MAP[state][userActionId] || 'UNKNOWN_ISSUE';
   } else {

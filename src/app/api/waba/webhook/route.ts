@@ -31,7 +31,10 @@ export async function GET(request: Request) {
 
 async function processWebhook(body: any) {
   try {
+    console.log('Processing webhook');
     const data = JSON.parse(body);
+    console.log('Parsed body:', data);
+
     const subscriptionObject = data.object;
     const wabaId = data.entry[0].id;
     const { field, value: payload } = data.entry[0].changes[0];
@@ -103,7 +106,11 @@ export async function POST(request: Request) {
   );
   hmac.update(body, 'ascii');
   const expectedSignature = `sha1=${hmac.digest('hex')}`;
-  console.log('expectedSignature', expectedSignature);
+  console.log(
+    'expectedSignature',
+    expectedSignature,
+    signature === expectedSignature,
+  );
 
   // Immediately return a success response to Facebook
   const immediateResponse = new Response('success', {

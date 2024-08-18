@@ -33,7 +33,7 @@ export default function Header() {
 
   return (
     <nav
-      className="flex h-14 items-center justify-between border-b bg-white dark:bg-zinc-900"
+      className="flex h-14 items-center justify-between border-b bg-white dark:bg-black"
       style={{ zIndex: 1000, position: 'relative' }}
     >
       <Container className="flex w-full items-center justify-between">

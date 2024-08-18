@@ -14,22 +14,22 @@ const Privacy = () => {
           <section className="flex h-1/2 place-content-center py-8">
             <div className="z-30 place-content-center">
               <div className="mb-5 w-full text-center text-2xl font-extrabold leading-7">
-                VideoGPTAI App Privacy Policy
+                fotolabs App Privacy Policy
               </div>
               <div className="text-left text-base">
                 <a id="top" />
                 Oddbit Technology LLC (&quot;Oddbit&quot;) provides this Privacy
                 Policy to inform you of our policies and procedures regarding
                 the collection, use and disclosure of Personally Identifiable
-                Information that we may obtain through the use of the VideoGPTAI
-                and access to www.videogptai.com, referred to as the “website”.
+                Information that we may obtain through the use of the fotolabs
+                and access to www.fotolabs.com, referred to as the “website”.
                 The use of information provided through our Platform is limited
                 to the purpose of providing you the service for which the
-                customer is using the VideoGPTAI. By using our Site and
+                customer is using the fotolabs. By using our Site and
                 Applications you acknowledge that you have reviewed and agree to
                 the terms of this Privacy Policy. If you have questions or
                 concerns regarding this Privacy Policy, please contact us at
-                plugapp2022@gmail.com.
+                {process.env.NEXT_PUBLIC_EMAIL}.
                 <br />
                 <br />
                 This Privacy Policy may be updated from time to time to reflect
@@ -182,21 +182,21 @@ const Privacy = () => {
                 <h6 className="mb-4 font-bold text-blue-600 dark:text-blue-400">
                   What We Collect
                 </h6>
-                The operation and use of VideoGPTAI involves collection of
+                The operation and use of fotolabs involves collection of
                 personal data, where the types of such data depend on the type
                 of Service and interaction with us. For example, when you sign
-                up for VideoGPTAI, you directly provide us personal data. We
-                also automatically collect certain personal data from our users’
+                up for fotolabs, you directly provide us personal data. We also
+                automatically collect certain personal data from our users’
                 device. We explain which information we collect and how we
                 collect it below.
                 <br />
                 <br />
                 The types of personal data collected through use of our
-                Services, including the VideoGPTAI and website, are listed
-                below. We note that, some types of personal data we collect are
-                required for all VideoGPTAI Services (for example, your phone
+                Services, including the fotolabs and website, are listed below.
+                We note that, some types of personal data we collect are
+                required for all fotolabs Services (for example, your phone
                 number), some types may be required solely for certain Services
-                or features you decide to use (for example, VideoGPTAI Pay), and
+                or features you decide to use (for example, fotolabs Pay), and
                 some are optional, and subject to your discretion (for example,
                 your photo)
                 <br />
@@ -207,7 +207,7 @@ const Privacy = () => {
                 <br />
                 <h6 className="my-4 text-blue-600 dark:text-blue-400">
                   Data provided or collected through registration & under your
-                  VideoGPTAI App account or participation in VideoGPTAI’s
+                  fotolabs App account or participation in fotolabs’s
                   activities:
                 </h6>
                 <ul className="list-inside list-disc">
@@ -304,7 +304,7 @@ const Privacy = () => {
                   </li>
                   <li>
                     <strong>
-                      VideoGPTAI App may also process inferences about your
+                      fotolabs App may also process inferences about your
                       account and device identifier
                     </strong>
                     , such as:
@@ -361,9 +361,9 @@ const Privacy = () => {
                   Non users&#8217; data:
                 </h6>
                 <p>
-                  Mobile phone number and contact name, as saved on a VideoGPTAI
+                  Mobile phone number and contact name, as saved on a fotolabs
                   App user&#8217;s phone address book: we may process your
-                  mobile phone number even if you are not a VideoGPTAI App user,
+                  mobile phone number even if you are not a fotolabs App user,
                   in the event that your phone number was included in our
                   existing user’s address book that has been provided to us (and
                   subject to such user providing us with approval to access the
@@ -372,12 +372,11 @@ const Privacy = () => {
                   contacts is already using our Services and who is not, to
                   allow users find and communicate with their contacts who are
                   users or who are not users in a more efficient way, and solely
-                  for as long as a relevant VideoGPTAI App user’s account exists
-                  on VideoGPTAI App. In the event you will become an active
-                  user, the existing users whose phone book included your
-                  number, will be notified that you have joined the Service and
-                  you will be automatically added to their App&#8217;s contact
-                  list.
+                  for as long as a relevant fotolabs App user’s account exists
+                  on fotolabs App. In the event you will become an active user,
+                  the existing users whose phone book included your number, will
+                  be notified that you have joined the Service and you will be
+                  automatically added to their App&#8217;s contact list.
                 </p>
                 <h6 className="my-4 text-blue-600 dark:text-blue-400">
                   Business partners data:
@@ -413,35 +412,35 @@ const Privacy = () => {
                 <h6 className="mb-4 text-blue-600 dark:text-blue-400">
                   Authentication and Account Administration:
                 </h6>
-                VideoGPTAI uses different types of your personal data to create
-                and administrate your VideoGPTAI account in order to enable you
-                to register, log in, activate and use the Services. This
-                includes, for example:
+                fotolabs uses different types of your personal data to create
+                and administrate your fotolabs account in order to enable you to
+                register, log in, activate and use the Services. This includes,
+                for example:
                 <ul className="my-4 ml-4 list-inside list-disc">
                   <li>
                     To authenticate and verify your account, as well as to make
-                    sure you do not already have a VideoGPTAI account;
+                    sure you do not already have a fotolabs account;
                   </li>
                   <li>
-                    To synchronize your contact list on the VideoGPTAI (meaning,
-                    in order to show you your contacts on the VideoGPTAI
-                    interface so you contact them through VideoGPTAI);
+                    To synchronize your contact list on the fotolabs (meaning,
+                    in order to show you your contacts on the fotolabs interface
+                    so you contact them through fotolabs);
                   </li>
                   <li>
-                    To create your profile, customize your VideoGPTAI account
+                    To create your profile, customize your fotolabs account
                     according to the information you have provided (i.e., name,
                     photo, etc. including where you sign in through your social
                     media account), and display such information as part of your
-                    profile when you use VideoGPTAI Services.
+                    profile when you use fotolabs Services.
                   </li>
                 </ul>
                 <h6 className="mb-4 text-blue-600 dark:text-blue-400">
                   Provide our Services – Communication & Content Features
                   (messaging, voice and video calls, group chats, communities,
                   channels, bots, chat extensions, explore screen, stickers,
-                  VideoGPTAI App VideoGPTAIes, etc.), and enabling backups:
+                  fotolabs App fotolabses, etc.), and enabling backups:
                 </h6>
-                VideoGPTAI uses different types of personal data in order to
+                fotolabs uses different types of personal data in order to
                 operate, provide and deliver to you our Services, including
                 communication features. This includes, for example:
                 <ul className="my-4 ml-4 list-inside list-disc">
@@ -451,8 +450,8 @@ const Privacy = () => {
                   </li>
                   <li>To show your online status;</li>
                   <li>
-                    To enable you to send messages, participate in VideoGPTAI
-                    App calls, delete messages, etc.;
+                    To enable you to send messages, participate in fotolabs App
+                    calls, delete messages, etc.;
                   </li>
                   <li>
                     To provide you with other App&#8217;s features such as
@@ -490,9 +489,9 @@ const Privacy = () => {
                 </ul>
                 <h6 className="my-4 text-blue-600 dark:text-blue-400">
                   Improving and Customizing the Service and Analytics of
-                  VideoGPTAI App Activity:
+                  fotolabs App Activity:
                 </h6>
-                VideoGPTAI uses different types of personal data in order to
+                fotolabs uses different types of personal data in order to
                 improve, enhance and evaluate the Services, as well as customize
                 the Services. This may include, for example:
                 <ul className="my-4 ml-4 list-inside list-disc">
@@ -523,20 +522,20 @@ const Privacy = () => {
                   </li>
                 </ul>
                 <h6 className="my-4 text-blue-600 dark:text-blue-400">
-                  Marketing Communications with VideoGPTAI’s Users & Location
+                  Marketing Communications with fotolabs’s Users & Location
                   based Offers:
                 </h6>
-                VideoGPTAI uses different types of personal data in order to
+                fotolabs uses different types of personal data in order to
                 contact you with marketing and offers relating to products
-                offered by the VideoGPTAI Services, and our third party trusted
+                offered by the fotolabs Services, and our third party trusted
                 partners, in line with applicable laws. This may include, for
                 example:
                 <ul className="my-4 ml-4 list-inside list-disc">
                   <li>
                     We will use your email address, name and inferred gender or
                     age range, for the purpose contacting you with marketing and
-                    offers relating to products offered by VideoGPTAI App, and
-                    our third party trusted partners;
+                    offers relating to products offered by fotolabs App, and our
+                    third party trusted partners;
                   </li>
                   <li>
                     Your IP address will be used to extract your general
@@ -636,15 +635,15 @@ const Privacy = () => {
                 <b>
                   <a href="#what-we-collect">“Data We Collect”</a>{' '}
                 </b>
-                section above) which includes non-VideoGPTAI users’ phone number
-                (and names under which they were saved by VideoGPTAI users) in
-                the event such contact was included in our user’s address book
-                that has been provided to us, and for the purpose of showing our
-                user who in their contacts is already using our Services and who
-                is not, to allow the user find and communicate with their
-                contacts who are users in a more efficient way. If you are not a
-                VideoGPTAI user and would like to be excluded from such
-                processing, please contact us at plugapp2022@gmail.com.
+                section above) which includes non-fotolabs users’ phone number
+                (and names under which they were saved by fotolabs users) in the
+                event such contact was included in our user’s address book that
+                has been provided to us, and for the purpose of showing our user
+                who in their contacts is already using our Services and who is
+                not, to allow the user find and communicate with their contacts
+                who are users in a more efficient way. If you are not a fotolabs
+                user and would like to be excluded from such processing, please
+                contact us at plugapp2022@gmail.com.
                 <h6 className="my-4 text-blue-600 dark:text-blue-400">
                   Defend our Rights, Enforce our Policies & Compliance with
                   Legal Obligations and Public Interests:
@@ -698,15 +697,15 @@ const Privacy = () => {
                 <h6 className="mb-4 font-bold text-blue-600 dark:text-blue-400">
                   What Other Users Can See
                 </h6>
-                When you use our Services, other VideoGPTAI App users can see
+                When you use our Services, other fotolabs App users can see
                 certain data about you, for example, the fact that you are a
-                VideoGPTAI App user or a user of certain VideoGPTAI App
-                Services, the content you voluntarily share, your profile
-                information (subject to your settings), your connection status,
-                etc., as we detail and explain below.
+                fotolabs App user or a user of certain fotolabs App Services,
+                the content you voluntarily share, your profile information
+                (subject to your settings), your connection status, etc., as we
+                detail and explain below.
                 <br />
                 <br />
-                Other users can see on VideoGPTAI App the following data about
+                Other users can see on fotolabs App the following data about
                 you:
                 <ul className="my-4 ml-4 list-inside list-disc">
                   <li>
@@ -737,19 +736,19 @@ const Privacy = () => {
                     do not take them).
                   </li>
                   <li>
-                    When you join VideoGPTAI App, the contacts in your address
-                    book that are already VideoGPTAI App members may be informed
-                    that you’re now on VideoGPTAI App too.
+                    When you join fotolabs App, the contacts in your address
+                    book that are already fotolabs App members may be informed
+                    that you’re now on fotolabs App too.
                   </li>
                   <li>
                     A reminder about your birthday on the date of your birthday.
                   </li>
                   <li>
-                    When you join VideoGPTAI App Pay, the contacts in your
-                    address book that are already VideoGPTAI App members may be
-                    informed that you’re now using VideoGPTAI App Pay. In
-                    addition, VideoGPTAI App users will see an indication
-                    whether you are a VideoGPTAI App Pay user.
+                    When you join fotolabs App Pay, the contacts in your address
+                    book that are already fotolabs App members may be informed
+                    that you’re now using fotolabs App Pay. In addition,
+                    fotolabs App users will see an indication whether you are a
+                    fotolabs App Pay user.
                   </li>
                   <li>
                     If your “Use Peer-to-Peer” option is on, other users can use
@@ -759,11 +758,11 @@ const Privacy = () => {
                   <li>
                     <strong>Your public posts: </strong>if you post information
                     on our public spaces such as communities or channels, it may
-                    be searchable and available to anyone on VideoGPTAI App. You
+                    be searchable and available to anyone on fotolabs App. You
                     can always delete your posts on those public spaces, but
                     Oddbit cannot control and is not responsible for what other
                     users do with this information (e.g., store on their
-                    devices, publish on VideoGPTAI App or outside of it etc.),
+                    devices, publish on fotolabs App or outside of it etc.),
                     thus, we recommend you do not disclose your personal data
                     through the content of your posts.
                   </li>
@@ -803,16 +802,16 @@ const Privacy = () => {
                 <ul className="ml-8 list-inside list-disc">
                   <li>
                     Certain types of data, such as name, personal email, avatar,
-                    phone numbers, VideoGPTAI App unique ID, may be disclosed in
+                    phone numbers, fotolabs App unique ID, may be disclosed in
                     order to provide joint content and our Services (e.g.,
                     registration, coordination of membership accounts between
-                    the VideoGPTAI App corporate family, transactions, analytics
+                    the fotolabs App corporate family, transactions, analytics
                     and customer support);
                   </li>
                   <li>
                     Additionally, we may share certain types of data about you
                     as may be necessary to help detect and prevent potentially
-                    illegal acts, violations of VideoGPTAI App policies, fraud
+                    illegal acts, violations of fotolabs App policies, fraud
                     and/or data security breaches;
                   </li>
                   <li>
@@ -901,7 +900,7 @@ const Privacy = () => {
                 third parties, in response to a verified request relating to
                 terror acts, criminal investigations or alleged illegal activity
                 or any other activity that may expose us, you, or any other
-                VideoGPTAI App user to legal liability, and solely to the extent
+                fotolabs App user to legal liability, and solely to the extent
                 needed to comply with such purpose.
                 <h6 className="my-4 text-blue-600 dark:text-blue-400">
                   Corporate Transactions:
@@ -916,24 +915,24 @@ const Privacy = () => {
                 <h6 className="my-4 text-blue-600 dark:text-blue-400">
                   Limited Payment Services:
                 </h6>
-                If you use our VideoGPTAI App Pay services, we will share with
-                our third-party payment processor KYC related data such as your
+                If you use our fotolabs App Pay services, we will share with our
+                third-party payment processor KYC related data such as your
                 name, date of birth, contact details, country, etc.
                 <br />
                 <br />
-                If you use our VideoGPTAI App Chatbot Payment, we will share
-                with Google Pay or Apple Pay or any other linked payments
-                provider the following information: (i) name of the payment
-                service provider merchant; (ii) price of the items purchased and
+                If you use our fotolabs App Chatbot Payment, we will share with
+                Google Pay or Apple Pay or any other linked payments provider
+                the following information: (i) name of the payment service
+                provider merchant; (ii) price of the items purchased and
                 currency; and (iii) the description of the items purchased. The
                 confirmation of the payment is provided directly to the merchant
-                and VideoGPTAI App does not receive or share any payment data or
+                and fotolabs App does not receive or share any payment data or
                 registration data from Apple Pay nor Google Pay. Note that, your
                 use of Apple Pay and Google Pay, including their use of your
                 data, is subject to their respective terms and privacy policy.
                 <br />
                 <br />
-                If you use our VideoGPTAI App Out Credit and subscriptions, we
+                If you use our fotolabs App Out Credit and subscriptions, we
                 will share your email address with our payment processor, for
                 the purpose of verification and fraud detection.
                 <p className="my-4 text-blue-600 dark:text-blue-400">
@@ -957,7 +956,7 @@ const Privacy = () => {
                 purpose of collection).
                 <br />
                 <br />
-                The criteria used by us to determine VideoGPTAI’s retention
+                The criteria used by us to determine fotolabs’s retention
                 periods are as follows:
                 <ul className="my-4 ml-8 list-inside list-disc">
                   <li>
@@ -968,17 +967,17 @@ const Privacy = () => {
                   </li>
                   <li>
                     Personal data required to be retained in order to maintain
-                    your VideoGPTAI App account and to enable you the use of
-                    VideoGPTAI App Services – these types of data, including
-                    your mobile number, and phone address book, will be retained
-                    for as long as you maintain your VideoGPTAI App account.
+                    your fotolabs App account and to enable you the use of
+                    fotolabs App Services – these types of data, including your
+                    mobile number, and phone address book, will be retained for
+                    as long as you maintain your fotolabs App account.
                   </li>
                   <li>
                     Personal data you have voluntarily provided during
                     registration or through your account &#8211; these types of
                     data, including your photo, date of birth, email address and
                     interests, will be retained for as long as you maintain your
-                    VideoGPTAI App account.
+                    fotolabs App account.
                   </li>
                   <li>
                     The details of your communication with our customer support
@@ -995,16 +994,15 @@ const Privacy = () => {
                     delivery attempts throughout this period was not successful.
                   </li>
                 </ul>
-                If you decide to delete your VideoGPTAI App account, the CDRs
-                and communications with our customer support will be retained as
+                If you decide to delete your fotolabs App account, the CDRs and
+                communications with our customer support will be retained as
                 detailed above, and we will further retain records of purchases
-                you have made (using VideoGPTAI App Pay, purchasing
-                subscriptions, etc.), for the periods required under applicable
-                laws, or as needed in accordance with our fraud monitoring
-                program.
+                you have made (using fotolabs App Pay, purchasing subscriptions,
+                etc.), for the periods required under applicable laws, or as
+                needed in accordance with our fraud monitoring program.
                 <br />
                 <br />
-                All other types of data related to your VideoGPTAI App account
+                All other types of data related to your fotolabs App account
                 will be deleted, unless we are required to further retain the
                 data, subject to the criteria detailed below. We may keep
                 activity data on a non-identifiable basis to improve our
@@ -1040,18 +1038,18 @@ const Privacy = () => {
                   </li>
                   <li>
                     <strong>Retention for Non users&#8217; data – </strong>If
-                    you are not a VideoGPTAI App user, and we process your data
-                    to enable VideoGPTAI App users to communicate with you via
-                    VideoGPTAI App Services we will retain such data as long as
-                    it is relevant to VideoGPTAI App users, or until you have
+                    you are not a fotolabs App user, and we process your data to
+                    enable fotolabs App users to communicate with you via
+                    fotolabs App Services we will retain such data as long as it
+                    is relevant to fotolabs App users, or until you have
                     requested us to stop processing your phone number. You can
                     request to exclude your phone number (by contacting us at:{' '}
                     <b>plugapp2022@gmail.com</b>
-                    ). Furthermore, if one of our users used our VideoGPTAI App
+                    ). Furthermore, if one of our users used our fotolabs App
                     Out Services in order to communicate with you (i.e., call
-                    you through VideoGPTAI App), we will retain a log of such
-                    call (Call Detail Records – CDR – as detailed above), which
-                    will include your phone number, for 24 months from creation.
+                    you through fotolabs App), we will retain a log of such call
+                    (Call Detail Records – CDR – as detailed above), which will
+                    include your phone number, for 24 months from creation.
                   </li>
                 </ul>
                 <p className="my-4 text-blue-600 dark:text-blue-400">
@@ -1103,14 +1101,14 @@ const Privacy = () => {
                 <h6 className="my-4 text-blue-600 dark:text-blue-400">
                   Back-ups:
                 </h6>
-                If you voluntarily choose to back up your VideoGPTAI App
+                If you voluntarily choose to back up your fotolabs App
                 conversations, such back-ups are made by independent third
                 parties and kept on your device’s service according to operating
                 system’s (Google/ iOS) terms and policies and are no longer
-                protected by VideoGPTAI’s end-to-end encryption nor VideoGPTAI
-                App has any control over it. This is also true for using
-                VideoGPTAI App Desktop – where your conversations are kept on
-                your personal computer under your security definitions.
+                protected by fotolabs’s end-to-end encryption nor fotolabs App
+                has any control over it. This is also true for using fotolabs
+                App Desktop – where your conversations are kept on your personal
+                computer under your security definitions.
                 <p className="my-4 text-blue-600 dark:text-blue-400">
                   <Link href="#top">Back to top</Link>
 

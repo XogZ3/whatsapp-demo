@@ -11,27 +11,24 @@ const TnC = () => {
             Agreement Between You and Oddbit Technology LLC{' '}
           </b>
         </p>
+        <p>Thank you for visiting www.fotolabs.ai or fotolabs.ai</p>
         <p>
-          Thank you for visiting www.videogptai.com or the VideoGPTAI mobile
-          application.
-        </p>
-        <p>
-          VideoGPTAI is owned and operated by Oddbit Technology LLC , a company
+          fotolabs is owned and operated by Oddbit Technology LLC , a company
           incorporated under the provisions of the Companies Act, 2013. These
-          Terms of Use govern you, the User of VideoGPTAI, and your conduct,
+          Terms of Use govern you, the User of fotolabs, and your conduct,
           regardless of the means of access. You represent and warrant you
           possess the capacity and legal right to enter into this Agreement and
           to use this Website in accordance with the terms and conditions
           herein. You also acknowledge and agree that, unless we specifically
           provide otherwise, this Agreement only applies to this site and our
           online activities and does not apply to any of our offline activities.
-          By using the various services available on the VideoGPTAI Platform
-          (“Services”), you consent to these terms, VideoGPTAI’s Privacy Policy,
+          By using the various services available on the fotolabs Platform
+          (“Services”), you consent to these terms, fotolabs’s Privacy Policy,
           and any community guidelines and supplemental terms provided to you
-          for the Services that you use (collectively, “Terms”) and VideoGPTAI’s
+          for the Services that you use (collectively, “Terms”) and fotolabs’s
           efforts to improve every User’s experience on the platform. Please
           read the Terms carefully, as they form the entire agreement between
-          you and VideoGPTAI.
+          you and fotolabs.
         </p>
         <ol type="1">
           <li className="level-0">
@@ -62,7 +59,7 @@ const TnC = () => {
                     by uploading/posting any Content, and in consideration of
                     you using the Services, you automatically constitute you
                     granting a royalty-free, perpetual, irrevocable,
-                    transferrable, worldwide license to VideoGPTAI to (a) use,
+                    transferrable, worldwide license to fotolabs to (a) use,
                     reproduce, modify, adapt, publish, translate, create
                     derivative works from, distribute, perform, transmit and
                     display such Content (in whole or part) and/or to
@@ -71,15 +68,15 @@ const TnC = () => {
                     display online or offline your Content (or part thereof, or
                     any modification, adaptation, translation or derivative
                     works thereof) online and offline and permit others
-                    (including without limitation VideoGPTAI’s co-brand
-                    partners) to do the same, and (c) permit other users to
-                    access, reproduce, distribute, publicly display, prepare
-                    derivative works of, and publicly perform your content via
-                    the Services, as may be permitted by the functionality of
-                    those Services (e.g., for users to re-blog, re-post or
-                    download your content). Further, the license you have
-                    granted to us as aforesaid shall not lapse notwithstanding
-                    that we have not used, distributed, displayed, published, or
+                    (including without limitation fotolabs’s co-brand partners)
+                    to do the same, and (c) permit other users to access,
+                    reproduce, distribute, publicly display, prepare derivative
+                    works of, and publicly perform your content via the
+                    Services, as may be permitted by the functionality of those
+                    Services (e.g., for users to re-blog, re-post or download
+                    your content). Further, the license you have granted to us
+                    as aforesaid shall not lapse notwithstanding that we have
+                    not used, distributed, displayed, published, or
                     adapted/modified any of the Content for any duration.
                   </li>
                   <li className="level-2">
@@ -128,7 +125,7 @@ const TnC = () => {
                     </ol>
                   </li>
                   <li className="level-2">
-                    While VideoGPTAI does not make any editorial determination
+                    While fotolabs does not make any editorial determination
                     about the Content to be displayed and made accessible on the
                     Platform, if: (i) we receive any notice or communication
                     that any Content or any part of the Content belongs to a
@@ -173,24 +170,24 @@ const TnC = () => {
               <li className="level-1 ">
                 Age. If you are under the age of majority as per the laws of
                 your country of residence (<b className="mb-5">“Minimum Age”</b>
-                ) you may not register for an account. VideoGPTAI does not
-                include any age inappropriate. User data is processed by
-                VideoGPTAI, through verification and other internal checks, in a
-                manner that both protects any user information as well as
-                advances the best interests of children. Parents/adult guardians
-                are required to monitor/regulate the content being viewed by
-                their wards who have not attained the Minimum Age. Parental
-                control tools available from third party vendors/service
-                providers might be useful in this regard. It shall also be
-                responsibility of parents/adult guardians to ensure that their
-                wards do not view Content that is not appropriate for them.
+                ) you may not register for an account. fotolabs does not include
+                any age inappropriate. User data is processed by fotolabs,
+                through verification and other internal checks, in a manner that
+                both protects any user information as well as advances the best
+                interests of children. Parents/adult guardians are required to
+                monitor/regulate the content being viewed by their wards who
+                have not attained the Minimum Age. Parental control tools
+                available from third party vendors/service providers might be
+                useful in this regard. It shall also be responsibility of
+                parents/adult guardians to ensure that their wards do not view
+                Content that is not appropriate for them.
               </li>
               <li className="level-1 ">
                 Member Conduct. You agree not to use the Services to:
                 <ol type="i">
                   <li className="level-2">
                     obtain or attempt to obtain unauthorized access to the
-                    Services or to VideoGPTAI’s servers, systems, network, or
+                    Services or to fotolabs’s servers, systems, network, or
                     data;
                   </li>
                   <li className="level-2">
@@ -256,38 +253,38 @@ const TnC = () => {
                 does not give you ownership of any intellectual or other
                 property rights or interests in the Services or the Content you
                 access. You must not use any branding or logos used in the
-                Services unless VideoGPTAI has given you separate explicit
-                written permission. You may not remove, obscure, or alter any
-                legal notices displayed on the Platform or in relation to any
-                Content. Unless you have explicit written permission, you must
-                not reproduce, modify, rent, lease, sell, trade, distribute,
+                Services unless fotolabs has given you separate explicit written
+                permission. You may not remove, obscure, or alter any legal
+                notices displayed on the Platform or in relation to any Content.
+                Unless you have explicit written permission, you must not
+                reproduce, modify, rent, lease, sell, trade, distribute,
                 transmit, broadcast, publicly perform, create derivative works
                 based on, or exploit for any commercial purposes, any portion of
                 the Content or use of, or access to, the Services (including
                 Content, advertisements, APIs, and software).
               </li>
               <li className="level-1 ">
-                Support. Unless otherwise expressly stated, VideoGPTAI does not
+                Support. Unless otherwise expressly stated, fotolabs does not
                 promise to provide you with any support for the Services. If
-                VideoGPTAI does provide you with support, it is at
-                VideoGPTAI&lsquo;s sole discretion and does not mean that we
-                will continue to provide you with support in the future.
+                fotolabs does provide you with support, it is at
+                fotolabs&lsquo;s sole discretion and does not mean that we will
+                continue to provide you with support in the future.
               </li>
               <li className="level-1 ">
-                Fees. VideoGPTAI reserves the right to charge fees for use of or
+                Fees. fotolabs reserves the right to charge fees for use of or
                 access to the Services (and any associated support), whether
-                currently in existence or not, in VideoGPTAI’s sole discretion.
-                If VideoGPTAI decides to charge fees VideoGPTAI’s payment terms
-                will apply and VideoGPTAI will provide you with prior notice.
+                currently in existence or not, in fotolabs’s sole discretion. If
+                fotolabs decides to charge fees fotolabs’s payment terms will
+                apply and fotolabs will provide you with prior notice.
               </li>
               <li className="level-1 ">
-                Anti-Abuse Policy. VideoGPTAI prohibits sending unsolicited
-                emails or messages using the Services. You may not in connection
-                with the Services engage in commercial activity on
-                non-commercial properties or apps or high volume activity
-                without VideoGPTAI’s prior written consent. You may not engage
-                in conduct or activity that is disruptive to the Services or the
-                experience of other users.
+                Anti-Abuse Policy. fotolabs prohibits sending unsolicited emails
+                or messages using the Services. You may not in connection with
+                the Services engage in commercial activity on non-commercial
+                properties or apps or high volume activity without fotolabs’s
+                prior written consent. You may not engage in conduct or activity
+                that is disruptive to the Services or the experience of other
+                users.
               </li>
             </ol>
           </li>
@@ -301,7 +298,7 @@ const TnC = () => {
                 Services. You must ensure that your account information (that
                 is, the information you provided when you registered for or
                 subscribed to a Service) remains current, complete, accurate and
-                truthful. All VideoGPTAI accounts are non-transferable, and any
+                truthful. All fotolabs accounts are non-transferable, and any
                 rights to them terminate upon the account holder’s death. In
                 order to create an account we may collect and keep possession of
                 personal information such as your name, email address/Facebook
@@ -317,13 +314,13 @@ const TnC = () => {
                 that happens on or through your account. To protect your
                 account, keep your password confidential. Do not reuse your
                 account password with other services. If you forget your
-                password and otherwise cannot validate your account to
-                VideoGPTAI, you acknowledge and agree that your account may be
-                inaccessible to you and that all data associated with the
-                account may not be retrievable.
+                password and otherwise cannot validate your account to fotolabs,
+                you acknowledge and agree that your account may be inaccessible
+                to you and that all data associated with the account may not be
+                retrievable.
               </li>
               <li className="level-1 ">
-                Notices. VideoGPTAI may provide you with notices, including
+                Notices. fotolabs may provide you with notices, including
                 service announcements and notices regarding changes to these
                 Terms, by, but not limited to, email, regular mail, text message
                 or SMS, MMS, push notification or in-app message, postings on
@@ -347,8 +344,8 @@ const TnC = () => {
               <li className="level-1 ">
                 We respect the intellectual property as well as privacy of
                 others, and we expect our users to do the same in respect to
-                their use of and activities on the VideoGPTAI platform. While a
-                substantial amount of content on the VideoGPTAI platform is user
+                their use of and activities on the fotolabs platform. While a
+                substantial amount of content on the fotolabs platform is user
                 generated over which we do not exercise editorial control, we
                 may, in appropriate circumstances and at our sole discretion
                 subject to applicable law, block access to such content or
@@ -356,19 +353,19 @@ const TnC = () => {
                 appropriate steps relating to the accounts of users who may be
                 infringers. While we do not make any editorial determination
                 about the user generated content being posted and displayed and
-                made accessible on the VideoGPTAI platform, if: (i) we receive
-                any notice or communication that any content or any part of the
+                made accessible on the fotolabs platform, if: (i) we receive any
+                notice or communication that any content or any part of the
                 content belongs to a party who has not consented to such content
-                being uploaded and accessible on the VideoGPTAI platform or that
+                being uploaded and accessible on the fotolabs platform or that
                 it is violative of the rights of any person who has not
                 consented to such content being uploaded and accessible on the
-                VideoGPTAI platform; or (ii) it comes to our attention that any
-                of the content violates any of the terms and conditions
-                applicable to the VideoGPTAI platform, we shall be entitled to
-                remove such content/block public access to such content either
-                temporarily or permanently, subject to the provisions of the
-                Indian Copyright Act, 1957, and the Information Technology Act,
-                2000, and as we deem fit or in compliance with the orders or
+                fotolabs platform; or (ii) it comes to our attention that any of
+                the content violates any of the terms and conditions applicable
+                to the fotolabs platform, we shall be entitled to remove such
+                content/block public access to such content either temporarily
+                or permanently, subject to the provisions of the Indian
+                Copyright Act, 1957, and the Information Technology Act, 2000,
+                and as we deem fit or in compliance with the orders or
                 directions of the court (if applicable) and we shall have the
                 right, at our discretion, to remove the infringer’s account, and
                 in either case none of our users, partners, clients or vendors
@@ -460,7 +457,7 @@ const TnC = () => {
               </li>
               <li className="level-1 ">
                 A complaint can be submitted by contacting us at
-                grievance@VideoGPTAI.in. Please be sure to include responses to
+                grievance@fotolabs.in. Please be sure to include responses to
                 items i-viii of Clause (b) above (if the complaint is regarding
                 copyright infringement) or i-v of Clause (c) above (if the
                 complaint is regarding the violation of other personal rights).
@@ -479,50 +476,49 @@ const TnC = () => {
           </li>
           <li className="level-0">
             <b className="mb-5">
-              Content in the Services and License Grant to VideoGPTAI
+              Content in the Services and License Grant to fotolabs
             </b>
             <ol type="a">
               <li className="level-1 ">
-                Content. Our Services display content that is not VideoGPTAI’s.
+                Content. Our Services display content that is not fotolabs’s.
                 This content is the sole responsibility of the entity or person
-                that makes it available. VideoGPTAI assumes no responsibility
-                for the conduct of third parties, including persons or entities
-                with which you communicate using the Services. Many of the
-                Services enable you to submit content. You – not VideoGPTAI –
-                are entirely responsible for any content that you upload, post,
-                email, transmit, or otherwise make available via the Services.
-                We may remove and refuse to display content that violates the
-                Terms or applicable laws or regulations, but that does not mean
-                that we monitor the Services or review or screen any content. By
-                using or accessing the Services you understand and agree that
-                you may be exposed to offensive, indecent, or objectionable
-                content.
+                that makes it available. fotolabs assumes no responsibility for
+                the conduct of third parties, including persons or entities with
+                which you communicate using the Services. Many of the Services
+                enable you to submit content. You – not fotolabs – are entirely
+                responsible for any content that you upload, post, email,
+                transmit, or otherwise make available via the Services. We may
+                remove and refuse to display content that violates the Terms or
+                applicable laws or regulations, but that does not mean that we
+                monitor the Services or review or screen any content. By using
+                or accessing the Services you understand and agree that you may
+                be exposed to offensive, indecent, or objectionable content.
               </li>
               <li className="level-1 ">
                 IP Ownership and License Grant. Except as otherwise provided in
                 the specific guidelines for a Service, when you upload, share
                 with or submit content to the Services you retain ownership of
                 any intellectual property rights that you hold in that content
-                and you automatically grant VideoGPTAI a worldwide,
-                royalty-free, non-exclusive, perpetual, irrevocable,
-                transferable, sublicensable license to (a) use, host, store,
-                reproduce, modify, prepare derivative works (such as
-                translations, adaptations, summaries or other changes),
-                communicate, publish, publicly perform, publicly display, and
-                distribute this content (in whole or in part, and /or
-                incorporate in any other works) in any manner, mode of delivery,
-                technology or media now known or developed in the future; (b)
-                display your Content (or part thereof, or any modification,
-                adaptations, translations or derivative works thereto) online
-                and offline and permit other (including without limitation
-                VideoGPTAI’s co-brand partners) and (c) permit other users to
-                access, reproduce, distribute, publicly display, prepare
-                derivative works of, and publicly perform your content via the
-                Services, as may be permitted by the functionality of those
-                Services (e.g., for users to re-blog, re-post or download your
-                content). You must have the necessary rights to grant us the
-                license described in this Section 6(b) for any content that you
-                upload, share with or submit to the Services.
+                and you automatically grant fotolabs a worldwide, royalty-free,
+                non-exclusive, perpetual, irrevocable, transferable,
+                sublicensable license to (a) use, host, store, reproduce,
+                modify, prepare derivative works (such as translations,
+                adaptations, summaries or other changes), communicate, publish,
+                publicly perform, publicly display, and distribute this content
+                (in whole or in part, and /or incorporate in any other works) in
+                any manner, mode of delivery, technology or media now known or
+                developed in the future; (b) display your Content (or part
+                thereof, or any modification, adaptations, translations or
+                derivative works thereto) online and offline and permit other
+                (including without limitation fotolabs’s co-brand partners) and
+                (c) permit other users to access, reproduce, distribute,
+                publicly display, prepare derivative works of, and publicly
+                perform your content via the Services, as may be permitted by
+                the functionality of those Services (e.g., for users to re-blog,
+                re-post or download your content). You must have the necessary
+                rights to grant us the license described in this Section 6(b)
+                for any content that you upload, share with or submit to the
+                Services.
               </li>
             </ol>
           </li>
@@ -547,8 +543,8 @@ const TnC = () => {
               </li>
               <li className="level-1 ">
                 You can withdraw consent to the use and/or processing of your
-                personal data by contacting us at care@VideoGPTAI.in and we
-                shall remove the same shortly.{' '}
+                personal data by contacting us at care@fotolabs.in and we shall
+                remove the same shortly.{' '}
               </li>
               <li className="level-1 ">
                 We may temporarily or permanently suspend or terminate your
@@ -581,16 +577,15 @@ const TnC = () => {
             <b className="mb-5">Force Majeure</b>
             <ol>
               <li typeof="none" className="level-1 ">
-                Without prejudice to any other provision herein, VideoGPTAI
-                shall not be liable for any loss, damage or penalty as a result
-                of any delay in or failure to deliver or otherwise perform
-                hereunder due to any cause beyond VideoGPTAI’s control,
-                including, without limitation, acts of the User or other Users,
-                embargo or other governmental act, regulation or request
-                affecting the conduct of VideoGPTAI’s business, fire, explosion,
-                accident, theft, vandalism, riot, acts of war, strikes or other
-                labour difficulties, lightning, flood, windstorm or other acts
-                of God.
+                Without prejudice to any other provision herein, fotolabs shall
+                not be liable for any loss, damage or penalty as a result of any
+                delay in or failure to deliver or otherwise perform hereunder
+                due to any cause beyond fotolabs’s control, including, without
+                limitation, acts of the User or other Users, embargo or other
+                governmental act, regulation or request affecting the conduct of
+                fotolabs’s business, fire, explosion, accident, theft,
+                vandalism, riot, acts of war, strikes or other labour
+                difficulties, lightning, flood, windstorm or other acts of God.
               </li>
             </ol>
           </li>
@@ -599,11 +594,11 @@ const TnC = () => {
             <b className="mb-5">Our Warranties and Disclaimers</b>
             <ol type="a">
               <li className="level-1 ">
-                TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, VideoGPTAI,
-                ITS PARENT COMPANIES, SUBSIDIARIES, AFFILIATES, OFFICERS,
-                DIRECTORS, EMPLOYEES, CONTRACTORS, AGENTS, PARTNERS, LICENSORS
-                AND DISTRIBUTORS (COLLECTIVELY{' '}
-                <b className="mb-5">“VideoGPTAI ENTITIES”</b>) DO NOT MAKE ANY
+                TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, fotolabs, ITS
+                PARENT COMPANIES, SUBSIDIARIES, AFFILIATES, OFFICERS, DIRECTORS,
+                EMPLOYEES, CONTRACTORS, AGENTS, PARTNERS, LICENSORS AND
+                DISTRIBUTORS (COLLECTIVELY{' '}
+                <b className="mb-5">“fotolabs ENTITIES”</b>) DO NOT MAKE ANY
                 REPRESENTATIONS, PROMISES, OR WARRANTIES, EXPRESS OR IMPLIED,
                 ABOUT THE SERVICES. WE PROVIDE OUR SERVICES “AS-IS,” “WITH ALL
                 FAULTS,” AND “AS AVAILABLE.” YOUR USE OF THE SERVICES, INCLUDING
@@ -611,15 +606,14 @@ const TnC = () => {
                 REPRESENT, PROMISE, OR WARRANT THAT THE SERVICES WILL BE
                 UNINTERRUPTED, TIMELY, SECURE, OR ERROR-FREE. YOU UNDERSTAND AND
                 AGREE THAT NO DATA TRANSMISSION OVER THE INTERNET OR INFORMATION
-                STORAGE TECHNOLOGY CAN BE GUARANTEED TO BE SECURE, AND
-                VideoGPTAI EXPRESSLY DISCLAIMS ANY WARRANTIES, EXPRESS OR
-                IMPLIED, TO THAT EFFECT. WE MAKE NO COMMITMENTS, PROMISES OR
-                WARRANTIES ABOUT THE CONTENT WITHIN THE SERVICES OR CONTENT
-                LINKED FROM THE SERVICES, THE SUPPORT WE PROVIDE FOR THE
-                SERVICES, THE SPECIFIC FUNCTIONS OF THE SERVICES, THE SECURITY
-                OF THE SERVICES, OR THE SERVICES’ RELIABILITY, QUALITY,
-                ACCURACY, AVAILABILITY, OR ABILITY TO MEET YOUR NEEDS, PROVIDE
-                CERTAIN OUTPUTS OR ACHIEVE CERTAIN RESULTS.
+                STORAGE TECHNOLOGY CAN BE GUARANTEED TO BE SECURE, AND fotolabs
+                EXPRESSLY DISCLAIMS ANY WARRANTIES, EXPRESS OR IMPLIED, TO THAT
+                EFFECT. WE MAKE NO COMMITMENTS, PROMISES OR WARRANTIES ABOUT THE
+                CONTENT WITHIN THE SERVICES OR CONTENT LINKED FROM THE SERVICES,
+                THE SUPPORT WE PROVIDE FOR THE SERVICES, THE SPECIFIC FUNCTIONS
+                OF THE SERVICES, THE SECURITY OF THE SERVICES, OR THE SERVICES’
+                RELIABILITY, QUALITY, ACCURACY, AVAILABILITY, OR ABILITY TO MEET
+                YOUR NEEDS, PROVIDE CERTAIN OUTPUTS OR ACHIEVE CERTAIN RESULTS.
               </li>
               <li className="level-1 ">
                 SOME JURISDICTIONS PROVIDE FOR CERTAIN IMPLIED WARRANTIES, SUCH
@@ -636,12 +630,12 @@ const TnC = () => {
             <ol type="a">
               <li className="level-1 ">
                 TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, YOU AGREE AND
-                UNDERSTAND THAT VideoGPTAI ENTITIES WILL NOT BE LIABLE FOR: ANY
+                UNDERSTAND THAT fotolabs ENTITIES WILL NOT BE LIABLE FOR: ANY
                 INDIRECT, SPECIAL, INCIDENTAL, CONSEQUENTIAL, TREBLE OR OTHER
                 MULTIPLES OF DAMAGES, EXEMPLARY OR PUNITIVE DAMAGES ARISING FROM
                 OR IN CONNECTION WITH THESE TERMS OR YOUR USE OF THE SERVICES.
-                VideoGPTAI ENTITIES ARE NOT RESPONSIBLE FOR ANY LOST PROFITS,
-                LOST REVENUES, LOST BUSINESS OPPORTUNITIES, DIMINUTION IN VALUE,
+                fotolabs ENTITIES ARE NOT RESPONSIBLE FOR ANY LOST PROFITS, LOST
+                REVENUES, LOST BUSINESS OPPORTUNITIES, DIMINUTION IN VALUE,
                 INCLUDING ANY ALLEGED LOSS OR DIMINUTION IN VALUE OF PERSONAL
                 INFORMATION, OR ANY OTHER LOSSES (COLLECTIVELY, “LOSSES”)
                 ARISING FROM OR IN CONNECTION WITH THESE TERMS OR YOUR USE OF OR
@@ -656,15 +650,15 @@ const TnC = () => {
                 SERVICES OR THIRD PARTIES TO EXTERNAL SITES OR RESOURCES; YOUR
                 DEALINGS WITH OR PARTICIPATION IN PROMOTIONS OF ADVERTISERS
                 FOUND ON OR THROUGH THE SERVICES; OR ANY GOOD OR SERVICES SOLD
-                BY SUCH ADVERTISERS. VideoGPTAI ENTITIES WILL NOT BE LIABLE FOR
+                BY SUCH ADVERTISERS. fotolabs ENTITIES WILL NOT BE LIABLE FOR
                 PROBLEMS CAUSED BY OTHERS, THE WRONGFUL OR UNLAWFUL ACTIONS OF
                 THIRD PARTIES, OR AN ACT OF GOD. THE LIMITATIONS AND EXCLUSIONS
-                IN THESE TERMS WILL APPLY WHETHER OR NOT VideoGPTAI HAS BEEN
+                IN THESE TERMS WILL APPLY WHETHER OR NOT fotolabs HAS BEEN
                 ADVISED OF OR SHOULD HAVE BEEN AWARE OF THE POSSIBILITY OF ANY
                 LOSSES ARISING.
               </li>
               <li className="level-1 ">
-                TO THE FULLEST EXTENT PERMITTED BY LAW, VideoGPTAI ENTITIES ARE
+                TO THE FULLEST EXTENT PERMITTED BY LAW, fotolabs ENTITIES ARE
                 NOT LIABLE IN CONNECTION WITH ANY DISPUTES THAT ARISE OUT OF OR
                 RELATE TO THESE TERMS OR SERVICES FOR ANY AMOUNT GREATER THAN
                 THE AMOUNT YOU PAID TO US FOR THE SERVICES.
@@ -680,16 +674,16 @@ const TnC = () => {
                 engage with other people, places and communities in their
                 neighbourhood. We believe that You, as a User, play the most
                 important role in helping us do this every day – this is your
-                platform. Every day, people come to VideoGPTAI to share their
+                platform. Every day, people come to fotolabs to share their
                 moments, discover and connect with new friends and earn rewards
                 for spreading more magic, subject to reasonable restrictions.
               </li>
               <li className="level-1 ">
-                VideoGPTAI is about local, social communities. This is the
-                reason we recommend all users to post, share and recommend
-                content specific to places and experiences in their
-                neighbourhood. The follow guidelines will help everyone build a
-                better community around them:
+                fotolabs is about local, social communities. This is the reason
+                we recommend all users to post, share and recommend content
+                specific to places and experiences in their neighbourhood. The
+                follow guidelines will help everyone build a better community
+                around them:
                 <ol type="a">
                   <li className="level-2">
                     We recommend you to complete your profile – this will help
@@ -734,11 +728,11 @@ const TnC = () => {
                 </ol>
               </li>
               <li className="level-1 ">
-                General Code of Conduct: VideoGPTAI wishes for each User to have
-                a safe and pleasant experience while on our platform. As a user
-                of the VideoGPTAI app you should uphold these following codes of
+                General Code of Conduct: fotolabs wishes for each User to have a
+                safe and pleasant experience while on our platform. As a user of
+                the fotolabs app you should uphold these following codes of
                 conduct inter alia, subject to periodic review and change by
-                VideoGPTAI, as this is your app and your community:
+                fotolabs, as this is your app and your community:
                 <ol type="a">
                   <li className="level-2">
                     You will not threaten, stalk, defame, defraud, degrade,
@@ -750,7 +744,7 @@ const TnC = () => {
                   </li>
                   <li className="level-2">
                     You agree that you will not collect any personal information
-                    of other VideoGPTAI users.
+                    of other fotolabs users.
                   </li>
                   <li className="level-2">
                     You must not use the service for any illegal purpose.
@@ -773,7 +767,7 @@ const TnC = () => {
             <b className="mb-5">Privacy Policy</b>
             <p>
               The information we learn from customers helps us personalise and
-              continually improve your shopping experience at VideoGPTAI. We use
+              continually improve your shopping experience at fotolabs. We use
               your information to assist in handling a variety of matters
               including but not related to , communicate with you about
               vouchers, products, services and promotional offers, update our
@@ -788,7 +782,7 @@ const TnC = () => {
               to provide better services to all our users – from figuring out
               basic stuff such as which language you speak, to more complex
               things like which services you find helpful or which services are
-              available in your current location. The information VideoGPTAI
+              available in your current location. The information fotolabs
               collects, and how that information is used, depends on how
               frequently you use our services and how you manage your privacy
               controls internally within your device. We use the information we
@@ -836,7 +830,7 @@ const TnC = () => {
                     profile, chat, or other interactive areas of the
                     Application, please be advised that all data you disclose in
                     these areas is public and your data will be accessible to
-                    anyone who accesses the Application. VideoGPTAI shall not be
+                    anyone who accesses the Application. fotolabs shall not be
                     liable for any data that you had chosen to disclose yourself
                     in this public space.
                   </li>
@@ -848,11 +842,11 @@ const TnC = () => {
                   </li>
                   <li className="level-2">
                     You may restrict our access to such information by
-                    terminating your account on VideoGPTAI or removing
-                    VideoGPTAI’s permission to access the same by directly
-                    disabling the same on your phone. The User may note that the
-                    latter may severely restrict VideoGPTAI’s ability to provide
-                    a personalised feel to the Platform.
+                    terminating your account on fotolabs or removing fotolabs’s
+                    permission to access the same by directly disabling the same
+                    on your phone. The User may note that the latter may
+                    severely restrict fotolabs’s ability to provide a
+                    personalised feel to the Platform.
                   </li>
                 </ol>
               </li>
@@ -862,7 +856,7 @@ const TnC = () => {
                   <li className="level-2">
                     We collect information about your location when you use our
                     services, which helps us in determining the merchants and
-                    outlets near you where VideoGPTAI vouchers can be used or
+                    outlets near you where fotolabs vouchers can be used or
                     cashback can be availed. Your location can be determined
                     with varying degrees of accuracy by: (a) GPS; (b) IP
                     address; (c) Sensor data from your device; (d) Information
@@ -877,20 +871,20 @@ const TnC = () => {
                     device when the app is running in the foreground,
                     background, or even if you are not directly using the
                     application depending on your device and its settings. Your
-                    device, as well as the VideoGPTAI mobile app, provides you
+                    device, as well as the fotolabs mobile app, provides you
                     with options to control how and when we collect your
                     geolocation. This is only to better the User’s experience on
-                    the VideoGPTAI Platform.
+                    the fotolabs Platform.
                   </li>
                   <li className="level-2">
                     You may be able to disallow our use of certain location data
                     through your device or browser settings, for example, by
-                    disabling “Location” services for the VideoGPTAI application
-                    in your device privacy settings. By allowing VideoGPTAI
-                    access to the same the User acknowledges and accepts that
-                    VideoGPTAI shall be aware of the User’s Geo-Location at any
-                    time. If you wish to change our access or permissions, you
-                    may do so in your device’s settings.
+                    disabling “Location” services for the fotolabs application
+                    in your device privacy settings. By allowing fotolabs access
+                    to the same the User acknowledges and accepts that fotolabs
+                    shall be aware of the User’s Geo-Location at any time. If
+                    you wish to change our access or permissions, you may do so
+                    in your device’s settings.
                   </li>
                 </ol>
               </li>
@@ -903,13 +897,13 @@ const TnC = () => {
                     addresses will be collected and used from Your address book.
                     Other numbers or information that may be contained in your
                     address book will be filtered away by our safety algorithms
-                    and will therefore not be collected by VideoGPTAI. Please
-                    also note that You can always choose not to share Contacts
-                    Information with VideoGPTAI.
+                    and will therefore not be collected by fotolabs. Please also
+                    note that You can always choose not to share Contacts
+                    Information with fotolabs.
                   </li>
                   <li className="level-2">
-                    Friends on VideoGPTAI help you discover the coolest things
-                    in town. From best food outlets to best picnic spots, your
+                    Friends on fotolabs help you discover the coolest things in
+                    town. From best food outlets to best picnic spots, your
                     connects keep you up to date with latest trends.
                   </li>
                   <li className="level-2">
@@ -923,38 +917,38 @@ const TnC = () => {
                 Financial Information
                 <ol type="a">
                   <li className="level-2">
-                    Availing the services offered by VideoGPTAI can at times
+                    Availing the services offered by fotolabs can at times
                     involve the collection of sensitive financial information
                     including but not limited to linking with mobile wallets,
                     entering credit/debit card details, password, etc to
                     facilitate payment for the respective service. You
-                    acknowledge and accept that linking VideoGPTAI with relevant
+                    acknowledge and accept that linking fotolabs with relevant
                     mobile wallet or bank account helps in making the experience
-                    better and thereby expressly consent to VideoGPTAI’s
+                    better and thereby expressly consent to fotolabs’s
                     collection and subsequent processing of such financial data.
                   </li>
                   <li className="level-2">
                     The financial information we learn and gather from you is
-                    used to link VideoGPTAI with your preferred mobile wallet,
+                    used to link fotolabs with your preferred mobile wallet,
                     verify your identity to permit you to undertake transactions
                     (including to facilitate and process payments) in connection
-                    with VideoGPTAI, communicate with you about any promotional
-                    offers, services or updates associated with VideoGPTAI,
+                    with fotolabs, communicate with you about any promotional
+                    offers, services or updates associated with fotolabs,
                     conduct analysis on the users’ spending capability and
                     generally maintain your accounts with us. No information
                     collated while carrying out the above is shared with or sold
-                    to a third party by VideoGPTAI and is strongly protected.
-                    You acknowledge and accept that the above activities that
-                    involve VideoGPTAI’s use of your financial information is to
-                    improve your experience on the VideoGPTAI platform and
-                    hereby provide VideoGPTAI consent for the same.
+                    to a third party by fotolabs and is strongly protected. You
+                    acknowledge and accept that the above activities that
+                    involve fotolabs’s use of your financial information is to
+                    improve your experience on the fotolabs platform and hereby
+                    provide fotolabs consent for the same.
                   </li>
                   <li className="level-2">
                     We work to protect the security of your information during
                     transmission by encrypting all financial information,
                     including passwords, you input in addition to maintaining
                     security of such information. User authentication is handled
-                    by VideoGPTAI through authentication tokens that is reset on
+                    by fotolabs through authentication tokens that is reset on
                     every fresh one time password validation. We reveal only the
                     last four digits of your credit / debit card numbers while
                     making payment. Of course, we transmit the entire credit /
@@ -968,8 +962,8 @@ const TnC = () => {
                     such sensitive personal information.
                   </li>
                   <li className="level-2">
-                    You may disable VideoGPTAI’s access to the same remotely on
-                    the VideoGPTAI Platform or contact us at care@VideoGPTAI.in.
+                    You may disable fotolabs’s access to the same remotely on
+                    the fotolabs Platform or contact us at care@fotolabs.in.
                   </li>
                 </ol>
               </li>
@@ -978,20 +972,20 @@ const TnC = () => {
                 <ol type="a">
                   <li className="level-2">
                     If while purchasing any healthcare product or services, you
-                    upload the invoice of the same or use VideoGPTAI voucher(s)
-                    or magicpay to purchase the same, VideoGPTAI would gain
-                    access to information on such invoice(s) which may include
-                    your sensitive personal health information.
+                    upload the invoice of the same or use fotolabs voucher(s) or
+                    magicpay to purchase the same, fotolabs would gain access to
+                    information on such invoice(s) which may include your
+                    sensitive personal health information.
                   </li>
                   <li className="level-2">
-                    You hereby expressly consent to VideoGPTAI gaining access
-                    and storing such information and processing the same in the
+                    You hereby expressly consent to fotolabs gaining access and
+                    storing such information and processing the same in the
                     manner set out in these terms.{' '}
                   </li>
                   <li className="level-2">
-                    VideoGPTAI shall have the rights in the above clause (b)
+                    fotolabs shall have the rights in the above clause (b)
                     unless you expressly withdraw the consent you have given us,
-                    by contacting us with such request at care@VideoGPTAI.in.
+                    by contacting us with such request at care@fotolabs.in.
                   </li>
                 </ol>
               </li>
@@ -1053,25 +1047,25 @@ const TnC = () => {
                 Data Security Measures
                 <ol type="a">
                   <li className="level-2">
-                    VideoGPTAI takes security of your data very seriously. We
-                    work hard to protect information you provide from loss,
-                    misuse, and unauthorised access or disclosure.
+                    fotolabs takes security of your data very seriously. We work
+                    hard to protect information you provide from loss, misuse,
+                    and unauthorised access or disclosure.
                   </li>
                   <li className="level-2">
                     We maintain commercially reasonable and standard measures to
                     maintain information security and prevent it from
                     unauthorized access. However, given the nature of
                     communications and information processing technology,
-                    VideoGPTAI cannot guarantee that any information, during
+                    fotolabs cannot guarantee that any information, during
                     transmission through the internet or while being processed,
                     will be absolutely safe from intrusion by others.
                   </li>
                   <li className="level-2">
-                    If VideoGPTAI becomes aware of any breach of security of
-                    your information, We will notify you using the email address
-                    that We have. If you do not agree to the terms discussed
-                    above, you may exit VideoGPTAI or stop using the same. When
-                    you access Our App, you acknowledge that you have read and
+                    If fotolabs becomes aware of any breach of security of your
+                    information, We will notify you using the email address that
+                    We have. If you do not agree to the terms discussed above,
+                    you may exit fotolabs or stop using the same. When you
+                    access Our App, you acknowledge that you have read and
                     agreed to abide by the terms described above.
                   </li>
                 </ol>
@@ -1090,7 +1084,7 @@ const TnC = () => {
                   <li className="level-2">
                     If you would like us to delete User Provided Data that you
                     have provided via the Application, please contact us at
-                    care@VideoGPTAI.in and we will respond in a reasonable time.
+                    care@fotolabs.in and we will respond in a reasonable time.
                   </li>
                   <li className="level-2">
                     The User must note that some or all the User Provided Data
@@ -1173,7 +1167,7 @@ const TnC = () => {
                   <li className="level-2">
                     to combat fraud or criminal activity, and to protect our
                     rights or those of our affiliates, business partners and
-                    users, or as part of legal proceedings affecting VideoGPTAI;
+                    users, or as part of legal proceedings affecting fotolabs;
                   </li>
                   <li className="level-2">
                     in response to a legal process, including to law enforcement
@@ -1191,10 +1185,10 @@ const TnC = () => {
                 Application. You may use the standard uninstall processes as may
                 be available as part of your mobile device or via the mobile
                 application marketplace or network. You can also request to
-                opt-out via email, at care@VideoGPTAI.in.
+                opt-out via email, at care@fotolabs.in.
               </li>
               <li className="level-1 ">
-                VideoGPTAI shall not engage in any use of the Application to
+                fotolabs shall not engage in any use of the Application to
                 knowingly solicit data from or market to children under the age
                 of 13. While it is our constant endeavour to show minors only
                 age-appropriate content through various internal checks, such as
@@ -1202,33 +1196,33 @@ const TnC = () => {
                 through Facebook, Community Guidelines and others that are
                 updated periodically, if a parent or guardian becomes aware that
                 his or her child has provided us with information without their
-                consent, he or she should contact us at care@VideoGPTAI.in. We
+                consent, he or she should contact us at care@fotolabs.in. We
                 will delete such information from our files within a reasonable
                 time.
               </li>
               <li className="level-1 ">
                 You may at any time review or change the information in your
-                account or terminate your account. If your VideoGPTAI user
-                account is terminated or deleted, access to your username,
-                password, and all related information, files, and content
-                associated with your account shall be terminated. However, some
-                information may be retained in our files to prevent fraud,
-                troubleshoot problems, assist with any investigations, enforce
-                our Terms of Use and/or comply with legal requirements.
+                account or terminate your account. If your fotolabs user account
+                is terminated or deleted, access to your username, password, and
+                all related information, files, and content associated with your
+                account shall be terminated. However, some information may be
+                retained in our files to prevent fraud, troubleshoot problems,
+                assist with any investigations, enforce our Terms of Use and/or
+                comply with legal requirements.
               </li>
               <li className="level-1 ">
-                By using or continuing to use VideoGPTAI, you agree to our use
-                of your information (including your personal information and/or
+                By using or continuing to use fotolabs, you agree to our use of
+                your information (including your personal information and/or
                 your sensitive personal data or information) in accordance with
                 this Privacy Policy, as may be amended from time to time by
-                VideoGPTAI in its discretion. You also agree and consent to us
+                fotolabs in its discretion. You also agree and consent to us
                 collecting, storing, processing, transferring and sharing
                 information (including sensitive personal data or information)
                 related to you with third parties or service providers for the
                 purposes as set out in this Privacy Policy.
               </li>
               <li className="level-1 ">
-                You may contact us at care@VideoGPTAI.in if you wish to obtain:
+                You may contact us at care@fotolabs.in if you wish to obtain:
                 (a) confirmation on whether your respective Personal Data has
                 been processed or is being processed; (b) brief summary of your
                 respective Personal Data that has been processed or is being
@@ -1244,21 +1238,20 @@ const TnC = () => {
             <ol type="a">
               <li className="level-1 ">
                 The User may, if easier, opt to make direct payment of such
-                purchase price to VideoGPTAI for the purchased goods or services
+                purchase price to fotolabs for the purchased goods or services
                 (“<b className="mb-5">Direct Payment Facility</b>”). In the
                 event that You make any payment in the above-mentioned manner,
-                VideoGPTAI shall be deemed to be the agent of the respective
+                fotolabs shall be deemed to be the agent of the respective
                 merchant authorised to collect such purchase price from You on
                 behalf of the merchant.
               </li>
               <li className="level-1 ">
-                Any and all communication by VideoGPTAI or the merchant
-                regarding the Direct Payment Facility, whether to VideoGPTAI
-                users, your customers or clients, our respective vendors,
-                employees or agents, governmental authorities or any other
-                person or entity whatsoever shall clearly indicate that
-                VideoGPTAI is acting purely as an agent in relation to the
-                Direct Payment Facility
+                Any and all communication by fotolabs or the merchant regarding
+                the Direct Payment Facility, whether to fotolabs users, your
+                customers or clients, our respective vendors, employees or
+                agents, governmental authorities or any other person or entity
+                whatsoever shall clearly indicate that fotolabs is acting purely
+                as an agent in relation to the Direct Payment Facility
               </li>
             </ol>
           </li>
@@ -1267,9 +1260,9 @@ const TnC = () => {
             <b className="mb-5">Feedback</b>
             <p>
               You agree that any recommendation, idea, proposal, suggestion,
-              feedback or other input (“Feedback”) you submit to VideoGPTAI
+              feedback or other input (“Feedback”) you submit to fotolabs
               related to its services, websites, apps, or technology may be used
-              by VideoGPTAI without any notice, obligation, restriction,
+              by fotolabs without any notice, obligation, restriction,
               reimbursement or compensation to you and you waive (or agree not
               to enforce) any and all rights that may now or in future exist
               (including moral and equivalent rights) in any Feedback.
@@ -1277,23 +1270,23 @@ const TnC = () => {
           </li>
 
           <li className="level-0">
-            <b className="mb-5">VideoGPTAI Loyalty Rewards Programme</b>
+            <b className="mb-5">fotolabs Loyalty Rewards Programme</b>
             <ol type="a">
               <li className="level-1 ">
-                To make the VideoGPTAI experience more fun and fulfilling we
-                have a discretionary unique reward programme for our loyal
-                users. When you purchase any product or service from any of our
+                To make the fotolabs experience more fun and fulfilling we have
+                a discretionary unique reward programme for our loyal users.
+                When you purchase any product or service from any of our
                 participating merchants and you verify the transaction on the
-                VideoGPTAI app by uploading your selfie clicked at the merchant
+                fotolabs app by uploading your selfie clicked at the merchant
                 outlet and the bill showing the date and the amount, and take
                 such other steps as many be instructed on the app, certain
                 reward points are added to your account.
               </li>
               <li className="level-1 ">
                 You may use the points in your account to purchase vouchers
-                issued by VideoGPTAI which you may use at specified locations as
+                issued by fotolabs which you may use at specified locations as
                 indicated at the time you purchase the voucher. Presently
-                VideoGPTAI sells vouchers which can be used at merchants such as
+                fotolabs sells vouchers which can be used at merchants such as
                 McDonald&lsquo;s, Pizza Hut, Hard Rock Cafe, BookMyShow,
                 Flipkart, Myntra, etc.
               </li>
@@ -1306,7 +1299,7 @@ const TnC = () => {
               </li>
               <li className="level-1 ">
                 If you have any questions regarding the rewards programme, write
-                to us at care@VideoGPTAI.in.
+                to us at care@fotolabs.in.
               </li>
             </ol>
           </li>
@@ -1316,7 +1309,7 @@ const TnC = () => {
             <ol type="i">
               <li className="level-1 ">
                 Third Party Beneficiaries and Conflicts. These Terms control the
-                relationship between VideoGPTAI and you. They do not create any
+                relationship between fotolabs and you. They do not create any
                 third party beneficiary rights. If there is a conflict or
                 inconsistency between the terms in this document and the
                 additional terms associated with a particular Service, the
@@ -1337,21 +1330,21 @@ const TnC = () => {
                 at any time, but your continued use of or subscription to a
                 Service after the effective date of any modifications to the
                 Terms means that you agree to the Terms as modified as well as
-                consent to VideoGPTAI’s collection and processing of User data.
+                consent to fotolabs’s collection and processing of User data.
               </li>
               <li className="level-1 ">
-                Waiver and Severability of Terms. The failure of VideoGPTAI to
+                Waiver and Severability of Terms. The failure of fotolabs to
                 exercise or enforce any right or provision of these Terms will
                 not constitute a waiver of such right or provision. If any
                 provision (or part of a provision) of these Terms is found to be
-                invalid, VideoGPTAI and you nevertheless agree to give effect to
+                invalid, fotolabs and you nevertheless agree to give effect to
                 the intentions as reflected in the provision, and the other
                 provisions of these Terms remain in full force and effect.
               </li>
               <li className="level-1 ">
-                Assignment by VideoGPTAI. VideoGPTAI may freely assign these
-                Terms and all of the policies and other documents incorporated
-                or referenced in it (including all rights, licenses, and
+                Assignment by fotolabs. fotolabs may freely assign these Terms
+                and all of the policies and other documents incorporated or
+                referenced in it (including all rights, licenses, and
                 obligations under it or them), in whole or in part and without
                 notice, for any reason, including for the purpose of internal
                 restructuring (for example, mergers or liquidations).
@@ -1363,26 +1356,25 @@ const TnC = () => {
             <b className="mb-5">Indemnification</b>
             <ol type="a">
               <li className="level-1 ">
-                You agree to defend, indemnify, and hold harmless VideoGPTAI and
-                all VideoGPTAI Entities from and against all claims and
-                expenses, including, without limitation, attorneys’ fees,
-                arising out of, related to, or in connection with any of the
-                following: (a) any User Content submitted or posted by you on
-                the platform, or any use of the platform in violation of these
-                Terms of Use; (b) fraud you commit or your intentional
-                misconduct or gross negligence; or (c) your violation of any
-                applicable laws or rights of a third-party.
+                You agree to defend, indemnify, and hold harmless fotolabs and
+                all fotolabs Entities from and against all claims and expenses,
+                including, without limitation, attorneys’ fees, arising out of,
+                related to, or in connection with any of the following: (a) any
+                User Content submitted or posted by you on the platform, or any
+                use of the platform in violation of these Terms of Use; (b)
+                fraud you commit or your intentional misconduct or gross
+                negligence; or (c) your violation of any applicable laws or
+                rights of a third-party.
               </li>
               <li className="level-1 ">
                 You are solely responsible for your interactions with merchants
                 as well as other users on the platform. To the extent permitted
-                under applicable laws, you hereby release VideoGPTAI from any
-                and all claims or liability related to any product or service of
-                a merchant, without limitation, but not limited to any harm
-                caused to you by action or inaction of a merchant, a merchant’s
-                failure to comply with applicable law and any conduct, speech or
-                User Content, whether online or offline, of any other
-                third-party.
+                under applicable laws, you hereby release fotolabs from any and
+                all claims or liability related to any product or service of a
+                merchant, without limitation, but not limited to any harm caused
+                to you by action or inaction of a merchant, a merchant’s failure
+                to comply with applicable law and any conduct, speech or User
+                Content, whether online or offline, of any other third-party.
               </li>
             </ol>
           </li>
@@ -1391,19 +1383,19 @@ const TnC = () => {
             <b className="mb-5">Grievance Redressal and Dispute Resolution</b>
             <ol type="i">
               <li className="level-1 ">
-                VideoGPTAI is not liable for any infringement of copyright
-                arising out of materials posted on or transmitted through the
-                site, or items advertised on the site, by end users or any other
-                third parties. In the event you have any grievance in relation
-                to any content uploaded on the Site, you may contact our
-                Grievance Officer, at: <br />
+                fotolabs is not liable for any infringement of copyright arising
+                out of materials posted on or transmitted through the site, or
+                items advertised on the site, by end users or any other third
+                parties. In the event you have any grievance in relation to any
+                content uploaded on the Site, you may contact our Grievance
+                Officer, at: <br />
                 Raunak Sett <br />
                 raunak@plugapp.net <br />
               </li>
               <li className="level-1 ">
-                If you believe that VideoGPTAI has not adhered to this Privacy
-                Policy (as set out under clause 10) you may write to VideoGPTAI
-                at the following e-mail address: plugapp2022@gmail.com. In your
+                If you believe that fotolabs has not adhered to this Privacy
+                Policy (as set out under clause 10) you may write to fotolabs at
+                the following e-mail address: plugapp2022@gmail.com. In your
                 email, please describe in as much detail as possible ways in
                 which you believe the Privacy Policy has not been complied with.
                 We will investigate your complaint within reasonable period of
@@ -1412,16 +1404,16 @@ const TnC = () => {
               <li className="level-1 ">
                 We will do our best to resolve any disputes about these Terms of
                 Use. If you wish to bring a legal claim against us, these Terms,
-                as well as all user activity on the VideoGPTAI Platform shall be
+                as well as all user activity on the fotolabs Platform shall be
                 governed by and construed in accordance with the laws of India.
               </li>
               <li className="level-1 ">
                 You agree that all claims, differences or disputes arising under
-                or in connection with or in relation hereto the VideoGPTAI
+                or in connection with or in relation hereto the fotolabs
                 Platform, the Terms, relating to or in connection with these
-                Terms, or transactions entered into on or through VideoGPTAI, or
-                any content uploaded on the VideoGPTAI Platform or the
-                relationship between User and VideoGPTAI shall be subject to the
+                Terms, or transactions entered into on or through fotolabs, or
+                any content uploaded on the fotolabs Platform or the
+                relationship between User and fotolabs shall be subject to the
                 exclusive jurisdiction of the courts at Delhi and the User
                 hereby accedes to and accepts the jurisdiction of such courts.
               </li>
@@ -1432,7 +1424,7 @@ const TnC = () => {
 
             <ol type="i">
               <li>
-                Cancellation due to reasons not attributable to VideoGPTAI, that
+                Cancellation due to reasons not attributable to fotolabs, that
                 is, in the event you provide incorrect phone numbers, delivery
                 address, or that you were unresponsive while either of our team
                 or the rider team tried to reach out or, not reachable or
@@ -1440,13 +1432,13 @@ const TnC = () => {
                 shall be non-refundable in nature.
               </li>
               <li>
-                There may be cases where VideoGPTAI is either unable to accept
+                There may be cases where fotolabs is either unable to accept
                 your order or cancels the order, due to reasons including
                 without limitation, technical errors, unavailability of the
-                item(s) ordered, or any other reason attributable to VideoGPTAI,
+                item(s) ordered, or any other reason attributable to fotolabs,
                 Restaurant Partner/Store or Delivery Partner. In such cases,
-                VideoGPTAI shall not charge a cancellation charge from you. If
-                the order is canceled after payment has been charged, you are
+                fotolabs shall not charge a cancellation charge from you. If the
+                order is canceled after payment has been charged, you are
                 eligible for a refund of the order value or any part thereof,
                 the said amount will be reversed to you.
               </li>
@@ -1462,9 +1454,9 @@ const TnC = () => {
                 in food, delivery of the wrong order or food and beverages or
                 Products, poor quality, You will be required to share the proof
                 of the same before any resolution can be provided. In the
-                absence of the proof, VideoGPTAI will not consider the request
-                as valid request and refund or replacement will not be provided
-                in such cases.
+                absence of the proof, fotolabs will not consider the request as
+                valid request and refund or replacement will not be provided in
+                such cases.
               </li>
               <li>
                 You shall not be entitled to a refund in case instructions

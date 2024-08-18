@@ -4,7 +4,7 @@ const localePrefix: LocalePrefix = 'as-needed';
 
 // FIXME: Update this configuration file based on your project information
 export const AppConfig = {
-  name: 'VideoGPT.ai',
+  name: 'fotolabs.ai',
   locales: ['en', 'pt'],
   defaultLocale: 'en',
   localePrefix,

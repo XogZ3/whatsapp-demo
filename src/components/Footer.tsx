@@ -81,7 +81,7 @@ export function Footer() {
   ];
 
   return (
-    <footer className="border-t py-2">
+    <footer className="h-fit border-t bg-white py-2 dark:bg-black">
       {/* FOOTER */}
       <Container noYPadding>
         <div className="grid grid-cols-2 gap-4 bg-white/30 dark:bg-transparent md:flex md:w-full md:items-start md:justify-between md:gap-x-16 md:gap-y-8 md:p-2">
@@ -95,7 +95,7 @@ export function Footer() {
           ))}
         </div>
         {/* COPYRIGHT */}
-        <div className="flex flex-col items-center justify-center pt-4 text-center text-sm font-extralight md:text-base">
+        <div className="flex flex-col items-center justify-center pb-2 pt-4 text-center text-sm font-extralight md:text-base">
           <span className="">
             © {t('Copyright.text_1')} {defaultYear} {AppConfig.name}.{' '}
             {t('Copyright.text_2')}.

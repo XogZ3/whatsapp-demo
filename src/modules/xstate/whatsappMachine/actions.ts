@@ -228,7 +228,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       console.log('[+] action: send confirmation for prompt: ', prompt);
 
       const message = `Do you want to generate image with following prompt?
-    ${prompt}`;
+>>> ${prompt}`;
       const payload: ICreateMessagePayload = {
         phoneNumber: config.userMetaData.phonenumber,
         quickReply: true,
@@ -257,26 +257,36 @@ export const actionsFactory = (config: IMachineConfig): any => {
           );
 
         console.log('[+] receveid runpod urls: ', generatedImageURLs);
+        if (generatedImageURLs.length > 0) {
+          const sendPromises = generatedImageURLs.map(async (url) => {
+            const payload: ICreateMessagePayload = {
+              phoneNumber: config.userMetaData.phonenumber,
+              image: true,
+              imageLink: url,
+            };
+            await config.whatsappInstance.send(payload);
+          });
+          await Promise.all(sendPromises);
 
-        const sendPromises = generatedImageURLs.map(async (url) => {
+          console.log('All images sent successfully.');
+
+          message = `Cool photo! Just send another prompt.`;
           const payload: ICreateMessagePayload = {
             phoneNumber: config.userMetaData.phonenumber,
-            image: true,
-            imageLink: url,
+            text: true,
+            msgBody: message,
           };
           await config.whatsappInstance.send(payload);
-        });
-        await Promise.all(sendPromises);
-
-        console.log('All images sent successfully.');
-
-        message = `Cool photo! Just send another prompt.`;
-        const payload: ICreateMessagePayload = {
-          phoneNumber: config.userMetaData.phonenumber,
-          text: true,
-          msgBody: message,
-        };
-        await config.whatsappInstance.send(payload);
+        } else {
+          message =
+            'Uh-oh. Something went wrong, please try again after some time.';
+          const payload: ICreateMessagePayload = {
+            phoneNumber: config.userMetaData.phonenumber,
+            text: true,
+            msgBody: message,
+          };
+          await config.whatsappInstance.send(payload);
+        }
       }
       doStuff().then(() => console.log('[+] doStuff done'));
     },

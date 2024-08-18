@@ -70,7 +70,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       message: () => 'You can now prompt for your own photos!',
     }),
     generatePromptedPhoto: assign({
-      remainingCredits: (context: any) => context.remainingCredits - 1,
+      creditsRemaining: (context: any) => context.creditsRemaining - 1,
       message: () => 'Generating your prompted photo...',
     }),
     sendInvalidInputMessage: async () => {

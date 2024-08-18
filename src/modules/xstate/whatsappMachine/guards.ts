@@ -8,6 +8,6 @@ export const guardsFactory = (_machineConfig: IMachineConfig): any => {
       context.photosUploaded < TRAINING_IMAGES_LIMIT,
     hasUploadedEnoughPhotos: (context: any) =>
       context.photosUploaded + 1 === TRAINING_IMAGES_LIMIT, // Adding 1 since the N-th photo will trigger this guard
-    hasSufficientCredits: (context: any) => context.remainingCredits > 0,
+    hasSufficientCredits: (context: any) => context.creditsRemaining > 0,
   };
 };

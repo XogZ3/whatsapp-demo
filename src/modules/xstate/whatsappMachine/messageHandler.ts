@@ -54,19 +54,24 @@ export const handleMessage = async (
   const state = actor.getSnapshot().value as string;
   console.log('state: ', state);
 
-  if (!STATE_ACTION_EVENT_MAP[state]) {
-    actor.send({ type: 'UNKNOWN_ISSUE' });
+  let event;
+
+  if (state === 'photoPrompting') {
+    event = 'PROMPT';
+  } else if (STATE_ACTION_EVENT_MAP[state]) {
+    event = STATE_ACTION_EVENT_MAP[state][userActionId] || 'UNKNOWN_ISSUE';
   } else {
-    const event =
-      STATE_ACTION_EVENT_MAP[state][userActionId] || 'UNKNOWN_ISSUE';
-    console.log(
-      'actor sending: ',
-      JSON.stringify({ type: event, message, userMetaData }),
-    );
-    actor.send({
-      type: event,
-      message,
-      userMetaData,
-    });
+    event = 'UNKNOWN_ISSUE';
   }
+
+  console.log(
+    'actor sending: ',
+    JSON.stringify({ type: event, message, userMetaData }),
+  );
+
+  actor.send({
+    type: event,
+    message,
+    userMetaData,
+  });
 };

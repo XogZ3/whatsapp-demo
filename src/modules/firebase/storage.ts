@@ -30,7 +30,7 @@ function uploadFile(
 
     fileUploadStream.on('finish', async () => {
       console.log('File uploaded successfully.');
-      await gBucket?.file(filePath).makePublic();
+      await gBucket?.file(filePath);
       resolve(`https://storage.googleapis.com/${gBucket?.name}/${filePath}`);
     });
 

@@ -1,8 +1,14 @@
 import { assign } from 'xstate';
 
+import { generateImagesUploadToFirebaseGetURL } from '@/modules/runpod';
 import type { ICreateMessagePayload } from '@/modules/whatsapp/whatsapp';
+import { TRAINING_IMAGES_LIMIT } from '@/utils/constants';
 
-import type { IMachineConfig, IWhatsappInstance } from './types';
+import type {
+  IMachineConfig,
+  IMachineContext,
+  IWhatsappInstance,
+} from './types';
 
 async function sendMessage(
   whatsappInstance: IWhatsappInstance,
@@ -26,8 +32,10 @@ export const actionsFactory = (config: IMachineConfig): any => {
     assignDefaultValues: assign({
       message: () => '',
       processing: () => false,
-      pendingPhotos: () => 0,
-      creditsRemaining: () => 0,
+      photosUploaded: () => 0,
+      creditsRemaining: () => 1,
+      loraURL: () => '',
+      loraFilename: () => '',
     }),
     assignMessage: assign((_, event: any) => {
       console.log(JSON.stringify(event, null, 2));
@@ -41,7 +49,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
     }),
     notifyPendingPhotos: assign({
       message: (context: any) =>
-        `Send ${15 - context.photosUploaded} more photo(s)`,
+        `Send ${TRAINING_IMAGES_LIMIT - context.photosUploaded} more photo(s)`,
     }),
     incrementPhotoCount: assign({
       photosUploaded: (context: any) => context.photosUploaded + 1,
@@ -123,7 +131,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       await config.whatsappInstance.send(payload);
     },
     sendPhotoUploadInstruction: async () => {
-      const message = `Send 10-15 photos...`;
+      const message = `Send ${TRAINING_IMAGES_LIMIT} photos...`;
       const payload: ICreateMessagePayload = {
         phoneNumber: config.userMetaData.phonenumber,
         quickReply: true,
@@ -220,6 +228,42 @@ export const actionsFactory = (config: IMachineConfig): any => {
     echoEvent: assign({
       message: (context: any) => `Echooo: ${context.message}`,
     }),
+    sendPromptedPhoto: async (context: IMachineContext, event: any) => {
+      const prompt = event?.message || 'woooops no prompt';
+      console.log('Prompt:', prompt);
+
+      const generatedImageURLs: string[] =
+        await generateImagesUploadToFirebaseGetURL(
+          context.loraURL,
+          context.loraFilename,
+          prompt,
+          config.userMetaData.phonenumber,
+        );
+
+      const sendPromises = generatedImageURLs.map(async (url) => {
+        const payload: ICreateMessagePayload = {
+          phoneNumber: config.userMetaData.phonenumber,
+          image: true,
+          imageLink: url,
+        };
+        await config.whatsappInstance.send(payload);
+      });
+
+      // Wait for all send operations to complete
+      await Promise.all(sendPromises);
+
+      console.log('All images sent successfully.');
+    },
+    sendNextStep: async () => {
+      const message = 'Cool photo! Just send another prompt.';
+      const payload: ICreateMessagePayload = {
+        phoneNumber: config.userMetaData.phonenumber,
+        quickReply: true,
+        button1: 'Cancel',
+        msgBody: message,
+      };
+      await config.whatsappInstance.send(payload);
+    },
     sendCredits: () => {
       // Logic to send remaining credits
     },

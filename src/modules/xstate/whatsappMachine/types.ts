@@ -14,16 +14,14 @@ export interface IWhatsappInstance {
   send: (payload: ICreateMessagePayload) => Promise<void>;
 }
 
-export interface IMatchInstance {
-  findmatch: (clientId: string) => Promise<string | null>;
-}
-
 export interface IMachineContext {
   message: string;
   processing: boolean;
-  pendingPhotos: number;
+  photosUploaded: number;
   creditsRemaining: number;
   modelGenerated: boolean;
+  loraURL: string;
+  loraFilename: string;
 }
 
 export interface IUserMetaData {

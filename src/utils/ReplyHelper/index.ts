@@ -1,44 +1,30 @@
 /* eslint-disable unused-imports/no-unused-vars */
 
-import firebase from '@/modules/firebase';
+import { getImageURLFromWhatsapp } from '@/modules/whatsapp/whatsapp';
 import { whatsappStateTransition } from '@/modules/xstate/whatsappMachine';
 import type { IUserMetaData } from '@/modules/xstate/whatsappMachine/types';
 
-import { extractText } from './MessageParsers';
+import {
+  addTrainingImageURL,
+  getUserDetails,
+  setUserState,
+} from './FirebaseHelpers';
+import { extractImageID, extractText } from './MessageParsers';
 
-const firestore = firebase.getFirestore();
-
-async function setUserState(state: string, clientid: string) {
-  const wabaId = process.env.WABA_ID;
-  const clientDoc = firestore
-    .collection('apps')
-    .doc(wabaId as string)
-    .collection('clients')
-    .doc(clientid);
-  const updates: any = { state };
-  await clientDoc.set(updates, { merge: true });
-}
-
-async function getUserDetails(clientid: string) {
-  const wabaId = process.env.WABA_ID;
-  const clientDoc = firestore
-    .collection('apps')
-    .doc(wabaId as string)
-    .collection('clients')
-    .doc(clientid);
-  const clientData = await clientDoc.get();
-  const { state, name, lastupdatedat } = clientData.data() || {};
-  return {
-    state: state || '',
-    name,
-    phonenumber: clientid,
-    lastupdatedat,
-  };
-}
 // eslint-disable-next-line consistent-return
 export async function replyToUser(messageObject: any) {
-  const message = extractText(messageObject);
+  let message;
+  const messageObjectType = messageObject.type;
   const { clientid } = messageObject;
+  // Handle receiving images
+  if (messageObjectType === 'image') {
+    const imageID = extractImageID(messageObject);
+    const imageURL = await getImageURLFromWhatsapp(imageID);
+    console.log('imageURL', imageURL);
+    await addTrainingImageURL(clientid, imageURL);
+    message = 'Photo Received';
+  } else message = extractText(messageObject);
+
   const userDetails = await getUserDetails(clientid);
   const { state, name, phonenumber } = userDetails;
   const newState = await whatsappStateTransition(

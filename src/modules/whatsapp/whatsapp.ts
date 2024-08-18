@@ -1,4 +1,121 @@
 /* eslint-disable no-console */
+// import { v4 as uuidv4 } from 'uuid';
+
+export const x = {
+  object: 'whatsapp_business_account',
+  entry: [
+    {
+      id: '105535119086690',
+      changes: [
+        {
+          value: {
+            messaging_product: 'whatsapp',
+            metadata: {
+              display_phone_number: '971505072100',
+              phone_number_id: '115375284757588',
+            },
+            contacts: [
+              {
+                profile: {
+                  name: 'Gokul Saravanan',
+                },
+                wa_id: '918754535859',
+              },
+            ],
+            messages: [
+              {
+                from: '918754535859',
+                id: 'wamid.HBgMOTE4NzU0NTM1ODU5FQIAEhgUM0EwRTAzQkU0RDcwRUE5QjU4QzIA',
+                timestamp: '1723906242',
+                type: 'image',
+                image: {
+                  mime_type: 'image/jpeg',
+                  sha256: 'TUL4BHYVgGobpcJqdsUa6s620z3KLHJ9MrIZy6U5zyM=',
+                  id: '808904347896808',
+                },
+              },
+            ],
+          },
+          field: 'messages',
+        },
+      ],
+    },
+  ],
+};
+
+// export async function uploadImageToWhatsAppGetURL(
+//   base64Content: string,
+// ): Promise<string> {
+//   const buffer = Buffer.from(base64Content, 'base64');
+//   const formData = new FormData();
+//   formData.append(
+//     'file',
+//     new Blob([buffer], { type: 'image/png' }),
+//     `${uuidv4()}.png`,
+//   );
+//   formData.append('type', 'image/png');
+//   formData.append('messaging_product', 'whatsapp');
+
+//   const uploadResponse = await fetch(
+//     `https://graph.facebook.com/v20.0/${process.env.PHONE_ID}/media`,
+//     {
+//       method: 'POST',
+//       headers: {
+//         Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
+//       },
+//       body: formData,
+//     },
+//   );
+
+//   if (!uploadResponse.ok) {
+//     throw new Error(`HTTP error! status: ${uploadResponse.status}`);
+//   }
+
+//   const uploadData = await uploadResponse.json();
+//   const mediaId = uploadData.id;
+
+//   const mediaUrlResponse = await fetch(
+//     `https://graph.facebook.com/v20.0/${mediaId}`,
+//     {
+//       headers: {
+//         Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
+//       },
+//     },
+//   );
+
+//   if (!mediaUrlResponse.ok) {
+//     throw new Error(`HTTP error! status: ${mediaUrlResponse.status}`);
+//   }
+
+//   const mediaUrlData = await mediaUrlResponse.json();
+//   return mediaUrlData.url;
+// }
+
+export async function getImageURLFromWhatsapp(
+  mediaID: string,
+): Promise<string> {
+  const URL = `https://graph.facebook.com/v20.0/${mediaID}/`;
+
+  try {
+    const response = await fetch(URL, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    console.log('image url: ', JSON.stringify(data, null, 2));
+    return data;
+  } catch (error) {
+    console.error('Error fetching media:', error);
+    throw error;
+  }
+}
 
 export async function makeRequestToWhatsapp(data: any) {
   const URL = `https://graph.facebook.com/v20.0/${process.env.PHONE_ID}/messages?access_token=${process.env.WHATSAPP_TOKEN}`;

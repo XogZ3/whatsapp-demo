@@ -1,6 +1,6 @@
 // machine.ts
 
-import { createMachine } from 'xstate';
+import { assign, createMachine } from 'xstate';
 
 import { actionsFactory } from './actions';
 import { guardsFactory } from './guards';
@@ -15,8 +15,10 @@ export const machineFactory = (config: IMachineConfig): any => {
       context: {
         message: '',
         processing: false,
-        pendingPhotos: 0,
-        creditsRemaining: 0,
+        photosUploaded: 0,
+        creditsRemaining: 1,
+        loraURL: '',
+        loraFilename: '',
       } as IMachineContext,
       on: {
         UNKNOWN_ISSUE: '.onBoarding',
@@ -26,18 +28,17 @@ export const machineFactory = (config: IMachineConfig): any => {
           entry: ['sendIntroOptionsMessage', 'assignDefaultValues'],
           on: {
             UPLOAD_PHOTOS: {
+              actions: assign({ message: () => 'Upload Photos' }),
               target: 'imagesIncomplete',
             },
             PRICING: {
-              actions: ['assignMessage', 'sendPricing'],
-              target: 'onBoarding',
+              actions: [assign({ message: () => 'Pricing' }), 'sendPricing'],
             },
             TUTORIAL: {
-              target: 'onBoarding',
-              actions: ['sendTutorial'],
+              actions: [assign({ message: () => 'Tutorial' }), 'sendTutorial'],
             },
             MAIN_MENU: {
-              target: 'onBoarding',
+              actions: assign({ message: () => 'MainMenu' }),
               reenter: true,
             },
           },
@@ -45,14 +46,13 @@ export const machineFactory = (config: IMachineConfig): any => {
         imagesIncomplete: {
           entry: ['sendPhotoUploadInstruction'],
           on: {
-            // TODO: code receiving photos
             PHOTO_RECEIVED: [
               {
-                target: 'imagesIncomplete',
+                guard: 'canUploadMorePhotos',
                 actions: ['incrementPhotoCount'],
-                guard: 'needMorePhotos',
               },
               {
+                guard: 'hasUploadedEnoughPhotos',
                 target: 'generatingModel',
                 actions: ['incrementPhotoCount'],
               },
@@ -62,6 +62,9 @@ export const machineFactory = (config: IMachineConfig): any => {
             },
             CANCEL: {
               target: 'onBoarding',
+            },
+            '*': {
+              actions: ['notifyPendingPhotos'],
             },
           },
         },
@@ -80,14 +83,13 @@ export const machineFactory = (config: IMachineConfig): any => {
           },
         },
         modelGeneratedUnpaid: {
-          entry: ['sendUnpaidUserOptions'],
+          entry: ['sendSamplePhotos', 'sendUnpaidUserOptions'],
           on: {
             BUY_CREDITS: {
               actions: ['sendPaymentInstructions'],
             },
             BYPASS: {
               target: 'modelGeneratedPaid',
-              reenter: true,
             },
             CANCEL: {
               target: 'modelGeneratedUnpaid',
@@ -115,19 +117,14 @@ export const machineFactory = (config: IMachineConfig): any => {
           entry: ['sendPromptingInstruction'],
           on: {
             CANCEL: 'modelGeneratedPaid',
-            '*': {
-              actions: ['echoEvent'],
+            PROMPT: {
+              actions: [
+                // 'decrementCredits',
+                'sendPromptedPhoto',
+                'sendNextStep',
+              ],
+              guard: 'hasCredits',
             },
-            PROMPT_PHOTO_REQUESTED: [
-              {
-                target: 'photoPrompting',
-                actions: ['decrementCredits', 'generatePromptedPhoto'],
-                guard: 'hasCredits',
-              },
-              {
-                target: 'modelGeneratedPaid',
-              },
-            ],
           },
         },
       },

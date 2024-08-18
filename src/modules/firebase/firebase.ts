@@ -16,17 +16,22 @@ const createFirebaseApp = (): App => {
     return getApp();
   } catch (e) {
     try {
-      const firebaseServiceAccountKey =
-        process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
+      const base64Key = process.env
+        .FIREBASE_SERVICE_ACCOUNT_KEY_BASE64 as string;
+      const decodedKey = Buffer.from(base64Key, 'base64').toString('utf8');
+      const serviceAccount = JSON.parse(decodedKey);
 
-      if (!firebaseServiceAccountKey) {
-        throw new Error(
-          'FIREBASE_SERVICE_ACCOUNT_KEY environment variable is not defined',
-        );
-      }
+      // const firebaseServiceAccountKey =
+      //   process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
 
-      const unescapedKey = firebaseServiceAccountKey.replace(/\\"/g, '"');
-      const serviceAccount = JSON.parse(unescapedKey);
+      // if (!firebaseServiceAccountKey) {
+      //   throw new Error(
+      //     'FIREBASE_SERVICE_ACCOUNT_KEY environment variable is not defined',
+      //   );
+      // }
+
+      // const unescapedKey = firebaseServiceAccountKey.replace(/\\"/g, '"');
+      // const serviceAccount = JSON.parse(unescapedKey);
 
       if (!serviceAccount) {
         throw new Error('Service account key is not provided or is invalid.');

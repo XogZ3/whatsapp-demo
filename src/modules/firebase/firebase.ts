@@ -6,6 +6,8 @@ import { getFirestore } from 'firebase-admin/firestore';
 import type { Storage } from 'firebase-admin/storage';
 import { getStorage } from 'firebase-admin/storage';
 
+import serviceAccount from './paparazzi-ai-firebase-admin-key.json';
+
 let INITIALIZED = false;
 let firebaseApp: App | null = null;
 let firestoreInstance: Firestore | null = null;
@@ -16,35 +18,10 @@ const createFirebaseApp = (): App => {
     return getApp();
   } catch (e) {
     try {
-      const base64Key = process.env
-        .FIREBASE_SERVICE_ACCOUNT_KEY_BASE64 as string;
-      const decodedKey = Buffer.from(base64Key, 'base64').toString('utf8');
-      const serviceAccount = JSON.parse(decodedKey);
-
-      // const firebaseServiceAccountKey =
-      //   process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
-
-      // if (!firebaseServiceAccountKey) {
-      //   throw new Error(
-      //     'FIREBASE_SERVICE_ACCOUNT_KEY environment variable is not defined',
-      //   );
-      // }
-
-      // const unescapedKey = firebaseServiceAccountKey.replace(/\\"/g, '"');
-      // const serviceAccount = JSON.parse(unescapedKey);
-
-      if (!serviceAccount) {
-        throw new Error('Service account key is not provided or is invalid.');
-      }
-      if (!process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL) {
-        throw new Error('Firebase database URL is not provided.');
-      }
-      if (!process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET) {
-        throw new Error('Firebase storage bucket is not provided.');
-      }
-
       return initializeApp({
-        credential: admin.credential.cert(serviceAccount),
+        credential: admin.credential.cert(
+          serviceAccount as admin.ServiceAccount,
+        ),
         databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
         storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
       });

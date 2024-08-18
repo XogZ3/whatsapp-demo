@@ -30,8 +30,6 @@ export const actionsFactory = (config: IMachineConfig): any => {
       processing: () => false,
       photosUploaded: () => 0,
       creditsRemaining: () => 1,
-      loraURL: () => '',
-      loraFilename: () => '',
     }),
     assignMessage: assign((_, event: any) => {
       console.log(JSON.stringify(event, null, 2));
@@ -241,6 +239,8 @@ Generating image for your prompt: ${prompt}`;
           prompt,
           config.userMetaData.phonenumber,
         );
+
+      console.log('[+] receveid runpod urls: ', generatedImageURLs);
 
       const sendPromises = generatedImageURLs.map(async (url) => {
         const payload: ICreateMessagePayload = {

@@ -75,7 +75,11 @@ export async function generateImagesUploadToFirebaseGetURL(
 
       try {
         const filename = `${clientid || 'test'}_${uuidv4()}_${index + 1}.png`;
-        const firebaseUrl = await uploadFileToFirebase(base64Content, filename);
+        const firebaseUrl = await uploadFileToFirebase(
+          base64Content,
+          clientid,
+          filename,
+        );
         return firebaseUrl;
       } catch (error) {
         console.error('Error processing image:', error);

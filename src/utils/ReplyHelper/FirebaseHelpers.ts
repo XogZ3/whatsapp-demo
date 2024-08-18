@@ -112,6 +112,7 @@ export async function getUserLoraDetails(clientid: string): Promise<{
 
 export async function uploadFileToFirebase(
   base64Content: string,
+  clientid: string,
   filename: string,
 ): Promise<string> {
   const storage = getStorageInstance();
@@ -120,7 +121,7 @@ export async function uploadFileToFirebase(
   const buffer = Buffer.from(base64Content, 'base64');
   const readableStream = Readable.from(buffer);
 
-  const filePath = `runpod_images/${filename}`;
+  const filePath = `runpod_images/${clientid}/${filename}`;
 
   const file = bucket.file(filePath);
   await new Promise((resolve, reject) => {

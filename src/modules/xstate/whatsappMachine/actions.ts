@@ -400,9 +400,9 @@ export const actionsFactory = (config: IMachineConfig): any => {
         }
       }
       await processAndSendImages()
-        .then(() => {
+        .then(async () => {
           console.log('[+] processAndSendImages done');
-          return config.storeInstance.setContext(
+          await config.storeInstance.setContext(
             config.userMetaData.phonenumber,
             'processing',
             false,

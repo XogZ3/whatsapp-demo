@@ -2,6 +2,8 @@
 
 import { assign, createMachine } from 'xstate';
 
+import { DEFAULT_CREDITS } from '@/utils/constants';
+
 import { actionsFactory } from './actions';
 import { guardsFactory } from './guards';
 import type { IMachineConfig, IMachineContext } from './types';
@@ -9,36 +11,72 @@ import type { IMachineConfig, IMachineContext } from './types';
 export const machineFactory = (config: IMachineConfig): any => {
   return createMachine(
     {
-      /** @xstate-layout N4IgpgJg5mDOIC5QHcAWBDALrdAHXAsugMaoCWAdmAMQCqAcgNL0DyA6vQPoCSAyr7QCiAbQAMAXUShcAe1hlMZGRSkgAHogAsAJgA0IAJ6JtAZgCMAOlHbRtgOymzmgBwA2MwFYAvl-1osOPhEpJRgFsoAQjLoAE4QlFB0AAoAMiwAggAinEkAEiwAKiy8YpJIILLyisqqGgjOzpoWdia2mmYAnK4doiaadvpGCCaudhZOHWZ2DZqirh7ampo+fhjYeIQk5FThFFGx8RSJSQBK3ADC3PQA4qWqlQpKKuV1rq5NLq7adh02zgumQbGbSuCzOUR2DyiTQjSEdEYrED+dZBLahXb7OIJagFWhFM7pFJ3coParPUCvL7NebQqYmEFmVxAhBmcwWbQ2WzmcxmXqmRHIwKbEI7SLRLFHagEdJXTgEQT0WjE6RyR41F6IN6WEy-DytEF2MxmZx6QyIZyWSaaDodaYeXnvPUCtZC4LbMJkAC26BgsG4FGIMk9uAANmBMDQ8oUWJwToJzoJuAA1QSZZUVVVk2qII0dZwWeaQ1wmDw2xrmZkjDrNEyQo3fKF9Za+JEujZu9Fen1wf2B4NhiPUKNFWPxxMptNmMoqqpPbP1Ro1tqdbq9frM-qiCxdMwghr2GzeFuC9tonZd329oOh8M0CIATSS6X46dJc41LIh2jBto84MZ-zws4zIeG8FgeC4dh2FyDi8h0zoBKeIoet6l4BteA40Oc6T0AmRISPcmbvhSOYQluUxQsWLiMiYtaVlMYJLHSoFzKyzgISiwruhYF49uh-a3tQABUr5EeqJEsu41aluYHQ6IaojOPCzJQdWUFQkpHgLAsowca6Z5hDAVAxFgCQEDIEBgCGUosJkggpJw1wKoIJzpAUqaibO4nqIgtHVu0UK8topY7gMZr1FSjTBbuJazDa8HHm2qLIRYRlgCZihHOZlnWQ+T4vgRJJieSPnDDqFgBaIQUhe4YVDHYozslpVVGlMriiF0elIdxaUZWZFlWdQ2G4fZnlqiVdR+RVnhVdYNVTJW9rjA4UJ5oaUJaV1yXcZ6A0htcYDGVgkC0BQuDoGQEDUBEtD3pw5xxpk3AFCUhUzuN87uE0zjQXyJp5hBpr1f8Fg8tozj0rWrSQltXHortOUHUdEYQKd52Xddj7Pq904Zl5E2ao1hq7nJSz9FBKkjFYczfD8HgOK4DSwx2OwI1ZSPpcdqNnRdV3DXhY1Zh+bygiWXLuFV2i2syjOgtBu4M1BpjWMzBkWGz+2HZzKNo7zQ7pPe8r0AU90sPQABi3AnPKaZvXjH0fjMS60l0PR9HV5qRTo9qmBBHU2qrKUaxzGWQEkesPYIbmCDk+RFILxGlZ4VJ2P0oFS8WrFA+a3zNJCikdFpwUGoHO17SHXPhxjeXYwn3l1Mn36p0WGetO42f1FBVjgh1Lj0qBEGl-D5da6HEBV3zOEC3bb71zm9JNNYbfBdC7UgsyJomFYSx-u8NijPCQ87LgqAyJgMhJDE16ZYk-OjTPxXzsafQFjNWn9CCinMr8ov-LyLWfx1EfMIJ8z4XyvsGG+Q4TgsAIEkAodcSpDH+FvfUpZRADycCYYCpVFhVVBlCeWWCmJ2B8C2CgA14DlBPNtUIhF8bzgALRMnCowjwy0frWiWCaXo0JgrAIxOKQ4UB6EOwkqWSwJpgq0WhH0BoOChj0jGDqKEGD2qzAhp1RKiFaHnlQnxPsN4IyiKFhJXcnQwTaWLIySELQWFDE3KDFeu57SeEWOxbRnEWaGVHqZLKe0TGJzqDoDebJJiF0aD8JRpDPH6SDiPZGJ0eaXUCXPBA7dxi6hLC0BYBcN4gyUj9Ro-Rax5gEcHXxKMJ6pIJiyaRBC1EuJLD9DeXc+iF0mL9Q00wBGgPPpfa+CQanzhsAxdq2DWTwneLyDwG89Sgzmj0TBMIPE+CAA */
       id: 'whatsappMachine',
       initial: 'onBoarding',
       context: {
         message: '',
         latestPrompt: '',
+        latestImprovedPrompt: '',
         processing: false,
         photosUploaded: 0,
-        creditsRemaining: 1,
+        creditsRemaining: DEFAULT_CREDITS,
+        language: 'english',
       } as IMachineContext,
       on: {
-        UNKNOWN_ISSUE: '.onBoarding',
+        UNKNOWN_ISSUE: {
+          target: '.onBoarding',
+          actions: 'sendIntroOptionsMessage',
+        },
       },
       states: {
         onBoarding: {
           entry: ['sendIntroOptionsMessage', 'assignDefaultValues'],
           on: {
             UPLOAD_PHOTOS: {
-              actions: assign({ message: () => 'Upload Photos' }),
+              actions: 'assignMessage',
               target: 'imagesIncomplete',
             },
+            LANGUAGE: {
+              actions: ['sendSelectLanguage', 'assignMessage'],
+            },
+            ENGLISH: {
+              actions: [
+                'assignMessage',
+                'assignLanguage',
+                'setLanguageInFirebase',
+                'sendSelectedLanguage',
+              ],
+              reenter: true,
+            },
+            portuguese: {
+              actions: [
+                'assignMessage',
+                'assignLanguage',
+                'setLanguageInFirebase',
+                'sendSelectedLanguage',
+              ],
+              reenter: true,
+            },
+            ARABIC: {
+              actions: [
+                'assignMessage',
+                'assignLanguage',
+                'setLanguageInFirebase',
+                'sendSelectedLanguage',
+              ],
+              reenter: true,
+            },
             PRICING: {
-              actions: [assign({ message: () => 'Pricing' }), 'sendPricing'],
+              actions: ['assignMessage', 'sendPricing'],
             },
             TUTORIAL: {
-              actions: [assign({ message: () => 'Tutorial' }), 'sendTutorial'],
+              actions: ['assignMessage', 'sendTutorial'],
             },
             MAIN_MENU: {
-              actions: assign({ message: () => 'MainMenu' }),
-              reenter: true,
+              actions: ['assignMessage', 'sendIntroOptionsMessage'],
+            },
+            '*': {
+              actions: ['sendIntroOptionsMessage'],
             },
           },
         },
@@ -48,7 +86,11 @@ export const machineFactory = (config: IMachineConfig): any => {
             PHOTO_RECEIVED: [
               {
                 guard: 'canUploadMorePhotos',
-                actions: ['incrementPhotoCount'],
+                actions: [
+                  'incrementPhotoCount',
+                  'sendPhotosReceivedCount',
+                  assign({ message: () => 'photo received' }),
+                ],
               },
               {
                 guard: 'hasUploadedEnoughPhotos',
@@ -113,12 +155,11 @@ export const machineFactory = (config: IMachineConfig): any => {
             CREATE_PHOTO: 'photoPrompting',
             BYPASS: {
               target: 'photoPrompting',
-              actions: assign({
-                message: (event: any) => event?.event?.message,
-              }),
+              actions: 'assignMessage',
             },
             CANCEL: {
               target: 'modelGeneratedPaid',
+              actions: 'assignMessage',
               reenter: true,
             },
           },
@@ -126,24 +167,42 @@ export const machineFactory = (config: IMachineConfig): any => {
         photoPrompting: {
           entry: ['sendPromptingInstruction'],
           on: {
-            CANCEL: 'modelGeneratedPaid',
-            PROMPT: {
+            PROMPT: [
+              {
+                actions: [
+                  // 'decrementCredits',
+                  'assignMessage',
+                  'assignPromptToContext',
+                  'getImprovedPromptAndAssignToContext',
+                  'sendPromptConfirmation',
+                ],
+                guard: 'machineIsAvailable',
+                // guard: 'hasSufficientCredits',
+                // reenter: true,
+              },
+              {
+                actions: ['sendPleaseWait'],
+              },
+            ],
+            USE_PROMPT: {
               actions: [
-                // 'decrementCredits',
-                assign({
-                  message: ({ event }) => event?.message,
-                  latestPrompt: ({ event }) => event?.message,
-                }),
-                'sendPromptConfirmation',
+                'assignMessage',
+                'assignPromptToContext',
+                'getImprovedPromptAndAssignToContext',
+                'assignProcessingTrue',
+                'sendPromptedPhoto',
+                'assignProcessingFalse',
               ],
-              // guard: 'hasSufficientCredits',
-              // reenter: true,
             },
-            YES: {
-              actions: ['sendPromptedPhoto'],
+            IMPROVE_PROMPT: {
+              actions: [
+                'assignMessage',
+                'getImprovedPromptAndAssignToContext',
+                'sendImprovedPromptConfirmation',
+              ],
             },
-            NO: {
-              actions: 'sendRequestNewPrompt',
+            CANCEL: {
+              actions: ['sendPromptingInstruction'],
             },
           },
         },

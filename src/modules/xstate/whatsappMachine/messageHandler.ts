@@ -21,6 +21,10 @@ export const handleMessage = async (
     [State.onBoarding]: {
       'upload photos': 'UPLOAD_PHOTOS',
       pricing: 'PRICING',
+      language: 'LANGUAGE',
+      english: 'ENGLISH',
+      portuguese: 'portuguese',
+      arabic: 'ARABIC',
       tutorial: 'TUTORIAL',
       'main menu': 'MAIN_MENU',
     },
@@ -47,10 +51,10 @@ export const handleMessage = async (
       'payment confirmed': 'PAYMENT_CONFIRMED',
     },
     [State.photoPrompting]: {
-      cancel: 'CANCEL',
       prompt: 'PROMPT',
-      yes: 'YES',
-      no: 'NO',
+      'use prompt': 'USE_PROMPT',
+      'improve prompt': 'IMPROVE_PROMPT',
+      cancel: 'CANCEL',
     },
   };
 
@@ -61,14 +65,14 @@ export const handleMessage = async (
 
   if (
     state === 'photoPrompting' &&
-    !['create photo', 'yes', 'no'].includes(userActionId)
+    !['cancel', 'use prompt', 'improve prompt'].includes(userActionId)
   ) {
     event = STATE_ACTION_EVENT_MAP[state].prompt;
     console.log('Prompt: ', message);
   } else if (STATE_ACTION_EVENT_MAP[state]) {
-    event = STATE_ACTION_EVENT_MAP[state][userActionId] || 'UNKNOWN_ISSUE';
+    event = STATE_ACTION_EVENT_MAP[state][userActionId] || 'onBoarding';
   } else {
-    event = 'UNKNOWN_ISSUE';
+    event = 'onBoarding';
   }
 
   console.log(

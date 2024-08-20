@@ -31,3 +31,31 @@ export const getBasePathname = (path: string) => {
 
   return path; // Return the path as is if no locale is detected
 };
+
+// Define a mapping of country codes to their most common languages
+const countryCodeToLanguageCode: Record<string, string> = {
+  '971': 'ar', // UAE
+  '1': 'en', // USA, Canada
+  '55': 'pt',
+  // Add more country codes and languages as needed
+  // Example: '44': 'English', // UK
+  // Example: '81': 'Japanese', // Japan
+};
+
+// Function to get the most common language based on clientid
+export function getLanguageCodeFromPhoneNumber(
+  clientid: string,
+): string | null {
+  // Extract the country code from the clientid
+  const countryCode = clientid.match(/^\d+/)?.[0];
+
+  if (!countryCode) {
+    return 'en';
+  }
+
+  // Find the most common language for the extracted country code
+  const language = countryCodeToLanguageCode[countryCode];
+
+  // Return the language or null if not found
+  return language || null;
+}

@@ -38,7 +38,7 @@ export async function POST(request: Request) {
     'sha1',
     process.env.FACEBOOK_APP_SECRET || 'N/A',
   );
-  hmac.update(body, 'ascii');
+  hmac.update(body, 'utf8');
   const expectedSignature = `sha1=${hmac.digest('hex')}`;
   console.log('expectedSignature', expectedSignature);
 

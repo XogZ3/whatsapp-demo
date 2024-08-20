@@ -1,12 +1,15 @@
 /* eslint-disable consistent-return */
 import { type AnyActorRef, createActor } from 'xstate';
 
+import firebase from '@/modules/firebase';
 import type { ICreateMessagePayload } from '@/modules/whatsapp/whatsapp';
 import { sendMessageToWhatsapp } from '@/modules/whatsapp/whatsapp';
 
 import { machineFactory } from './machine';
 import { handleMessage } from './messageHandler';
 import type { IStoreInstance, IUserMetaData, IWhatsappInstance } from './types';
+
+const firestore = firebase.getFirestore();
 // eslint-disable-next-line no-promise-executor-return
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 // Function to convert the current interpreter state to a string
@@ -32,7 +35,36 @@ export const whatsappStateTransition = async (
 ) => {
   if (!message || message.type !== 'text' || !message.text) return;
 
-  const storeInstance: IStoreInstance = {};
+  const storeInstance: IStoreInstance = {
+    setContext: async (clientId: string, key: string, value: any) => {
+      const clientDocRef = firestore
+        .collection('apps')
+        .doc(process.env.WABA_ID as string)
+        .collection('clients')
+        .doc(clientId);
+
+      try {
+        const clientDocSnapshot = await clientDocRef.get();
+
+        if (clientDocSnapshot.exists) {
+          const state = clientDocSnapshot.get('state');
+          const stateObj = JSON.parse(state);
+          stateObj.context[key] = value;
+
+          await clientDocRef.update({
+            state: JSON.stringify(stateObj),
+          });
+        } else {
+          // Handle case when client doesn't exist
+          console.error('Client does not exist');
+        }
+      } catch (error) {
+        // Handle error
+        console.error('Error updating Firestore value:', error);
+        throw error;
+      }
+    },
+  };
   const whatsappInstance: IWhatsappInstance = {
     lock: false,
     send: async (payload: ICreateMessagePayload) => {

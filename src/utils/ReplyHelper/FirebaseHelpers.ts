@@ -5,6 +5,8 @@ import firebase from '@/modules/firebase';
 import { getStorageInstance } from '@/modules/firebase/firebase';
 
 import { TRAINING_IMAGES_LIMIT } from '../constants';
+import { getLanguageCodeFromPhoneNumber } from '../helpers';
+import type { Language } from '../translations';
 
 const firestore = firebase.getFirestore();
 
@@ -18,6 +20,29 @@ export async function setUserState(state: string, clientid: string) {
   const updates: any = { state };
   await clientDoc.set(updates, { merge: true });
 }
+export async function setUserLanguage(language: Language, clientid: string) {
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid);
+  const updates: any = { language };
+  await clientDoc.set(updates, { merge: true });
+}
+
+export async function setSystemMessage(payload: any) {
+  // console.log('payload: ', JSON.stringify(payload, null, 2));
+  const wabaId = process.env.WABA_ID;
+  const clientid = payload.to;
+  // console.log('clientid: ', clientid);
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid);
+  await clientDoc.collection('messages').add(payload);
+}
 
 export async function getUserDetails(clientid: string) {
   const wabaId = process.env.WABA_ID;
@@ -27,12 +52,15 @@ export async function getUserDetails(clientid: string) {
     .collection('clients')
     .doc(clientid);
   const clientData = await clientDoc.get();
-  const { state, name, lastupdatedat } = clientData.data() || {};
+  const { state, name, lastupdatedat, language } = clientData.data() || {};
+  const userLanguage = language || getLanguageCodeFromPhoneNumber(clientid);
+
   return {
     state: state || '',
     name,
     phonenumber: clientid,
     lastupdatedat,
+    language: userLanguage,
   };
 }
 

@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
 // import { v4 as uuidv4 } from 'uuid';
 
+import { setSystemMessage } from '@/utils/ReplyHelper/FirebaseHelpers';
+
 export const x = {
   object: 'whatsapp_business_account',
   entry: [
@@ -540,7 +542,10 @@ async function createWAMessagePayload(payload: PropsFormatted) {
 export async function sendMessageToWhatsapp(payload: any) {
   const data = await createWAMessagePayload(payload);
   const res = await makeRequestToWhatsapp(data);
-  if (res) return true;
+  if (res) {
+    await setSystemMessage(data);
+    return true;
+  }
   // if (res?.data?.messages?.length) {
   //   // eslint-disable-next-line no-console
   //   console.log(

@@ -4,6 +4,7 @@ import { getImageURLFromWhatsapp } from '@/modules/whatsapp/whatsapp';
 import { whatsappStateTransition } from '@/modules/xstate/whatsappMachine';
 import type { IUserMetaData } from '@/modules/xstate/whatsappMachine/types';
 
+import { translateSystemMessageToEnglish } from '../translations';
 import {
   addTrainingImageURL,
   getUserDetails,
@@ -26,10 +27,19 @@ export async function replyToUser(messageObject: any) {
   } else message = extractText(messageObject);
 
   const userDetails = await getUserDetails(clientid);
-  const { state, name, phonenumber } = userDetails;
+  const { state, name, phonenumber, language } = userDetails;
+
+  const userLanguage = language ?? 'english';
+
+  const messageInEnglish = translateSystemMessageToEnglish(
+    message,
+    userLanguage,
+  );
+  console.log('[====] messageInEnglish: ', messageInEnglish);
+  // console.log('[====]: ', JSON.stringify(messageObject, null, 2));
   const newState = await whatsappStateTransition(
-    { type: 'text', text: message },
-    { state, name, phonenumber } as IUserMetaData,
+    { type: 'text', text: messageInEnglish },
+    { state, name, phonenumber, language: userLanguage } as IUserMetaData,
   );
   if (newState && newState !== state) {
     await setUserState(newState, clientid);

@@ -187,7 +187,6 @@ export const machineFactory = (config: IMachineConfig): any => {
             USE_PROMPT: {
               actions: [
                 'assignMessage',
-                'assignPromptToContext',
                 'getImprovedPromptAndAssignToContext',
                 'assignProcessingTrue',
                 'sendPromptedPhoto',

@@ -191,7 +191,6 @@ export const machineFactory = (config: IMachineConfig): any => {
                 'getImprovedPromptAndAssignToContext',
                 'assignProcessingTrue',
                 'sendPromptedPhoto',
-                'assignProcessingFalse',
               ],
             },
             IMPROVE_PROMPT: {

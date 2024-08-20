@@ -399,9 +399,21 @@ export const actionsFactory = (config: IMachineConfig): any => {
           await config.whatsappInstance.send(payload);
         }
       }
-      processAndSendImages().then(() =>
-        console.log('[+] processAndSendImages done'),
-      );
+      await processAndSendImages()
+        .then(() => {
+          console.log('[+] processAndSendImages done');
+          return config.storeInstance.setContext(
+            config.userMetaData.phonenumber,
+            'processing',
+            false,
+          );
+        })
+        .then(() => {
+          console.log('[+] Context updated successfully');
+        })
+        .catch((error) => {
+          console.error('[!] Error in processing or setting context:', error);
+        });
     },
     sendPleaseWait: async () => {
       const message = 'Please wait for the image to be generated first.';

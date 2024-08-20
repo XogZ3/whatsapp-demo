@@ -346,8 +346,8 @@ export const actionsFactory = (config: IMachineConfig): any => {
       };
       await config.whatsappInstance.send(payload);
     },
-    assignProcessingTrue: assign({ message: () => true }),
-    assignProcessingFalse: assign({ message: () => false }),
+    assignProcessingTrue: assign({ processing: () => true }),
+    assignProcessingFalse: assign({ processing: () => false }),
     sendPromptedPhoto: async (event: any) => {
       const language = event?.event?.userMetaData?.language;
       const prompt = event?.context?.latestImprovedPrompt;

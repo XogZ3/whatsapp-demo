@@ -22,7 +22,7 @@ export const guardsFactory = (_machineConfig: IMachineConfig): any => {
       return hasSufficient;
     },
     machineIsAvailable: (event: any) => {
-      const isAvailable = event?.context?.processing === true;
+      const isAvailable = event?.context?.processing === false;
       return isAvailable;
     },
   };

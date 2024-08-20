@@ -301,6 +301,8 @@ export const actionsFactory = (config: IMachineConfig): any => {
         'latestImprovedPrompt',
         improvedPrompt,
       );
+      // Return the Promise to ensure XState waits for this action to complete
+      return improvedPrompt;
     },
     sendPromptConfirmation: async (event: any) => {
       const language = event?.event?.userMetaData?.language;

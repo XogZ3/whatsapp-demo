@@ -22,6 +22,83 @@ export async function saveImageToDisk(base64Content: string, filename: string) {
   }
 }
 
+export async function createTrainingJob(
+  image_urls: string[],
+  model_name: string,
+) {
+  try {
+    const response = await fetch(
+      'https://api.runpod.ai/v2/rob1itdpqaacn3/run',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${runpodBearerToken}`,
+        },
+        body: JSON.stringify({
+          input: {
+            api_key: runpodApiKey,
+            image_urls,
+            model_name,
+          },
+        }),
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`RunPod request failed with status: ${response.status}`);
+    }
+
+    const jobResponse = await response.json();
+    return jobResponse.id;
+  } catch (error) {
+    console.error('Error creating training job:', error);
+    throw new Error('Failed to create training job');
+  }
+}
+/**
+ * 
+ * @param jobId 
+ *
+ * @returns {Promise<TrainingJobStatus>}
+interface TrainingJobOutput {
+  firebase_path: string;
+  firebase_url: string;
+  status: string;
+}
+
+interface TrainingJobStatus {
+  delayTime: number;
+  executionTime: number;
+  id: string;
+  output: TrainingJobOutput;
+  status: string;
+}
+ */
+export async function checkTrainingJob(jobId: string) {
+  try {
+    const response = await fetch(
+      `https://api.runpod.ai/v2/rob1itdpqaacn3/status/${jobId}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${runpodBearerToken}`,
+        },
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`RunPod request failed with status: ${response.status}`);
+    }
+
+    const jobStatus = await response.json();
+    return jobStatus;
+  } catch (error) {
+    console.error('Error checking training job status:', error);
+    throw new Error('Failed to check training job status');
+  }
+}
+
 export async function generateImagesUploadToFirebaseGetURL(
   improvedPromptFromGroq: string,
   clientid: string,

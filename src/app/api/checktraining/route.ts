@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 import firebase from '@/modules/firebase';
 import { checkTrainingJob } from '@/modules/runpod'; // Adjust the import path as needed
@@ -25,7 +25,15 @@ async function updateTrainingStatus(
   }
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  // Extract the api_key from the URL query parameters
+  const url = new URL(request.url);
+  const apiKey = url.searchParams.get('api_key');
+
+  // Check if the api_key is correct
+  if (apiKey !== 'aDx1svckb2Q4OEpsQ') {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
   try {
     const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
     const jobsRef = firestore.collection('training_jobs');

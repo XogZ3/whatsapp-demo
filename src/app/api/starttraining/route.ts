@@ -7,6 +7,31 @@ import { createTrainingJob } from '@/modules/runpod'; // Adjust the import path 
 
 const firestore = firebase.getFirestore();
 
+async function storeJobInFirestore(
+  jobId: string,
+  image_urls: string[],
+  model_name: string,
+  token: string,
+  userid: string,
+) {
+  try {
+    const jobRef = firestore.collection('training_jobs').doc(jobId);
+    await jobRef.set({
+      image_urls,
+      model_name,
+      token,
+      jobId,
+      status: 'IN_QUEUE',
+      userid,
+      createdAt: Date.now(),
+    });
+    console.log(`Firestore document created for jobId: ${jobId}`);
+  } catch (error) {
+    console.error(`Error storing job in Firestore for jobId: ${jobId}`, error);
+    throw error;
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -25,16 +50,7 @@ export async function POST(request: NextRequest) {
     const jobId = await createTrainingJob(image_urls, model_name);
 
     // Store information in Firestore
-    const jobRef = firestore.collection('training_jobs').doc(jobId);
-    await jobRef.set({
-      image_urls,
-      model_name,
-      token,
-      jobId,
-      status: 'IN_QUEUE',
-      userid,
-      createdAt: Date.now(),
-    });
+    await storeJobInFirestore(jobId, image_urls, model_name, token, userid);
 
     return NextResponse.json({ jobId, status: 'IN_QUEUE' }, { status: 200 });
   } catch (error) {

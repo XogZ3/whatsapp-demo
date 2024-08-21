@@ -289,21 +289,16 @@ export const actionsFactory = (config: IMachineConfig): any => {
         latestPrompt: prompt,
       };
     }),
-    getImprovedPromptAndAssignToContext: async (event: any) => {
-      const prompt = event?.context?.latestPrompt;
-      const improvedPrompt = await getImprovedPromptFromGroq(prompt);
+    assignImprovedPromptToPromptInContext: assign((event: any) => {
+      const improvedPrompt = event?.context?.latestImprovedPrompt;
       console.log(
-        '[+] getImprovedPromptAndAssignToContext | improvedPrompt: ',
+        '[+] assignImprovedPromptToPromptInContext | improvedPrompt: ',
         improvedPrompt,
       );
-      await config.storeInstance.setContext(
-        config.userMetaData.phonenumber,
-        'latestImprovedPrompt',
-        improvedPrompt,
-      );
-      // Return the Promise to ensure XState waits for this action to complete
-      return improvedPrompt;
-    },
+      return {
+        latestPrompt: improvedPrompt,
+      };
+    }),
     sendPromptConfirmation: async (event: any) => {
       const language = event?.event?.userMetaData?.language;
       const prompt = event?.context?.latestPrompt;
@@ -327,26 +322,84 @@ export const actionsFactory = (config: IMachineConfig): any => {
       };
       await config.whatsappInstance.send(payload);
     },
-    sendImprovedPromptConfirmation: async (event: any) => {
+    sendImprovedPromptConfirmationAndSetContext: async (event: any) => {
       const language = event?.event?.userMetaData?.language;
-      console.log(
-        '[+] sendImprovedPromptConfirmation: ',
-        JSON.stringify(event, null, 2),
-      );
+      // console.log(
+      //   '[+] sendImprovedPromptConfirmationAndSetContext: ',
+      //   JSON.stringify(event, null, 2),
+      // );
       const prompt = event?.context?.latestPrompt;
-      const improvedPrompt = await getImprovedPromptFromGroq(prompt);
-      const message = `${getTranslation('prompt confirmation', language)}
->>> ${improvedPrompt}`;
-      // TODO: implement language in buttons
-      const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.phonenumber,
-        quickReply: true,
-        button1: 'Use Prompt',
-        button2: 'Improve Prompt',
-        button3: 'Cancel',
-        msgBody: message,
-      };
-      await config.whatsappInstance.send(payload);
+      async function getImprovedPromptSetItInContext() {
+        const improvedPrompt = await getImprovedPromptFromGroq(prompt);
+        await config.storeInstance.setContext(
+          config.userMetaData.phonenumber,
+          'latestImprovedPrompt',
+          improvedPrompt,
+        );
+        return improvedPrompt;
+      }
+      getImprovedPromptSetItInContext()
+        .then(async (improvedPrompt: string) => {
+          // console.log('[+] improved prompt set it context');
+          const message = `${getTranslation('prompt confirmation', language)}
+  >>> ${improvedPrompt}`;
+          // TODO: implement language in buttons
+          const payload: ICreateMessagePayload = {
+            phoneNumber: config.userMetaData.phonenumber,
+            quickReply: true,
+            button1: 'Use Prompt',
+            button2: 'Improve Prompt',
+            button3: 'Cancel',
+            msgBody: message,
+          };
+          await config.whatsappInstance.send(payload);
+        })
+        .then(() => {
+          console.log('[+] sendImprovedPromptConfirmation success');
+        })
+        .catch((error) => {
+          console.error('[!] Error in sending prompt confirmation msg:', error);
+        });
+    },
+    sendReImprovedPromptConfirmationAndSetContext: async (event: any) => {
+      const language = event?.event?.userMetaData?.language;
+      // console.log(
+      //   '[+] sendReImprovedPromptConfirmationAndSetContext: ',
+      //   JSON.stringify(event, null, 2),
+      // );
+      const improvedPrompt = event?.context?.latestImprovedPrompt;
+      async function getImprovedPromptSetItInContext() {
+        const reImprovedPrompt =
+          await getImprovedPromptFromGroq(improvedPrompt);
+        await config.storeInstance.setContext(
+          config.userMetaData.phonenumber,
+          'latestImprovedPrompt',
+          reImprovedPrompt,
+        );
+        return reImprovedPrompt;
+      }
+      getImprovedPromptSetItInContext()
+        .then(async (reImprovedPrompt: string) => {
+          // console.log('[+] improved prompt set it context');
+          const message = `${getTranslation('prompt confirmation', language)}
+  >>> ${reImprovedPrompt}`;
+          // TODO: implement language in buttons
+          const payload: ICreateMessagePayload = {
+            phoneNumber: config.userMetaData.phonenumber,
+            quickReply: true,
+            button1: 'Use Prompt',
+            button2: 'Improve Prompt',
+            button3: 'Cancel',
+            msgBody: message,
+          };
+          await config.whatsappInstance.send(payload);
+        })
+        .then(() => {
+          console.log('[+] sendImprovedPromptConfirmation success');
+        })
+        .catch((error) => {
+          console.error('[!] Error in sending prompt confirmation msg:', error);
+        });
     },
     assignProcessingTrue: assign({ processing: () => true }),
     assignProcessingFalse: assign({ processing: () => false }),
@@ -382,14 +435,6 @@ export const actionsFactory = (config: IMachineConfig): any => {
           await Promise.all(sendPromises);
 
           console.log('All images sent successfully.');
-
-          message = `Cool photo! Just send another prompt.`;
-          const payload: ICreateMessagePayload = {
-            phoneNumber: config.userMetaData.phonenumber,
-            text: true,
-            msgBody: message,
-          };
-          await config.whatsappInstance.send(payload);
         } else {
           message =
             'Uh-oh. Something went wrong, please try again after some time.';
@@ -410,8 +455,15 @@ export const actionsFactory = (config: IMachineConfig): any => {
             false,
           );
         })
-        .then(() => {
+        .then(async () => {
           console.log('[+] Context updated successfully');
+          message = `Cool photo! Just send another prompt.`;
+          const payload: ICreateMessagePayload = {
+            phoneNumber: config.userMetaData.phonenumber,
+            text: true,
+            msgBody: message,
+          };
+          await config.whatsappInstance.send(payload);
         })
         .catch((error) => {
           console.error('[!] Error in processing or setting context:', error);
@@ -439,6 +491,16 @@ export const actionsFactory = (config: IMachineConfig): any => {
       // Logic to send remaining credits
       const language = event?.event?.userMetaData?.language;
       const message = `${getTranslation('credits remaining', language)}: ${event?.context?.creditsRemaining}`;
+      const payload: ICreateMessagePayload = {
+        phoneNumber: config.userMetaData.phonenumber,
+        text: true,
+        msgBody: message,
+      };
+      await config.whatsappInstance.send(payload);
+    },
+    sendTestMessage: async (event: any) => {
+      console.log('[!] test: ', JSON.stringify(event, null, 2));
+      const message = `ping`;
       const payload: ICreateMessagePayload = {
         phoneNumber: config.userMetaData.phonenumber,
         text: true,

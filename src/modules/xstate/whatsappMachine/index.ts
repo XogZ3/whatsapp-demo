@@ -51,6 +51,8 @@ export const whatsappStateTransition = async (
           const stateObj = JSON.parse(state);
           stateObj.context[key] = value;
 
+          console.log('[===] firebase update key value: ', key, value);
+
           await clientDocRef.update({
             state: JSON.stringify(stateObj),
           });

@@ -108,9 +108,6 @@ export async function generateImagesUploadToFirebaseGetURL(
 
     console.log('[+] got file name: ', lora_filename);
 
-    // const improvedPromptFromGroq = await getImprovedPromptFromGroq(prompt);
-    // console.log('[+] got improved prompt: ', improvedPromptFromGroq);
-
     const response = await fetch(runpodURL, {
       method: 'POST',
       headers: {

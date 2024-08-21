@@ -5,7 +5,7 @@ import firebase from '@/modules/firebase';
 import { getStorageInstance } from '@/modules/firebase/firebase';
 
 import { TRAINING_IMAGES_LIMIT } from '../constants';
-import { getLanguageCodeFromPhoneNumber } from '../helpers';
+import { getBaseUrl, getLanguageCodeFromPhoneNumber } from '../helpers';
 import type { Language } from '../translations';
 
 const firestore = firebase.getFirestore();
@@ -28,6 +28,17 @@ export async function setUserLanguage(language: Language, clientid: string) {
     .collection('clients')
     .doc(clientid);
   const updates: any = { language };
+  await clientDoc.set(updates, { merge: true });
+}
+
+async function setUserTrainingToken(token: string, clientid: string) {
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid);
+  const updates: any = { trainingToken: token, trainingState: 'trainingNow' };
   await clientDoc.set(updates, { merge: true });
 }
 
@@ -65,35 +76,49 @@ export async function getUserDetails(clientid: string) {
 }
 
 export async function callTrainingAPI(
-  token: string,
   clientid: string,
   imageURLs: string[],
-) {
-  // const trainingURL = '';
+): Promise<{ jobId?: string; status?: string; error?: string }> {
+  const token = uuidv4();
   const data = {
+    image_urls: imageURLs,
+    model_name: `person${clientid}`,
     token,
-    clientid,
-    imageURLs,
+    userid: clientid,
   };
-  console.log('Calling training api..', JSON.stringify(data, null, 2));
 
-  // TODO: Update actual api
+  try {
+    const response = await fetch(`${getBaseUrl()}/api/starttraining`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
 
-  // try {
-  //   const ret = await fetch(trainingURL, {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify(data),
-  //   });
-  //   if (ret.ok) {
-  //     const responseData = await ret.json();
-  //     return responseData;
-  //   }
-  //   return ret;
-  // } catch (error) {
-  //   console.log('TRAINING SERVICE FAILED', error);
-  //   return error;
-  // }
+    if (!response.ok) {
+      const errorResponse = await response.json();
+      throw new Error(
+        `Failed to start training: ${errorResponse.error || response.statusText}`,
+      );
+    }
+
+    const result = await response.json();
+
+    console.log('Training job started successfully:', result);
+
+    // saving token for validation for /api/training
+    await setUserTrainingToken(token, clientid);
+
+    return { jobId: result.jobId, status: result.status };
+  } catch (error) {
+    console.error('Error calling training API:', error);
+    let errorMessage = 'An unknown error occurred';
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    return { error: errorMessage };
+  }
 }
 
 export async function addTrainingImageURL(clientid: string, imageURL: string) {
@@ -110,9 +135,7 @@ export async function addTrainingImageURL(clientid: string, imageURL: string) {
 
   // After enough photos, update trainingState and call api
   if (existingURLs.length >= TRAINING_IMAGES_LIMIT) {
-    await clientDoc.set({ trainingState: 'trainingNow' }, { merge: true });
-    const token = uuidv4();
-    await callTrainingAPI(token, clientid, existingURLs);
+    await callTrainingAPI(clientid, existingURLs);
     return;
   }
 

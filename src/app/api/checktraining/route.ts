@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 
 import firebase from '@/modules/firebase';
 import { checkTrainingJob } from '@/modules/runpod'; // Adjust the import path as needed
+import { getBaseUrl } from '@/utils/helpers';
 
 const firestore = firebase.getFirestore();
 
@@ -11,7 +12,7 @@ async function updateTrainingStatus(
   loraURL: string,
   loraFilename: string,
 ) {
-  const response = await fetch('https://fotolabs.ai/api/training', {
+  const response = await fetch(`${getBaseUrl()}/api/training`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,

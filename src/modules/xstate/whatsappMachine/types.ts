@@ -9,7 +9,7 @@ export interface IMachineConfig {
 }
 
 export interface IStoreInstance {
-  setContext: (clientId: string, key: string, value: any) => Promise<void>;
+  setContext: (clientid: string, key: string, value: any) => Promise<void>;
 }
 
 export interface IWhatsappInstance {

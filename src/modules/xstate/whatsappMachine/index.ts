@@ -36,12 +36,12 @@ export const whatsappStateTransition = async (
   if (!message || message.type !== 'text' || !message.text) return;
 
   const storeInstance: IStoreInstance = {
-    setContext: async (clientId: string, key: string, value: any) => {
+    setContext: async (clientid: string, key: string, value: any) => {
       const clientDocRef = firestore
         .collection('apps')
         .doc(process.env.WABA_ID as string)
         .collection('clients')
-        .doc(clientId);
+        .doc(clientid);
 
       try {
         const clientDocSnapshot = await clientDocRef.get();

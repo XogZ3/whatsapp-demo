@@ -57,8 +57,8 @@ export async function createTrainingJob(
   }
 }
 /**
- * 
- * @param jobId 
+ *
+ * @param jobId
  *
  * @returns {Promise<TrainingJobStatus>}
 interface TrainingJobOutput {

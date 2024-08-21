@@ -34,42 +34,23 @@ export async function GET(request: NextRequest) {
   if (apiKey !== 'aDx1svckb2Q4OEpsQ') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-
   try {
     const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
     const jobsRef = firestore.collection('training_jobs');
-
-    // Check if the 'training_jobs' collection exists
-    const collectionExists = await jobsRef.limit(1).get();
-    if (collectionExists.empty) {
-      return NextResponse.json(
-        { error: 'No training jobs found' },
-        { status: 404 },
-      );
-    }
-
     const query = jobsRef.where('status', 'not-in', ['COMPLETED', 'FAILED']);
+
     const snapshot = await query.get();
 
     // Check if the snapshot is empty
     if (snapshot.empty) {
       return NextResponse.json(
         { error: 'No active training jobs found' },
-        { status: 404 },
+        { status: 200 }, // sending success, as this is not a bad thing
       );
     }
 
     const updatePromises = snapshot.docs.map(async (doc) => {
       const jobData = doc.data();
-
-      // Check if jobData contains the specific jobId
-      if (!jobData.jobId) {
-        return NextResponse.json(
-          { error: `Job ID missing for document ${doc.id}` },
-          { status: 400 },
-        );
-      }
-
       const jobStatus = await checkTrainingJob(jobData.jobId);
 
       let newStatus = jobStatus.status;

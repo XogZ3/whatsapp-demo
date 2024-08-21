@@ -56,11 +56,7 @@ export async function createTrainingJob(
     throw new Error('Failed to create training job');
   }
 }
-/**
- *
- * @param jobId
- *
- * @returns {Promise<TrainingJobStatus>}
+
 interface TrainingJobOutput {
   firebase_path: string;
   firebase_url: string;
@@ -74,8 +70,10 @@ interface TrainingJobStatus {
   output: TrainingJobOutput;
   status: string;
 }
- */
-export async function checkTrainingJob(jobId: string) {
+
+export async function checkTrainingJob(
+  jobId: string,
+): Promise<TrainingJobStatus> {
   try {
     const response = await fetch(
       `https://api.runpod.ai/v2/rob1itdpqaacn3/status/${jobId}`,
@@ -95,7 +93,7 @@ export async function checkTrainingJob(jobId: string) {
     return jobStatus;
   } catch (error) {
     console.error('Error checking training job status:', error);
-    throw new Error('Failed to check training job status');
+    throw new Error(`Failed to check training job status: ${error}`);
   }
 }
 

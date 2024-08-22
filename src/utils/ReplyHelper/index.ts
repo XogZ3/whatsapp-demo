@@ -9,7 +9,6 @@ import { translateSystemMessageToEnglish } from '../translations';
 import {
   addTrainingImageURL,
   getUserDetails,
-  setUserLanguage,
   setUserState,
 } from './FirebaseHelpers';
 import { extractImageID, extractText } from './MessageParsers';
@@ -21,11 +20,15 @@ export async function replyToUser(messageObject: any) {
   const { clientid } = messageObject;
 
   const userDetails = await getUserDetails(clientid);
-  const { state, name, phonenumber, language, trainingImageURLs } = userDetails;
+  const {
+    state,
+    name,
+    phonenumber,
+    language = 'english',
+    trainingImageURLs,
+  } = userDetails;
   if (!state) {
     message = extractText(messageObject);
-    // init default language
-    await setUserLanguage('english', clientid);
   } else {
     const stateObj = JSON.parse(state);
     const currentState = stateObj.value;

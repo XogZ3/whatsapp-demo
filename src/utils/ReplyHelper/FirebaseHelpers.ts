@@ -129,7 +129,10 @@ export async function callTrainingAPI(
   }
 }
 
-export async function addTrainingImageURL(clientid: string, imageURL: string) {
+export async function addTrainingImageURLandIncreaseCount(
+  clientid: string,
+  imageURL: string,
+) {
   const wabaId = process.env.WABA_ID;
   const clientDoc = firestore
     .collection('apps')
@@ -139,6 +142,7 @@ export async function addTrainingImageURL(clientid: string, imageURL: string) {
 
   await clientDoc.update({
     trainingImageURLs: FieldValue.arrayUnion(imageURL),
+    photosUploaded: FieldValue.increment(1),
   });
 }
 

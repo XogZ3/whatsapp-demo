@@ -85,7 +85,6 @@ export const machineFactory = (config: IMachineConfig): any => {
             PHOTO_RECEIVED: {
               guard: 'canUploadMorePhotos',
               actions: [
-                'incrementPhotoCount',
                 'sendPhotosReceivedCount',
                 assign({ message: () => 'photo received' }),
               ],

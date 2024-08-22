@@ -7,7 +7,7 @@ import type { IUserMetaData } from '@/modules/xstate/whatsappMachine/types';
 import { TRAINING_IMAGES_LIMIT } from '../constants';
 import { translateSystemMessageToEnglish } from '../translations';
 import {
-  addTrainingImageURL,
+  addTrainingImageURLandIncreaseCount,
   getPhotoCount,
   getUserDetails,
   setUserState,
@@ -44,7 +44,7 @@ export async function replyToUser(messageObject: any) {
           imageID,
           clientid,
         );
-        await addTrainingImageURL(clientid, imageURL);
+        await addTrainingImageURLandIncreaseCount(clientid, imageURL);
         message = 'Photo Received';
       }
       // Trigger generate model with sufficient images
@@ -62,7 +62,7 @@ export async function replyToUser(messageObject: any) {
           imageID,
           clientid,
         );
-        await addTrainingImageURL(clientid, imageURL);
+        await addTrainingImageURLandIncreaseCount(clientid, imageURL);
         console.log(
           `[+] received ${uploadedPhotosCount} images, generating model now..`,
         );

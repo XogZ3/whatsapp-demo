@@ -147,9 +147,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const message = getTranslation('photo upload instruction', language);
       const payload: ICreateMessagePayload = {
         phoneNumber: config.userMetaData.phonenumber,
-        quickReply: true,
-        button1: 'Cancel',
-        button2: 'Bypass',
+        text: true,
         msgBody: message,
       };
       await config.whatsappInstance.send(payload);
@@ -283,8 +281,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       // TODO: implement language in buttons
       const payload: ICreateMessagePayload = {
         phoneNumber: config.userMetaData.phonenumber,
-        quickReply: true,
-        button1: 'Cancel',
+        text: true,
         msgBody: message,
       };
       await config.whatsappInstance.send(payload);

@@ -23,7 +23,7 @@ export const handleMessage = async (
       pricing: 'PRICING',
       language: 'LANGUAGE',
       english: 'ENGLISH',
-      portuguese: 'portuguese',
+      portuguese: 'PORTUGUESE',
       arabic: 'ARABIC',
       tutorial: 'TUTORIAL',
       'main menu': 'MAIN_MENU',

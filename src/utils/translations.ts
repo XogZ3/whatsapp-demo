@@ -43,6 +43,7 @@ type TranslationKeys =
   | 'main menu'
   | 'photo received'
   | 'model generated'
+  | 'model generated request prompt'
   | 'buy credits'
   | 'payment confirmed';
 
@@ -142,9 +143,9 @@ export const TRANSLATION_MAP: Record<
     ar: 'العربية المختارة',
   },
   'generating model': {
-    en: "Generating model... Will send message once it's ready. It may take 20-30 minutes.",
-    pt: 'Gerando modelo... Enviaremos uma mensagem quando estiver pronto. Pode levar de 20 a 30 minutos.',
-    ar: 'جاري إنشاء النموذج... سنرسل لك رسالة بمجرد أن يكون جاهزًا. قد يستغرق ذلك من 20 إلى 30 دقيقة.',
+    en: "Generating model... Will send message once it's ready. It may take 50-60 minutes.",
+    pt: 'Gerando modelo... Enviaremos uma mensagem quando estiver pronto. Pode levar de 50 a 60 minutos.',
+    ar: 'جاري إنشاء النموذج... سنرسل لك رسالة بمجرد أن يكون جاهزًا. قد يستغرق ذلك من 60 إلى 30 دقيقة.',
   },
   'processing payment': {
     en: 'Processing your payment...',
@@ -190,6 +191,20 @@ export const TRANSLATION_MAP: Record<
     en: 'Your model has been successfully generated! :D',
     pt: 'Seu modelo foi gerado com sucesso! :D',
     ar: 'تم إنشاء النموذج الخاص بك بنجاح! :D',
+  },
+  'model generated request prompt': {
+    en: `Your model has been successfully generated! :D
+Send a prompt and watch the magic happen.
+
+Example: man sitting on a park bench or woman posing for a candid photo at office`,
+    pt: `Seu modelo foi gerado com sucesso! :D
+Envie um prompt e veja a mágica acontecer.
+
+Exemplo: homem sentado em um banco de parque ou mulher posando para uma foto espontânea no escritório`,
+    ar: `تم إنشاء النموذج الخاص بك بنجاح! :D
+أرسل موجهًا وشاهد السحر يحدث.
+
+مثال: رجل يجلس على مقعد في الحديقة أو امرأة تتظاهر لالتقاط صورة عفوية في المكتب`,
   },
   'sample photos': {
     en: 'Here you go, some sample photos, some blurred..',

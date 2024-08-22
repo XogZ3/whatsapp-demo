@@ -49,7 +49,7 @@ export const machineFactory = (config: IMachineConfig): any => {
               ],
               reenter: true,
             },
-            portuguese: {
+            PORTUGUESE: {
               actions: [
                 'assignMessage',
                 'assignLanguage',

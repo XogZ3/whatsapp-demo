@@ -9,6 +9,7 @@ import { translateSystemMessageToEnglish } from '../translations';
 import {
   addTrainingImageURL,
   getUserDetails,
+  setUserLanguage,
   setUserState,
 } from './FirebaseHelpers';
 import { extractImageID, extractText } from './MessageParsers';
@@ -23,6 +24,8 @@ export async function replyToUser(messageObject: any) {
   const { state, name, phonenumber, language, trainingImageURLs } = userDetails;
   if (!state) {
     message = extractText(messageObject);
+    // init default language
+    await setUserLanguage('english', clientid);
   } else {
     const stateObj = JSON.parse(state);
     const currentState = stateObj.value;
@@ -48,7 +51,8 @@ export async function replyToUser(messageObject: any) {
       // Trigger generate model with sufficient images
       else if (
         Array.isArray(trainingImageURLs) &&
-        trainingImageURLs.length >= TRAINING_IMAGES_LIMIT
+        // 1 less than required # of images, this will trigger model generation
+        trainingImageURLs.length >= TRAINING_IMAGES_LIMIT - 1
       ) {
         const imageIndex = trainingImageURLs ? trainingImageURLs.length : 0;
         console.log('[+] # of trainingImageURLs: ', imageIndex);

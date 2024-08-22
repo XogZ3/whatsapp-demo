@@ -59,10 +59,6 @@ export const actionsFactory = (config: IMachineConfig): any => {
     },
     incrementPhotoCount: assign((event: any) => {
       console.log(
-        'incrementPhotoCount event: ',
-        JSON.stringify(event, null, 2),
-      );
-      console.log(
         'incremented vale: ',
         (event?.context?.photosUploaded || 0) + 1,
       );
@@ -97,10 +93,10 @@ export const actionsFactory = (config: IMachineConfig): any => {
     //   language: ({ event }) => event?.userMetaData?.language,
     // }),
     sendSelectLanguage: async (event: any) => {
-      console.log(
-        '[+] sending select language message on event: ',
-        JSON.stringify(event, null, 2),
-      );
+      // console.log(
+      //   '[+] sending select language message on event: ',
+      //   JSON.stringify(event, null, 2),
+      // );
       const language = event?.event?.userMetaData?.language;
       const message = getTranslation('select language', language);
       const payload: ICreateMessagePayload = {
@@ -114,7 +110,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       await config.whatsappInstance.send(payload);
     },
     assignLanguage: assign(({ event }) => {
-      console.log('assignLanguage event: ', JSON.stringify(event, null, 2));
+      // console.log('assignLanguage event: ', JSON.stringify(event, null, 2));
       return {
         language: event?.message,
       };
@@ -198,7 +194,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       await getTrainingImageURLsFromFirebase()
         .then(async (trainingImageURLs) => {
           const response = await callTrainingAPI(clientid, trainingImageURLs);
-          console.log('[+] callTrainingAPI called');
+          // console.log('[+] callTrainingAPI called');
           return response;
         })
         .then((response) => {
@@ -219,9 +215,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       // TODO: implement language in buttons
       const payload: ICreateMessagePayload = {
         phoneNumber: config.userMetaData.phonenumber,
-        quickReply: true,
-        button1: 'Cancel',
-        button2: 'Bypass',
+        text: true,
         msgBody: message,
       };
       await config.whatsappInstance.send(payload);

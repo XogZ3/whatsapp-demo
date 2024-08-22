@@ -1,6 +1,22 @@
 import firebase from '@/modules/firebase';
+import {
+  type ICreateMessagePayload,
+  sendMessageToWhatsapp,
+} from '@/modules/whatsapp/whatsapp';
+import { getTranslation, type Language } from '@/utils/translations';
 
 const firestore = firebase.getFirestore();
+
+async function sendPromptingInstruction(clientid: string, language: Language) {
+  const message = getTranslation('model generated request prompt', language);
+  // TODO: implement language in buttons
+  const payload: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    text: true,
+    msgBody: message,
+  };
+  await sendMessageToWhatsapp(payload);
+}
 
 export async function POST(request: Request) {
   try {
@@ -27,7 +43,7 @@ export async function POST(request: Request) {
       .doc(clientid);
 
     const clientData = await clientDoc.get();
-    const { trainingToken } = clientData.data() || {};
+    const { language, trainingToken } = clientData.data() || {};
 
     console.log('expectedToken', trainingToken);
 
@@ -36,11 +52,13 @@ export async function POST(request: Request) {
       // Hard transition xstate
       const updates: any = {
         state:
-          '{"status":"stopped","context":{"processing":false,"photosUploaded":0,"creditsRemaining":1,"loraURL":"","loraFilename":""},"value":"photoPrompting","children":{},"historyValue":{},"tags":[]}',
+          '{"status":"stopped","context":{"processing":false,"photosUploaded":15,"creditsRemaining":1},"value":"photoPrompting","children":{},"historyValue":{},"tags":[]}',
         loraURL,
         loraFilename,
       };
       await clientDoc.set(updates, { merge: true });
+
+      await sendPromptingInstruction(clientid, language || 'english');
 
       return new Response('success', { status: 200 });
     }

@@ -4,6 +4,7 @@ import { getImageURLFromWhatsapp } from '@/modules/whatsapp/whatsapp';
 import { whatsappStateTransition } from '@/modules/xstate/whatsappMachine';
 import type { IUserMetaData } from '@/modules/xstate/whatsappMachine/types';
 
+import { TRAINING_IMAGES_LIMIT } from '../constants';
 import { translateSystemMessageToEnglish } from '../translations';
 import {
   addTrainingImageURL,
@@ -15,20 +16,61 @@ import { extractImageID, extractText } from './MessageParsers';
 // eslint-disable-next-line consistent-return
 export async function replyToUser(messageObject: any) {
   let message;
-  const messageObjectType = messageObject.type;
+  const messageType = messageObject.message.type;
   const { clientid } = messageObject;
+
+  const userDetails = await getUserDetails(clientid);
+  const { state, name, phonenumber, language, trainingImageURLs } = userDetails;
+  const stateObj = JSON.parse(state);
+  const currentState = stateObj.value;
+
   // Handle receiving images
-  if (messageObjectType === 'image') {
+  // Accept images in imagesIncomplete state
+  if (currentState === 'imagesIncomplete' && messageType === 'image') {
+    if (trainingImageURLs.length < TRAINING_IMAGES_LIMIT) {
+      console.log(
+        'trainingImageURLs: ',
+        trainingImageURLs,
+        trainingImageURLs.length,
+      );
+      const imageID = extractImageID(messageObject);
+      const imageURL = await getImageURLFromWhatsapp(imageID);
+      console.log('imageURL', imageURL);
+      await addTrainingImageURL(clientid, imageURL);
+      message = 'Photo Received';
+    }
+    // Trigger generate model with sufficient images
+    else if (trainingImageURLs.length >= TRAINING_IMAGES_LIMIT) {
+      message = 'Generate Model';
+    }
+  }
+  // Accept image for image-to-image generation
+  else if (currentState === 'photoPrompting' && messageType === 'image') {
+    // TODO: handle image generation with image reference
+    return;
+  }
+  // Reject images in all other cases
+  else if (messageType === 'image') {
+    // do nothing ?
+    return;
+  }
+
+  if (
+    messageType === 'image' &&
+    currentState === 'imagesIncomplete' &&
+    trainingImageURLs.length < TRAINING_IMAGES_LIMIT
+  ) {
+    console.log(
+      'trainingImageURLs: ',
+      trainingImageURLs,
+      trainingImageURLs.length,
+    );
     const imageID = extractImageID(messageObject);
     const imageURL = await getImageURLFromWhatsapp(imageID);
     console.log('imageURL', imageURL);
     await addTrainingImageURL(clientid, imageURL);
     message = 'Photo Received';
   } else message = extractText(messageObject);
-
-  const userDetails = await getUserDetails(clientid);
-  const { state, name, phonenumber, language } = userDetails;
-
   const userLanguage = language ?? 'english';
 
   const messageInEnglish = translateSystemMessageToEnglish(

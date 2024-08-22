@@ -1,10 +1,15 @@
+import console from 'console';
 import { assign } from 'xstate';
 
 import { generateImagesUploadToFirebaseGetURL } from '@/modules/runpod';
 import type { ICreateMessagePayload } from '@/modules/whatsapp/whatsapp';
 import { DEFAULT_CREDITS, TRAINING_IMAGES_LIMIT } from '@/utils/constants';
 import { getImprovedPromptFromGroq } from '@/utils/groq';
-import { setUserLanguage } from '@/utils/ReplyHelper/FirebaseHelpers';
+import {
+  callTrainingAPI,
+  getTrainingImageURLs,
+  setUserLanguage,
+} from '@/utils/ReplyHelper/FirebaseHelpers';
 import { getTranslation } from '@/utils/translations';
 
 import type { IMachineConfig, IWhatsappInstance } from './types';
@@ -183,6 +188,30 @@ export const actionsFactory = (config: IMachineConfig): any => {
         msgBody: message,
       };
       await config.whatsappInstance.send(payload);
+    },
+    callStartTrainingAPI: async () => {
+      const clientid = config.userMetaData.phonenumber;
+      async function getTrainingImageURLsFromFirebase() {
+        const trainingImageURLs = await getTrainingImageURLs(clientid);
+        return trainingImageURLs || [];
+      }
+      await getTrainingImageURLsFromFirebase()
+        .then(async (trainingImageURLs) => {
+          const response = await callTrainingAPI(clientid, trainingImageURLs);
+          console.log('[+] callTrainingAPI called');
+          return response;
+        })
+        .then((response) => {
+          if (response.jobId) console.log('[+] callTrainingAPI job created');
+          if (response.error)
+            console.error('[!] callTrainingAPI call error', response.error);
+        })
+        .catch((error) => {
+          console.error(
+            '[!] Unhandled error in callStartTrainingAPI action: ',
+            error,
+          );
+        });
     },
     sendGeneratingModel: async (event: any) => {
       const language = event?.context?.language;

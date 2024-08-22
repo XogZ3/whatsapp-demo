@@ -84,21 +84,19 @@ export const machineFactory = (config: IMachineConfig): any => {
         imagesIncomplete: {
           entry: ['sendPhotoUploadInstruction'],
           on: {
-            PHOTO_RECEIVED: [
-              {
-                guard: 'canUploadMorePhotos',
-                actions: [
-                  'incrementPhotoCount',
-                  'sendPhotosReceivedCount',
-                  assign({ message: () => 'photo received' }),
-                ],
-              },
-              {
-                guard: 'hasUploadedEnoughPhotos',
-                target: 'generatingModel',
-                actions: ['incrementPhotoCount'],
-              },
-            ],
+            PHOTO_RECEIVED: {
+              guard: 'canUploadMorePhotos',
+              actions: [
+                'incrementPhotoCount',
+                'sendPhotosReceivedCount',
+                assign({ message: () => 'photo received' }),
+              ],
+            },
+            GENERATE_MODEL: {
+              guard: 'hasUploadedEnoughPhotos',
+              target: 'generatingModel',
+              actions: ['callStartTrainingAPI'],
+            },
             BYPASS: {
               actions: assign({ message: () => 'Bypass imagesIncomplete' }),
               target: 'generatingModel',

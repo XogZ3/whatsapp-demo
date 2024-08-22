@@ -30,6 +30,7 @@ export const handleMessage = async (
     },
     [State.imagesIncomplete]: {
       'photo received': 'PHOTO_RECEIVED',
+      'generate model': 'GENERATE_MODEL',
       bypass: 'BYPASS',
       cancel: 'CANCEL',
     },

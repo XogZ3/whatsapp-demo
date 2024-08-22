@@ -16,17 +16,19 @@ export function extractText(messageObject: any) {
 }
 
 export interface MessageObject {
-  from: string;
-  id: string;
-  timestamp: string;
-  type: 'image';
-  image: {
-    mime_type: string;
-    sha256: string;
+  message: {
+    from: string;
     id: string;
+    timestamp: string;
+    type: 'image';
+    image: {
+      mime_type: string;
+      sha256: string;
+      id: string;
+    };
   };
 }
 
 export function extractImageID(messageObject: MessageObject) {
-  return messageObject.image.id;
+  return messageObject.message.image.id;
 }

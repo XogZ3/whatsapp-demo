@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 import firebase from '@/modules/firebase';
 import { getStorageInstance } from '@/modules/firebase/firebase';
 
-import { TRAINING_IMAGES_LIMIT } from '../constants';
 import { getBaseUrl, getLanguageCodeFromPhoneNumber } from '../helpers';
 import type { Language } from '../translations';
 
@@ -63,7 +62,8 @@ export async function getUserDetails(clientid: string) {
     .collection('clients')
     .doc(clientid);
   const clientData = await clientDoc.get();
-  const { state, name, lastupdatedat, language } = clientData.data() || {};
+  const { state, name, lastupdatedat, language, trainingImageURLs } =
+    clientData.data() || {};
   const userLanguage = language || getLanguageCodeFromPhoneNumber(clientid);
 
   return {
@@ -72,6 +72,7 @@ export async function getUserDetails(clientid: string) {
     phonenumber: clientid,
     lastupdatedat,
     language: userLanguage,
+    trainingImageURLs,
   };
 }
 
@@ -133,14 +134,23 @@ export async function addTrainingImageURL(clientid: string, imageURL: string) {
   const existingURLs: string[] =
     (clientData.exists && clientData.data()?.trainingImageURLs) || [];
 
-  // After enough photos, update trainingState and call api
-  if (existingURLs.length >= TRAINING_IMAGES_LIMIT) {
-    await callTrainingAPI(clientid, existingURLs);
-    return;
-  }
-
   const updatedURLs = [...existingURLs, imageURL];
   await clientDoc.set({ trainingImageURLs: updatedURLs }, { merge: true });
+}
+
+export async function getTrainingImageURLs(clientid: string) {
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid);
+
+  const clientData = await clientDoc.get();
+  const trainingImageURLs: string[] =
+    (clientData.exists && clientData.data()?.trainingImageURLs) || [];
+
+  return trainingImageURLs;
 }
 
 export async function getUserLoraDetails(clientid: string): Promise<{

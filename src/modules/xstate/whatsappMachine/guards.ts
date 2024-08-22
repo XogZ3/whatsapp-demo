@@ -14,7 +14,7 @@ export const guardsFactory = (_machineConfig: IMachineConfig): any => {
     },
     hasUploadedEnoughPhotos: (event: any) => {
       const hasUploaded =
-        (event?.context?.photosUploaded || 0) + 1 === TRAINING_IMAGES_LIMIT; // Adding 1 since the N-th photo will trigger this guard
+        event?.context?.photosUploaded === TRAINING_IMAGES_LIMIT;
       return hasUploaded;
     },
     hasSufficientCredits: (event: any) => {

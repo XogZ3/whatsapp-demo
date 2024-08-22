@@ -94,9 +94,9 @@ export const x = {
 // }
 
 export async function getImageURLFromWhatsapp(
-  mediaID: string,
+  imageID: string,
 ): Promise<string> {
-  const URL = `https://graph.facebook.com/v20.0/${mediaID}/`;
+  const URL = `https://graph.facebook.com/v20.0/${imageID}/`;
 
   try {
     const response = await fetch(URL, {

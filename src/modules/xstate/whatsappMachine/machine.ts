@@ -18,8 +18,6 @@ export const machineFactory = (config: IMachineConfig): any => {
         message: '',
         latestPrompt: '',
         latestImprovedPrompt: '',
-        processing: false,
-        photosUploaded: 0,
         creditsRemaining: DEFAULT_CREDITS,
         language: 'english',
       } as IMachineContext,
@@ -46,8 +44,8 @@ export const machineFactory = (config: IMachineConfig): any => {
                 'assignLanguage',
                 'setLanguageInFirebase',
                 'sendSelectedLanguage',
+                'sendIntroOptionsMessage',
               ],
-              reenter: true,
             },
             PORTUGUESE: {
               actions: [
@@ -55,8 +53,8 @@ export const machineFactory = (config: IMachineConfig): any => {
                 'assignLanguage',
                 'setLanguageInFirebase',
                 'sendSelectedLanguage',
+                'sendIntroOptionsMessage',
               ],
-              reenter: true,
             },
             ARABIC: {
               actions: [
@@ -64,8 +62,8 @@ export const machineFactory = (config: IMachineConfig): any => {
                 'assignLanguage',
                 'setLanguageInFirebase',
                 'sendSelectedLanguage',
+                'sendIntroOptionsMessage',
               ],
-              reenter: true,
             },
             PRICING: {
               actions: ['assignMessage', 'sendPricing'],
@@ -185,7 +183,7 @@ export const machineFactory = (config: IMachineConfig): any => {
             USE_PROMPT: {
               actions: [
                 'assignMessage',
-                'assignProcessingTrue',
+                'setProcessingTrue',
                 'sendPromptedPhoto',
               ],
             },

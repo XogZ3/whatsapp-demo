@@ -267,7 +267,7 @@ function getLanguageCode(language: string | undefined): LanguageCode {
 
   // If language is undefined or empty, return 'en'
   if (!language) return 'en';
-  console.log('[!] language in getLanguageCode: ', language);
+  // console.log('[!] language in getLanguageCode: ', language);
 
   // Convert input to lowercase and return the language code if it exists
   return languageMap[language.toLowerCase()] || 'en';

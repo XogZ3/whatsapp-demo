@@ -76,7 +76,7 @@ export async function getImageURLFromWhatsapp(
     }
 
     const data = await response.json();
-    console.log('image url: ', JSON.stringify(data, null, 2));
+    // console.log('image url: ', JSON.stringify(data, null, 2));
     return data;
   } catch (error) {
     console.error('Error fetching media:', error);
@@ -122,7 +122,7 @@ export async function fetchWhatsAppImageAndUploadToFirebase(
       filename,
     );
 
-    console.log(`Image uploaded to Firebase: ${permanentURL}`);
+    // console.log(`Image uploaded to Firebase: ${permanentURL}`);
 
     return permanentURL;
   } catch (error) {

@@ -1,3 +1,4 @@
+import { FieldValue } from 'firebase-admin/firestore';
 import { Readable } from 'stream';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -136,12 +137,48 @@ export async function addTrainingImageURL(clientid: string, imageURL: string) {
     .collection('clients')
     .doc(clientid);
 
-  const clientData = await clientDoc.get();
-  const existingURLs: string[] =
-    (clientData.exists && clientData.data()?.trainingImageURLs) || [];
+  await clientDoc.update({
+    trainingImageURLs: FieldValue.arrayUnion(imageURL),
+  });
+}
 
-  const updatedURLs = [...existingURLs, imageURL];
-  await clientDoc.set({ trainingImageURLs: updatedURLs }, { merge: true });
+export async function getPhotoCount(clientid: string) {
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid);
+  const clientData = await clientDoc.get();
+  const { photosUploaded } = clientData.data() || {};
+
+  return photosUploaded;
+}
+
+export async function incrementPhotoCount(clientid: string) {
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid);
+
+  await clientDoc.update({
+    photosUploaded: FieldValue.increment(1),
+  });
+}
+
+export async function setProcessingFlag(clientid: string, value: boolean) {
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid);
+
+  await firestore.runTransaction(async (transaction) => {
+    transaction.update(clientDoc, { processing: value });
+  });
 }
 
 export async function getTrainingImageURLs(clientid: string) {

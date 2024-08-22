@@ -21,8 +21,6 @@ export interface IMachineContext {
   message: string;
   latestPrompt: string;
   latestImprovedPrompt: string;
-  processing: boolean;
-  photosUploaded: number;
   creditsRemaining: number;
   modelGenerated: boolean;
   language: string;

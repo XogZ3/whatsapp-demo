@@ -7,7 +7,10 @@ import { DEFAULT_CREDITS, TRAINING_IMAGES_LIMIT } from '@/utils/constants';
 import { getImprovedPromptFromGroq } from '@/utils/groq';
 import {
   callTrainingAPI,
+  getPhotoCount,
   getTrainingImageURLs,
+  incrementPhotoCount,
+  setProcessingFlag,
   setUserLanguage,
 } from '@/utils/ReplyHelper/FirebaseHelpers';
 import { getTranslation } from '@/utils/translations';
@@ -35,8 +38,6 @@ export const actionsFactory = (config: IMachineConfig): any => {
       message: () => '',
       latestPrompt: () => '',
       latestImprovedPrompt: () => '',
-      processing: () => false,
-      photosUploaded: () => 0,
       creditsRemaining: () => DEFAULT_CREDITS,
       language: () => 'english',
     }),
@@ -44,28 +45,9 @@ export const actionsFactory = (config: IMachineConfig): any => {
       message: ({ event }) =>
         `Send ${TRAINING_IMAGES_LIMIT - (event?.context?.photosUploaded || 0)} more photo(s)`,
     }),
-    sendPendingPhotos: async (event: any) => {
-      const language = event?.context?.language;
-      const message = `${getTranslation(
-        'photo received',
-        language,
-      )}: ${event?.context?.photosUploaded} / ${TRAINING_IMAGES_LIMIT}`;
-      const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.phonenumber,
-        text: true,
-        msgBody: message,
-      };
-      await config.whatsappInstance.send(payload);
+    incrementPhotoCount: async () => {
+      await incrementPhotoCount(config.userMetaData.phonenumber);
     },
-    incrementPhotoCount: assign((event: any) => {
-      console.log(
-        'incremented vale: ',
-        (event?.context?.photosUploaded || 0) + 1,
-      );
-      return {
-        photosUploaded: (event?.context?.photosUploaded || 0) + 1,
-      };
-    }),
     sendInvalidInputMessage: async (event: any) => {
       const language = event?.event?.userMetaData?.language;
       const message = getTranslation('invalid input', language);
@@ -174,10 +156,13 @@ export const actionsFactory = (config: IMachineConfig): any => {
     },
     sendPhotosReceivedCount: async (event: any) => {
       const language = event?.context?.language;
+      const uploadedPhotosCount = await getPhotoCount(
+        config.userMetaData.phonenumber,
+      );
       const message = `${getTranslation(
         'photo received',
         language,
-      )}: ${event?.context?.photosUploaded} / ${TRAINING_IMAGES_LIMIT}`;
+      )}: ${uploadedPhotosCount} / ${TRAINING_IMAGES_LIMIT}`;
       const payload: ICreateMessagePayload = {
         phoneNumber: config.userMetaData.phonenumber,
         text: true,
@@ -419,8 +404,10 @@ export const actionsFactory = (config: IMachineConfig): any => {
           console.error('[!] Error in sending prompt confirmation msg:', error);
         });
     },
-    assignProcessingTrue: assign({ processing: () => true }),
-    assignProcessingFalse: assign({ processing: () => false }),
+    setProcessingTrue: async () =>
+      setProcessingFlag(config.userMetaData.phonenumber, true),
+    setProcessingFalse: async () =>
+      setProcessingFlag(config.userMetaData.phonenumber, false),
 
     sendPromptedPhoto: async (event: any) => {
       const language = event?.event?.userMetaData?.language;
@@ -470,11 +457,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       processAndSendImages()
         .then(async (success) => {
           console.log('[+] processAndSendImages done');
-          await config.storeInstance.setContext(
-            config.userMetaData.phonenumber,
-            'processing',
-            false,
-          );
+          await setProcessingFlag(config.userMetaData.phonenumber, false);
           return success; // Pass success to the next .then()
         })
         .then(async (success) => {

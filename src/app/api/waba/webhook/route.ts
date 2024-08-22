@@ -40,7 +40,7 @@ export async function POST(request: Request) {
   );
   hmac.update(body, 'utf8');
   const expectedSignature = `sha1=${hmac.digest('hex')}`;
-  console.log('expectedSignature', expectedSignature);
+  // console.log('expectedSignature', expectedSignature);
 
   if (signature === expectedSignature) {
     try {

@@ -109,7 +109,7 @@ export async function POST(request: Request) {
   );
   hmac.update(body, 'ascii');
   const expectedSignature = `sha1=${hmac.digest('hex')}`;
-  console.log('signature matched?: ', signature === expectedSignature);
+  // console.log('signature matched?: ', signature === expectedSignature);
 
   // Immediately return a success response to Facebook
   const immediateResponse = new Response('success', {

@@ -41,16 +41,22 @@ async function setUserTrainingToken(token: string, clientid: string) {
   await clientDoc.set(updates, { merge: true });
 }
 
-export async function setSystemMessage(payload: any) {
-  // console.log('payload: ', JSON.stringify(payload, null, 2));
+export async function setSystemMessage(originalPayload: any, seed?: number) {
   const wabaId = process.env.WABA_ID;
-  const clientid = payload.to;
-  // console.log('clientid: ', clientid);
+  const clientid = originalPayload.to;
+
   const clientDoc = firestore
     .collection('apps')
     .doc(wabaId as string)
     .collection('clients')
     .doc(clientid);
+
+  // Create a new object by merging the seed into the payload
+  const payload = {
+    ...originalPayload,
+    ...(seed !== undefined && { seed }),
+  };
+
   await clientDoc.collection('messages').add(payload);
 }
 

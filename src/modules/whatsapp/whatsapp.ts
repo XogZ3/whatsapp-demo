@@ -539,11 +539,11 @@ async function createWAMessagePayload(payload: PropsFormatted) {
   return data;
 }
 
-export async function sendMessageToWhatsapp(payload: any) {
+export async function sendMessageToWhatsapp(payload: any, seed?: number) {
   const data = await createWAMessagePayload(payload);
   const res = await makeRequestToWhatsapp(data);
   if (res) {
-    await setSystemMessage(data);
+    await setSystemMessage(data, seed);
     return true;
   }
   // if (res?.data?.messages?.length) {

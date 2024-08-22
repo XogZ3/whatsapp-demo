@@ -398,6 +398,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
     },
     assignProcessingTrue: assign({ processing: () => true }),
     assignProcessingFalse: assign({ processing: () => false }),
+
     sendPromptedPhoto: async (event: any) => {
       const language = event?.event?.userMetaData?.language;
       const prompt = event?.context?.latestPrompt;
@@ -430,35 +431,40 @@ export const actionsFactory = (config: IMachineConfig): any => {
           await Promise.all(sendPromises);
 
           console.log('All images sent successfully.');
-        } else {
-          message =
-            'Uh-oh. Something went wrong, please try again after some time.';
-          const payload: ICreateMessagePayload = {
-            phoneNumber: config.userMetaData.phonenumber,
-            text: true,
-            msgBody: message,
-          };
-          await config.whatsappInstance.send(payload);
+          return true; // Indicate success
         }
+        message =
+          'Uh-oh. Something went wrong, please try again after some time.';
+        const payload: ICreateMessagePayload = {
+          phoneNumber: config.userMetaData.phonenumber,
+          text: true,
+          msgBody: message,
+        };
+        await config.whatsappInstance.send(payload);
+        return false; // Indicate failure
       }
-      await processAndSendImages()
-        .then(async () => {
+
+      processAndSendImages()
+        .then(async (success) => {
           console.log('[+] processAndSendImages done');
           await config.storeInstance.setContext(
             config.userMetaData.phonenumber,
             'processing',
             false,
           );
+          return success; // Pass success to the next .then()
         })
-        .then(async () => {
+        .then(async (success) => {
           console.log('[+] Context updated successfully');
-          message = `Cool photo! Just send another prompt.`;
-          const payload: ICreateMessagePayload = {
-            phoneNumber: config.userMetaData.phonenumber,
-            text: true,
-            msgBody: message,
-          };
-          await config.whatsappInstance.send(payload);
+          if (success) {
+            message = `Cool photo! Just send another prompt.`;
+            const payload: ICreateMessagePayload = {
+              phoneNumber: config.userMetaData.phonenumber,
+              text: true,
+              msgBody: message,
+            };
+            await config.whatsappInstance.send(payload);
+          }
         })
         .catch((error) => {
           console.error('[!] Error in processing or setting context:', error);

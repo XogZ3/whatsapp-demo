@@ -1,7 +1,10 @@
 /* eslint-disable no-console */
 // import { v4 as uuidv4 } from 'uuid';
 
-import { setSystemMessage } from '@/utils/ReplyHelper/FirebaseHelpers';
+import {
+  setSystemMessage,
+  uploadFileToFirebaseGetPermanentURL,
+} from '@/utils/ReplyHelper/FirebaseHelpers';
 
 export const x = {
   object: 'whatsapp_business_account',
@@ -93,9 +96,18 @@ export const x = {
 //   return mediaUrlData.url;
 // }
 
+type WhatsAppGetMediaResponse = {
+  sha256: string;
+  mime_type: string;
+  messaging_product: string;
+  id: string;
+  url: string;
+  file_size: number;
+};
+
 export async function getImageURLFromWhatsapp(
   imageID: string,
-): Promise<string> {
+): Promise<WhatsAppGetMediaResponse> {
   const URL = `https://graph.facebook.com/v20.0/${imageID}/`;
 
   try {
@@ -115,6 +127,53 @@ export async function getImageURLFromWhatsapp(
     return data;
   } catch (error) {
     console.error('Error fetching media:', error);
+    throw error;
+  }
+}
+
+export async function fetchWhatsAppImageAndUploadToFirebase(
+  imageID: string,
+  clientid: string,
+): Promise<string> {
+  try {
+    // Get the image URL from WhatsApp
+    const whatsappData: WhatsAppGetMediaResponse =
+      await getImageURLFromWhatsapp(imageID);
+
+    if (!whatsappData.url) {
+      throw new Error('WhatsApp image URL not found in the response');
+    }
+
+    // Fetch the image data
+    const imageResponse = await fetch(whatsappData.url, {
+      headers: {
+        Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
+      },
+    });
+
+    if (!imageResponse.ok) {
+      throw new Error(`Failed to fetch image: ${imageResponse.statusText}`);
+    }
+
+    // Get the image data as a buffer
+    const imageBuffer = await imageResponse.arrayBuffer();
+
+    // Convert buffer to base64
+    const base64Content = Buffer.from(imageBuffer).toString('base64');
+
+    // Generate a unique filename
+    const filename = `whatsapp_image_${imageID}_${Date.now()}.png`;
+
+    // Upload to Firebase and get permanent URL
+    const permanentURL = await uploadFileToFirebaseGetPermanentURL(
+      base64Content,
+      clientid,
+      filename,
+    );
+
+    return permanentURL;
+  } catch (error) {
+    console.error('Error in fetchWhatsAppImageAndUploadToFirebase:', error);
     throw error;
   }
 }

@@ -5,11 +5,11 @@ import type { IMachineConfig } from './types';
 export const guardsFactory = (_machineConfig: IMachineConfig): any => {
   return {
     canUploadMorePhotos: (event: any) => {
-      console.log('[~~] Guard: canUploadMorePhotos');
-      console.log('[~~] context logs', JSON.stringify(event, null, 2));
+      // console.log('[~~] Guard: canUploadMorePhotos');
+      // console.log('[~~] context logs', JSON.stringify(event, null, 2));
       const canUpload =
         (event?.context?.photosUploaded || 0) < TRAINING_IMAGES_LIMIT;
-      console.log('[~~] photosUploaded:', event?.context.photosUploaded);
+      // console.log('[~~] photosUploaded:', event?.context.photosUploaded);
       return canUpload;
     },
     hasUploadedEnoughPhotos: (event: any) => {

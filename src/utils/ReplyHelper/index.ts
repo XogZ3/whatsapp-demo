@@ -1,6 +1,6 @@
 /* eslint-disable unused-imports/no-unused-vars */
 
-import { getImageURLFromWhatsapp } from '@/modules/whatsapp/whatsapp';
+import { fetchWhatsAppImageAndUploadToFirebase } from '@/modules/whatsapp/whatsapp';
 import { whatsappStateTransition } from '@/modules/xstate/whatsappMachine';
 import type { IUserMetaData } from '@/modules/xstate/whatsappMachine/types';
 
@@ -29,23 +29,34 @@ export async function replyToUser(messageObject: any) {
     // Handle receiving images
     // Accept images in imagesIncomplete state
     if (currentState === 'imagesIncomplete' && messageType === 'image') {
-      if (trainingImageURLs.length < TRAINING_IMAGES_LIMIT) {
+      if (
+        !trainingImageURLs || // Handles undefined or null
+        (Array.isArray(trainingImageURLs) &&
+          trainingImageURLs.length < TRAINING_IMAGES_LIMIT)
+      ) {
         console.log(
           'trainingImageURLs: ',
           trainingImageURLs,
-          trainingImageURLs.length,
+          trainingImageURLs ? trainingImageURLs.length : 0,
         );
         const imageID = extractImageID(messageObject);
-        const imageURL = await getImageURLFromWhatsapp(imageID);
+        const imageURL = await fetchWhatsAppImageAndUploadToFirebase(
+          imageID,
+          clientid,
+        );
         console.log('imageURL', imageURL);
         await addTrainingImageURL(clientid, imageURL);
         message = 'Photo Received';
       }
       // Trigger generate model with sufficient images
-      else if (trainingImageURLs.length >= TRAINING_IMAGES_LIMIT) {
+      else if (
+        Array.isArray(trainingImageURLs) &&
+        trainingImageURLs.length >= TRAINING_IMAGES_LIMIT
+      ) {
         message = 'Generate Model';
       }
     }
+
     // Accept image for image-to-image generation
     else if (currentState === 'photoPrompting' && messageType === 'image') {
       // TODO: handle image generation with image reference

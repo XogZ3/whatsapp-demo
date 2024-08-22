@@ -211,3 +211,39 @@ export async function uploadFileToFirebase(
 
   return url;
 }
+
+export async function uploadFileToFirebaseGetPermanentURL(
+  base64Content: string,
+  clientid: string,
+  filename: string,
+): Promise<string> {
+  const storage = getStorageInstance();
+  const bucket = storage.bucket();
+
+  const buffer = Buffer.from(base64Content, 'base64');
+  const readableStream = Readable.from(buffer);
+
+  const filePath = `runpod_images/${clientid}/${filename}`;
+
+  const file = bucket.file(filePath);
+  await new Promise((resolve, reject) => {
+    readableStream
+      .pipe(
+        file.createWriteStream({
+          metadata: {
+            contentType: 'image/png',
+          },
+        }),
+      )
+      .on('error', reject)
+      .on('finish', resolve);
+  });
+
+  // Make the file publicly accessible
+  await file.makePublic();
+
+  // Get the permanent public URL
+  const publicUrl = file.publicUrl();
+
+  return publicUrl;
+}

@@ -258,12 +258,16 @@ Exemplo: homem sentado em um banco de parque ou mulher posando para uma foto esp
   },
 };
 
-function getLanguageCode(language: string): LanguageCode {
+function getLanguageCode(language: string | undefined): LanguageCode {
   const languageMap: { [key: string]: LanguageCode } = {
     english: 'en',
     portuguese: 'pt',
     arabic: 'ar',
   };
+
+  // If language is undefined or empty, return 'en'
+  if (!language) return 'en';
+  console.log('[!] language in getLanguageCode: ', language);
 
   // Convert input to lowercase and return the language code if it exists
   return languageMap[language.toLowerCase()] || 'en';

@@ -85,7 +85,7 @@ export async function getImageURLFromWhatsapp(
 }
 
 export async function fetchWhatsAppImageAndUploadToFirebase(
-  imageIndex: number,
+  uploadedPhotosCount: number,
   imageID: string,
   clientid: string,
 ): Promise<string> {
@@ -108,7 +108,7 @@ export async function fetchWhatsAppImageAndUploadToFirebase(
     });
 
     const fileType = whatsappData.mime_type === 'image/jpeg' ? 'jpeg' : 'png';
-    const filename = `photograph_of_person${clientid}_${imageIndex}.${fileType}`;
+    const filename = `photograph_of_person${clientid}_${uploadedPhotosCount}.${fileType}`;
 
     // Convert arraybuffer to base64
     const base64Content = Buffer.from(response.data, 'binary').toString(

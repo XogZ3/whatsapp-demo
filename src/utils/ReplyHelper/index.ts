@@ -8,6 +8,7 @@ import { TRAINING_IMAGES_LIMIT } from '../constants';
 import { translateSystemMessageToEnglish } from '../translations';
 import {
   addTrainingImageURL,
+  getPhotoCount,
   getUserDetails,
   setUserState,
 } from './FirebaseHelpers';
@@ -20,31 +21,27 @@ export async function replyToUser(messageObject: any) {
   const { clientid } = messageObject;
 
   const userDetails = await getUserDetails(clientid);
-  const {
-    state,
-    name,
-    phonenumber,
-    language = 'english',
-    trainingImageURLs,
-  } = userDetails;
+  const { state, name, phonenumber, language = 'english' } = userDetails;
   if (!state) {
     message = extractText(messageObject);
   } else {
     const stateObj = JSON.parse(state);
     const currentState = stateObj.value;
+    const uploadedPhotosCount = await getPhotoCount(clientid);
     // Handle receiving images
     // Accept images in imagesIncomplete state
     if (currentState === 'imagesIncomplete' && messageType === 'image') {
       if (
-        !trainingImageURLs || // Handles undefined or null
-        (Array.isArray(trainingImageURLs) &&
-          trainingImageURLs.length < TRAINING_IMAGES_LIMIT)
+        !uploadedPhotosCount || // Handles undefined or null
+        uploadedPhotosCount < TRAINING_IMAGES_LIMIT
       ) {
-        const imageIndex = trainingImageURLs ? trainingImageURLs.length : 0;
-        console.log('[+] # of trainingImageURLs: ', imageIndex);
+        console.log(
+          '[+] # of photos uploaded to firebase: ',
+          uploadedPhotosCount,
+        );
         const imageID = extractImageID(messageObject);
         const imageURL = await fetchWhatsAppImageAndUploadToFirebase(
-          imageIndex,
+          uploadedPhotosCount,
           imageID,
           clientid,
         );
@@ -53,21 +50,23 @@ export async function replyToUser(messageObject: any) {
       }
       // Trigger generate model with sufficient images
       else if (
-        Array.isArray(trainingImageURLs) &&
         // 1 less than required # of images, this will trigger model generation
-        trainingImageURLs.length >= TRAINING_IMAGES_LIMIT - 1
+        uploadedPhotosCount >=
+        TRAINING_IMAGES_LIMIT - 1
       ) {
-        const imageIndex = trainingImageURLs ? trainingImageURLs.length : 0;
-        console.log('[+] # of trainingImageURLs: ', imageIndex);
+        console.log(
+          '[+] # of photos uploaded to firebase: ',
+          uploadedPhotosCount,
+        );
         const imageID = extractImageID(messageObject);
         const imageURL = await fetchWhatsAppImageAndUploadToFirebase(
-          imageIndex,
+          uploadedPhotosCount,
           imageID,
           clientid,
         );
         await addTrainingImageURL(clientid, imageURL);
         console.log(
-          `[+] received ${imageIndex} images, generating model now..`,
+          `[+] received ${uploadedPhotosCount} images, generating model now..`,
         );
         message = 'Generate Model';
       }

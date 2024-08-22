@@ -301,16 +301,10 @@ export const actionsFactory = (config: IMachineConfig): any => {
     }),
     sendPromptConfirmation: async (event: any) => {
       const language = event?.event?.userMetaData?.language;
-      const prompt = event?.context?.latestPrompt;
-      const improvedPrompt = event?.context?.latestImprovedPrompt;
-      console.log(
-        '[+] sendPromptConfirmation | prompt: ',
-        prompt,
-        ', improvedPrompt: ',
-        improvedPrompt,
-      );
+      const prompt = event?.event?.message;
+      console.log('[+] sendPromptConfirmation | prompt: ', prompt);
       const message = `${getTranslation('prompt confirmation', language)}
->>> ${improvedPrompt}`;
+>>> ${prompt}`;
       // TODO: implement language in buttons
       const payload: ICreateMessagePayload = {
         phoneNumber: config.userMetaData.phonenumber,
@@ -331,9 +325,10 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const prompt = event?.context?.latestPrompt;
       async function getImprovedPromptSetItInContext() {
         const improvedPrompt = await getImprovedPromptFromGroq(prompt);
+        // overwrite latestPrompt with improvedPrompt
         await config.storeInstance.setContext(
           config.userMetaData.phonenumber,
-          'latestImprovedPrompt',
+          'latestPrompt',
           improvedPrompt,
         );
         return improvedPrompt;
@@ -405,7 +400,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
     assignProcessingFalse: assign({ processing: () => false }),
     sendPromptedPhoto: async (event: any) => {
       const language = event?.event?.userMetaData?.language;
-      const prompt = event?.context?.latestImprovedPrompt;
+      const prompt = event?.context?.latestPrompt;
       console.log('[+] action: send photo for prompt: ', prompt);
 
       let message = getTranslation('generating image', language);

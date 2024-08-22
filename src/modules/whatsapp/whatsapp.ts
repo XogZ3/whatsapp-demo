@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
-// import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 
 import {
   setSystemMessage,
@@ -85,7 +85,6 @@ export async function getImageURLFromWhatsapp(
 }
 
 export async function fetchWhatsAppImageAndUploadToFirebase(
-  uploadedPhotosCount: number,
   imageID: string,
   clientid: string,
 ): Promise<string> {
@@ -108,7 +107,7 @@ export async function fetchWhatsAppImageAndUploadToFirebase(
     });
 
     const fileType = whatsappData.mime_type === 'image/jpeg' ? 'jpeg' : 'png';
-    const filename = `photograph_of_person${clientid}_${uploadedPhotosCount}.${fileType}`;
+    const filename = `photograph_of_person${clientid}_${uuidv4()}.${fileType}`;
 
     // Convert arraybuffer to base64
     const base64Content = Buffer.from(response.data, 'binary').toString(

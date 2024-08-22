@@ -41,7 +41,6 @@ export async function replyToUser(messageObject: any) {
         );
         const imageID = extractImageID(messageObject);
         const imageURL = await fetchWhatsAppImageAndUploadToFirebase(
-          uploadedPhotosCount,
           imageID,
           clientid,
         );
@@ -60,7 +59,6 @@ export async function replyToUser(messageObject: any) {
         );
         const imageID = extractImageID(messageObject);
         const imageURL = await fetchWhatsAppImageAndUploadToFirebase(
-          uploadedPhotosCount,
           imageID,
           clientid,
         );

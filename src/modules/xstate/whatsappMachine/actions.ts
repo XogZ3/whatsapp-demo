@@ -162,7 +162,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const message = `${getTranslation(
         'photo received',
         language,
-      )}: ${uploadedPhotosCount} / ${TRAINING_IMAGES_LIMIT}`;
+      )}: ${uploadedPhotosCount || '1'} / ${TRAINING_IMAGES_LIMIT}`;
       const payload: ICreateMessagePayload = {
         phoneNumber: config.userMetaData.phonenumber,
         text: true,

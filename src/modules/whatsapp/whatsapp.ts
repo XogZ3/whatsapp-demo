@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 // import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 
 import {
   setSystemMessage,
@@ -48,54 +49,6 @@ export const x = {
   ],
 };
 
-// export async function uploadImageToWhatsAppGetURL(
-//   base64Content: string,
-// ): Promise<string> {
-//   const buffer = Buffer.from(base64Content, 'base64');
-//   const formData = new FormData();
-//   formData.append(
-//     'file',
-//     new Blob([buffer], { type: 'image/png' }),
-//     `${uuidv4()}.png`,
-//   );
-//   formData.append('type', 'image/png');
-//   formData.append('messaging_product', 'whatsapp');
-
-//   const uploadResponse = await fetch(
-//     `https://graph.facebook.com/v20.0/${process.env.PHONE_ID}/media`,
-//     {
-//       method: 'POST',
-//       headers: {
-//         Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
-//       },
-//       body: formData,
-//     },
-//   );
-
-//   if (!uploadResponse.ok) {
-//     throw new Error(`HTTP error! status: ${uploadResponse.status}`);
-//   }
-
-//   const uploadData = await uploadResponse.json();
-//   const mediaId = uploadData.id;
-
-//   const mediaUrlResponse = await fetch(
-//     `https://graph.facebook.com/v20.0/${mediaId}`,
-//     {
-//       headers: {
-//         Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
-//       },
-//     },
-//   );
-
-//   if (!mediaUrlResponse.ok) {
-//     throw new Error(`HTTP error! status: ${mediaUrlResponse.status}`);
-//   }
-
-//   const mediaUrlData = await mediaUrlResponse.json();
-//   return mediaUrlData.url;
-// }
-
 type WhatsAppGetMediaResponse = {
   sha256: string;
   mime_type: string;
@@ -132,11 +85,11 @@ export async function getImageURLFromWhatsapp(
 }
 
 export async function fetchWhatsAppImageAndUploadToFirebase(
+  imageIndex: number,
   imageID: string,
   clientid: string,
 ): Promise<string> {
   try {
-    // Get the image URL from WhatsApp
     const whatsappData: WhatsAppGetMediaResponse =
       await getImageURLFromWhatsapp(imageID);
 
@@ -144,25 +97,23 @@ export async function fetchWhatsAppImageAndUploadToFirebase(
       throw new Error('WhatsApp image URL not found in the response');
     }
 
-    // Fetch the image data
-    const imageResponse = await fetch(whatsappData.url, {
+    // Using axios, as fetch is not working for arraybuffer
+    const response = await axios({
+      method: 'get',
+      url: whatsappData.url,
+      responseType: 'arraybuffer',
       headers: {
         Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
       },
     });
 
-    if (!imageResponse.ok) {
-      throw new Error(`Failed to fetch image: ${imageResponse.statusText}`);
-    }
+    const fileType = whatsappData.mime_type === 'image/jpeg' ? 'jpeg' : 'png';
+    const filename = `photograph_of_person${clientid}_${imageIndex}.${fileType}`;
 
-    // Get the image data as a buffer
-    const imageBuffer = await imageResponse.arrayBuffer();
-
-    // Convert buffer to base64
-    const base64Content = Buffer.from(imageBuffer).toString('base64');
-
-    // Generate a unique filename
-    const filename = `whatsapp_image_${imageID}_${Date.now()}.png`;
+    // Convert arraybuffer to base64
+    const base64Content = Buffer.from(response.data, 'binary').toString(
+      'base64',
+    );
 
     // Upload to Firebase and get permanent URL
     const permanentURL = await uploadFileToFirebaseGetPermanentURL(
@@ -170,6 +121,8 @@ export async function fetchWhatsAppImageAndUploadToFirebase(
       clientid,
       filename,
     );
+
+    console.log(`Image uploaded to Firebase: ${permanentURL}`);
 
     return permanentURL;
   } catch (error) {

@@ -34,17 +34,14 @@ export async function replyToUser(messageObject: any) {
         (Array.isArray(trainingImageURLs) &&
           trainingImageURLs.length < TRAINING_IMAGES_LIMIT)
       ) {
-        console.log(
-          'trainingImageURLs: ',
-          trainingImageURLs,
-          trainingImageURLs ? trainingImageURLs.length : 0,
-        );
+        const imageIndex = trainingImageURLs ? trainingImageURLs.length : 0;
+        console.log('[+] # of trainingImageURLs: ', imageIndex);
         const imageID = extractImageID(messageObject);
         const imageURL = await fetchWhatsAppImageAndUploadToFirebase(
+          imageIndex,
           imageID,
           clientid,
         );
-        console.log('imageURL', imageURL);
         await addTrainingImageURL(clientid, imageURL);
         message = 'Photo Received';
       }
@@ -53,6 +50,18 @@ export async function replyToUser(messageObject: any) {
         Array.isArray(trainingImageURLs) &&
         trainingImageURLs.length >= TRAINING_IMAGES_LIMIT
       ) {
+        const imageIndex = trainingImageURLs ? trainingImageURLs.length : 0;
+        console.log('[+] # of trainingImageURLs: ', imageIndex);
+        const imageID = extractImageID(messageObject);
+        const imageURL = await fetchWhatsAppImageAndUploadToFirebase(
+          imageIndex,
+          imageID,
+          clientid,
+        );
+        await addTrainingImageURL(clientid, imageURL);
+        console.log(
+          `[+] received ${imageIndex} images, generating model now..`,
+        );
         message = 'Generate Model';
       }
     }

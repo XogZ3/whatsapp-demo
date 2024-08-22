@@ -223,7 +223,7 @@ export async function uploadFileToFirebaseGetPermanentURL(
   const buffer = Buffer.from(base64Content, 'base64');
   const readableStream = Readable.from(buffer);
 
-  const filePath = `runpod_images/${clientid}/${filename}`;
+  const filePath = `training_images/person${clientid}/${filename}`;
 
   const file = bucket.file(filePath);
   await new Promise((resolve, reject) => {
@@ -231,7 +231,9 @@ export async function uploadFileToFirebaseGetPermanentURL(
       .pipe(
         file.createWriteStream({
           metadata: {
-            contentType: 'image/png',
+            contentType: filename.endsWith('.jpeg')
+              ? 'image/jpeg'
+              : 'image/png',
           },
         }),
       )

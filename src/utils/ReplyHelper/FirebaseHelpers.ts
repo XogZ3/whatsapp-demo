@@ -140,10 +140,11 @@ export async function addTrainingImageURLandIncreaseCount(
     .collection('clients')
     .doc(clientid);
 
-  await clientDoc.update({
+  const response = await clientDoc.update({
     trainingImageURLs: FieldValue.arrayUnion(imageURL),
     photosUploaded: FieldValue.increment(1),
   });
+  console.log('firebase update res: ', JSON.stringify(response, null, 2));
 }
 
 export async function getPhotoCount(clientid: string) {

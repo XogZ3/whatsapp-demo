@@ -27,7 +27,7 @@ export async function replyToUser(messageObject: any) {
   } else {
     const stateObj = JSON.parse(state);
     const currentState = stateObj.value;
-    const uploadedPhotosCount = await getPhotoCount(clientid);
+    let uploadedPhotosCount = await getPhotoCount(clientid);
     // Handle receiving images
     // Accept images in imagesIncomplete state
     if (currentState === 'imagesIncomplete' && messageType === 'image') {
@@ -45,40 +45,22 @@ export async function replyToUser(messageObject: any) {
           clientid,
         );
         await addTrainingImageURLandIncreaseCount(clientid, imageURL);
+        uploadedPhotosCount = await getPhotoCount(clientid);
+        if (uploadedPhotosCount >= TRAINING_IMAGES_LIMIT)
+          message = 'Generate Model';
         message = 'Photo Received';
-      }
-      // Trigger generate model with sufficient images
-      else if (
-        // 1 less than required # of images, this will trigger model generation
-        uploadedPhotosCount >=
-        TRAINING_IMAGES_LIMIT - 1
-      ) {
-        console.log(
-          '[+] # of photos uploaded to firebase: ',
-          uploadedPhotosCount,
-        );
-        const imageID = extractImageID(messageObject);
-        const imageURL = await fetchWhatsAppImageAndUploadToFirebase(
-          imageID,
-          clientid,
-        );
-        await addTrainingImageURLandIncreaseCount(clientid, imageURL);
-        console.log(
-          `[+] received ${uploadedPhotosCount} images, generating model now..`,
-        );
-        message = 'Generate Model';
       }
     }
 
     // Accept image for image-to-image generation
     else if (currentState === 'photoPrompting' && messageType === 'image') {
       // TODO: handle image generation with image reference
-      message = 'cancel';
+      message = 'FALLBACK';
     }
     // Reject images in all other cases
     else if (messageType === 'image') {
       // do nothing ?
-      message = 'cancel';
+      message = 'FALLBACK';
     } else message = extractText(messageObject);
   }
 

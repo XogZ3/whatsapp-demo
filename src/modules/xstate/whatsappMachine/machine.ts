@@ -11,7 +11,7 @@ import type { IMachineConfig, IMachineContext } from './types';
 export const machineFactory = (config: IMachineConfig): any => {
   return createMachine(
     {
-      /** @xstate-layout N4IgpgJg5mDOIC5QHcAWBDALrdAHXAsugMaoCWAdmAMQCqAcgNL0DyA6vQPoCSAyr7QCiAbQAMAXUShcAe1hlMZGRSkgAHogAsAJgA0IAJ6IAjAA5TAdgB0mgMwA2Y-YsBWbQE5bL49oC+v-TQsHHwiUkowK2UAIRl0ACcISig6AAUAGRYAQQARTlSACRYAFRZeMUkkEFl5RWVVDQRTe00rCw93U1sLHU0Le30jBGN3UWse0Vtu4xdbU3dNf0CMbDxCEnIqKIpYhKSKFPSs+gBxWiyTkQlVGoUlFSrGx2t3Y273bQtO93tRY0GTD17FY5j0zH8LCM3EsQEFVqENhFtrtEslqIJTuk+AUKjc5Hd6o9EI5RG0HNpuuZjBZ2npDCYXBZSZ9tJonJoXO5PC4YXCQutwlsYnFUQdqLJ4pgAK5QKVwMC4qq3OoPUBPYykizkymmam0gHDWwLKwzMGaUbaZw6XkrflhTaRYV7NFZABKWWi3AAworpPiVQ1iRqyfYKRYqTTtHShj4zFZRL03rYOWyvDbgmt7UinaKUqlXd7uKdfdV-fdAwh7FM2v1tC5NKYxi4WqYDRr3C4rI5WR5un9nLZ0-CBQ7kSL9ilirRSgWsukS8ry0TK9WaaH643XC2De4tSbTKyOUbzdpjIsArDbZnEUKduO0QQskXOAQMbQF2XCWriaJtF2XJYjIJrYCbmAapguJqbiaI4bI-K4g4Xny16Co6d7OmKABUH61Eu36Vr+-6AUydiga29IIK4pgmoyHJvHWXxDnaN6RGQAC26AwLA3AUMQMhsbgAA2YCYDQhQlCwnCuoIXqCNwABqgg5DhBKquoJi2FGVgHpBv4diBXhtj0f72OY2jmPYzZsueywZgiqFWOxnFwDxfECcJonUOJpRSTJcmKcpxiVH6uFfupTQtG0HRdMZfQDBR3juFYnyhqetgzFWHJMSho5OVxrn8UJIk0NEACaqRZPwKkBsuxhmNYoiWQmohjEyEEGrB2lVkyXzzGMTjZfZuUcflvGFR5NBescsnztcSqfmpjR1aYrTJgx5pbjobYQdRdizH8v5MnMg0jkieUuWN7nFdQ2FzSFqkVmeZ7xpoLUco21IuG4bZNfGnifBB67mRYJ1ZlsMBUPEWDJAQMgQGAgnUAQLA5II6ScJc9CCO6xRKdVeHhelSVspBiWMpy+kGkaSWUj0bKWburg2ZedmneDYCQ9DByw-DiNlRVVV3aWoWLYgRM2DMohk64XKzAadakhqoZ9M2XKvMzyFDUiENgFDijc3DCPUFN9AzfjYWNOLJNS1CMuUxR1KjDYrKWH0RppTySFXlrWxsYbgknBzutYJAtAULg6BkBA1DRLQpWcF60k5NwxTlELi4Wz+nZS7pX2iCtjbuPLnQ0ZBHivVLXJpl7rNg5Efu84HnOiRAYcR1HMflZVafBcLD3Ls0rTtFyMW9P0Bqpl25hajBOgjD0oMsVYDcI03wct23kfRybZvpwtFaWcCsykwezQLBS8sNtp5pV583R2IvDkrwHQd66H4db15WSla+9DFAnLB6AADFuCulfMpPeIsKyDyiiPe+rJx4UXStRDUPg+g-EsL8KYj9RzPzXm-CAqRP6J0EFkXG+QiilHNqLYYTJFYKwcOGRsRpbAT28CaamLQ7CvUcMYHBSI8GvxDoQz+-Nu7UMenQk0DDnDmEmJ4KmX0rBfQQWuRqrJ+G+39vg4RRCO47zRhI2qOhiauBaqyX8MF0pUx8DYFojMei7k5AmTRkRcCoBkJgGQqR4iFX1nmV0LACCpGKEY-Cp5Gw2BVjbKsMxoxizeDRFW4Yfj2FMoyVxVh3GeO8b4gS-ivKBOCaEoKeIoG1VGJ2FoCsvivBGD4KmloazmgPJaLomk-A12HHXLJHivE+L8WiWgvBBD5CKSEsJ4URhaUgqGfovxTKTCMtYMuDZmztGTI4TJ2T+l5NwAU7gwTAmKTGUEiZkD+7hPBFEsx3hYnfQontZRK0wSWHqX0bZfTcmDLFAY2avcM40PqaSLkrgwzmT6GYcCxgrDqxHvC0QoxEIXgoIbeAVRNZszAGUy54UAC08UhgEvjC1P4R4Fj2H0p02y3Sl45gnDimq+FGQwtac2fO+cPqaG2nuXUEwRgfE0KmTJ51uKXSKqJRlBMloOFJOuBMWpGTpRcNtH4sLfjhjcNBTJOs9Yw39lKzOCAtoJVPBwtWHSHCeA1t7LFy9tFCI3h-KOhqaGMmsKmGk6tkxeCLkgkuxk7ljFeg4G1tcl6CObpAPREBXWPTmDC5sPgKSMl7E4CeiSpasi4RSEYWyunMQcjs75+TkhxtqnIqJdZy7eCFW8CenwQTK1MgsaklLkW+CAA */
+      /** @xstate-layout N4IgpgJg5mDOIC5QHcAWBDALrdAHXAsugMaoCWAdmAMQCqAcgNL0DyA6vQPoCSAyr7QCiAbQAMAXUShcAe1hlMZGRSkgAHogAsAJgA0IAJ6IAjNoDsAVgB02nQE4AHHbsXjxs3e0BfL-rRYcfCJSSjArZQAhGXQAJwhKKDoABQAZFgBBABFOJIAJFgAVFl4xSSQQWXlFZVUNBAsANgarYx0LUU0LToBmB1ELfSMEY27ja1F3ZwazCZ1pnz8MbDxCEnIqcIoo2PiKRJT0+gBxWnSjkQlVSoUlFXK60bsrbu0G2wnjZxezQZMx7qsTXa2mBDnMmgaCxA-mWQTWoU22ziCWogmOKT4uVKVzkNxq90Q3Q6VlEZlMFm05ledlE2m6vwQLlEVhmlleoj6DncFihMMCqxCG0i0WRe2oSRYACUCrQToJeBcytJcdU7qAHsTSeTKWZqbT6YZEGZNGYWe1aWTulaGh1eUt+cF1mFhTsUelJekItwAMLY8rXVW1QmaskgnV6ukMrqaFmeClchwWGndTR2gIrR0Il2ixJJSU+7jHP3Kqq3IMIK3WYwOByWDlmFMOboNBk6bTPN6aRxmaYWY1NtOwgVOxEi3aJGVFfPpFLFioqssEivdKs1uu1xvNhnaZxWOwvCH7ru2BrdQcO+FCrZjlEEdKFzgENG0OcBxfq4MxrVhqkNGmRw1hjMU1gU0bovlEOx3F1c8M0vZ1r1dMUADEZxSCJ0m9RhXwXfEPwrENtV-f8DSGLk91aOwGk0YxRE7EYz18aF7TgwUwjIABbdAYFgbgKGIGQONwAAbMBMBoPJChYThJUEb1BG4AA1QRMhw0s8PUI0LABLs2WbMYZjohk3CcKxOmMP8+kcbpgO8Ji+VYkdOO4uA+IEoTRPE6hznoQQPQKQRHxYTJBFnS5-VwtVNOGNxmS5NlPlEOiaOM0YQMmKiZlaV4zFguE2KsZyeLcwSRLEmhvUOeSwqVed1KiupT3GMZaWohwaNJAZANMBprFDKi7DMJxXkheyWPypyuOK-jSs8mhUJSdDMOw8KSzxBrECbGNdRBT4LJGbRa2MyCAQcajKR1GykocPLhwRGAqBiLAEgIGQIDAYTqAIYLQs4Hy-PSALVNWur1vLaDmWbJLTCcHsaz0bqrXbJoDpNdobKtW7Mw2B6wCexQ9le97PoWpasLUsGlzGRpnnrU9q20blNGMuljDMmybWpNwXEYxZ0wmhEOLej6jjAR6sEgWgKFwdAyAgagIloABNThvVkzJuAKEoQbfDS6m0fpmU0OmztrXqrRZiErAsKyiWNWZPix+CrCF4nRfF8SIClmW5YVpWknSfgKcDJdKV3Y9XHag3nGZxG3haVpqMsSjKydgrXZFsW8Ylr3pdl+XKvoarg-faLGYmKwazNikuzsTofm6z5TXMJNRF6cxHGMNORwz4T3ezz3vfz8V0iVp96AKVWWHoZDuElJ9gdq3WNoQMOngj6sdEguuWaaa3zHcCz-z7bvBeFvus-xyAkmHtXBEBwLJKKEu9cQDv2w6aHOTO0YHFS3dGg2y5I4P8rhT4bF7v3K+EAb6+wiP7QO2sl6RXLO-EkxsJjf3pn-RGbc9xDWNg0CyOpOjgLCJAy+OdYEFyqqFF+K8QR9BaK8FuRIDbVgbkMHqcUaS1hcBYbSFlRp8yHNjMIuBUAyEwDIJIMRSoE1zJKFgBAkgFHoeWIkxI6Tmi5KeSkK4WaM2tmMTwwEVwWUgmQqwEipEyLkUJBR4olEqLUcYZB9UNFtyNiCWkNsDbNgRlw8ke5DrmSgh0KOVibHSNkfIlEtAFQ5Gcao9RS4iSuBsGCCk7g3i6jsAyQazRepJgaFtOuXQomSJifY3AjjuAqKUcpJJyiUk6xQaHTKzw+ztDrqYSC7UGSJhjJSJMvR9xuBBDyMa-M7obGiXYuJYpC7FzaR4tJbc+p9H1JoWuOhOFaQcICXoEJRjJS7D4JiFBhbwHKA5AWVAcRrPwgAWhbIBV5VjszjkeZTfC5gAR0i7ImXqg0dzGBZuRSC7RowQhtC8KxRVXIzQ8uVH5Id8JDTZnbeMxtGiMy6lw0YzQazuBbhZGYJ9pmiOdrjfGL1z5otLnUFqppykTDeBSKiXJUovBJD4oargbZklylSi86dz5QJzkPOWjLX6r1pO2HsdZPC0S7G3VKJoWilMIY0TQCZebMRmWIl2ErKGe2obKhh2l2yMzDJBBsXRgKpSIWZIaK5tIeC+JU2xsSHEJEtZ4-oNgfGfDaLRaiqVLAshrDRUwVE9oXK8EAA */
       id: 'whatsappMachine',
       initial: 'onBoarding',
       context: {
@@ -74,7 +74,7 @@ export const machineFactory = (config: IMachineConfig): any => {
             MAIN_MENU: {
               actions: ['assignMessage', 'sendIntroOptionsMessage'],
             },
-            '*': {
+            FALLBACK: {
               actions: ['sendIntroOptionsMessage'],
             },
           },
@@ -94,14 +94,10 @@ export const machineFactory = (config: IMachineConfig): any => {
               target: 'generatingModel',
               actions: ['callStartTrainingAPI'],
             },
-            BYPASS: {
-              actions: assign({ message: () => 'Bypass imagesIncomplete' }),
-              target: 'generatingModel',
-            },
             CANCEL: {
               target: 'onBoarding',
             },
-            '*': {
+            FALLBACK: {
               actions: ['notifyPendingPhotos'],
             },
           },
@@ -113,15 +109,9 @@ export const machineFactory = (config: IMachineConfig): any => {
               actions: ['sendModelGeneratedSuccess'],
               target: 'modelGeneratedUnpaid',
             },
-            BYPASS: {
-              actions: [
-                'sendModelGeneratedSuccess',
-                'sendSamplePhotos',
-                assign({ message: () => 'Bypass generatingModel' }),
-              ],
-              target: 'modelGeneratedUnpaid',
+            FALLBACK: {
+              actions: 'sendPleaseWait',
             },
-            CANCEL: 'onBoarding',
           },
         },
         modelGeneratedUnpaid: {

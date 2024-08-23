@@ -71,9 +71,9 @@ export const handleMessage = async (
     event = STATE_ACTION_EVENT_MAP[state].prompt;
     console.log('Prompt: ', message);
   } else if (STATE_ACTION_EVENT_MAP[state]) {
-    event = STATE_ACTION_EVENT_MAP[state][userActionId] || 'onBoarding';
+    event = STATE_ACTION_EVENT_MAP[state][userActionId] || 'FALLBACK';
   } else {
-    event = 'onBoarding';
+    event = 'FALLBACK';
   }
 
   console.log(

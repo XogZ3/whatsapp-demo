@@ -203,6 +203,17 @@ export const actionsFactory = (config: IMachineConfig): any => {
       };
       await config.whatsappInstance.send(payload);
     },
+    sendPleaseWait: async (event: any) => {
+      const language = event?.context?.language;
+      const message = getTranslation('please wait', language);
+      // TODO: implement language in buttons
+      const payload: ICreateMessagePayload = {
+        phoneNumber: config.userMetaData.phonenumber,
+        text: true,
+        msgBody: message,
+      };
+      await config.whatsappInstance.send(payload);
+    },
     sendModelGeneratedSuccess: async (event: any) => {
       const language = event?.context?.language;
       const message = getTranslation('model generated', language);
@@ -472,15 +483,6 @@ export const actionsFactory = (config: IMachineConfig): any => {
         .catch((error) => {
           console.error('[!] Error in processing or setting context:', error);
         });
-    },
-    sendPleaseWait: async () => {
-      const message = 'Please wait for the image to be generated first.';
-      const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.phonenumber,
-        text: true,
-        msgBody: message,
-      };
-      await config.whatsappInstance.send(payload);
     },
     sendRequestNewPrompt: async () => {
       const message = 'Alright, send a new prompt. :)';

@@ -22,6 +22,7 @@ type TranslationKeys =
   | 'select language'
   | 'language selected'
   | 'generating model'
+  | 'please wait'
   | 'processing payment'
   | 'prompt photos'
   | 'photo upload instruction'
@@ -186,6 +187,11 @@ export const TRANSLATION_MAP: Record<
     en: 'Generating image, please wait 30 seconds...',
     pt: 'Gerando imagem, por favor, aguarde 30 segundos...',
     ar: 'جارٍ إنشاء الصورة، يرجى الانتظار لمدة 30 ثانية...',
+  },
+  'please wait': {
+    en: 'Please wait while we are generating a customized model for you.',
+    pt: 'Por favor, aguarde enquanto geramos um modelo personalizado para você.',
+    ar: 'يرجى الانتظار بينما نقوم بإنشاء نموذج مخصص لك.',
   },
   'model generated': {
     en: 'Your model has been successfully generated! :D',

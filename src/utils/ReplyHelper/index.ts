@@ -78,9 +78,9 @@ export async function replyToUser(messageObject: any) {
         // send photo count to user
         await sendUpdatedPhotoCount(clientid, userLanguage, updatedPhotoCount);
 
+        message = 'Photo Received';
         if (updatedPhotoCount >= TRAINING_IMAGES_LIMIT)
           message = 'Generate Model';
-        message = 'Photo Received';
       }
     }
 

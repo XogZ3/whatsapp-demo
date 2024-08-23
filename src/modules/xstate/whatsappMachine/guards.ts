@@ -1,5 +1,8 @@
 import { TRAINING_IMAGES_LIMIT } from '@/utils/constants';
-import { getPhotoCount } from '@/utils/ReplyHelper/FirebaseHelpers';
+import {
+  getPhotoCount,
+  getProcessingFlag,
+} from '@/utils/ReplyHelper/FirebaseHelpers';
 
 import type { IMachineConfig } from './types';
 
@@ -26,8 +29,10 @@ export const guardsFactory = (_machineConfig: IMachineConfig): any => {
       const hasSufficient = event?.context?.creditsRemaining > 0;
       return hasSufficient;
     },
-    machineIsAvailable: (event: any) => {
-      const isAvailable = event?.context?.processing === false;
+    machineIsAvailable: async () => {
+      const isAvailable =
+        (await getProcessingFlag(_machineConfig.userMetaData.phonenumber)) ===
+        false;
       return isAvailable;
     },
   };

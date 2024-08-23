@@ -184,6 +184,19 @@ export async function setProcessingFlag(clientid: string, value: boolean) {
     transaction.update(clientDoc, { processing: value });
   });
 }
+export async function getProcessingFlag(clientid: string) {
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid);
+  const clientData = await clientDoc.get();
+  const processing: boolean =
+    (clientData.exists && clientData.data()?.processing) || false;
+
+  return processing;
+}
 
 export async function getTrainingImageURLs(clientid: string) {
   const wabaId = process.env.WABA_ID;
@@ -289,4 +302,42 @@ export async function uploadFileToFirebaseGetPermanentURL(
   const publicUrl = file.publicUrl();
 
   return publicUrl;
+}
+
+export async function getClientList() {
+  const wabaId = process.env.WABA_ID;
+  const clientList = await firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .orderBy('lastupdatedat', 'desc')
+    .get();
+
+  return clientList;
+}
+export async function getClientMessages(clientid: string) {
+  const wabaId = process.env.WABA_ID;
+  const messages = await firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid)
+    .collection('messages')
+    .where('type', 'in', ['message', 'template'])
+    .where('timestamp', '>', 0)
+    .orderBy('timestamp', 'desc')
+    .get();
+
+  return messages;
+}
+export async function getClientFields(clientid: string) {
+  const wabaId = process.env.WABA_ID;
+  const clientfield = await firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid)
+    .get();
+
+  return clientfield;
 }

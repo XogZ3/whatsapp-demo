@@ -1,4 +1,7 @@
-import { getProcessingFlag } from '@/utils/ReplyHelper/FirebaseHelpers';
+import {
+  getProcessingFlag,
+  getUserLoraDetails,
+} from '@/utils/ReplyHelper/FirebaseHelpers';
 
 import type { IMachineConfig } from './types';
 
@@ -13,6 +16,13 @@ export const guardsFactory = (_machineConfig: IMachineConfig): any => {
         (await getProcessingFlag(_machineConfig.userMetaData.phonenumber)) ===
         false;
       return isAvailable;
+    },
+    modelNotCreated: async () => {
+      const { loraURL, loraFilename } = await getUserLoraDetails(
+        _machineConfig.userMetaData.phonenumber,
+      );
+      if (loraURL || loraFilename) return false;
+      return true;
     },
   };
 };

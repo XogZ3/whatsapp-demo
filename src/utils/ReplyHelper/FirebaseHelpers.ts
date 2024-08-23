@@ -221,8 +221,8 @@ export async function getTrainingImageURLs(clientid: string) {
 }
 
 export async function getUserLoraDetails(clientid: string): Promise<{
-  loraURL: any;
-  loraFilename: any;
+  loraURL: string;
+  loraFilename: string;
 }> {
   const wabaId = process.env.WABA_ID;
   const clientDoc = firestore

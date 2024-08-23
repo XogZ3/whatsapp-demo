@@ -86,6 +86,7 @@ export const machineFactory = (config: IMachineConfig): any => {
               actions: [assign({ message: () => 'photo received' })],
             },
             GENERATE_MODEL: {
+              guard: 'modelNotCreated',
               target: 'generatingModel',
               actions: ['callStartTrainingAPI'],
             },

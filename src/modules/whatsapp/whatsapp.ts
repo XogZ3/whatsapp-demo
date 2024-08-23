@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import {
   setSystemMessage,
-  uploadFileToFirebaseGetPermanentURL,
+  uploadFileToFirebase,
 } from '@/utils/ReplyHelper/FirebaseHelpers';
 
 export const x = {
@@ -114,16 +114,16 @@ export async function fetchWhatsAppImageAndUploadToFirebase(
       'base64',
     );
 
-    // Upload to Firebase and get permanent URL
-    const permanentURL = await uploadFileToFirebaseGetPermanentURL(
+    // Upload to Firebase and get long expiry URL
+    const longExpiryURL = await uploadFileToFirebase(
       base64Content,
       clientid,
       filename,
     );
 
-    // console.log(`Image uploaded to Firebase: ${permanentURL}`);
+    // console.log(`Image uploaded to Firebase: ${longExpiryURL}`);
 
-    return permanentURL;
+    return longExpiryURL;
   } catch (error) {
     console.error('Error in fetchWhatsAppImageAndUploadToFirebase:', error);
     throw error;

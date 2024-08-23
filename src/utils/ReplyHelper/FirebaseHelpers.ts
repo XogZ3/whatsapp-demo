@@ -249,7 +249,7 @@ export async function uploadFileToFirebase(
   const buffer = Buffer.from(base64Content, 'base64');
   const readableStream = Readable.from(buffer);
 
-  const filePath = `runpod_images/${clientid}/${filename}`;
+  const filePath = `training_images/person${clientid}/${filename}`;
 
   const file = bucket.file(filePath);
   await new Promise((resolve, reject) => {
@@ -257,7 +257,9 @@ export async function uploadFileToFirebase(
       .pipe(
         file.createWriteStream({
           metadata: {
-            contentType: 'image/png',
+            contentType: filename.endsWith('.jpeg')
+              ? 'image/jpeg'
+              : 'image/png',
           },
         }),
       )
@@ -267,7 +269,7 @@ export async function uploadFileToFirebase(
 
   const [url] = await file.getSignedUrl({
     action: 'read',
-    expires: Date.now() + 1000 * 60 * 60, // 1 hour
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 365, // 1 year
   });
 
   return url;

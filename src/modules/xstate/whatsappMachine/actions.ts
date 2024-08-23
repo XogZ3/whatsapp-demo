@@ -7,9 +7,7 @@ import { DEFAULT_CREDITS, TRAINING_IMAGES_LIMIT } from '@/utils/constants';
 import { getImprovedPromptFromGroq } from '@/utils/groq';
 import {
   callTrainingAPI,
-  getPhotoCount,
   getTrainingImageURLs,
-  incrementPhotoCount,
   setProcessingFlag,
   setUserLanguage,
 } from '@/utils/ReplyHelper/FirebaseHelpers';
@@ -45,9 +43,6 @@ export const actionsFactory = (config: IMachineConfig): any => {
       message: ({ event }) =>
         `Send ${TRAINING_IMAGES_LIMIT - (event?.context?.photosUploaded || 0)} more photo(s)`,
     }),
-    incrementPhotoCount: async () => {
-      await incrementPhotoCount(config.userMetaData.phonenumber);
-    },
     sendInvalidInputMessage: async (event: any) => {
       const language = event?.event?.userMetaData?.language;
       const message = getTranslation('invalid input', language);
@@ -145,22 +140,6 @@ export const actionsFactory = (config: IMachineConfig): any => {
     sendPhotoUploadInstruction: async (event: any) => {
       const language = event?.context?.language;
       const message = getTranslation('photo upload instruction', language);
-      const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.phonenumber,
-        text: true,
-        msgBody: message,
-      };
-      await config.whatsappInstance.send(payload);
-    },
-    sendPhotosReceivedCount: async (event: any) => {
-      const language = event?.context?.language;
-      const uploadedPhotosCount = await getPhotoCount(
-        config.userMetaData.phonenumber,
-      );
-      const message = `${getTranslation(
-        'photo received',
-        language,
-      )}: ${uploadedPhotosCount || '1'} / ${TRAINING_IMAGES_LIMIT}`;
       const payload: ICreateMessagePayload = {
         phoneNumber: config.userMetaData.phonenumber,
         text: true,

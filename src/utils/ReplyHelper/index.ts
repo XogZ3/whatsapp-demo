@@ -1,11 +1,19 @@
 /* eslint-disable unused-imports/no-unused-vars */
 
-import { fetchWhatsAppImageAndUploadToFirebase } from '@/modules/whatsapp/whatsapp';
+import {
+  fetchWhatsAppImageAndUploadToFirebase,
+  type ICreateMessagePayload,
+  sendMessageToWhatsapp,
+} from '@/modules/whatsapp/whatsapp';
 import { whatsappStateTransition } from '@/modules/xstate/whatsappMachine';
 import type { IUserMetaData } from '@/modules/xstate/whatsappMachine/types';
 
 import { TRAINING_IMAGES_LIMIT } from '../constants';
-import { translateSystemMessageToEnglish } from '../translations';
+import {
+  getTranslation,
+  type Language,
+  translateSystemMessageToEnglish,
+} from '../translations';
 import {
   addTrainingImageURLandIncreaseCount,
   getPhotoCount,
@@ -13,6 +21,23 @@ import {
   setUserState,
 } from './FirebaseHelpers';
 import { extractImageID, extractText } from './MessageParsers';
+
+async function sendUpdatedPhotoCount(
+  clientid: string,
+  language: Language,
+  updatedPhotoCount: number,
+) {
+  const message = `${getTranslation(
+    'photo received',
+    language,
+  )}: ${updatedPhotoCount || '1'} / ${TRAINING_IMAGES_LIMIT}`;
+  const payload: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    text: true,
+    msgBody: message,
+  };
+  await sendMessageToWhatsapp(payload);
+}
 
 // eslint-disable-next-line consistent-return
 export async function replyToUser(messageObject: any) {
@@ -22,12 +47,14 @@ export async function replyToUser(messageObject: any) {
 
   const userDetails = await getUserDetails(clientid);
   const { state, name, phonenumber, language = 'english' } = userDetails;
+  const userLanguage = language ?? 'english';
+
   if (!state) {
     message = extractText(messageObject);
   } else {
     const stateObj = JSON.parse(state);
     const currentState = stateObj.value;
-    let uploadedPhotosCount = await getPhotoCount(clientid);
+    const uploadedPhotosCount = await getPhotoCount(clientid);
     // Handle receiving images
     // Accept images in imagesIncomplete state
     if (currentState === 'imagesIncomplete' && messageType === 'image') {
@@ -35,18 +62,23 @@ export async function replyToUser(messageObject: any) {
         !uploadedPhotosCount || // Handles undefined or null
         uploadedPhotosCount < TRAINING_IMAGES_LIMIT
       ) {
-        console.log(
-          '[+] # of photos uploaded to firebase: ',
-          uploadedPhotosCount,
-        );
         const imageID = extractImageID(messageObject);
         const imageURL = await fetchWhatsAppImageAndUploadToFirebase(
           imageID,
           clientid,
         );
-        await addTrainingImageURLandIncreaseCount(clientid, imageURL);
-        uploadedPhotosCount = await getPhotoCount(clientid);
-        if (uploadedPhotosCount >= TRAINING_IMAGES_LIMIT)
+        const updatedPhotoCount = await addTrainingImageURLandIncreaseCount(
+          clientid,
+          imageURL,
+        );
+        console.log(
+          '[+] # of photos uploaded to firebase: ',
+          updatedPhotoCount,
+        );
+        // send photo count to user
+        await sendUpdatedPhotoCount(clientid, userLanguage, updatedPhotoCount);
+
+        if (updatedPhotoCount >= TRAINING_IMAGES_LIMIT)
           message = 'Generate Model';
         message = 'Photo Received';
       }
@@ -63,8 +95,6 @@ export async function replyToUser(messageObject: any) {
       message = 'FALLBACK';
     } else message = extractText(messageObject);
   }
-
-  const userLanguage = language ?? 'english';
 
   const messageInEnglish = translateSystemMessageToEnglish(
     message,

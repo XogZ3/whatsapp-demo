@@ -6,7 +6,7 @@ import firebase from '@/modules/firebase';
 import { getStorageInstance } from '@/modules/firebase/firebase';
 
 import { getBaseUrl, getLanguageCodeFromPhoneNumber } from '../helpers';
-import type { Language } from '../translations';
+import { type Language } from '../translations';
 
 const firestore = firebase.getFirestore();
 
@@ -140,13 +140,31 @@ export async function addTrainingImageURLandIncreaseCount(
     .collection('clients')
     .doc(clientid);
 
-  const response = await clientDoc.update({
-    trainingImageURLs: FieldValue.arrayUnion(imageURL),
-    photosUploaded: FieldValue.increment(1),
-  });
-  console.log('firebase update res: ', JSON.stringify(response, null, 2));
-}
+  try {
+    const result = await firestore.runTransaction(async (transaction) => {
+      const doc = await transaction.get(clientDoc);
+      if (!doc.exists) {
+        throw new Error('Client document does not exist!');
+      }
 
+      const currentPhotosUploaded = doc.data()?.photosUploaded || 0;
+      const newPhotosUploaded = currentPhotosUploaded + 1;
+
+      transaction.update(clientDoc, {
+        trainingImageURLs: FieldValue.arrayUnion(imageURL),
+        photosUploaded: newPhotosUploaded,
+      });
+
+      return newPhotosUploaded;
+    });
+
+    console.log('Updated photosUploaded count:', result);
+    return result;
+  } catch (error) {
+    console.error('Transaction failed: ', error);
+  }
+  return -1;
+}
 export async function getPhotoCount(clientid: string) {
   const wabaId = process.env.WABA_ID;
   const clientDoc = firestore
@@ -158,19 +176,6 @@ export async function getPhotoCount(clientid: string) {
   const { photosUploaded } = clientData.data() || {};
 
   return photosUploaded;
-}
-
-export async function incrementPhotoCount(clientid: string) {
-  const wabaId = process.env.WABA_ID;
-  const clientDoc = firestore
-    .collection('apps')
-    .doc(wabaId as string)
-    .collection('clients')
-    .doc(clientid);
-
-  await clientDoc.update({
-    photosUploaded: FieldValue.increment(1),
-  });
 }
 
 export async function setProcessingFlag(clientid: string, value: boolean) {
@@ -185,6 +190,7 @@ export async function setProcessingFlag(clientid: string, value: boolean) {
     transaction.update(clientDoc, { processing: value });
   });
 }
+
 export async function getProcessingFlag(clientid: string) {
   const wabaId = process.env.WABA_ID;
   const clientDoc = firestore

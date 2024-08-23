@@ -83,14 +83,9 @@ export const machineFactory = (config: IMachineConfig): any => {
           entry: ['sendPhotoUploadInstruction'],
           on: {
             PHOTO_RECEIVED: {
-              guard: 'canUploadMorePhotos',
-              actions: [
-                'sendPhotosReceivedCount',
-                assign({ message: () => 'photo received' }),
-              ],
+              actions: [assign({ message: () => 'photo received' })],
             },
             GENERATE_MODEL: {
-              guard: 'hasUploadedEnoughPhotos',
               target: 'generatingModel',
               actions: ['callStartTrainingAPI'],
             },

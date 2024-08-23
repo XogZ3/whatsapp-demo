@@ -169,9 +169,9 @@ export const TRANSLATION_MAP: Record<
     ar: '⚠️ عذرًا!\n\nيبدو أنك قدمت إدخالاً غير صالح.\n\nدعنا نحاول مرة أخرى.',
   },
   'intro message': {
-    en: `👋 Welcome to FotoLabs.ai!\n\nSend us ${TRAINING_IMAGES_LIMIT} photos of yourself, and we'll create a personalized model just for you. You'll receive a few sample photos for free once the model is ready. After that, you can purchase credits to generate more images by simply sending prompts.\n\nReady to get started?`,
-    pt: `👋 Bem-vindo ao FotoLabs.ai!\n\nEnvie-nos ${TRAINING_IMAGES_LIMIT} fotos suas e criaremos um modelo personalizado só para você. Você receberá algumas fotos de amostra gratuitamente quando o modelo estiver pronto. Depois disso, você pode comprar créditos para gerar mais imagens simplesmente enviando solicitações.\n\nPronto para começar?`,
-    ar: `👋 مرحبًا بك في FotoLabs.ai!\n\nأرسل لنا ${TRAINING_IMAGES_LIMIT} صورة لنفسك، وسنقوم بإنشاء نموذج شخصي خصيصًا لك. ستتلقى بعض الصور النموذجية مجانًا بمجرد أن يكون النموذج جاهزًا. بعد ذلك، يمكنك شراء أرصدة لإنشاء المزيد من الصور ببساطة عن طريق إرسال الطلبات.\n\nهل أنت جاهز للبدء؟`,
+    en: `👋 Welcome to FotoLabs.ai! Click *'Upload Photos'* to send us ${TRAINING_IMAGES_LIMIT} photos of yourself. We'll create a personalized model and provide some images for free. Follow the instructions to get started!`,
+    pt: `👋 Bem-vindo ao FotoLabs.ai! Clique em 'Carregar Fotos' para nos enviar ${TRAINING_IMAGES_LIMIT} fotos suas. Criaremos um modelo personalizado e forneceremos algumas imagens gratuitamente. Siga as instruções para começar!`,
+    ar: `👋 مرحبًا بك في FotoLabs.ai! اضغط على 'رفع الصور' لإرسال ${TRAINING_IMAGES_LIMIT} صورة لنفسك. سنقوم بإنشاء نموذج شخصي وتزويدك ببعض الصور مجانًا. اتبع التعليمات للبدء!`,
   },
   'pricing message': {
     en: `After creating your personalized model, you can purchase credits to generate more amazing images.\n\n5 Credits: $5 (5 images)\n15 Credits: $12 (15 images)\n30 Credits: $20 (30 images)\n\nCredits can be used anytime by sending a prompt. Ready to unlock more creativity?`,

@@ -18,7 +18,11 @@ async function updateTrainingStatus(
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ clientid, loraURL, loraFilename }),
+    body: JSON.stringify({
+      clientid,
+      loraURL,
+      loraFilename: `${loraFilename}.safetensors`,
+    }),
   });
 
   if (!response.ok) {

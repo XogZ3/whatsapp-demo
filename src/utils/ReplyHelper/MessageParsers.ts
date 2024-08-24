@@ -10,7 +10,10 @@ export function extractText(messageObject: any) {
       text = message.interactive.list_reply.title;
     } else if (message.type === 'button' && message.button) {
       text = message.button.text;
+    } else if (message.type === 'image' && message.image.caption) {
+      text = message.image.caption;
     }
+    text = 'FALLBACK';
   }
   return text;
 }

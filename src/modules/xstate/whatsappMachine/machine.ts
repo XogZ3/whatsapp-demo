@@ -30,7 +30,7 @@ export const machineFactory = (config: IMachineConfig): any => {
       },
       states: {
         onBoarding: {
-          entry: ['sendIntroOptionsMessage', 'assignDefaultValues'],
+          entry: ['assignDefaultValues'],
           on: {
             UPLOAD_PHOTOS: {
               actions: 'assignMessage',

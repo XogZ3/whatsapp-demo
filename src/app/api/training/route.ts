@@ -43,7 +43,7 @@ export async function POST(request: Request) {
       .doc(clientid);
 
     const clientData = await clientDoc.get();
-    const { language, trainingToken } = clientData.data() || {};
+    const { language = 'english', trainingToken } = clientData.data() || {};
 
     console.log('expectedToken', trainingToken);
 
@@ -51,7 +51,7 @@ export async function POST(request: Request) {
     if (token === trainingToken) {
       // Hard transition xstate
       const updates: any = {
-        state: `{"status":"stopped","context":{"creditsRemaining":1,"language":${language},"modelGenerated":true},"value":"photoPrompting","children":{},"historyValue":{},"tags":[]}`,
+        state: `{"status":"stopped","context":{"creditsRemaining":1,"language":${language || 'english'},"modelGenerated":true},"value":"photoPrompting","children":{},"historyValue":{},"tags":[]}`,
         loraURL,
         loraFilename,
       };

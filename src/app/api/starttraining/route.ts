@@ -48,6 +48,29 @@ async function notifyModelExists(clientid: string, language: Language) {
   };
   await sendMessageToWhatsapp(payload);
 }
+async function notifyGeneratingModel(clientid: string, language: Language) {
+  const message = getTranslation('please wait', language);
+  // TODO: implement language in buttons
+  const payload: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    text: true,
+    msgBody: message,
+  };
+  await sendMessageToWhatsapp(payload);
+}
+
+async function checkJobExists(model_name: string): Promise<boolean> {
+  try {
+    const jobsRef = firestore.collection('training_jobs');
+    const query = jobsRef.where('model_name', '==', model_name);
+
+    const snapshot = await query.get();
+    return !snapshot.empty;
+  } catch (error) {
+    console.error('Error checking existing job:', error);
+    throw error;
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -61,11 +84,25 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const {
+      loraURL,
+      loraFilename,
+      language = 'english',
+    } = await getUserDetails(userid);
+
     // Validate token here if needed
 
+    // Reject if job already exists for userid
+    const jobExists = await checkJobExists(model_name);
+    if (jobExists) {
+      await notifyGeneratingModel(userid, language);
+      return NextResponse.json(
+        { error: 'A training job for this model_name already exists' },
+        { status: 409 },
+      );
+    }
+
     // Reject if model already exists
-    const { loraURL, loraFilename, language } = await getUserDetails(userid);
-    // Check if both loraURL and loraFilename contain valid strings
     const modelAlreadyExists = !!(loraURL && loraFilename);
 
     if (modelAlreadyExists) {

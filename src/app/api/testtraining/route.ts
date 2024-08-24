@@ -1,23 +1,7 @@
 import firebase from '@/modules/firebase';
-import {
-  type ICreateMessagePayload,
-  sendMessageToWhatsapp,
-} from '@/modules/whatsapp/whatsapp';
 import { generateAndSendModelImages } from '@/utils/sendSampleImages';
-import { getTranslation, type Language } from '@/utils/translations';
 
 const firestore = firebase.getFirestore();
-
-async function sendPromptingInstruction(clientid: string, language: Language) {
-  const message = getTranslation('model generated request prompt', language);
-  // TODO: implement language in buttons
-  const payload: ICreateMessagePayload = {
-    phoneNumber: clientid,
-    text: true,
-    msgBody: message,
-  };
-  await sendMessageToWhatsapp(payload);
-}
 
 export async function POST(request: Request) {
   try {
@@ -58,8 +42,6 @@ export async function POST(request: Request) {
       };
       await clientDoc.set(updates, { merge: true });
 
-      await sendPromptingInstruction(clientid, language || 'english');
-
       await generateAndSendModelImages(loraFilename, clientid, language);
 
       return new Response('success', { status: 200 });
@@ -70,5 +52,3 @@ export async function POST(request: Request) {
     return new Response('Internal Server Error', { status: 500 });
   }
 }
-
-// {"status":"stopped","context":{"creditsRemaining":1,"language":"english","modelGenerated":true},"value":"photoPrompting","children":{},"historyValue":{},"tags":[]}

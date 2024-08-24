@@ -61,11 +61,11 @@ export async function generateAndSendModelImages(
         }, Promise.resolve())
         .then(() => {
           console.log('All model images sent successfully');
-          return sendModelGeneratedSuccess(clientid, language);
+          return sendModelGeneratedSuccess(clientid, language || 'english');
         })
         .then(() => {
           console.log('Model generated success message sent');
-          return sendPromptingInstruction(clientid, language);
+          return sendPromptingInstruction(clientid, language || 'english');
         })
         .then(() => {
           console.log('Prompting instruction sent');

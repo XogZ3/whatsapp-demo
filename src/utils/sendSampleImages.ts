@@ -46,25 +46,25 @@ export async function generateAndSendModelImages(
 
     if (allImageUrls.length > 0) {
       // Use promise chaining for sequential execution
-      return await sendModelGeneratedSuccess(clientid, language)
-        .then(() => {
-          console.log('Model generated success message sent');
-          // Send images sequentially
-          return allImageUrls.reduce((promise, url) => {
-            return promise.then(() => {
-              const payload: ICreateMessagePayload = {
-                phoneNumber: clientid,
-                image: true,
-                imageLink: url,
-              };
-              return sendMessageToWhatsapp(payload).then(() => {
-                console.log(`Image sent: ${url}`);
-              });
+      return await allImageUrls
+        .reduce(async (promise, url) => {
+          return promise.then(() => {
+            const payload: ICreateMessagePayload = {
+              phoneNumber: clientid,
+              image: true,
+              imageLink: url,
+            };
+            return sendMessageToWhatsapp(payload).then(() => {
+              console.log(`Image sent: ${url}`);
             });
-          }, Promise.resolve());
-        })
+          });
+        }, Promise.resolve())
         .then(() => {
           console.log('All model images sent successfully');
+          return sendModelGeneratedSuccess(clientid, language);
+        })
+        .then(() => {
+          console.log('Model generated success message sent');
           return sendPromptingInstruction(clientid, language);
         })
         .then(() => {

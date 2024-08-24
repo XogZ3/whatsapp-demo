@@ -34,14 +34,16 @@ export async function generateAndSendModelImages(
 ): Promise<boolean> {
   try {
     // Generate images for all prompts in parallel
-    const imageUrlArrays = await Promise.all(
+    const imageUrlResults = await Promise.all(
       prompts.map((prompt) =>
         generateImagesUploadToFirebaseGetURL(prompt, clientid),
       ),
     );
 
-    // Flatten the array of arrays into a single array of URLs
-    const allImageUrls = imageUrlArrays.flat();
+    // Ensure each result is an array and flatten
+    const allImageUrls = imageUrlResults
+      .flatMap((result) => (Array.isArray(result) ? result : [result]))
+      .filter((url): url is string => typeof url === 'string');
 
     if (allImageUrls.length > 0) {
       // Use promise chaining for sequential execution

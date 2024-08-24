@@ -195,9 +195,9 @@ export const TRANSLATION_MAP: Record<
     ar: 'يرجى الانتظار بينما نقوم بإنشاء نموذج مخصص لك.',
   },
   'model already exists': {
-    en: 'Your custom AI model already exists.',
-    pt: 'Seu modelo de IA personalizado já existe.',
-    ar: 'نموذج الذكاء الاصطناعي المخصص لك موجود بالفعل.',
+    en: 'Your custom AI model already exists. Send your prompt now!',
+    pt: 'Seu modelo de IA personalizado já existe. Envie seu prompt agora!',
+    ar: 'نموذج الذكاء الاصطناعي المخصص لك موجود بالفعل. أرسل موجهك الآن!',
   },
   'model generated': {
     en: 'Your model has been successfully generated! :D',

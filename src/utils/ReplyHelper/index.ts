@@ -51,6 +51,7 @@ export async function replyToUser(messageObject: any) {
 
   if (!state) {
     message = extractText(messageObject);
+    if (messageObject.message.type === 'image') message = 'FALLBACK';
   } else {
     const stateObj = JSON.parse(state);
     const currentState = stateObj.value;

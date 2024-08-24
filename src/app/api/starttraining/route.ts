@@ -39,6 +39,17 @@ async function storeJobInFirestore(
 }
 
 async function notifyModelExists(clientid: string, language: Language) {
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid);
+
+  const updates: any = {
+    state: `{"status":"stopped","context":{"creditsRemaining":1,"language":${language || 'english'},"modelGenerated":true},"value":"photoPrompting","children":{},"historyValue":{},"tags":[]}`,
+  };
+  await clientDoc.set(updates, { merge: true });
   const message = getTranslation('model already exists', language);
   // TODO: implement language in buttons
   const payload: ICreateMessagePayload = {
@@ -92,16 +103,6 @@ export async function POST(request: NextRequest) {
 
     // Validate token here if needed
 
-    // Reject if job already exists for userid
-    const jobExists = await checkJobExists(model_name);
-    if (jobExists) {
-      await notifyGeneratingModel(userid, language);
-      return NextResponse.json(
-        { error: 'A training job for this model_name already exists' },
-        { status: 409 },
-      );
-    }
-
     // Reject if model already exists
     const modelAlreadyExists = !!(loraURL && loraFilename);
 
@@ -109,6 +110,16 @@ export async function POST(request: NextRequest) {
       await notifyModelExists(userid, language);
       return NextResponse.json(
         { error: 'Model already exists' },
+        { status: 409 },
+      );
+    }
+
+    // Reject if job already exists for userid
+    const jobExists = await checkJobExists(model_name);
+    if (jobExists) {
+      await notifyGeneratingModel(userid, language);
+      return NextResponse.json(
+        { error: 'A training job for this model_name already exists' },
         { status: 409 },
       );
     }

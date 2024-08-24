@@ -4,6 +4,7 @@ import {
   sendMessageToWhatsapp,
 } from '@/modules/whatsapp/whatsapp';
 
+import { generateSamplePrompts } from './constants';
 import { getTranslation, type Language } from './translations';
 
 async function sendModelGeneratedSuccess(clientid: string, language: Language) {
@@ -28,22 +29,20 @@ async function sendPromptingInstruction(clientid: string, language: Language) {
 }
 
 export async function generateAndSendModelImages(
-  prompts: string[],
+  loraFilename: string,
   clientid: string,
   language: Language,
-): Promise<boolean> {
+) {
+  const samplePrompts = generateSamplePrompts(loraFilename);
   try {
     // Generate images for all prompts in parallel
-    const imageUrlResults = await Promise.all(
-      prompts.map((prompt) =>
+    const imageUrlArrays = await Promise.all(
+      samplePrompts.map((prompt) =>
         generateImagesUploadToFirebaseGetURL(prompt, clientid),
       ),
     );
-
-    // Ensure each result is an array and flatten
-    const allImageUrls = imageUrlResults
-      .flatMap((result) => (Array.isArray(result) ? result : [result]))
-      .filter((url): url is string => typeof url === 'string');
+    // Flatten the array of arrays into a single array of URLs
+    const allImageUrls = imageUrlArrays.flat();
 
     if (allImageUrls.length > 0) {
       // Use promise chaining for sequential execution

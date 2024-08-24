@@ -13,7 +13,6 @@ export function extractText(messageObject: any) {
     } else if (message.type === 'image' && message.image.caption) {
       text = message.image.caption;
     }
-    text = 'FALLBACK';
   }
   return text;
 }

@@ -314,7 +314,6 @@ export const actionsFactory = (config: IMachineConfig): any => {
         quickReply: true,
         button1: 'Use Prompt',
         button2: 'Improve Prompt',
-        button3: 'Cancel',
         msgBody: message,
       };
       await config.whatsappInstance.send(payload);

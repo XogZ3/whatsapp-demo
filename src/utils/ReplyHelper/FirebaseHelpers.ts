@@ -61,7 +61,21 @@ export async function setSystemMessage(originalPayload: any, seed?: number) {
   await clientDoc.collection('messages').add(payload);
 }
 
-export async function getUserDetails(clientid: string) {
+type UserFieldsFirebase = {
+  state: string;
+  name: string;
+  clientid: any;
+  lastupdatedat: number;
+  language: Language;
+  trainingImageURLs: any;
+  loraURL: string;
+  loraFilename: string;
+  trainingToken?: string;
+};
+
+export async function getUserDetails(
+  clientid: string,
+): Promise<UserFieldsFirebase> {
   const wabaId = process.env.WABA_ID;
   const clientDoc = firestore
     .collection('apps')
@@ -69,17 +83,26 @@ export async function getUserDetails(clientid: string) {
     .collection('clients')
     .doc(clientid);
   const clientData = await clientDoc.get();
-  const { state, name, lastupdatedat, language, trainingImageURLs } =
-    clientData.data() || {};
+  const {
+    state,
+    name,
+    lastupdatedat,
+    language,
+    trainingImageURLs,
+    loraURL,
+    loraFilename,
+  } = clientData.data() || {};
   const userLanguage = language || getLanguageCodeFromPhoneNumber(clientid);
 
   return {
     state: state || '',
     name,
-    phonenumber: clientid,
+    clientid,
     lastupdatedat,
     language: userLanguage,
     trainingImageURLs,
+    loraURL,
+    loraFilename,
   };
 }
 

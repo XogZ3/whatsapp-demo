@@ -46,7 +46,7 @@ export async function replyToUser(messageObject: any) {
   const { clientid } = messageObject;
 
   const userDetails = await getUserDetails(clientid);
-  const { state, name, phonenumber, language = 'english' } = userDetails;
+  const { state, name, language = 'english' } = userDetails;
   const userLanguage = language ?? 'english';
 
   if (!state) {
@@ -104,7 +104,7 @@ export async function replyToUser(messageObject: any) {
   // console.log('[====]: ', JSON.stringify(messageObject, null, 2));
   const newState = await whatsappStateTransition(
     { type: 'text', text: messageInEnglish },
-    { state, name, phonenumber, language: userLanguage } as IUserMetaData,
+    { state, name, clientid, language: userLanguage } as IUserMetaData,
   );
   if (newState && newState !== state) {
     await setUserState(newState, clientid);

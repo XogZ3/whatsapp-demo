@@ -1,9 +1,6 @@
-import {
-  getProcessingFlag,
-  getUserLoraDetails,
-} from '@/utils/ReplyHelper/FirebaseHelpers';
+import { getProcessingFlag } from '@/utils/ReplyHelper/FirebaseHelpers';
 
-import type { IMachineConfig } from './types';
+import type { IMachineConfig, IMachineContext } from './types';
 
 export const guardsFactory = (_machineConfig: IMachineConfig): any => {
   return {
@@ -13,17 +10,13 @@ export const guardsFactory = (_machineConfig: IMachineConfig): any => {
     },
     machineIsAvailable: async () => {
       const isAvailable =
-        (await getProcessingFlag(_machineConfig.userMetaData.phonenumber)) ===
+        (await getProcessingFlag(_machineConfig.userMetaData.clientid)) ===
         false;
       return isAvailable;
     },
-    modelNotCreated: async (event: any) => {
-      const { loraURL, loraFilename } = await getUserLoraDetails(
-        event?.event?.userMetaData?.phonenumber,
-      );
-      console.log('[O] guard: modelNotCreated: lora?', loraFilename, loraURL);
-      if (loraURL || loraFilename) return false;
-      return true;
+    modelAlreadyGenerated: ({ context }: { context: IMachineContext }) => {
+      const modelGenerated = context?.modelGenerated === true;
+      return modelGenerated;
     },
   };
 };

@@ -38,26 +38,27 @@ export const actionsFactory = (config: IMachineConfig): any => {
       latestImprovedPrompt: () => '',
       creditsRemaining: () => DEFAULT_CREDITS,
       language: () => 'english',
+      modelGenerated: () => false,
     }),
     notifyPendingPhotos: assign({
       message: ({ event }) =>
         `Send ${TRAINING_IMAGES_LIMIT - (event?.context?.photosUploaded || 0)} more photo(s)`,
     }),
     sendInvalidInputMessage: async (event: any) => {
-      const language = event?.event?.userMetaData?.language;
+      const language = event?.context?.language;
       const message = getTranslation('invalid input', language);
       await sendMessage(
         config.whatsappInstance,
         message,
-        config.userMetaData.phonenumber,
+        config.userMetaData.clientid,
       );
     },
     sendIntroOptionsMessage: async (event: any) => {
-      const language = event?.event?.userMetaData?.language;
+      const language = event?.context?.language;
       console.log('[+] sending intro message');
       const message = getTranslation('intro message', language);
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.phonenumber,
+        phoneNumber: config.userMetaData.clientid,
         quickReply: true,
         button1: getTranslation('upload photos', language),
         button2: getTranslation('language', language),
@@ -66,18 +67,15 @@ export const actionsFactory = (config: IMachineConfig): any => {
       };
       await config.whatsappInstance.send(payload);
     },
-    // assignLanguage: assign({
-    //   language: ({ event }) => event?.userMetaData?.language,
-    // }),
     sendSelectLanguage: async (event: any) => {
       // console.log(
       //   '[+] sending select language message on event: ',
       //   JSON.stringify(event, null, 2),
       // );
-      const language = event?.event?.userMetaData?.language;
+      const language = event?.context?.language;
       const message = getTranslation('select language', language);
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.phonenumber,
+        phoneNumber: config.userMetaData.clientid,
         quickReply: true,
         button1: getTranslation('english', language),
         button2: getTranslation('portuguese', language),
@@ -87,7 +85,6 @@ export const actionsFactory = (config: IMachineConfig): any => {
       await config.whatsappInstance.send(payload);
     },
     assignLanguage: assign(({ event }) => {
-      // console.log('assignLanguage event: ', JSON.stringify(event, null, 2));
       return {
         language: event?.message,
       };
@@ -104,7 +101,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
         event?.context?.language,
       );
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.phonenumber,
+        phoneNumber: config.userMetaData.clientid,
         text: true,
         msgBody: message,
       };
@@ -115,7 +112,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const language = event?.context?.language;
       const message = getTranslation('pricing', language);
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.phonenumber,
+        phoneNumber: config.userMetaData.clientid,
         quickReply: true,
         button1: getTranslation('buy credits', language),
         button2: getTranslation('tutorial', language),
@@ -128,7 +125,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const language = event?.context?.language;
       const message = getTranslation('tutorial message', language);
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.phonenumber,
+        phoneNumber: config.userMetaData.clientid,
         quickReply: true,
         button1: getTranslation('upload photos', language),
         button2: getTranslation('pricing', language),
@@ -141,14 +138,14 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const language = event?.context?.language;
       const message = getTranslation('photo upload instruction', language);
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.phonenumber,
+        phoneNumber: config.userMetaData.clientid,
         text: true,
         msgBody: message,
       };
       await config.whatsappInstance.send(payload);
     },
     callStartTrainingAPI: async () => {
-      const clientid = config.userMetaData.phonenumber;
+      const { clientid } = config.userMetaData;
       async function getTrainingImageURLsFromFirebase() {
         const trainingImageURLs = await getTrainingImageURLs(clientid);
         return trainingImageURLs || [];
@@ -171,12 +168,23 @@ export const actionsFactory = (config: IMachineConfig): any => {
           );
         });
     },
+    notifyModelExists: async (event: any) => {
+      const language = event?.context?.language;
+      const message = getTranslation('model already exists', language);
+      // TODO: implement language in buttons
+      const payload: ICreateMessagePayload = {
+        phoneNumber: config.userMetaData.clientid,
+        text: true,
+        msgBody: message,
+      };
+      await config.whatsappInstance.send(payload);
+    },
     sendGeneratingModel: async (event: any) => {
       const language = event?.context?.language;
       const message = getTranslation('generating model', language);
       // TODO: implement language in buttons
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.phonenumber,
+        phoneNumber: config.userMetaData.clientid,
         text: true,
         msgBody: message,
       };
@@ -187,7 +195,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const message = getTranslation('please wait', language);
       // TODO: implement language in buttons
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.phonenumber,
+        phoneNumber: config.userMetaData.clientid,
         text: true,
         msgBody: message,
       };
@@ -199,7 +207,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       await sendMessage(
         config.whatsappInstance,
         message,
-        config.userMetaData.phonenumber,
+        config.userMetaData.clientid,
       );
     },
     sendSamplePhotos: async (event: any) => {
@@ -208,7 +216,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       await sendMessage(
         config.whatsappInstance,
         message,
-        config.userMetaData.phonenumber,
+        config.userMetaData.clientid,
       );
     },
     sendUnpaidUserOptions: async (event: any) => {
@@ -216,7 +224,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const message = getTranslation('unpaid user options', language);
       // TODO: implement language in buttons
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.phonenumber,
+        phoneNumber: config.userMetaData.clientid,
         quickReply: true,
         button1: 'Buy Credits',
         button2: 'Bypass',
@@ -230,7 +238,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const message = getTranslation('payment instructions', language);
       // TODO: implement language in buttons
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.phonenumber,
+        phoneNumber: config.userMetaData.clientid,
         quickReply: true,
         button1: 'Cancel',
         button2: 'Bypass',
@@ -243,7 +251,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const message = getTranslation('payment confirmation', language);
       // TODO: implement language in buttons
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.phonenumber,
+        phoneNumber: config.userMetaData.clientid,
         quickReply: true,
         button1: 'Cancel',
         button2: 'Bypass',
@@ -256,7 +264,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const message = getTranslation('paid user options', language);
       // TODO: implement language in buttons
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.phonenumber,
+        phoneNumber: config.userMetaData.clientid,
         quickReply: true,
         button1: 'Create Photo',
         button2: 'Cancel',
@@ -270,7 +278,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const message = getTranslation('prompting instruction', language);
       // TODO: implement language in buttons
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.phonenumber,
+        phoneNumber: config.userMetaData.clientid,
         text: true,
         msgBody: message,
       };
@@ -295,14 +303,14 @@ export const actionsFactory = (config: IMachineConfig): any => {
       };
     }),
     sendPromptConfirmation: async (event: any) => {
-      const language = event?.event?.userMetaData?.language;
+      const language = event?.context?.language;
       const prompt = event?.event?.message;
       console.log('[+] sendPromptConfirmation | prompt: ', prompt);
       const message = `${getTranslation('prompt confirmation', language)}
 >>> ${prompt}`;
       // TODO: implement language in buttons
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.phonenumber,
+        phoneNumber: config.userMetaData.clientid,
         quickReply: true,
         button1: 'Use Prompt',
         button2: 'Improve Prompt',
@@ -312,7 +320,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       await config.whatsappInstance.send(payload);
     },
     sendImprovedPromptConfirmationAndSetContext: async (event: any) => {
-      const language = event?.event?.userMetaData?.language;
+      const language = event?.context?.language;
       // console.log(
       //   '[+] sendImprovedPromptConfirmationAndSetContext: ',
       //   JSON.stringify(event, null, 2),
@@ -322,7 +330,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
         const improvedPrompt = await getImprovedPromptFromGroq(prompt);
         // overwrite latestPrompt with improvedPrompt
         await config.storeInstance.setContext(
-          config.userMetaData.phonenumber,
+          config.userMetaData.clientid,
           'latestPrompt',
           improvedPrompt,
         );
@@ -335,7 +343,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
   >>> ${improvedPrompt}`;
           // TODO: implement language in buttons
           const payload: ICreateMessagePayload = {
-            phoneNumber: config.userMetaData.phonenumber,
+            phoneNumber: config.userMetaData.clientid,
             quickReply: true,
             button1: 'Use Prompt',
             button2: 'Improve Prompt',
@@ -352,7 +360,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
         });
     },
     sendReImprovedPromptConfirmationAndSetContext: async (event: any) => {
-      const language = event?.event?.userMetaData?.language;
+      const language = event?.context?.language;
       // console.log(
       //   '[+] sendReImprovedPromptConfirmationAndSetContext: ',
       //   JSON.stringify(event, null, 2),
@@ -362,7 +370,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
         const reImprovedPrompt =
           await getImprovedPromptFromGroq(improvedPrompt);
         await config.storeInstance.setContext(
-          config.userMetaData.phonenumber,
+          config.userMetaData.clientid,
           'latestImprovedPrompt',
           reImprovedPrompt,
         );
@@ -375,7 +383,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
   >>> ${reImprovedPrompt}`;
           // TODO: implement language in buttons
           const payload: ICreateMessagePayload = {
-            phoneNumber: config.userMetaData.phonenumber,
+            phoneNumber: config.userMetaData.clientid,
             quickReply: true,
             button1: 'Use Prompt',
             button2: 'Improve Prompt',
@@ -392,12 +400,12 @@ export const actionsFactory = (config: IMachineConfig): any => {
         });
     },
     setProcessingTrue: async () =>
-      setProcessingFlag(config.userMetaData.phonenumber, true),
+      setProcessingFlag(config.userMetaData.clientid, true),
     setProcessingFalse: async () =>
-      setProcessingFlag(config.userMetaData.phonenumber, false),
+      setProcessingFlag(config.userMetaData.clientid, false),
 
     sendPromptedPhoto: async (event: any) => {
-      const language = event?.event?.userMetaData?.language;
+      const language = event?.context?.language;
       const prompt = event?.context?.latestPrompt;
       console.log('[+] action: send photo for prompt: ', prompt);
 
@@ -405,21 +413,21 @@ export const actionsFactory = (config: IMachineConfig): any => {
       await sendMessage(
         config.whatsappInstance,
         message,
-        config.userMetaData.phonenumber,
+        config.userMetaData.clientid,
       );
 
       async function processAndSendImages() {
         const generatedImageURLs: string[] =
           await generateImagesUploadToFirebaseGetURL(
             prompt,
-            config.userMetaData.phonenumber,
+            config.userMetaData.clientid,
           );
 
         console.log('[+] receveid runpod urls: ', generatedImageURLs);
         if (generatedImageURLs.length > 0) {
           const sendPromises = generatedImageURLs.map(async (url) => {
             const payload: ICreateMessagePayload = {
-              phoneNumber: config.userMetaData.phonenumber,
+              phoneNumber: config.userMetaData.clientid,
               image: true,
               imageLink: url,
             };
@@ -433,7 +441,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
         message =
           'Uh-oh. Something went wrong, please try again after some time.';
         const payload: ICreateMessagePayload = {
-          phoneNumber: config.userMetaData.phonenumber,
+          phoneNumber: config.userMetaData.clientid,
           text: true,
           msgBody: message,
         };
@@ -444,7 +452,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       processAndSendImages()
         .then(async (success) => {
           console.log('[+] processAndSendImages done');
-          await setProcessingFlag(config.userMetaData.phonenumber, false);
+          await setProcessingFlag(config.userMetaData.clientid, false);
           return success; // Pass success to the next .then()
         })
         .then(async (success) => {
@@ -452,7 +460,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
           if (success) {
             message = `Cool photo! Just send another prompt.`;
             const payload: ICreateMessagePayload = {
-              phoneNumber: config.userMetaData.phonenumber,
+              phoneNumber: config.userMetaData.clientid,
               text: true,
               msgBody: message,
             };
@@ -466,7 +474,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
     sendRequestNewPrompt: async () => {
       const message = 'Alright, send a new prompt. :)';
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.phonenumber,
+        phoneNumber: config.userMetaData.clientid,
         text: true,
         msgBody: message,
       };
@@ -474,10 +482,10 @@ export const actionsFactory = (config: IMachineConfig): any => {
     },
     sendCredits: async (event: any) => {
       // Logic to send remaining credits
-      const language = event?.event?.userMetaData?.language;
+      const language = event?.context?.language;
       const message = `${getTranslation('credits remaining', language)}: ${event?.context?.creditsRemaining}`;
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.phonenumber,
+        phoneNumber: config.userMetaData.clientid,
         text: true,
         msgBody: message,
       };
@@ -487,7 +495,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       console.log('[!] test: ', JSON.stringify(event, null, 2));
       const message = `ping`;
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.phonenumber,
+        phoneNumber: config.userMetaData.clientid,
         text: true,
         msgBody: message,
       };

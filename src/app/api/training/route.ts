@@ -51,8 +51,7 @@ export async function POST(request: Request) {
     if (token === trainingToken) {
       // Hard transition xstate
       const updates: any = {
-        state:
-          '{"status":"stopped","context":{"creditsRemaining":1},"value":"photoPrompting","children":{},"historyValue":{},"tags":[]}',
+        state: `{"status":"stopped","context":{"creditsRemaining":1,"language":${language},"modelGenerated":true},"value":"photoPrompting","children":{},"historyValue":{},"tags":[]}`,
         loraURL,
         loraFilename,
       };
@@ -68,3 +67,5 @@ export async function POST(request: Request) {
     return new Response('Internal Server Error', { status: 500 });
   }
 }
+
+// {"status":"stopped","context":{"creditsRemaining":1,"language":"english","modelGenerated":true},"value":"photoPrompting","children":{},"historyValue":{},"tags":[]}

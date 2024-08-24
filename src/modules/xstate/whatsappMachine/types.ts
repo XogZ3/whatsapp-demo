@@ -23,12 +23,12 @@ export interface IMachineContext {
   latestImprovedPrompt: string;
   creditsRemaining: number;
   modelGenerated: boolean;
-  language: string;
+  language: Language;
 }
 
 export interface IUserMetaData {
   state?: string;
-  phonenumber: string;
+  clientid: string;
   name?: string;
   language: Language;
 }

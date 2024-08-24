@@ -1,6 +1,6 @@
 // machine.ts
 
-import { assign, createMachine } from 'xstate';
+import { assign, createMachine, not } from 'xstate';
 
 import { DEFAULT_CREDITS } from '@/utils/constants';
 
@@ -11,7 +11,7 @@ import type { IMachineConfig, IMachineContext } from './types';
 export const machineFactory = (config: IMachineConfig): any => {
   return createMachine(
     {
-      /** @xstate-layout N4IgpgJg5mDOIC5QHcAWBDALrdAHXAsugMaoCWAdmAMQCqAcgNL0DyA6vQPoCSAyr7QCiAbQAMAXUShcAe1hlMZGRSkgAHogAsAJgA0IAJ6IAjNoDsAVgB02nQE4AHHbsXjxs3e0BfL-rRYcfCJSSjArZQAhGXQAJwhKKDoABQAZFgBBABFOJIAJFgAVFl4xSSQQWXlFZVUNBAsANgarYx0LUU0LToBmB1ELfSMEY27ja1F3ZwazCZ1pnz8MbDxCEnIqcIoo2PiKRJT0+gBxWnSjkQlVSoUlFXK60bsrbu0G2wnjZxezQZMx7qsTXa2mBDnMmgaCxA-mWQTWoU22ziCWogmOKT4uVKVzkNxq90Q3Q6VlEZlMFm05ledlE2m6vwQLlEVhmlleoj6DncFihMMCqxCG0i0WRe2oSRYACUCrQToJeBcytJcdU7qAHsTSeTKWZqbT6YZEGZNGYWe1aWTulaGh1eUt+cF1mFhTsUelJekItwAMLY8rXVW1QmaskgnV6ukMrqaFmeClchwWGndTR2gIrR0Il2ixJJSU+7jHP3Kqq3IMIK3WYwOByWDlmFMOboNBk6bTPN6aRxmaYWY1NtOwgVOxEi3aJGVFfPpFLFioqssEivdKs1uu1xvNhnaZxWOwvCH7ru2BrdQcO+FCrZjlEEdKFzgENG0OcBxfq4MxrVhqkNGmRw1hjMU1gU0bovlEOx3F1c8M0vZ1r1dMUADEZxSCJ0m9RhXwXfEPwrENtV-f8DSGLk91aOwGk0YxRE7EYz18aF7TgwUwjIABbdAYFgbgKGIGQONwAAbMBMBoPJChYThJUEb1BG4AA1QRMhw0s8PUI0LABLs2WbMYZjohk3CcKxOmMP8+kcbpgO8Ji+VYkdOO4uA+IEoTRPE6hznoQQPQKQRHxYTJBFnS5-VwtVNOGNxmS5NlPlEOiaOM0YQMmKiZlaV4zFguE2KsZyeLcwSRLEmhvUOeSwqVed1KiupT3GMZaWohwaNJAZANMBprFDKi7DMJxXkheyWPypyuOK-jSs8mhUJSdDMOw8KSzxBrECbGNdRBT4LJGbRa2MyCAQcajKR1GykocPLhwRGAqBiLAEgIGQIDAYTqAIYLQs4Hy-PSALVNWur1vLaDmWbJLTCcHsaz0bqrXbJoDpNdobKtW7Mw2B6wCexQ9le97PoWpasLUsGlzGRpnnrU9q20blNGMuljDMmybWpNwXEYxZ0wmhEOLej6jjAR6sEgWgKFwdAyAgagIloABNThvVkzJuAKEoQbfDS6m0fpmU0OmztrXqrRZiErAsKyiWNWZPix+CrCF4nRfF8SIClmW5YVpWknSfgKcDJdKV3Y9XHag3nGZxG3haVpqMsSjKydgrXZFsW8Ylr3pdl+XKvoarg-faLGYmKwazNikuzsTofm6z5TXMJNRF6cxHGMNORwz4T3ezz3vfz8V0iVp96AKVWWHoZDuElJ9gdq3WNoQMOngj6sdEguuWaaa3zHcCz-z7bvBeFvus-xyAkmHtXBEBwLJKKEu9cQDv2w6aHOTO0YHFS3dGg2y5I4P8rhT4bF7v3K+EAb6+wiP7QO2sl6RXLO-EkxsJjf3pn-RGbc9xDWNg0CyOpOjgLCJAy+OdYEFyqqFF+K8QR9BaK8FuRIDbVgbkMHqcUaS1hcBYbSFlRp8yHNjMIuBUAyEwDIJIMRSoE1zJKFgBAkgFHoeWIkxI6Tmi5KeSkK4WaM2tmMTwwEVwWUgmQqwEipEyLkUJBR4olEqLUcYZB9UNFtyNiCWkNsDbNgRlw8ke5DrmSgh0KOVibHSNkfIlEtAFQ5Gcao9RS4iSuBsGCCk7g3i6jsAyQazRepJgaFtOuXQomSJifY3AjjuAqKUcpJJyiUk6xQaHTKzw+ztDrqYSC7UGSJhjJSJMvR9xuBBDyMa-M7obGiXYuJYpC7FzaR4tJbc+p9H1JoWuOhOFaQcICXoEJRjJS7D4JiFBhbwHKA5AWVAcRrPwgAWhbIBV5VjszjkeZTfC5gAR0i7ImXqg0dzGBZuRSC7RowQhtC8KxRVXIzQ8uVH5Id8JDTZnbeMxtGiMy6lw0YzQazuBbhZGYJ9pmiOdrjfGL1z5otLnUFqppykTDeBSKiXJUovBJD4oargbZklylSi86dz5QJzkPOWjLX6r1pO2HsdZPC0S7G3VKJoWilMIY0TQCZebMRmWIl2ErKGe2obKhh2l2yMzDJBBsXRgKpSIWZIaK5tIeC+JU2xsSHEJEtZ4-oNgfGfDaLRaiqVLAshrDRUwVE9oXK8EAA */
+      /** @xstate-layout N4IgpgJg5mDOIC5QHcAWBDALrdAHXAsugMaoCWAdmAMQCqAcgNL0DyA6vQPoCSAyr7QCiAbQAMAXUShcAe1hlMZGRSkgAHogAsAJgA0IAJ6IAjNoDsAVgB02nQE4AHHbsXjxs3e0BfL-rRYcfCJSSjArZQAhGXQAJwhKKDoABQAZFgBBABFOJIAJFgAVFl4xSSQQWXlFZVUNBAsANgarYx0LUU0LToBmB1ELfSMEY27ja1F3ZwazCZ1pnz8MbDxCEnIqcIoo2PiKRJT0+gBxWnSjkQlVSoUlFXK60bsrbu0G2wnjZxezQZMx7qsTXa2mBDnMmgaCxA-mWQTWoU22ziCWogmOKT4uVKVzkNxq90Q3Q6VlEZlMFm05ledlE2m6vwQLlEVhmlleoj6DncFihMMCqxCG0i0WRe2oSRYACUCrQToJeBcytJcdU7qAHsTSeTKWZqbT6YZEGZNGYWe1aWTulaGh1eUt+cF1mFhTsUelJekItwAMLY8rXVW1QmaskgnV6ukMrqaFmeClchwWGndTR2gIrR0Il2ixJJSU+7jHP3Kqq3IMIK3WYwOByWDlmFMOboNBk6bTPN6aRxmaYWY1NtOwgVOxEi3aJGVFfPpFLFioqssEivdKs1uu1xvNhnaZxWOwvCH7ru2BrdQcO+FCrZjlEAMRnKQi6W9jDnAcX6uDMa1YapDRpkaGggXJ7q0dgNJoxiiJ2Ixnr40L2hml5hGQAC26AwLA3AUMQMiobgAA2YCYDQeSFCwnCSoI3qCNwABqgiZG+C74p+CCWACXZss2YwzNBDJuE4VidMY-59I43RmLq55IYKKHoZh2G4fhREkdQ5z0IIHoFIInAECwmSCLOlz+ixarqH8UFWFybKfKI0GQQJoymq4HjgTMrSvGYMlwnJVhoRhcBKXhhHETQGlaekOl6QZRnCMYSrzqWrEWcM7jtqMmgOD0pLgf0AmiPu1kQTuEyUiMIw+cOCIBYpOEhapNDeocNHGYl74pXUp7jGMtIQdlUGWAJrzWKG4F2GYTivJC8F8rJI61UF9UqWF1D3ikj7Pq+Jklni5l1E2Ma6iCnyiSM2i1gVRUOCVlLmJJ9kOFVmYbDAVAxFgCQEDIEBgAR1D6YZKScBF2mMcxyX7SYUnMs29mmE4PY1noQGwe2TTnSa7SSVaz3IVYb1gB9ih7N9v3-etm0vhDe3lmMjTPPWp7Vto3KaMNozCZJNrUm4LhwYs6a+SOqE-X9RxgO9WCQLQFC4OgZAQNQES0AAmpw3pUZk3AFCUO1JbTS7aP0zKaEzN21g0FhWsNEJWBY4lEsasyfHjfmi+TEtSyRECy-LivK6rSTpPwNOBkbO5PMerjZcbzjs6jzbtm4EJY2BlZuyLYsEV7RPS77csK0rzX0K1YcfqlrMTNZa5W7Y8d9gJnymuYSaiL05iOMYmcIh74uS3nPt+0X4rpKrBBogUGssPQt7cJKE9MfrHVQwglK7tH1Y6IVdgJ0MphNPb5juKJAF9j3Gx9znA-E5ASQj5rghRbpZFFOXnWIJ37YdPDnI3aMDgnK7kaA7Lkjh-yuAvmEK+udb4QHvgHCIQcQ563amZcsX8SRmwmH-ZmgDE7tz3JNM2DRRI6k6FAqwMCb75wQcXFqcVl7oKNg7ZkB9W5EmNtWH4qN2TWRpLWFwFhraiRmoLIcL0wi4FQDITAMgkgxBCiTXMkoWAECSAUd+q8iTEjpOaLkp5KQrmGqze2YxPBSRXKJQqlDpGyPkYo-CyjxSqPUZohKOJIbliJESYSIJaQO2NknJuII9wXREnYKCWUdC2JkXIhRSiUS0AVDkVxGitHeP6MYGwYIKTuDeLqOwDIJrNCtkmBoh1d5dFifYhJTiUTcHUaohiqS1HpKYV4o27lnh9naLvUwhVsoMkTDGSkSZej7jcCCHks1ELCwRHY+JjjcDOJLmXDphs2I+NGn0fUmguy73MAySwDhAS9AhKMByXYfDwQoGLeA5Q5rzKoJ4zZqUAC0LYgKfJJPZduDZOj7hAd4WZQtqpXiROOV54c2L3RsCmRwICJo7mMMNEChV2jRghDaF4lDFpYWWqFEi0KK51Emtkp28YzaNFZgMROoka7pUsKJGY59QUSPxoTYmX1s4ko-sMdopoqkTDeBScCXInIvBJP4yargHZkm8uyi87ts6wPzsPRWfLV7G0pCyXshUq5dnbk5E0LQKkkMaFlasAsEJgskVQ1VNCfZ0K1Rg627ZWZhkKg2LoUknKkOEpNFc1s3L7hqUsxJexXVLh0dYMZExDmuAck5SwLIayQVMOBU6NyvBAA */
       id: 'whatsappMachine',
       initial: 'onBoarding',
       context: {
@@ -20,6 +20,7 @@ export const machineFactory = (config: IMachineConfig): any => {
         latestImprovedPrompt: '',
         creditsRemaining: DEFAULT_CREDITS,
         language: 'english',
+        modelGenerated: false,
       } as IMachineContext,
       on: {
         UNKNOWN_ISSUE: {
@@ -71,9 +72,6 @@ export const machineFactory = (config: IMachineConfig): any => {
             TUTORIAL: {
               actions: ['assignMessage', 'sendTutorial'],
             },
-            MAIN_MENU: {
-              actions: ['assignMessage', 'sendIntroOptionsMessage'],
-            },
             FALLBACK: {
               actions: ['sendIntroOptionsMessage'],
             },
@@ -85,11 +83,17 @@ export const machineFactory = (config: IMachineConfig): any => {
             PHOTO_RECEIVED: {
               actions: [assign({ message: () => 'photo received' })],
             },
-            GENERATE_MODEL: {
-              guard: 'modelNotCreated',
-              target: 'generatingModel',
-              actions: ['callStartTrainingAPI'],
-            },
+            GENERATE_MODEL: [
+              {
+                guard: not('modelAlreadyGenerated'),
+                target: 'generatingModel',
+                actions: ['callStartTrainingAPI'],
+              },
+              {
+                actions: ['notifyModelExists'],
+                target: 'photoPrompting',
+              },
+            ],
             CANCEL: {
               target: 'onBoarding',
             },

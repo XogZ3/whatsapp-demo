@@ -21,6 +21,7 @@ type TranslationKeys =
   | 'no'
   | 'select language'
   | 'language selected'
+  | 'model already exists'
   | 'generating model'
   | 'please wait'
   | 'processing payment'
@@ -192,6 +193,11 @@ export const TRANSLATION_MAP: Record<
     en: 'Please wait while we are generating a customized model for you.',
     pt: 'Por favor, aguarde enquanto geramos um modelo personalizado para você.',
     ar: 'يرجى الانتظار بينما نقوم بإنشاء نموذج مخصص لك.',
+  },
+  'model already exists': {
+    en: 'Your custom AI model already exists.',
+    pt: 'Seu modelo de IA personalizado já existe.',
+    ar: 'نموذج الذكاء الاصطناعي المخصص لك موجود بالفعل.',
   },
   'model generated': {
     en: 'Your model has been successfully generated! :D',

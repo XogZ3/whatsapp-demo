@@ -26,7 +26,6 @@ export const handleMessage = async (
       portuguese: 'PORTUGUESE',
       arabic: 'ARABIC',
       tutorial: 'TUTORIAL',
-      'main menu': 'MAIN_MENU',
     },
     [State.imagesIncomplete]: {
       'photo received': 'PHOTO_RECEIVED',

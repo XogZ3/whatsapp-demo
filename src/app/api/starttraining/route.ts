@@ -4,6 +4,12 @@ import { NextResponse } from 'next/server';
 
 import firebase from '@/modules/firebase';
 import { createTrainingJob } from '@/modules/runpod'; // Adjust the import path as needed
+import {
+  type ICreateMessagePayload,
+  sendMessageToWhatsapp,
+} from '@/modules/whatsapp/whatsapp';
+import { getUserDetails } from '@/utils/ReplyHelper/FirebaseHelpers';
+import { getTranslation, type Language } from '@/utils/translations';
 
 const firestore = firebase.getFirestore();
 
@@ -32,6 +38,17 @@ async function storeJobInFirestore(
   }
 }
 
+async function notifyModelExists(clientid: string, language: Language) {
+  const message = getTranslation('model already exists', language);
+  // TODO: implement language in buttons
+  const payload: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    text: true,
+    msgBody: message,
+  };
+  await sendMessageToWhatsapp(payload);
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -45,6 +62,19 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate token here if needed
+
+    // Reject if model already exists
+    const { loraURL, loraFilename, language } = await getUserDetails(userid);
+    // Check if both loraURL and loraFilename contain valid strings
+    const modelAlreadyExists = !!(loraURL && loraFilename);
+
+    if (modelAlreadyExists) {
+      await notifyModelExists(userid, language);
+      return NextResponse.json(
+        { error: 'Model already exists' },
+        { status: 409 },
+      );
+    }
 
     // Create training job
     const jobId = await createTrainingJob(image_urls, model_name);

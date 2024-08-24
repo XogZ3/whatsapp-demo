@@ -106,8 +106,6 @@ export async function generateImagesUploadToFirebaseGetURL(
     const lora_url = clientLoraInfo.loraURL;
     const lora_filename = clientLoraInfo.loraFilename;
 
-    console.log('[+] got file name: ', lora_filename);
-
     const response = await fetch(runpodURL, {
       method: 'POST',
       headers: {

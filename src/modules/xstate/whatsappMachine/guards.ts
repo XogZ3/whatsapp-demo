@@ -17,10 +17,11 @@ export const guardsFactory = (_machineConfig: IMachineConfig): any => {
         false;
       return isAvailable;
     },
-    modelNotCreated: async () => {
+    modelNotCreated: async (event: any) => {
       const { loraURL, loraFilename } = await getUserLoraDetails(
-        _machineConfig.userMetaData.phonenumber,
+        event?.event?.userMetaData?.phonenumber,
       );
+      console.log('[O] guard: modelNotCreated: lora?', loraFilename, loraURL);
       if (loraURL || loraFilename) return false;
       return true;
     },

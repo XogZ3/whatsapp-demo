@@ -240,7 +240,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const language = event?.context?.language;
       const stripeLink = await createStripeLink(config.userMetaData.clientid);
       const message = `${getTranslation('payment instructions', language)}
-${stripeLink}}`;
+${stripeLink}`;
       const payload: ICreateMessagePayload = {
         phoneNumber: config.userMetaData.clientid,
         quickReply: true,

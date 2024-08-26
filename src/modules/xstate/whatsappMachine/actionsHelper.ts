@@ -94,28 +94,34 @@ export async function wipProcessAndSendImages(
 
 export async function createStripeLink(clientid: string) {
   try {
-    const response = await fetch(`${getBaseUrl()}/api/createPaymentLink`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+    const response = await fetch(
+      `${getBaseUrl()}/api/stripe/createPaymentLink`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ clientid }),
       },
-      body: JSON.stringify({ clientid }),
-    });
+    );
 
+    const contentType = response.headers.get('Content-Type');
     if (!response.ok) {
-      const errorResponse = await response.json();
-      throw new Error(
-        `Failed to create stripe payment link: ${errorResponse.error || response.statusText}`,
-      );
+      let errorMessage = `Failed to create stripe payment link: ${response.statusText}`;
+      if (contentType && contentType.includes('application/json')) {
+        const errorResponse = await response.json();
+        errorMessage = errorResponse.error || errorMessage;
+      }
+      throw new Error(errorMessage);
     }
 
-    const result: CreatePaymentLinkResult = await response.json();
-
-    console.log('Stripe payment link created successfully:', result);
-
-    return result.paymentLink;
+    if (contentType && contentType.includes('application/json')) {
+      const result: CreatePaymentLinkResult = await response.json();
+      return result.paymentLink;
+    }
+    const textResponse = await response.text();
+    throw new Error(`Unexpected response format: ${textResponse}`);
   } catch (error) {
-    console.error('Error creating stripe payment link:', error);
     let errorMessage = 'An unknown error occurred';
     if (error instanceof Error) {
       errorMessage = error.message;

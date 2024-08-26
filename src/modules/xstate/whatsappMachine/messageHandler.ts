@@ -50,6 +50,7 @@ export const handleMessage = async (
     [State.paywall]: {
       'buy credits': 'BUY_CREDITS',
       secret: 'SECRET',
+      cancel: 'CANCEL',
     },
     [State.modelGeneratedPaid]: {
       'create photo': 'CREATE_PHOTO',

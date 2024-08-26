@@ -34,11 +34,6 @@ export async function POST(req: NextRequest) {
         //   },
         // },
       });
-    console.log(
-      `createPaymentLink api logs: `,
-      JSON.stringify(paymentLink, null, 2),
-    );
-    console.log('stripe link: ', paymentLink.url);
 
     const result: CreatePaymentLinkResult = {
       status: 200,

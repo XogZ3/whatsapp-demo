@@ -22,9 +22,11 @@ export async function POST(req: NextRequest) {
 
   let event;
   const sig = req.headers.get('Stripe-Signature');
+  console.log('Stripe-Signature', sig!);
 
   try {
     event = stripe.webhooks.constructEvent(rawBody, sig!, endpointSecret!);
+    console.log('stripe webhook event', event.type);
     if (event.type === 'checkout.session.completed')
       await handleCompletedCheckoutSession(
         event as CheckoutSessionCompletedEvent,

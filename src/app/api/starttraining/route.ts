@@ -8,7 +8,7 @@ import {
   type ICreateMessagePayload,
   sendMessageToWhatsapp,
 } from '@/modules/whatsapp/whatsapp';
-import { getUserDetails } from '@/utils/ReplyHelper/FirebaseHelpers';
+import { getUserFields } from '@/utils/ReplyHelper/FirebaseHelpers';
 import { getTranslation, type Language } from '@/utils/translations';
 
 const firestore = firebase.getFirestore();
@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
       loraURL,
       loraFilename,
       language = 'english',
-    } = await getUserDetails(userid);
+    } = await getUserFields(userid);
 
     // Validate token here if needed
 

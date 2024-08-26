@@ -39,10 +39,11 @@ export const handleMessage = async (
       cancel: 'CANCEL',
     },
     [State.modelGeneratedUnpaid]: {
-      'buy credits': 'BUY_CREDITS',
-      bypass: 'BYPASS',
-      cancel: 'CANCEL',
-      'payment confirmed': 'PAYMENT_CONFIRMED',
+      prompt: 'PROMPT',
+      // 'buy credits': 'BUY_CREDITS',
+      // bypass: 'BYPASS',
+      // cancel: 'CANCEL',
+      // 'payment confirmed': 'PAYMENT_CONFIRMED',
     },
     [State.modelGeneratedPaid]: {
       'create photo': 'CREATE_PHOTO',

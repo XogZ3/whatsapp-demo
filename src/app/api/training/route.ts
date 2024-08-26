@@ -1,4 +1,5 @@
 import firebase from '@/modules/firebase';
+import { DEFAULT_CREDITS } from '@/utils/constants';
 import { generateAndSendModelImages } from '@/utils/sendSampleImages';
 
 const firestore = firebase.getFirestore();
@@ -28,15 +29,28 @@ export async function POST(request: Request) {
       .doc(clientid);
 
     const clientData = await clientDoc.get();
-    const { language = 'english', trainingToken } = clientData.data() || {};
+    const { language, trainingToken } = clientData.data() || {};
 
     console.log('expectedToken', trainingToken);
+
+    const stateJSON = {
+      status: 'stopped',
+      context: {
+        creditsRemaining: DEFAULT_CREDITS,
+        language: language || 'english',
+        modelGenerated: true,
+      },
+      value: 'photoPrompting',
+      children: {},
+      historyValue: {},
+      tags: [],
+    };
 
     // Token validation
     if (token === trainingToken) {
       // Hard transition xstate
       const updates: any = {
-        state: `{"status":"stopped","context":{"creditsRemaining":1,"language":${language || 'english'},"modelGenerated":true},"value":"photoPrompting","children":{},"historyValue":{},"tags":[]}`,
+        state: JSON.stringify(stateJSON),
         loraURL,
         loraFilename,
       };

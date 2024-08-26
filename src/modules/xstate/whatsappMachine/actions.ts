@@ -7,6 +7,8 @@ import { DEFAULT_CREDITS, TRAINING_IMAGES_LIMIT } from '@/utils/constants';
 import { getImprovedPromptFromGroq } from '@/utils/groq';
 import {
   callTrainingAPI,
+  getCreditsCount,
+  getProcessingFlag,
   getTrainingImageURLs,
   setProcessingFlag,
   setUserLanguage,
@@ -221,14 +223,12 @@ export const actionsFactory = (config: IMachineConfig): any => {
     },
     sendUnpaidUserOptions: async (event: any) => {
       const language = event?.context?.language;
-      const message = getTranslation('unpaid user options', language);
+      const message = `${getTranslation('prompting instruction', language)}
+Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
       // TODO: implement language in buttons
       const payload: ICreateMessagePayload = {
         phoneNumber: config.userMetaData.clientid,
-        quickReply: true,
-        button1: 'Buy Credits',
-        button2: 'Bypass',
-        button3: 'Cancel',
+        text: true,
         msgBody: message,
       };
       await config.whatsappInstance.send(payload);
@@ -276,7 +276,9 @@ export const actionsFactory = (config: IMachineConfig): any => {
     sendPromptingInstruction: async (event: any) => {
       const language = event?.context?.language;
       const message = getTranslation('prompting instruction', language);
-      // TODO: implement language in buttons
+      // TODO: uncomment for paid flow
+      //       const message = `${getTranslation('prompting instruction', language)}
+      // Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
       const payload: ICreateMessagePayload = {
         phoneNumber: config.userMetaData.clientid,
         text: true,
@@ -318,6 +320,47 @@ export const actionsFactory = (config: IMachineConfig): any => {
       };
       await config.whatsappInstance.send(payload);
     },
+
+    sendWIPPromptConfirmation: async (event: any) => {
+      const language = event?.context?.language;
+      const prompt = event?.event?.message;
+
+      async function getMachineAvailability() {
+        const machineIsAvailable = await getProcessingFlag(
+          config.userMetaData.clientid,
+        );
+        return machineIsAvailable;
+      }
+      await getMachineAvailability()
+        .then(async (machineIsAvailable) => {
+          let payload: ICreateMessagePayload;
+          if (machineIsAvailable) {
+            console.log('[+] sendPromptConfirmation | prompt: ', prompt);
+            const message = `${getTranslation('prompt confirmation', language)}
+*${prompt}*`;
+            // TODO: implement language in buttons
+            payload = {
+              phoneNumber: config.userMetaData.clientid,
+              quickReply: true,
+              button1: 'Use Prompt',
+              button2: 'Improve Prompt',
+              msgBody: message,
+            };
+          } else {
+            const message = getTranslation('please wait', language);
+            // TODO: implement language in buttons
+            payload = {
+              phoneNumber: config.userMetaData.clientid,
+              text: true,
+              msgBody: message,
+            };
+          }
+          await config.whatsappInstance.send(payload);
+        })
+        .catch((error) => {
+          console.error('Error in sendPromptConfirmation:', error);
+        });
+    },
     sendImprovedPromptConfirmationAndSetContext: async (event: any) => {
       const language = event?.context?.language;
       // console.log(
@@ -339,7 +382,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
         .then(async (improvedPrompt: string) => {
           // console.log('[+] improved prompt set it context');
           const message = `${getTranslation('prompt confirmation', language)}
-  >>> ${improvedPrompt}`;
+  *${improvedPrompt}*`;
           // TODO: implement language in buttons
           const payload: ICreateMessagePayload = {
             phoneNumber: config.userMetaData.clientid,
@@ -468,6 +511,128 @@ export const actionsFactory = (config: IMachineConfig): any => {
         })
         .catch((error) => {
           console.error('[!] Error in processing or setting context:', error);
+        });
+    },
+
+    sendWIPPromptedPhoto: async (event: any) => {
+      const language = event?.context?.language;
+      const prompt = event?.context?.latestPrompt;
+      const { clientid } = config.userMetaData;
+
+      let message;
+      let payload: ICreateMessagePayload;
+
+      async function getMachineAvailability() {
+        const machineIsAvailable = await getProcessingFlag(
+          config.userMetaData.clientid,
+        );
+        return machineIsAvailable;
+      }
+
+      async function getCreditsAvailability() {
+        const hasSufficientCredits = await getCreditsCount(clientid);
+        return hasSufficientCredits;
+      }
+      async function processAndSendImages() {
+        const generatedImageURLs: string[] =
+          await generateImagesUploadToFirebaseGetURL(
+            prompt,
+            config.userMetaData.clientid,
+          );
+
+        console.log('[+] receveid runpod urls: ', generatedImageURLs);
+        if (generatedImageURLs.length > 0) {
+          const sendPromises = generatedImageURLs.map(async (url) => {
+            payload = {
+              phoneNumber: config.userMetaData.clientid,
+              image: true,
+              imageLink: url,
+            };
+            await config.whatsappInstance.send(payload);
+          });
+          await Promise.all(sendPromises);
+
+          console.log('All images sent successfully.');
+          return true; // Indicate success
+        }
+        message =
+          'Uh-oh. Something went wrong, please try again after some time.';
+        payload = {
+          phoneNumber: config.userMetaData.clientid,
+          text: true,
+          msgBody: message,
+        };
+        await config.whatsappInstance.send(payload);
+        return false; // Indicate failure
+      }
+
+      // if machine available && credits available, then send prompted photo
+      await getMachineAvailability()
+        .then(async (machineIsAvailable) => {
+          if (!machineIsAvailable) {
+            message = getTranslation('please wait', language);
+            // TODO: implement language in buttons
+            payload = {
+              phoneNumber: clientid,
+              text: true,
+              msgBody: message,
+            };
+            await config.whatsappInstance.send(payload);
+            // Stop the chain
+            return Promise.reject(new Error('Machine not available'));
+          }
+          return machineIsAvailable;
+        })
+        .then(async (machineIsAvailable) => {
+          if (machineIsAvailable) {
+            const hasSufficientCredits = (await getCreditsAvailability()) > 0;
+            if (!hasSufficientCredits) {
+              message = getTranslation('paywall', language);
+              await config.whatsappInstance.send({
+                phoneNumber: clientid,
+                quickReply: true,
+                button1: getTranslation('buy credits', language),
+                msgBody: message,
+              });
+              // Stop the chain
+              return Promise.reject(new Error('Insufficient credits'));
+            }
+          }
+          return machineIsAvailable;
+        })
+        .then(async () => {
+          console.log('[+] action: send photo for prompt: ', prompt);
+
+          message = getTranslation('generating image', language);
+          await sendMessage(config.whatsappInstance, message, clientid);
+
+          processAndSendImages()
+            .then(async (success) => {
+              console.log('[+] processAndSendImages done');
+              await setProcessingFlag(clientid, false);
+              return success; // Pass success to the next .then()
+            })
+            .then(async (success) => {
+              console.log('[+] Context updated successfully');
+              if (success) {
+                message = getTranslation('new prompt request', language);
+                payload = {
+                  phoneNumber: clientid,
+                  text: true,
+                  msgBody: message,
+                };
+                await config.whatsappInstance.send(payload);
+              }
+            })
+            .catch((error) => {
+              console.error(
+                '[!] Error in processing or setting context:',
+                error,
+              );
+            });
+        })
+        .catch((error) => {
+          console.error('[!] Error in machine & credit check:', error.message);
         });
     },
     sendRequestNewPrompt: async () => {

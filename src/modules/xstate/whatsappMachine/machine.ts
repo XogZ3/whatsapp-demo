@@ -114,21 +114,17 @@ export const machineFactory = (config: IMachineConfig): any => {
             },
           },
         },
+        paywall: {
+          entry: ['sendPaywall'],
+          on: {
+            BUY_CREDITS: {
+              actions: ['sendStripeLink'],
+            },
+          },
+        },
         modelGeneratedUnpaid: {
           entry: ['sendUnpaidUserOptions'],
           on: {
-            BUY_CREDITS: {
-              actions: ['sendPaymentInstructions'],
-            },
-            BYPASS: {
-              actions: assign({ message: () => 'Bypass modelGeneratedUnpaid' }),
-              target: 'modelGeneratedPaid',
-            },
-            CANCEL: {
-              target: 'modelGeneratedUnpaid',
-              reenter: true,
-            },
-            // TODO: Code payments
             PAYMENT_CONFIRMED: {
               actions: ['sendPaymentConfirmation'],
               target: 'modelGeneratedPaid',
@@ -155,7 +151,6 @@ export const machineFactory = (config: IMachineConfig): any => {
           on: {
             PROMPT: [
               {
-                guard: 'machineIsAvailable',
                 actions: [
                   // 'decrementCredits',
                   'assignMessage',

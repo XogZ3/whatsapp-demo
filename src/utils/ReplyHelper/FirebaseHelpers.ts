@@ -5,7 +5,8 @@ import { v4 as uuidv4 } from 'uuid';
 import firebase from '@/modules/firebase';
 import { getStorageInstance } from '@/modules/firebase/firebase';
 
-import { getBaseUrl, getLanguageCodeFromPhoneNumber } from '../helpers';
+import { DEFAULT_CREDITS } from '../constants';
+import { getBaseUrl, getLanguageFromPhoneNumber } from '../helpers';
 import { type Language } from '../translations';
 
 const firestore = firebase.getFirestore();
@@ -71,9 +72,10 @@ type UserFieldsFirebase = {
   loraURL: string;
   loraFilename: string;
   trainingToken?: string;
+  credits?: number;
 };
 
-export async function getUserDetails(
+export async function getUserFields(
   clientid: string,
 ): Promise<UserFieldsFirebase> {
   const wabaId = process.env.WABA_ID;
@@ -91,8 +93,9 @@ export async function getUserDetails(
     trainingImageURLs,
     loraURL,
     loraFilename,
+    credits,
   } = clientData.data() || {};
-  const userLanguage = language || getLanguageCodeFromPhoneNumber(clientid);
+  const userLanguage = language || getLanguageFromPhoneNumber(clientid);
 
   return {
     state: state || '',
@@ -103,7 +106,31 @@ export async function getUserDetails(
     trainingImageURLs,
     loraURL,
     loraFilename,
+    credits: credits || 0,
   };
+}
+
+export async function setDefaultUserFields(clientid: string): Promise<void> {
+  // No need to return anything, so the return type is void
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid);
+  // Set default language and credits
+  const userLanguage: Language =
+    getLanguageFromPhoneNumber(clientid) || 'english';
+  const userCredits = DEFAULT_CREDITS;
+
+  // Prepare the updates object
+  const updates: Partial<UserFieldsFirebase> = {
+    language: userLanguage,
+    credits: userCredits,
+  };
+
+  // Update the Firestore document with the new default values, merging with existing data
+  await clientDoc.set(updates, { merge: true });
 }
 
 export async function callTrainingAPI(
@@ -226,6 +253,20 @@ export async function getProcessingFlag(clientid: string) {
     (clientData.exists && clientData.data()?.processing) || false;
 
   return processing;
+}
+
+export async function getCreditsCount(clientid: string) {
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid);
+  const clientData = await clientDoc.get();
+  const credits: number =
+    (clientData.exists && clientData.data()?.credits) || DEFAULT_CREDITS;
+
+  return credits;
 }
 
 export async function getTrainingImageURLs(clientid: string) {

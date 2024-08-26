@@ -8,7 +8,8 @@ import {
 import { whatsappStateTransition } from '@/modules/xstate/whatsappMachine';
 import type { IUserMetaData } from '@/modules/xstate/whatsappMachine/types';
 
-import { TRAINING_IMAGES_LIMIT } from '../constants';
+import { DEFAULT_CREDITS, TRAINING_IMAGES_LIMIT } from '../constants';
+import { getLanguageFromPhoneNumber } from '../helpers';
 import {
   getTranslation,
   type Language,
@@ -17,7 +18,8 @@ import {
 import {
   addTrainingImageURLandIncreaseCount,
   getPhotoCount,
-  getUserDetails,
+  getUserFields,
+  setDefaultUserFields,
   setUserState,
 } from './FirebaseHelpers';
 import { extractImageID, extractText } from './MessageParsers';
@@ -39,18 +41,40 @@ async function sendUpdatedPhotoCount(
   await sendMessageToWhatsapp(payload);
 }
 
+async function notifyPendingPhotos(
+  clientid: string,
+  language: Language,
+  updatedPhotoCount: number,
+) {
+  const pendingPhotos =
+    TRAINING_IMAGES_LIMIT - updatedPhotoCount || TRAINING_IMAGES_LIMIT;
+  const message = `${getTranslation(
+    'notify pending photos 1',
+    language,
+  )}: ${pendingPhotos} ${getTranslation('notify pending photos 2', language)}`;
+  const payload: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    text: true,
+    msgBody: message,
+  };
+  await sendMessageToWhatsapp(payload);
+}
+
 // eslint-disable-next-line consistent-return
 export async function replyToUser(messageObject: any) {
   let message = 'cancel';
   const messageType = messageObject.message.type;
   const { clientid } = messageObject;
 
-  const userDetails = await getUserDetails(clientid);
-  const { state, name, language = 'english' } = userDetails;
-  const userLanguage = language ?? 'english';
+  const userDetails = await getUserFields(clientid);
+  const { state, name, language, credits } = userDetails;
+  const userLanguage = language || getLanguageFromPhoneNumber(clientid);
+  const userCredits = credits || DEFAULT_CREDITS;
+  console.log('credits: ', userCredits);
 
   if (!state) {
     message = extractText(messageObject);
+    await setDefaultUserFields(clientid);
     if (messageObject.message.type === 'image') message = 'FALLBACK';
   } else {
     const stateObj = JSON.parse(state);
@@ -84,7 +108,15 @@ export async function replyToUser(messageObject: any) {
           message = 'Generate Model';
       }
     }
-
+    // Handle NON-Images in 'imagesIncomplete' state - Cancel or Fallback
+    else if (currentState === 'imagesIncomplete' && messageType !== 'image') {
+      if (extractText(messageObject) === 'cancel') {
+        message = 'cancel';
+      } else {
+        const currentPhotoCount = await getPhotoCount(clientid);
+        await notifyPendingPhotos(clientid, language, currentPhotoCount);
+      }
+    }
     // Accept image for image-to-image generation
     else if (currentState === 'photoPrompting' && messageType === 'image') {
       // TODO: handle image generation with image reference

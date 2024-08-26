@@ -19,6 +19,8 @@ type TranslationKeys =
   | 'prompt'
   | 'yes'
   | 'no'
+  | 'notify pending photos 1'
+  | 'notify pending photos 2'
   | 'select language'
   | 'language selected'
   | 'model already exists'
@@ -47,7 +49,8 @@ type TranslationKeys =
   | 'model generated'
   | 'model generated request prompt'
   | 'buy credits'
-  | 'payment confirmed';
+  | 'payment confirmed'
+  | 'paywall';
 
 // Define the translation map structure directly using Record
 export const TRANSLATION_MAP: Record<
@@ -98,6 +101,16 @@ export const TRANSLATION_MAP: Record<
     en: 'No',
     pt: 'Não',
     ar: 'لا',
+  },
+  'notify pending photos 1': {
+    en: 'Please send',
+    pt: 'Por favor, envie',
+    ar: 'يرجى إرسال',
+  },
+  'notify pending photos 2': {
+    en: 'more photos.',
+    pt: 'mais fotos.',
+    ar: 'صورًا إضافية.',
   },
   'main menu': {
     en: 'Main Menu',
@@ -267,6 +280,11 @@ Exemplo: homem sentado em um banco de parque ou mulher posando para uma foto esp
     en: 'Number of photos received',
     pt: 'Número de fotos recebidas',
     ar: 'عدد الصور المستلمة',
+  },
+  paywall: {
+    en: 'You have 0 credits. Please buy credits to continue using FotoLabs AI.',
+    pt: 'Você tem 0 créditos. Por favor, compre créditos para continuar usando o FotoLabs AI.',
+    ar: 'لديك 0 رصيد. يرجى شراء رصيد لمواصلة استخدام FotoLabs AI.',
   },
 };
 

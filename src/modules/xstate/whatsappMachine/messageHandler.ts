@@ -15,6 +15,7 @@ export const handleMessage = async (
     modelGeneratedUnpaid: 'modelGeneratedUnpaid',
     modelGeneratedPaid: 'modelGeneratedPaid',
     photoPrompting: 'photoPrompting',
+    wipPhotoPrompting: 'wipPhotoPrompting',
   });
 
   const STATE_ACTION_EVENT_MAP: any = {
@@ -56,6 +57,13 @@ export const handleMessage = async (
       'use prompt': 'USE_PROMPT',
       'improve prompt': 'IMPROVE_PROMPT',
       cancel: 'CANCEL',
+      secret: 'SECRET',
+    },
+    [State.wipPhotoPrompting]: {
+      prompt: 'PROMPT',
+      'use prompt': 'USE_PROMPT',
+      'improve prompt': 'IMPROVE_PROMPT',
+      cancel: 'CANCEL',
     },
   };
 
@@ -66,7 +74,7 @@ export const handleMessage = async (
 
   if (
     state === 'photoPrompting' &&
-    !['cancel', 'use prompt', 'improve prompt'].includes(userActionId)
+    !['cancel', 'use prompt', 'improve prompt', 'secret'].includes(userActionId)
   ) {
     event = STATE_ACTION_EVENT_MAP[state].prompt;
     console.log('Prompt: ', message);

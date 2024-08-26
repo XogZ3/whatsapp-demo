@@ -180,6 +180,41 @@ export const machineFactory = (config: IMachineConfig): any => {
             CANCEL: {
               actions: ['sendPromptingInstruction'],
             },
+            SECRET: 'wipPhotoPrompting',
+          },
+        },
+        wipPhotoPrompting: {
+          entry: ['sendPromptingInstruction'],
+          on: {
+            PROMPT: [
+              {
+                actions: [
+                  // 'decrementCredits',
+                  'assignMessage',
+                  'assignPromptToContext',
+                  'sendWIPPromptConfirmation',
+                ],
+              },
+              {
+                actions: ['sendPleaseWait'],
+              },
+            ],
+            USE_PROMPT: {
+              actions: [
+                'assignMessage',
+                'setProcessingTrue',
+                'sendWIPPromptedPhoto',
+              ],
+            },
+            IMPROVE_PROMPT: {
+              actions: [
+                'assignMessage',
+                'sendImprovedPromptConfirmationAndSetContext',
+              ],
+            },
+            CANCEL: {
+              actions: ['sendPromptingInstruction'],
+            },
           },
         },
         // improvePrompt: {

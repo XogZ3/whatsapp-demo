@@ -7,7 +7,7 @@ const firestore = firebase.getFirestore();
 interface MessageObject {
   timestamp: number;
   type: string;
-  clientid: any;
+  clientid: string;
   messaging_product: any;
   metadata: any;
   status_raw: any;
@@ -63,7 +63,7 @@ export async function isMessageArabic(message: string): Promise<boolean> {
 }
 
 export async function isMessageLatest(
-  clientid: any,
+  clientid: string,
   message: any,
 ): Promise<boolean> {
   const wabaId = process.env.WABA_ID;

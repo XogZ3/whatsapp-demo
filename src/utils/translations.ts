@@ -242,14 +242,14 @@ Exemplo: homem sentado em um banco de parque ou mulher posando para uma foto esp
     ar: 'هل تريد إنشاء صورك الخاصة؟',
   },
   'payment instructions': {
-    en: 'STRIPE link..',
-    pt: 'Link do STRIPE..',
-    ar: 'رابط STRIPE..',
+    en: 'Please complete payment using this link.',
+    pt: 'Por favor, complete o pagamento usando este link.',
+    ar: 'يرجى إكمال الدفع باستخدام هذا الرابط.',
   },
   'payment confirmation': {
-    en: 'Payment success.. you have xxx credits',
-    pt: 'Pagamento bem-sucedido.. você tem xxx créditos',
-    ar: 'نجاح الدفع.. لديك xxx أرصدة',
+    en: 'Payment successful. Enjoy creating awesome pictures until',
+    pt: 'Pagamento realizado com sucesso. Aproveite para criar fotos incríveis até',
+    ar: 'تم الدفع بنجاح. استمتع بإنشاء صور رائعة حتى',
   },
   'paid user options': {
     en: 'Whatcha wanna see your ai self do?',

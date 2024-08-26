@@ -1,7 +1,6 @@
 import console from 'console';
 import { assign } from 'xstate';
 
-import { generateImagesUploadToFirebaseGetURL } from '@/modules/runpod';
 import type { ICreateMessagePayload } from '@/modules/whatsapp/whatsapp';
 import { DEFAULT_CREDITS, TRAINING_IMAGES_LIMIT } from '@/utils/constants';
 import { getImprovedPromptFromGroq } from '@/utils/groq';
@@ -15,6 +14,11 @@ import {
 } from '@/utils/ReplyHelper/FirebaseHelpers';
 import { getTranslation } from '@/utils/translations';
 
+import {
+  createStripeLink,
+  processAndSendImages,
+  wipProcessAndSendImages,
+} from './actionsHelper';
 import type { IMachineConfig, IWhatsappInstance } from './types';
 
 async function sendMessage(
@@ -220,6 +224,30 @@ export const actionsFactory = (config: IMachineConfig): any => {
         message,
         config.userMetaData.clientid,
       );
+    },
+    sendPaywall: async (event: any) => {
+      const language = event?.context?.language;
+      const message = getTranslation('paywall', language);
+      const payload: ICreateMessagePayload = {
+        phoneNumber: config.userMetaData.clientid,
+        quickReply: true,
+        button1: getTranslation('buy credits', language),
+        msgBody: message,
+      };
+      await config.whatsappInstance.send(payload);
+    },
+    sendStripeLink: async (event: any) => {
+      const language = event?.context?.language;
+      const stripeLink = await createStripeLink(config.userMetaData.clientid);
+      const message = `${getTranslation('payment instructions', language)}
+${stripeLink}}`;
+      const payload: ICreateMessagePayload = {
+        phoneNumber: config.userMetaData.clientid,
+        quickReply: true,
+        button1: getTranslation('cancel', language),
+        msgBody: message,
+      };
+      await config.whatsappInstance.send(payload);
     },
     sendUnpaidUserOptions: async (event: any) => {
       const language = event?.context?.language;
@@ -458,40 +486,7 @@ Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
         config.userMetaData.clientid,
       );
 
-      async function processAndSendImages() {
-        const generatedImageURLs: string[] =
-          await generateImagesUploadToFirebaseGetURL(
-            prompt,
-            config.userMetaData.clientid,
-          );
-
-        console.log('[+] receveid runpod urls: ', generatedImageURLs);
-        if (generatedImageURLs.length > 0) {
-          const sendPromises = generatedImageURLs.map(async (url) => {
-            const payload: ICreateMessagePayload = {
-              phoneNumber: config.userMetaData.clientid,
-              image: true,
-              imageLink: url,
-            };
-            await config.whatsappInstance.send(payload);
-          });
-          await Promise.all(sendPromises);
-
-          console.log('All images sent successfully.');
-          return true; // Indicate success
-        }
-        message =
-          'Uh-oh. Something went wrong, please try again after some time.';
-        const payload: ICreateMessagePayload = {
-          phoneNumber: config.userMetaData.clientid,
-          text: true,
-          msgBody: message,
-        };
-        await config.whatsappInstance.send(payload);
-        return false; // Indicate failure
-      }
-
-      processAndSendImages()
+      processAndSendImages(config, prompt)
         .then(async (success) => {
           console.log('[+] processAndSendImages done');
           await setProcessingFlag(config.userMetaData.clientid, false);
@@ -532,38 +527,6 @@ Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
       async function getCreditsAvailability() {
         const hasSufficientCredits = await getCreditsCount(clientid);
         return hasSufficientCredits;
-      }
-      async function processAndSendImages() {
-        const generatedImageURLs: string[] =
-          await generateImagesUploadToFirebaseGetURL(
-            prompt,
-            config.userMetaData.clientid,
-          );
-
-        console.log('[+] receveid runpod urls: ', generatedImageURLs);
-        if (generatedImageURLs.length > 0) {
-          const sendPromises = generatedImageURLs.map(async (url) => {
-            payload = {
-              phoneNumber: config.userMetaData.clientid,
-              image: true,
-              imageLink: url,
-            };
-            await config.whatsappInstance.send(payload);
-          });
-          await Promise.all(sendPromises);
-
-          console.log('All images sent successfully.');
-          return true; // Indicate success
-        }
-        message =
-          'Uh-oh. Something went wrong, please try again after some time.';
-        payload = {
-          phoneNumber: config.userMetaData.clientid,
-          text: true,
-          msgBody: message,
-        };
-        await config.whatsappInstance.send(payload);
-        return false; // Indicate failure
       }
 
       // if machine available && credits available, then send prompted photo
@@ -606,7 +569,7 @@ Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
           message = getTranslation('generating image', language);
           await sendMessage(config.whatsappInstance, message, clientid);
 
-          processAndSendImages()
+          wipProcessAndSendImages(config, prompt)
             .then(async (success) => {
               console.log('[+] processAndSendImages done');
               await setProcessingFlag(clientid, false);

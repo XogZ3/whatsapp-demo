@@ -84,7 +84,7 @@ export async function saveMessageToDB(
     await clientDoc.set(updates, { merge: true });
   }
 }
-export async function saveCreditsUsed(clientid: any) {
+export async function saveCreditsUsed(clientid: string) {
   const wabaId = process.env.WABA_ID;
   const clientDoc = firestore
     .collection('apps')
@@ -97,7 +97,7 @@ export async function saveCreditsUsed(clientid: any) {
   await clientDoc.set(updates, { merge: true });
 }
 
-export async function checkCredits(clientid: any) {
+export async function checkCredits(clientid: string) {
   const wabaId = process.env.WABA_ID;
   const clientDoc = firestore
     .collection('apps')

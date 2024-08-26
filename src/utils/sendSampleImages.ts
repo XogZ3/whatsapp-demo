@@ -17,7 +17,10 @@ async function sendModelGeneratedSuccess(clientid: string, language: Language) {
   };
   await sendMessageToWhatsapp(payload);
 }
-async function sendPromptingInstruction(clientid: string, language: Language) {
+export async function sendPromptingInstruction(
+  clientid: string,
+  language: Language,
+) {
   const message = getTranslation('prompting instruction', language);
   // TODO: implement language in buttons
   const payload: ICreateMessagePayload = {

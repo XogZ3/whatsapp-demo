@@ -3,7 +3,7 @@ import firebase from '@/modules/firebase';
 const firestore = firebase.getFirestore();
 
 export async function setLatestMessage(
-  clientid: any,
+  clientid: string,
   message: any,
 ): Promise<void> {
   const wabaId = process.env.WABA_ID;

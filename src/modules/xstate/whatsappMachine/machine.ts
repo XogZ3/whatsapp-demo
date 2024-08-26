@@ -120,6 +120,7 @@ export const machineFactory = (config: IMachineConfig): any => {
             BUY_CREDITS: {
               actions: ['sendStripeLink'],
             },
+            SECRET: 'photoPrompting',
           },
         },
         modelGeneratedUnpaid: {
@@ -215,6 +216,8 @@ export const machineFactory = (config: IMachineConfig): any => {
             CANCEL: {
               actions: ['sendPromptingInstruction'],
             },
+            PAYWALL: 'paywall',
+            SECRET: 'photoPrompting',
           },
         },
         // improvePrompt: {

@@ -13,6 +13,7 @@ export const handleMessage = async (
     imagesIncomplete: 'imagesIncomplete',
     generatingModel: 'generatingModel',
     modelGeneratedUnpaid: 'modelGeneratedUnpaid',
+    paywall: 'paywall',
     modelGeneratedPaid: 'modelGeneratedPaid',
     photoPrompting: 'photoPrompting',
     wipPhotoPrompting: 'wipPhotoPrompting',
@@ -46,6 +47,10 @@ export const handleMessage = async (
       // cancel: 'CANCEL',
       // 'payment confirmed': 'PAYMENT_CONFIRMED',
     },
+    [State.paywall]: {
+      'buy credits': 'BUY_CREDITS',
+      secret: 'SECRET',
+    },
     [State.modelGeneratedPaid]: {
       'create photo': 'CREATE_PHOTO',
       bypass: 'BYPASS',
@@ -64,6 +69,8 @@ export const handleMessage = async (
       'use prompt': 'USE_PROMPT',
       'improve prompt': 'IMPROVE_PROMPT',
       cancel: 'CANCEL',
+      secret: 'SECRET',
+      paywall: 'PAYWALL',
     },
   };
 
@@ -73,7 +80,7 @@ export const handleMessage = async (
   let event;
 
   if (
-    state === 'photoPrompting' &&
+    (state === 'photoPrompting' || state === 'wipPhotoPrompting') &&
     !['cancel', 'use prompt', 'improve prompt', 'secret'].includes(userActionId)
   ) {
     event = STATE_ACTION_EVENT_MAP[state].prompt;

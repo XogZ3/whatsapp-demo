@@ -65,7 +65,7 @@ export async function setSystemMessage(originalPayload: any, seed?: number) {
 type UserFieldsFirebase = {
   state: string;
   name: string;
-  clientid: any;
+  clientid: string;
   lastupdatedat: number;
   language: Language;
   trainingImageURLs: any;

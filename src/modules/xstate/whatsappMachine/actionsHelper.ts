@@ -60,7 +60,8 @@ export async function getMembershipAvailability(clientid: string) {
 
   const { membershipEndDate } = clientData.data() || {};
 
-  if (DateTime.now() > DateTime.fromMillis(membershipEndDate)) return false;
+  if (DateTime.now() > DateTime.fromMillis(membershipEndDate || 0))
+    return false;
 
   return true;
 }

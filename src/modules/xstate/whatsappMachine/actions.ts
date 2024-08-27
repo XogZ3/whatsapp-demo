@@ -246,7 +246,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const currentTimestamp = DateTime.now();
 
       // Reject if membership already exists
-      if (currentTimestamp < DateTime.fromMillis(membershipEndDate)) {
+      if (currentTimestamp < DateTime.fromMillis(membershipEndDate || 0)) {
         console.log('[-] Active membership exists, purchase not allowed.');
         const message = `${getTranslation('active membership', language)}`;
         const payload: ICreateMessagePayload = {

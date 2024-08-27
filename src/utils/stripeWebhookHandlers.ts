@@ -106,13 +106,13 @@ export async function handleCompletedCheckoutSession(
 
   console.log('[+] stripe checkout status: ', status);
 
-  const expirationTimestamp = DateTime.fromMillis(currentTimestamp)
+  const endDate = DateTime.fromMillis(currentTimestamp)
     .plus({ days: 30 })
     .toMillis();
 
-  await updateBilling(clientid, id, expirationTimestamp);
+  await updateBilling(clientid, id, endDate);
 
-  const formattedDate = format(new Date(expirationTimestamp), 'MMMM d, yyyy');
+  const formattedDate = format(new Date(endDate), 'MMMM d, yyyy');
   const message = `${getTranslation('payment confirmation', language)} ${formattedDate}`;
   const payload: ICreateMessagePayload = {
     phoneNumber: clientid,

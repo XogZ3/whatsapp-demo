@@ -97,7 +97,7 @@ export default function RootLayout(props: {
           t.src=v;s=b.getElementsByTagName(e)[0];
           s.parentNode.insertBefore(t,s)}(window, document,'script',
           'https://connect.facebook.net/en_US/fbevents.js');
-          fbq('init', ${process.env.FACEBOOK_PIXEL_ID});
+          fbq('init', ${process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID});
           fbq('track', 'PageView');
         `}
           </Script>
@@ -107,7 +107,7 @@ export default function RootLayout(props: {
               width="1"
               style={{ display: 'none' }}
               alt="fb pixel"
-              src={`https://www.facebook.com/tr?id=${process.env.FACEBOOK_PIXEL_ID}&ev=PageView&noscript=1`}
+              src={`https://www.facebook.com/tr?id=${process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID}&ev=PageView&noscript=1`}
             />
           </noscript>
         </body>

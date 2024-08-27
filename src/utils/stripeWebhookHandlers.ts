@@ -73,7 +73,7 @@ export async function updateBilling(
     paid: true,
     membershipStart: startDate,
     membershipEnd: endDate,
-    lastEventId: eventId, // Store the last processed event ID
+    lastStripeEventId: eventId, // Store the last processed event ID
   };
 
   await clientDoc.set(updates, { merge: true });
@@ -85,7 +85,8 @@ export async function handleCompletedCheckoutSession(
   const { clientid } = event.data.object.metadata;
   const { id, status } = event.data.object;
 
-  const { language = 'english', lastEventId } = await getUserFields(clientid);
+  const { language = 'english', lastStripeEventId } =
+    await getUserFields(clientid);
 
   if (status !== 'complete') {
     console.error('[-] stripe checkout status: ', status);
@@ -93,7 +94,7 @@ export async function handleCompletedCheckoutSession(
   }
 
   // Check if the event ID has already been processed
-  if (lastEventId === id) {
+  if (lastStripeEventId === id) {
     console.log('[-] Duplicate event received, ignoring.');
     return;
   }

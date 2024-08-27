@@ -160,8 +160,6 @@ export const machineFactory = (config: IMachineConfig): any => {
                   'assignPromptToContext',
                   'sendPromptConfirmation',
                 ],
-                // guard: 'hasSufficientCredits',
-                // reenter: true,
               },
             ],
             USE_PROMPT: {

@@ -525,7 +525,8 @@ Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
             await config.whatsappInstance.send(payload);
           }
         })
-        .catch((error) => {
+        .catch(async (error) => {
+          await setProcessingFlag(config.userMetaData.clientid, false);
           console.error('[!] Error in processing or setting context:', error);
         });
     },
@@ -610,14 +611,16 @@ Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
                 await config.whatsappInstance.send(payload);
               }
             })
-            .catch((error) => {
+            .catch(async (error) => {
+              await setProcessingFlag(config.userMetaData.clientid, false);
               console.error(
                 '[!] Error in processing or setting context:',
                 error,
               );
             });
         })
-        .catch((error) => {
+        .catch(async (error) => {
+          await setProcessingFlag(config.userMetaData.clientid, false);
           console.error('[!] Error in machine & credit check:', error.message);
         });
     },

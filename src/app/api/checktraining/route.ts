@@ -43,14 +43,12 @@ export async function GET(request: NextRequest) {
     const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
     const jobsRef = firestore.collection('training_jobs');
     const query = jobsRef.where('status', 'not-in', ['COMPLETED', 'FAILED']);
-
     const snapshot = await query.get();
 
-    // Check if the snapshot is empty
     if (snapshot.empty) {
       return NextResponse.json(
-        { error: 'No active training jobs found' },
-        { status: 200 }, // sending success, as this is not a bad thing
+        { message: 'No active training jobs found' },
+        { status: 200 },
       );
     }
 
@@ -58,7 +56,13 @@ export async function GET(request: NextRequest) {
       const jobData = doc.data();
       const jobStatus = await checkTrainingJob(jobData.jobId);
 
+      if (jobStatus === null) {
+        // Job not found, skip updating
+        return null;
+      }
+
       let newStatus = jobStatus.status;
+
       if (newStatus === 'COMPLETED' && jobStatus.output?.firebase_url) {
         await updateTrainingStatus(
           jobData.token,
@@ -79,14 +83,14 @@ export async function GET(request: NextRequest) {
       });
     });
 
-    await Promise.all(updatePromises);
+    const results = await Promise.all(updatePromises);
+    const updatedCount = results.filter((result) => result !== null).length;
 
     return NextResponse.json(
-      { message: 'Jobs updated successfully' },
+      { message: `${updatedCount} jobs updated successfully` },
       { status: 200 },
     );
   } catch (error) {
-    console.error('Error checking and updating jobs:', error);
     return NextResponse.json(
       { error: 'Internal Server Error' },
       { status: 500 },

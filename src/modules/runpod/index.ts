@@ -73,7 +73,7 @@ interface TrainingJobStatus {
 
 export async function checkTrainingJob(
   jobId: string,
-): Promise<TrainingJobStatus> {
+): Promise<TrainingJobStatus | null> {
   try {
     const response = await fetch(
       `https://api.runpod.ai/v2/rob1itdpqaacn3/status/${jobId}`,
@@ -86,14 +86,19 @@ export async function checkTrainingJob(
     );
 
     if (!response.ok) {
+      if (response.status === 404) {
+        return null; // Job not found, return null instead of throwing an error
+      }
       throw new Error(`RunPod request failed with status: ${response.status}`);
     }
 
-    const jobStatus = await response.json();
-    return jobStatus;
+    return await response.json();
   } catch (error) {
-    console.error('Error checking training job status:', error);
-    throw new Error(`Failed to check training job status: ${error}`);
+    // Only re-throw for non-404 errors
+    if (error instanceof Error && !error.message.includes('404')) {
+      throw error;
+    }
+    return null;
   }
 }
 

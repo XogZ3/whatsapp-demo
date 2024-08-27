@@ -76,7 +76,7 @@ type UserFieldsFirebase = {
   paid?: boolean;
   membershipStart?: any;
   membershipEnd: number;
-  lastEventId?: string;
+  lastStripeEventId?: string;
 };
 
 export async function getUserFields(
@@ -101,7 +101,7 @@ export async function getUserFields(
     paid,
     membershipStart,
     membershipEnd,
-    lastEventId,
+    lastStripeEventId,
   } = clientData.data() || {};
   const userLanguage = language || getLanguageFromPhoneNumber(clientid);
 
@@ -118,7 +118,7 @@ export async function getUserFields(
     paid: paid || false,
     membershipStart,
     membershipEnd,
-    lastEventId,
+    lastStripeEventId,
   };
 }
 

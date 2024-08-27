@@ -101,8 +101,8 @@ export async function getUserFields(
     creditsUsedToday,
     creditsResetDate,
     paid,
-    membershipStart,
-    membershipEnd,
+    membershipStartDate,
+    membershipEndDate,
     lastStripeEventId,
   } = clientData.data() || {};
   const userLanguage = language || getLanguageFromPhoneNumber(clientid);
@@ -119,8 +119,8 @@ export async function getUserFields(
     creditsUsedToday: creditsUsedToday || 0,
     creditsResetDate,
     paid: paid || false,
-    membershipStartDate: membershipStart,
-    membershipEndDate: membershipEnd,
+    membershipStartDate,
+    membershipEndDate,
     lastStripeEventId,
   };
 }

@@ -289,9 +289,9 @@ Exemplo: homem sentado em um banco de parque ou mulher posando para uma foto esp
     ar: 'عدد الصور المستلمة',
   },
   paywall: {
-    en: 'You have 0 credits. Please buy credits to continue using FotoLabs AI.',
-    pt: 'Você tem 0 créditos. Por favor, compre créditos para continuar usando o FotoLabs AI.',
-    ar: 'لديك 0 رصيد. يرجى شراء رصيد لمواصلة استخدام FotoLabs AI.',
+    en: 'Your free trial/membership has expired. Please purchase a membership to continue using FotoLabs AI.',
+    pt: 'Seu teste gratuito/assinatura expirou. Por favor, compre uma assinatura para continuar usando o FotoLabs AI.',
+    ar: 'انتهت صلاحية النسخة التجريبية المجانية/العضوية الخاصة بك. يرجى شراء عضوية لمواصلة استخدام FotoLabs AI.',
   },
   'active membership': {
     en: 'You already have an existing membership',

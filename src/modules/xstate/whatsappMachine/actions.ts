@@ -571,10 +571,6 @@ Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
               getCreditsAvailability(clientid),
             ]);
 
-            console.log(
-              `hasValidMembership | hasCredits: ${hasValidMembership} | ${hasCredits}`,
-            );
-
             const canGenerateImages = hasValidMembership && hasCredits;
 
             if (!canGenerateImages) {
@@ -586,7 +582,11 @@ Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
                 msgBody: message,
               });
               // Stop the chain
-              return Promise.reject(new Error('Insufficient credits'));
+              return Promise.reject(
+                new Error(
+                  `${!hasValidMembership && 'Membership Expired'} ${!hasCredits && 'Credits Over'}`,
+                ),
+              );
             }
           }
           return machineIsAvailable;

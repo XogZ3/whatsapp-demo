@@ -30,7 +30,7 @@ export async function generateImagesWithReplicateUploadToFirebase(
         prompt: improvedPromptFromGroq,
         hf_loras: [`${lora_url}&filename=${lora_filename}`, REALISM_LORA_URL],
         num_outputs: 1,
-        aspect_ratio: '16:9',
+        aspect_ratio: '9:16',
         output_format: 'png',
         guidance_scale: 3.5,
         output_quality: 80,

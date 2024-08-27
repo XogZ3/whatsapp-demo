@@ -295,8 +295,8 @@ Exemplo: homem sentado em um banco de parque ou mulher posando para uma foto esp
   },
   'active membership': {
     en: 'You already have an existing membership',
-    pt: 'You already have an existing membership',
-    ar: 'You already have an existing membership',
+    pt: 'Você já tem uma assinatura existente',
+    ar: 'لديك بالفعل عضوية قائمة',
   },
 };
 

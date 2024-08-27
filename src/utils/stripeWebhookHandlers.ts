@@ -74,8 +74,8 @@ export async function updateBilling(
     paid: true,
     creditsUsedToday: 0,
     creditsResetDate: DateTime.now().toMillis(),
-    membershipStart: startDate,
-    membershipEnd: endDate,
+    membershipStartDate: startDate,
+    membershipEndDate: endDate,
     lastStripeEventId: eventId, // Store the last processed event ID
   };
 

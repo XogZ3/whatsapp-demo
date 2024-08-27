@@ -7,7 +7,7 @@ import { getBaseUrl } from './helpers';
 
 export async function findUserIpAddress() {
   try {
-    const response = await fetch('/api/get-ip-address');
+    const response = await fetch('/api/getUserIp');
     if (!response.ok) {
       throw new Error('Failed to fetch IP address');
     }
@@ -70,6 +70,6 @@ export async function sendPurchaseToFBCoversionAPI(clientid: string) {
     },
   )
     .then((response) => response.json())
-    .then((data) => console.log('fbq data', data))
+    .then((data) => console.log('fbq data', JSON.stringify(data, null, 2)))
     .catch((error) => console.error('Error in conversions API: ', error));
 }

@@ -41,12 +41,16 @@ export async function getCreditsAvailability(clientid: string) {
       creditsUsedToday: 0,
       creditsResetDate: today.toMillis(),
     });
+    console.log(`New Day New Life`);
     return true;
   }
   if (creditsUsedToday < DAILY_CREDITS_LIMIT) {
+    console.log(
+      `Within daily limits ${creditsUsedToday}/${DAILY_CREDITS_LIMIT}`,
+    );
     return true;
   }
-  console.log('Daily limit reached');
+  console.log(`Beyond daily limits ${creditsUsedToday}/${DAILY_CREDITS_LIMIT}`);
   return false;
 }
 export async function getMembershipAvailability(clientid: string) {
@@ -60,9 +64,11 @@ export async function getMembershipAvailability(clientid: string) {
 
   const { membershipEndDate } = clientData.data() || {};
 
-  if (DateTime.now() > DateTime.fromMillis(membershipEndDate || 0))
+  if (DateTime.now() > DateTime.fromMillis(membershipEndDate || 0)) {
+    console.log('Membership Expired');
     return false;
-
+  }
+  console.log('Membership Valid');
   return true;
 }
 

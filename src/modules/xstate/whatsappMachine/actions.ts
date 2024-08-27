@@ -571,6 +571,10 @@ Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
               getCreditsAvailability(clientid),
             ]);
 
+            console.log(
+              `hasValidMembership | hasCredits: ${hasValidMembership} | ${hasCredits}`,
+            );
+
             const canGenerateImages = hasValidMembership && hasCredits;
 
             if (!canGenerateImages) {

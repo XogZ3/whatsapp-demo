@@ -196,11 +196,7 @@ export const machineFactory = (config: IMachineConfig): any => {
               },
             ],
             USE_PROMPT: {
-              actions: [
-                'assignMessage',
-                'setProcessingTrue',
-                'sendWIPPromptedPhoto',
-              ],
+              actions: ['assignMessage', 'sendWIPPromptedPhoto'],
             },
             IMPROVE_PROMPT: {
               actions: [

@@ -16,23 +16,36 @@ export async function POST(req: NextRequest) {
   const { clientid } = JSON.parse(rawBody);
 
   try {
+    // const paymentLink: Stripe.Response<Stripe.PaymentLink> =
+    //   await stripe.paymentLinks.create({
+    //     line_items: [
+    //       {
+    //         price: 'price_1PrcXnDWnX2YhQwszW8XrKBs',
+    //         quantity: 1,
+    //       },
+    //     ],
+    //     metadata: {
+    //       clientid, // Add any metadata you need
+    //     },
+    //     // after_completion: {
+    //     //   type: 'redirect',
+    //     //   redirect: {
+    //     //     url: `${getBaseUrl()}/success`, // TODO: Replace with your success URL
+    //     //   },
+    //     // },
+    //   });
+
     const paymentLink: Stripe.Response<Stripe.PaymentLink> =
       await stripe.paymentLinks.create({
         line_items: [
           {
-            price: 'price_1PrcXnDWnX2YhQwszW8XrKBs',
+            price: 'price_1PsJmEDWnX2YhQwse47t8kLL',
             quantity: 1,
           },
         ],
         metadata: {
-          clientid, // Add any metadata you need
+          clientid,
         },
-        // after_completion: {
-        //   type: 'redirect',
-        //   redirect: {
-        //     url: `${getBaseUrl()}/success`, // TODO: Replace with your success URL
-        //   },
-        // },
       });
 
     const result: CreatePaymentLinkResult = {

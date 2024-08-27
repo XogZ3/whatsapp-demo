@@ -570,6 +570,9 @@ Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
           message = getTranslation('generating image', language);
           await sendMessage(config.whatsappInstance, message, clientid);
 
+          // Set Machine Busy
+          await setProcessingFlag(config.userMetaData.clientid, true);
+
           wipProcessAndSendImages(config, prompt)
             .then(async (success) => {
               console.log('[+] processAndSendImages done');

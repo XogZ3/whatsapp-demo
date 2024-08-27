@@ -61,8 +61,14 @@ export async function updateBilling(clientid: string) {
     tags: [],
   };
 
+  const startDate = new Date();
+  const endDate = startDate.setDate(startDate.getDate() + 30);
+
   const updates: any = {
     state: JSON.stringify(stateJSON),
+    paid: true,
+    subscriptionStart: startDate,
+    subscriptionEnd: endDate,
   };
   await clientDoc.set(updates, { merge: true });
 }

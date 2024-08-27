@@ -3,6 +3,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 import * as fbq from '@/libs/fpixel';
 
+import { getBaseUrl } from './helpers';
+
 export async function findUserIpAddress() {
   try {
     const response = await fetch('/api/get-ip-address');
@@ -31,11 +33,11 @@ const createPurchaseEventData = async (clientid: string, eventId: string) => {
     event_id: eventId,
     event_time: Math.floor(Date.now() / 1000),
     action_source: 'website',
-    event_source_url: window.location.href,
+    event_source_url: `${getBaseUrl()}/success/${clientid}`,
     user_data: {
       ph: [hashedClientId],
       client_user_agent: navigator.userAgent,
-      cient_ip_address: userIp || '0.0.0.0',
+      client_ip_address: userIp || '0.0.0.0',
     },
     custom_data: {
       currency: 'USD',

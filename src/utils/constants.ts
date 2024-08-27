@@ -2,6 +2,7 @@ export const VIDEOGPT_API_URL = 'https://api.videogptai.com';
 
 export const TRAINING_IMAGES_LIMIT = 15;
 export const DEFAULT_CREDITS = 5;
+export const DAILY_CREDITS_LIMIT = 100;
 
 export const STRIPE_PAYMENT_LINK_100_CREDITS =
   'https://buy.stripe.com/test_4gwg2LbB41ob4Tu288';

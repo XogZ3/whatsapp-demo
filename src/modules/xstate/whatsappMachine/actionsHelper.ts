@@ -1,9 +1,69 @@
+import { DateTime } from 'luxon';
+
 import type { CreatePaymentLinkResult } from '@/app/api/stripe/createPaymentLink/route';
+import firebase from '@/modules/firebase';
 import { generateImagesWithReplicateUploadToFirebase } from '@/modules/replicate';
 import type { ICreateMessagePayload } from '@/modules/whatsapp/whatsapp';
+import { DAILY_CREDITS_LIMIT } from '@/utils/constants';
 import { getBaseUrl } from '@/utils/helpers';
+import type { UserFieldsFirebase } from '@/utils/ReplyHelper/FirebaseHelpers';
 
 import type { IMachineConfig } from './types';
+
+const firestore = firebase.getFirestore();
+
+export async function getCreditsAvailability(clientid: string) {
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid);
+  const clientData = await clientDoc.get();
+
+  const data = clientData.data() as UserFieldsFirebase;
+
+  const { creditsUsedToday, creditsResetDate } = data;
+
+  const today = DateTime.now().startOf('day');
+
+  let resetRequired = false;
+  if (
+    DateTime.fromMillis(creditsResetDate).startOf('day').toMillis() !==
+    today.toMillis()
+  ) {
+    resetRequired = true;
+  }
+
+  if (resetRequired) {
+    // Reset the count and update the date
+    await clientDoc.update({
+      creditsUsedToday: 0,
+      creditsResetDate: today.toMillis(),
+    });
+    return true;
+  }
+  if (creditsUsedToday < DAILY_CREDITS_LIMIT) {
+    return true;
+  }
+  console.log('Daily limit reached');
+  return false;
+}
+export async function getMembershipAvailability(clientid: string) {
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid);
+  const clientData = await clientDoc.get();
+
+  const { membershipEndDate } = clientData.data() || {};
+
+  if (DateTime.now() > DateTime.fromMillis(membershipEndDate)) return false;
+
+  return true;
+}
 
 export async function processAndSendImages(
   config: IMachineConfig,

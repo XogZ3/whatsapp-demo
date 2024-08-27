@@ -13,17 +13,14 @@ import ButtonFancy from '../ui/button-fancy';
 import { DotPattern } from '../ui/magicui/dot';
 
 export default function SuccessSection({ clientid }: { clientid: string }) {
-  const eventSentRef = React.useRef(false); // To track if the event has been sent
-
   React.useEffect(() => {
-    if (clientid && !eventSentRef.current) {
+    if (clientid) {
       const sendEvent = async () => {
+        console.log('[O] Attempting to send event to FB conversions API...');
         await sendPurchaseToFBCoversionAPI(clientid);
-        eventSentRef.current = true;
       };
 
       sendEvent();
-      eventSentRef.current = true; // Mark event as sent
     }
   }, [clientid]);
 

@@ -39,6 +39,9 @@ export async function GET(request: NextRequest) {
   if (apiKey !== 'aDx1svckb2Q4OEpsQ') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
+
+  console.log('[O] n8n: checking training job status...');
+
   try {
     const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
     const jobsRef = firestore.collection('training_jobs');
@@ -58,6 +61,7 @@ export async function GET(request: NextRequest) {
 
       if (jobStatus === null) {
         // Job not found, skip updating
+        console.log('[O] n8n: No jobs found...');
         return null;
       }
 

@@ -62,7 +62,7 @@ export async function setSystemMessage(originalPayload: any, seed?: number) {
   await clientDoc.collection('messages').add(payload);
 }
 
-type UserFieldsFirebase = {
+export type UserFieldsFirebase = {
   state: string;
   name: string;
   clientid: string;
@@ -72,11 +72,12 @@ type UserFieldsFirebase = {
   loraURL: string;
   loraFilename: string;
   trainingToken?: string;
-  credits?: number;
-  paid?: boolean;
-  membershipStart?: any;
-  membershipEnd: number;
-  lastStripeEventId?: string;
+  creditsUsedToday: number;
+  creditsResetDate: number;
+  paid: boolean;
+  membershipStartDate: number;
+  membershipEndDate: number;
+  lastStripeEventId: string;
 };
 
 export async function getUserFields(
@@ -97,7 +98,8 @@ export async function getUserFields(
     trainingImageURLs,
     loraURL,
     loraFilename,
-    credits,
+    creditsUsedToday,
+    creditsResetDate,
     paid,
     membershipStart,
     membershipEnd,
@@ -114,10 +116,11 @@ export async function getUserFields(
     trainingImageURLs,
     loraURL,
     loraFilename,
-    credits: credits || 0,
+    creditsUsedToday: creditsUsedToday || 0,
+    creditsResetDate,
     paid: paid || false,
-    membershipStart,
-    membershipEnd,
+    membershipStartDate: membershipStart,
+    membershipEndDate: membershipEnd,
     lastStripeEventId,
   };
 }
@@ -138,7 +141,7 @@ export async function setDefaultUserFields(clientid: string): Promise<void> {
   // Prepare the updates object
   const updates: Partial<UserFieldsFirebase> = {
     language: userLanguage,
-    credits: userCredits,
+    creditsUsedToday: userCredits,
   };
 
   // Update the Firestore document with the new default values, merging with existing data
@@ -267,18 +270,38 @@ export async function getProcessingFlag(clientid: string) {
   return processing;
 }
 
-export async function getCreditsCount(clientid: string) {
-  const wabaId = process.env.WABA_ID;
-  const clientDoc = firestore
+export async function incrementCreditsUsedTodayAndSetProcessingFlagFalse(
+  clientid: string,
+): Promise<void> {
+  const wabaId = process.env.WABA_ID as string;
+  const clientDocRef = firestore
     .collection('apps')
-    .doc(wabaId as string)
+    .doc(wabaId)
     .collection('clients')
     .doc(clientid);
-  const clientData = await clientDoc.get();
-  const credits: number =
-    (clientData.exists && clientData.data()?.credits) || DEFAULT_CREDITS;
 
-  return credits;
+  try {
+    await firestore.runTransaction(async (transaction) => {
+      const clientDoc = await transaction.get(clientDocRef);
+
+      if (!clientDoc.exists) {
+        throw new Error('Client document does not exist.');
+      }
+
+      const data = clientDoc.data() as UserFieldsFirebase;
+      const currentCreditsUsed = data.creditsUsedToday;
+
+      // Increment creditsUsedToday by 1
+      transaction.update(clientDocRef, {
+        creditsUsedToday: currentCreditsUsed + 1,
+        processing: false,
+      });
+    });
+
+    console.log('Successfully updated client data.');
+  } catch (error) {
+    console.error('Transaction failed: ', error);
+  }
 }
 
 export async function getTrainingImageURLs(clientid: string) {

@@ -1,4 +1,4 @@
-import console from 'console';
+import { DateTime } from 'luxon';
 import { assign } from 'xstate';
 
 import type { ICreateMessagePayload } from '@/modules/whatsapp/whatsapp';
@@ -6,10 +6,10 @@ import { DEFAULT_CREDITS, TRAINING_IMAGES_LIMIT } from '@/utils/constants';
 import { getImprovedPromptFromGroq } from '@/utils/groq';
 import {
   callTrainingAPI,
-  getCreditsCount,
   getProcessingFlag,
   getTrainingImageURLs,
   getUserFields,
+  incrementCreditsUsedTodayAndSetProcessingFlagFalse,
   setProcessingFlag,
   setUserLanguage,
 } from '@/utils/ReplyHelper/FirebaseHelpers';
@@ -17,6 +17,8 @@ import { getTranslation } from '@/utils/translations';
 
 import {
   createStripeLink,
+  getCreditsAvailability,
+  getMembershipAvailability,
   processAndSendImages,
   wipProcessAndSendImages,
 } from './actionsHelper';
@@ -240,11 +242,11 @@ export const actionsFactory = (config: IMachineConfig): any => {
     sendStripeLink: async (event: any) => {
       const language = event?.context?.language;
       const { clientid } = config.userMetaData;
-      const { membershipEnd = 0 } = await getUserFields(clientid);
-      const currentTimestamp = Date.now();
+      const { membershipEndDate } = await getUserFields(clientid);
+      const currentTimestamp = DateTime.now();
 
       // Reject if membership already exists
-      if (membershipEnd > currentTimestamp) {
+      if (currentTimestamp < DateTime.fromMillis(membershipEndDate)) {
         console.log('[-] Active membership exists, purchase not allowed.');
         const message = `${getTranslation('active membership', language)}`;
         const payload: ICreateMessagePayload = {
@@ -545,11 +547,6 @@ Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
         return machineIsAvailable;
       }
 
-      async function getCreditsAvailability() {
-        const hasSufficientCredits = await getCreditsCount(clientid);
-        return hasSufficientCredits;
-      }
-
       // if machine available && credits available, then send prompted photo
       await getMachineAvailability()
         .then(async (machineIsAvailable) => {
@@ -569,8 +566,14 @@ Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
         })
         .then(async (machineIsAvailable) => {
           if (machineIsAvailable) {
-            const hasSufficientCredits = (await getCreditsAvailability()) > 0;
-            if (!hasSufficientCredits) {
+            const [hasValidMembership, hasCredits] = await Promise.all([
+              getMembershipAvailability(clientid),
+              getCreditsAvailability(clientid),
+            ]);
+
+            const canGenerateImages = hasValidMembership && hasCredits;
+
+            if (!canGenerateImages) {
               message = getTranslation('paywall', language);
               await config.whatsappInstance.send({
                 phoneNumber: clientid,
@@ -596,7 +599,9 @@ Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
           wipProcessAndSendImages(config, prompt)
             .then(async (success) => {
               console.log('[+] processAndSendImages done');
-              await setProcessingFlag(clientid, false);
+              await incrementCreditsUsedTodayAndSetProcessingFlagFalse(
+                clientid,
+              );
               return success; // Pass success to the next .then()
             })
             .then(async (success) => {

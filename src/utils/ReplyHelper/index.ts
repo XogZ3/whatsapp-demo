@@ -8,7 +8,7 @@ import {
 import { whatsappStateTransition } from '@/modules/xstate/whatsappMachine';
 import type { IUserMetaData } from '@/modules/xstate/whatsappMachine/types';
 
-import { DEFAULT_CREDITS, TRAINING_IMAGES_LIMIT } from '../constants';
+import { TRAINING_IMAGES_LIMIT } from '../constants';
 import { getLanguageFromPhoneNumber } from '../helpers';
 import {
   getTranslation,
@@ -68,10 +68,8 @@ export async function replyToUser(messageObject: any) {
   const { clientid } = messageObject;
 
   const userDetails = await getUserFields(clientid);
-  const { state, name, language, credits } = userDetails;
+  const { state, name, language } = userDetails;
   const userLanguage = language || getLanguageFromPhoneNumber(clientid);
-  const userCredits = credits || DEFAULT_CREDITS;
-  console.log('credits: ', userCredits);
 
   if (!state) {
     message = extractText(messageObject);

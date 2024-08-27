@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import { DateTime } from 'luxon';
 
 import type { CheckoutSessionCompletedEvent } from '@/app/api/stripe/webhook/types';
 import firebase from '@/modules/firebase';
@@ -66,11 +67,13 @@ export async function updateBilling(
     tags: [],
   };
 
-  const startDate = Date.now(); // Current timestamp
+  const startDate = DateTime.now().toMillis();
 
   const updates: any = {
     state: JSON.stringify(stateJSON),
     paid: true,
+    creditsUsedToday: 0,
+    creditsResetDate: DateTime.now().toMillis(),
     membershipStart: startDate,
     membershipEnd: endDate,
     lastStripeEventId: eventId, // Store the last processed event ID
@@ -99,11 +102,13 @@ export async function handleCompletedCheckoutSession(
     return;
   }
 
-  const currentTimestamp = Date.now();
+  const currentTimestamp = DateTime.now().toMillis();
 
   console.log('[+] stripe checkout status: ', status);
 
-  const expirationTimestamp = currentTimestamp + 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
+  const expirationTimestamp = DateTime.fromMillis(currentTimestamp)
+    .plus({ days: 30 })
+    .toMillis();
 
   await updateBilling(clientid, id, expirationTimestamp);
 

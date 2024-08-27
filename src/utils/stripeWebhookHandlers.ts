@@ -16,6 +16,7 @@ const firestore = firebase.getFirestore();
 
 export async function saveStripeEvent(event: any) {
   try {
+    console.log('[+] attempting to save stripe event type: ', event.type);
     const { clientid } = event.data.object.metadata;
 
     const clientDocRef = firestore.collection('stripe_events').doc(clientid);
@@ -31,7 +32,7 @@ export async function saveStripeEvent(event: any) {
       transaction.set(clientDocRef, updates, { merge: true });
     });
 
-    // console.log(`Stripe event saved for client ID: ${clientid}`);
+    console.log(`Stripe event saved for client ID: ${clientid}`);
   } catch (error) {
     console.error('Error saving Stripe event to Firestore:', error);
   }

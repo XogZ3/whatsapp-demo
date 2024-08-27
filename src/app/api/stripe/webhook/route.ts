@@ -27,12 +27,12 @@ export async function POST(req: NextRequest) {
   try {
     event = stripe.webhooks.constructEvent(rawBody, sig!, endpointSecret!);
     console.log('stripe webhook event', event.type);
+    await saveStripeEvent(event);
+
     if (event.type === 'checkout.session.completed')
       await handleCompletedCheckoutSession(
         event as CheckoutSessionCompletedEvent,
       );
-
-    await saveStripeEvent(event);
 
     return NextResponse.json({ status: 200 });
   } catch (error) {

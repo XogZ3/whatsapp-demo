@@ -110,7 +110,7 @@ export const machineFactory = (config: IMachineConfig): any => {
               target: 'modelGeneratedUnpaid',
             },
             FALLBACK: {
-              actions: 'sendPleaseWait',
+              actions: 'sendPleaseWaitGeneratingModel',
             },
           },
         },
@@ -163,9 +163,6 @@ export const machineFactory = (config: IMachineConfig): any => {
                 // guard: 'hasSufficientCredits',
                 // reenter: true,
               },
-              {
-                actions: ['sendPleaseWait'],
-              },
             ],
             USE_PROMPT: {
               actions: [
@@ -187,7 +184,6 @@ export const machineFactory = (config: IMachineConfig): any => {
           },
         },
         wipPhotoPrompting: {
-          entry: ['sendPromptingInstruction'],
           on: {
             PROMPT: [
               {
@@ -197,9 +193,6 @@ export const machineFactory = (config: IMachineConfig): any => {
                   'assignPromptToContext',
                   'sendWIPPromptConfirmation',
                 ],
-              },
-              {
-                actions: ['sendPleaseWait'],
               },
             ],
             USE_PROMPT: {

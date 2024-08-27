@@ -305,6 +305,7 @@ export async function getUserLoraDetails(clientid: string): Promise<{
 export async function uploadFileToFirebase(
   base64Content: string,
   clientid: string,
+  foldername: string,
   filename: string,
 ): Promise<string> {
   const storage = getStorageInstance();
@@ -313,7 +314,7 @@ export async function uploadFileToFirebase(
   const buffer = Buffer.from(base64Content, 'base64');
   const readableStream = Readable.from(buffer);
 
-  const filePath = `training_images/person${clientid}/${filename}`;
+  const filePath = `${foldername}/person${clientid}/${filename}`;
 
   const file = bucket.file(filePath);
   await new Promise((resolve, reject) => {
@@ -342,6 +343,7 @@ export async function uploadFileToFirebase(
 export async function uploadFileToFirebaseGetPermanentURL(
   base64Content: string,
   clientid: string,
+  foldername: string,
   filename: string,
 ): Promise<string> {
   const storage = getStorageInstance();
@@ -350,7 +352,7 @@ export async function uploadFileToFirebaseGetPermanentURL(
   const buffer = Buffer.from(base64Content, 'base64');
   const readableStream = Readable.from(buffer);
 
-  const filePath = `training_images/person${clientid}/${filename}`;
+  const filePath = `${foldername}/person${clientid}/${filename}`;
 
   const file = bucket.file(filePath);
   await new Promise((resolve, reject) => {

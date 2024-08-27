@@ -25,9 +25,10 @@ type TranslationKeys =
   | 'language selected'
   | 'model already exists'
   | 'generating model'
-  | 'please wait'
+  | 'please wait generating model'
   | 'processing payment'
   | 'prompt photos'
+  | 'please wait machine busy'
   | 'photo upload instruction'
   | 'invalid input'
   | 'intro message'
@@ -202,7 +203,7 @@ export const TRANSLATION_MAP: Record<
     pt: 'Gerando imagem, por favor, aguarde 30 segundos...',
     ar: 'جارٍ إنشاء الصورة، يرجى الانتظار لمدة 30 ثانية...',
   },
-  'please wait': {
+  'please wait generating model': {
     en: 'Please wait while we are generating a customized model for you.',
     pt: 'Por favor, aguarde enquanto geramos um modelo personalizado para você.',
     ar: 'يرجى الانتظار بينما نقوم بإنشاء نموذج مخصص لك.',
@@ -265,6 +266,11 @@ Exemplo: homem sentado em um banco de parque ou mulher posando para uma foto esp
     en: `Do you want to generate image with following prompt?`,
     pt: `Você quer gerar uma imagem com a seguinte solicitação?`,
     ar: `هل تريد إنشاء صورة مع الطلب التالي؟`,
+  },
+  'please wait machine busy': {
+    en: 'Please wait while FotoLabs AI is working...',
+    pt: 'Por favor, aguarde enquanto o FotoLabs AI está processando...',
+    ar: 'يرجى الانتظار بينما يعمل FotoLabs AI...',
   },
   'new prompt request': {
     en: 'Alright, send a new prompt. :)',

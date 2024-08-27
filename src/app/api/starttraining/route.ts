@@ -60,7 +60,7 @@ async function notifyModelExists(clientid: string, language: Language) {
   await sendMessageToWhatsapp(payload);
 }
 async function notifyGeneratingModel(clientid: string, language: Language) {
-  const message = getTranslation('please wait', language);
+  const message = getTranslation('please wait generating model', language);
   // TODO: implement language in buttons
   const payload: ICreateMessagePayload = {
     phoneNumber: clientid,

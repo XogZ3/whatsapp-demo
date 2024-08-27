@@ -1,8 +1,10 @@
+import { format } from 'date-fns';
+
 import type { CheckoutSessionCompletedEvent } from '@/app/api/stripe/webhook/types';
 import firebase from '@/modules/firebase';
 import {
   type ICreateMessagePayload,
-  makeRequestToWhatsapp,
+  sendMessageToWhatsapp,
 } from '@/modules/whatsapp/whatsapp';
 
 import { DEFAULT_CREDITS } from './constants';
@@ -13,10 +15,26 @@ import { getTranslation } from './translations';
 const firestore = firebase.getFirestore();
 
 export async function saveStripeEvent(event: any) {
-  const eventObject = JSON.parse(event);
-  const clientDoc = firestore.collection('stripe_events');
+  try {
+    const { clientid } = event.data.object.metadata;
 
-  await clientDoc.add(eventObject);
+    const clientDocRef = firestore.collection('stripe_events').doc(clientid);
+    const eventCollectionRef = clientDocRef.collection('events').doc();
+
+    const updates = {
+      lastupdatedat: event.created,
+      type: event.type,
+    };
+
+    await firestore.runTransaction(async (transaction) => {
+      transaction.set(eventCollectionRef, event);
+      transaction.set(clientDocRef, updates, { merge: true });
+    });
+
+    // console.log(`Stripe event saved for client ID: ${clientid}`);
+  } catch (error) {
+    console.error('Error saving Stripe event to Firestore:', error);
+  }
 }
 
 export async function updateBilling(clientid: string) {
@@ -58,21 +76,27 @@ export async function handleCompletedCheckoutSession(
   const { language = 'english' } = await getUserFields(clientid);
 
   if (status !== 'complete') {
-    console.log('[-] current status: ', status);
+    console.error('[-] stripe checkout status: ', status);
   }
 
   if (status === 'complete') {
-    console.log('[+] payment status: ', status);
+    console.log('[+] stripe checkout status: ', status);
+
+    const expirationDate = new Date();
+    expirationDate.setDate(expirationDate.getDate() + 30);
+
+    // Format the date in a readable format (e.g., August 27, 2024)
+    const formattedDate = format(expirationDate, 'MMMM d, yyyy');
 
     await updateBilling(clientid);
 
-    const message = getTranslation('payment confirmation', language);
+    const message = `${getTranslation('payment confirmation', language)} ${formattedDate}`;
     const payload: ICreateMessagePayload = {
       phoneNumber: clientid,
       text: true,
       msgBody: message,
     };
-    await makeRequestToWhatsapp(payload);
+    await sendMessageToWhatsapp(payload);
 
     await sendPromptingInstruction(clientid, language);
   }

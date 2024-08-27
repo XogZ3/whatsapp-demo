@@ -2,21 +2,8 @@ import type { CreatePaymentLinkResult } from '@/app/api/stripe/createPaymentLink
 import { generateImagesUploadToFirebaseGetURL } from '@/modules/runpod';
 import type { ICreateMessagePayload } from '@/modules/whatsapp/whatsapp';
 import { getBaseUrl } from '@/utils/helpers';
-import { getTranslation } from '@/utils/translations';
 
 import type { IMachineConfig } from './types';
-
-export async function sendPleaseWait(event: any, config: IMachineConfig) {
-  const language = event?.context?.language;
-  const message = getTranslation('please wait', language);
-  // TODO: implement language in buttons
-  const payload: ICreateMessagePayload = {
-    phoneNumber: config.userMetaData.clientid,
-    text: true,
-    msgBody: message,
-  };
-  await config.whatsappInstance.send(payload);
-}
 
 export async function processAndSendImages(
   config: IMachineConfig,

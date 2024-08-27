@@ -139,6 +139,8 @@ export async function generateImagesUploadToFirebaseGetURL(
       return [];
     }
 
+    const foldername = 'runpod_images';
+
     const processPromises = images.map(async (image: string, index: number) => {
       const base64Content = image.split(';base64,').pop() || '';
 
@@ -147,6 +149,7 @@ export async function generateImagesUploadToFirebaseGetURL(
         const firebaseUrl = await uploadFileToFirebase(
           base64Content,
           clientid,
+          foldername,
           filename,
         );
         return firebaseUrl;

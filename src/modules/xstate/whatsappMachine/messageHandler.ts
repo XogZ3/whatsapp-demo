@@ -82,7 +82,9 @@ export const handleMessage = async (
 
   if (
     (state === 'photoPrompting' || state === 'wipPhotoPrompting') &&
-    !['cancel', 'use prompt', 'improve prompt', 'secret'].includes(userActionId)
+    !['cancel', 'use prompt', 'improve prompt', 'secret', 'paywall'].includes(
+      userActionId,
+    )
   ) {
     event = STATE_ACTION_EVENT_MAP[state].prompt;
     console.log('Prompt: ', message);

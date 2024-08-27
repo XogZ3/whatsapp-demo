@@ -107,6 +107,7 @@ export async function fetchWhatsAppImageAndUploadToFirebase(
     });
 
     const fileType = whatsappData.mime_type === 'image/jpeg' ? 'jpeg' : 'png';
+    const foldername = 'training_images';
     const filename = `photograph_of_person${clientid}_${uuidv4()}.${fileType}`;
 
     // Convert arraybuffer to base64
@@ -118,6 +119,7 @@ export async function fetchWhatsAppImageAndUploadToFirebase(
     const longExpiryURL = await uploadFileToFirebase(
       base64Content,
       clientid,
+      foldername,
       filename,
     );
 

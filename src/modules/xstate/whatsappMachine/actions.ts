@@ -196,9 +196,9 @@ export const actionsFactory = (config: IMachineConfig): any => {
       };
       await config.whatsappInstance.send(payload);
     },
-    sendPleaseWait: async (event: any) => {
+    sendPleaseWaitGeneratingModel: async (event: any) => {
       const language = event?.context?.language;
-      const message = getTranslation('please wait', language);
+      const message = getTranslation('please wait generating model', language);
       // TODO: implement language in buttons
       const payload: ICreateMessagePayload = {
         phoneNumber: config.userMetaData.clientid,
@@ -354,9 +354,8 @@ Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
       const prompt = event?.event?.message;
 
       async function getMachineAvailability() {
-        const machineIsAvailable = await getProcessingFlag(
-          config.userMetaData.clientid,
-        );
+        const machineIsAvailable =
+          (await getProcessingFlag(config.userMetaData.clientid)) === false;
         return machineIsAvailable;
       }
       await getMachineAvailability()
@@ -375,7 +374,10 @@ Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
               msgBody: message,
             };
           } else {
-            const message = getTranslation('please wait', language);
+            const message = getTranslation(
+              'please wait machine busy',
+              language,
+            );
             // TODO: implement language in buttons
             payload = {
               phoneNumber: config.userMetaData.clientid,
@@ -518,9 +520,8 @@ Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
       let payload: ICreateMessagePayload;
 
       async function getMachineAvailability() {
-        const machineIsAvailable = await getProcessingFlag(
-          config.userMetaData.clientid,
-        );
+        const machineIsAvailable =
+          (await getProcessingFlag(config.userMetaData.clientid)) === false;
         return machineIsAvailable;
       }
 
@@ -533,7 +534,7 @@ Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
       await getMachineAvailability()
         .then(async (machineIsAvailable) => {
           if (!machineIsAvailable) {
-            message = getTranslation('please wait', language);
+            message = getTranslation('please wait machine busy', language);
             // TODO: implement language in buttons
             payload = {
               phoneNumber: clientid,

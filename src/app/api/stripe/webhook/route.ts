@@ -34,8 +34,7 @@ export async function POST(req: NextRequest) {
 
     await saveStripeEvent(event);
 
-    // console.log(`event ${event.type}: `, JSON.stringify(event, null, 2));
-    return NextResponse.json({ status: 'success', event: event.type });
+    return NextResponse.json({ status: 200 });
   } catch (error) {
     return NextResponse.json({ error }, { status: 400 });
   }

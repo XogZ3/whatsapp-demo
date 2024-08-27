@@ -1,6 +1,5 @@
 import type { CreatePaymentLinkResult } from '@/app/api/stripe/createPaymentLink/route';
 import { generateImagesWithReplicateUploadToFirebase } from '@/modules/replicate';
-import { generateImagesUploadToFirebaseGetURL } from '@/modules/runpod';
 import type { ICreateMessagePayload } from '@/modules/whatsapp/whatsapp';
 import { getBaseUrl } from '@/utils/helpers';
 
@@ -11,7 +10,7 @@ export async function processAndSendImages(
   prompt: string,
 ) {
   const generatedImageURLs: string[] =
-    await generateImagesUploadToFirebaseGetURL(
+    await generateImagesWithReplicateUploadToFirebase(
       prompt,
       config.userMetaData.clientid,
     );

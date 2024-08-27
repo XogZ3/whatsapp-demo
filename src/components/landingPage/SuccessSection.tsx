@@ -6,12 +6,27 @@ import * as React from 'react';
 import Balancer from 'react-wrap-balancer';
 
 import { cn } from '@/libs/utils';
+import { sendPurchaseToFBCoversionAPI } from '@/utils/fconversionHelper';
 
 import { Container } from '../GeneralContainers';
 import ButtonFancy from '../ui/button-fancy';
 import { DotPattern } from '../ui/magicui/dot';
 
 export default function SuccessSection({ clientid }: { clientid: string }) {
+  const eventSentRef = React.useRef(false); // To track if the event has been sent
+
+  React.useEffect(() => {
+    if (clientid && !eventSentRef.current) {
+      const sendEvent = async () => {
+        await sendPurchaseToFBCoversionAPI(clientid);
+        eventSentRef.current = true;
+      };
+
+      sendEvent();
+      eventSentRef.current = true; // Mark event as sent
+    }
+  }, [clientid]);
+
   return (
     <div className="flex min-h-[calc(100vh-3.5rem)] w-full items-center justify-center">
       <Container className="relative flex flex-col items-center justify-center gap-y-2 text-center sm:static">

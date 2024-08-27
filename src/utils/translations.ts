@@ -51,7 +51,8 @@ type TranslationKeys =
   | 'model generated request prompt'
   | 'buy credits'
   | 'payment confirmed'
-  | 'paywall';
+  | 'paywall'
+  | 'active membership';
 
 // Define the translation map structure directly using Record
 export const TRANSLATION_MAP: Record<
@@ -291,6 +292,11 @@ Exemplo: homem sentado em um banco de parque ou mulher posando para uma foto esp
     en: 'You have 0 credits. Please buy credits to continue using FotoLabs AI.',
     pt: 'Você tem 0 créditos. Por favor, compre créditos para continuar usando o FotoLabs AI.',
     ar: 'لديك 0 رصيد. يرجى شراء رصيد لمواصلة استخدام FotoLabs AI.',
+  },
+  'active membership': {
+    en: 'You already have an existing membership',
+    pt: 'You already have an existing membership',
+    ar: 'You already have an existing membership',
   },
 };
 

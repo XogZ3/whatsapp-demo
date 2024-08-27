@@ -9,6 +9,7 @@ import {
   getCreditsCount,
   getProcessingFlag,
   getTrainingImageURLs,
+  getUserFields,
   setProcessingFlag,
   setUserLanguage,
 } from '@/utils/ReplyHelper/FirebaseHelpers';
@@ -238,7 +239,25 @@ export const actionsFactory = (config: IMachineConfig): any => {
     },
     sendStripeLink: async (event: any) => {
       const language = event?.context?.language;
-      const stripeLink = await createStripeLink(config.userMetaData.clientid);
+      const { clientid } = config.userMetaData;
+      const { membershipEnd = 0 } = await getUserFields(clientid);
+      const currentTimestamp = Date.now();
+
+      // Reject if membership already exists
+      if (membershipEnd > currentTimestamp) {
+        console.log('[-] Active membership exists, purchase not allowed.');
+        const message = `${getTranslation('active membership', language)}`;
+        const payload: ICreateMessagePayload = {
+          phoneNumber: clientid,
+          text: true,
+          msgBody: message,
+        };
+        await config.whatsappInstance.send(payload);
+        return;
+      }
+
+      // Allow buying membership
+      const stripeLink = await createStripeLink(clientid);
       const message = `${getTranslation('payment instructions', language)}
 ${stripeLink}`;
       const payload: ICreateMessagePayload = {
@@ -337,7 +356,7 @@ Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
       const prompt = event?.event?.message;
       console.log('[+] sendPromptConfirmation | prompt: ', prompt);
       const message = `${getTranslation('prompt confirmation', language)}
->>> ${prompt}`;
+*${prompt}*`;
       // TODO: implement language in buttons
       const payload: ICreateMessagePayload = {
         phoneNumber: config.userMetaData.clientid,
@@ -452,7 +471,7 @@ Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
         .then(async (reImprovedPrompt: string) => {
           // console.log('[+] improved prompt set it context');
           const message = `${getTranslation('prompt confirmation', language)}
-  >>> ${reImprovedPrompt}`;
+*${reImprovedPrompt}*`;
           // TODO: implement language in buttons
           const payload: ICreateMessagePayload = {
             phoneNumber: config.userMetaData.clientid,

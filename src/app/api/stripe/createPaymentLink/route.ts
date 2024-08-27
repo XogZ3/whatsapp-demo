@@ -1,6 +1,8 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
+import { getBaseUrl } from '@/utils/helpers';
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: '2024-06-20',
 });
@@ -16,35 +18,22 @@ export async function POST(req: NextRequest) {
   const { clientid } = JSON.parse(rawBody);
 
   try {
-    // const paymentLink: Stripe.Response<Stripe.PaymentLink> =
-    //   await stripe.paymentLinks.create({
-    //     line_items: [
-    //       {
-    //         price: 'price_1PrcXnDWnX2YhQwszW8XrKBs',
-    //         quantity: 1,
-    //       },
-    //     ],
-    //     metadata: {
-    //       clientid, // Add any metadata you need
-    //     },
-    //     // after_completion: {
-    //     //   type: 'redirect',
-    //     //   redirect: {
-    //     //     url: `${getBaseUrl()}/success`, // TODO: Replace with your success URL
-    //     //   },
-    //     // },
-    //   });
-
     const paymentLink: Stripe.Response<Stripe.PaymentLink> =
       await stripe.paymentLinks.create({
         line_items: [
           {
-            price: 'price_1PsJmEDWnX2YhQwse47t8kLL',
+            price: 'price_1PsLFiDWnX2YhQws2zx1fy2O',
             quantity: 1,
           },
         ],
         metadata: {
           clientid,
+        },
+        after_completion: {
+          type: 'redirect',
+          redirect: {
+            url: `${getBaseUrl()}/success/${clientid}`, // TODO: Replace with your success URL
+          },
         },
       });
 

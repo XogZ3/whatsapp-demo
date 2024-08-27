@@ -73,6 +73,10 @@ type UserFieldsFirebase = {
   loraFilename: string;
   trainingToken?: string;
   credits?: number;
+  paid?: boolean;
+  membershipStart?: any;
+  membershipEnd: number;
+  lastEventId?: string;
 };
 
 export async function getUserFields(
@@ -94,6 +98,10 @@ export async function getUserFields(
     loraURL,
     loraFilename,
     credits,
+    paid,
+    membershipStart,
+    membershipEnd,
+    lastEventId,
   } = clientData.data() || {};
   const userLanguage = language || getLanguageFromPhoneNumber(clientid);
 
@@ -107,6 +115,10 @@ export async function getUserFields(
     loraURL,
     loraFilename,
     credits: credits || 0,
+    paid: paid || false,
+    membershipStart,
+    membershipEnd,
+    lastEventId,
   };
 }
 

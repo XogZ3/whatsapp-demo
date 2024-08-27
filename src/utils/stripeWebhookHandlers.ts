@@ -38,7 +38,11 @@ export async function saveStripeEvent(event: any) {
   }
 }
 
-export async function updateBilling(clientid: string) {
+export async function updateBilling(
+  clientid: string,
+  eventId: string,
+  endDate: number,
+) {
   const wabaId = process.env.WABA_ID!;
   const clientDoc = firestore
     .collection('apps')
@@ -62,15 +66,16 @@ export async function updateBilling(clientid: string) {
     tags: [],
   };
 
-  const startDate = new Date();
-  const endDate = startDate.setDate(startDate.getDate() + 30);
+  const startDate = Date.now(); // Current timestamp
 
   const updates: any = {
     state: JSON.stringify(stateJSON),
     paid: true,
-    subscriptionStart: startDate,
-    subscriptionEnd: endDate,
+    membershipStart: startDate,
+    membershipEnd: endDate,
+    lastEventId: eventId, // Store the last processed event ID
   };
+
   await clientDoc.set(updates, { merge: true });
 }
 
@@ -78,33 +83,37 @@ export async function handleCompletedCheckoutSession(
   event: CheckoutSessionCompletedEvent,
 ) {
   const { clientid } = event.data.object.metadata;
-  const { status } = event.data.object;
+  const { id, status } = event.data.object;
 
-  const { language = 'english' } = await getUserFields(clientid);
+  const { language = 'english', lastEventId } = await getUserFields(clientid);
 
   if (status !== 'complete') {
     console.error('[-] stripe checkout status: ', status);
+    return;
   }
 
-  if (status === 'complete') {
-    console.log('[+] stripe checkout status: ', status);
-
-    const expirationDate = new Date();
-    expirationDate.setDate(expirationDate.getDate() + 30);
-
-    // Format the date in a readable format (e.g., August 27, 2024)
-    const formattedDate = format(expirationDate, 'MMMM d, yyyy');
-
-    await updateBilling(clientid);
-
-    const message = `${getTranslation('payment confirmation', language)} ${formattedDate}`;
-    const payload: ICreateMessagePayload = {
-      phoneNumber: clientid,
-      text: true,
-      msgBody: message,
-    };
-    await sendMessageToWhatsapp(payload);
-
-    await sendPromptingInstruction(clientid, language);
+  // Check if the event ID has already been processed
+  if (lastEventId === id) {
+    console.log('[-] Duplicate event received, ignoring.');
+    return;
   }
+
+  const currentTimestamp = Date.now();
+
+  console.log('[+] stripe checkout status: ', status);
+
+  const expirationTimestamp = currentTimestamp + 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
+
+  await updateBilling(clientid, id, expirationTimestamp);
+
+  const formattedDate = format(new Date(expirationTimestamp), 'MMMM d, yyyy');
+  const message = `${getTranslation('payment confirmation', language)} ${formattedDate}`;
+  const payload: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    text: true,
+    msgBody: message,
+  };
+  await sendMessageToWhatsapp(payload);
+
+  await sendPromptingInstruction(clientid, language);
 }

@@ -128,7 +128,6 @@ export const machineFactory = (config: IMachineConfig): any => {
                 guard: 'hasFreeTrialCredits',
                 actions: [
                   'assignMessage',
-                  'setProcessingTrue',
                   'sendWIPPromptedPhoto',
                   'decrementFreeTrialCredits',
                 ],

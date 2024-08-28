@@ -8,7 +8,6 @@ import {
   sendMessageToWhatsapp,
 } from '@/modules/whatsapp/whatsapp';
 
-import { DEFAULT_CREDITS } from './constants';
 import { sendPurchaseToFBCoversionAPI } from './fconversionHelper';
 import { getUserFields } from './ReplyHelper/FirebaseHelpers';
 import { sendPromptingInstruction } from './sendSampleImages';
@@ -58,7 +57,7 @@ export async function updateBilling(
   const stateJSON = {
     status: 'stopped',
     context: {
-      freeTrialCredits: DEFAULT_CREDITS,
+      freeTrialCredits: 0,
       language: language || 'english',
       modelGenerated: true,
     },

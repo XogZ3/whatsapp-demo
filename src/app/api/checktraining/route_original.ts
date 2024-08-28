@@ -2,10 +2,6 @@ import { type NextRequest, NextResponse } from 'next/server';
 
 import firebase from '@/modules/firebase';
 import { checkTrainingJob } from '@/modules/runpod'; // Adjust the import path as needed
-import {
-  type ICreateMessagePayload,
-  sendMessageToWhatsapp,
-} from '@/modules/whatsapp/whatsapp';
 import { getBaseUrl } from '@/utils/helpers';
 
 const firestore = firebase.getFirestore();
@@ -43,19 +39,18 @@ export async function GET(request: NextRequest) {
   if (apiKey !== 'aDx1svckb2Q4OEpsQ') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-
-  console.log('[O] n8n: checking training job status...');
-
   try {
     const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
     const jobsRef = firestore.collection('training_jobs');
     const query = jobsRef.where('status', 'not-in', ['COMPLETED', 'FAILED']);
+
     const snapshot = await query.get();
 
+    // Check if the snapshot is empty
     if (snapshot.empty) {
       return NextResponse.json(
-        { message: 'No active training jobs found' },
-        { status: 200 },
+        { error: 'No active training jobs found' },
+        { status: 200 }, // sending success, as this is not a bad thing
       );
     }
 
@@ -63,15 +58,8 @@ export async function GET(request: NextRequest) {
       const jobData = doc.data();
       const jobStatus = await checkTrainingJob(jobData.jobId);
 
-      if (jobStatus === null) {
-        // Job not found, skip updating
-        console.log('[O] n8n: No jobs found...');
-        return null;
-      }
-
-      let newStatus = jobStatus.status;
-
-      if (newStatus === 'COMPLETED' && jobStatus.output?.firebase_url) {
+      let newStatus = jobStatus?.status;
+      if (newStatus === 'COMPLETED' && jobStatus?.output?.firebase_url) {
         await updateTrainingStatus(
           jobData.token,
           jobData.userid,
@@ -82,30 +70,23 @@ export async function GET(request: NextRequest) {
         new Date(jobData.createdAt).getTime() <= twoHoursAgo.getTime()
       ) {
         newStatus = 'FAILED';
-        const message = `Oops. Your AI model generation has failed. Please contact ${process.env.NEXT_PUBLIC_EMAIL} for support.`;
-        const payload: ICreateMessagePayload = {
-          phoneNumber: jobData.userid,
-          text: true,
-          msgBody: message,
-        };
-        await sendMessageToWhatsapp(payload);
       }
 
       return doc.ref.update({
         status: newStatus,
-        output: jobStatus.output || null,
+        output: jobStatus?.output || null,
         updatedAt: Date.now(),
       });
     });
 
-    const results = await Promise.all(updatePromises);
-    const updatedCount = results.filter((result) => result !== null).length;
+    await Promise.all(updatePromises);
 
     return NextResponse.json(
-      { message: `${updatedCount} jobs updated successfully` },
+      { message: 'Jobs updated successfully' },
       { status: 200 },
     );
   } catch (error) {
+    console.error('Error checking and updating jobs:', error);
     return NextResponse.json(
       { error: 'Internal Server Error' },
       { status: 500 },

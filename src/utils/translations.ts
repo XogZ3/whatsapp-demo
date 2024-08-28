@@ -1,5 +1,6 @@
 import {
   DAILY_CREDITS_LIMIT,
+  DEFAULT_CREDITS,
   TRAINING_IMAGES_LOWER_LIMIT,
   TRAINING_IMAGES_UPPER_LIMIT,
 } from './constants';
@@ -93,9 +94,9 @@ export const TRANSLATION_MAP: Record<
     ar: 'دليل الاستخدام',
   },
   pricing: {
-    en: 'Pricing',
-    pt: 'Preços',
-    ar: 'التسعير',
+    en: `🎉 Special Offer: Get unlimited creativity with our exclusive deal! For just $9.99, enjoy 100 photos per day for 30 days. Show off your creations and impress your friends! Don’t miss out on this fantastic opportunity!`,
+    pt: `🎉 Oferta Especial: Liberte sua criatividade com nossa oferta exclusiva! Por apenas $9,99, aproveite 100 fotos por dia durante 30 dias. Exiba suas criações e impressione seus amigos! Não perca esta oportunidade incrível!`,
+    ar: `🎉 عرض خاص: أطلق العنان لإبداعك مع عرضنا الحصري! مقابل 9.99 دولار فقط، استمتع بإنشاء 100 صورة يوميًا لمدة 30 يومًا. اعرض إبداعاتك وأبهر أصدقائك! لا تفوت هذه الفرصة الرائعة!`,
   },
   'create photo': {
     en: 'Create Photo',
@@ -213,10 +214,11 @@ export const TRANSLATION_MAP: Record<
     ar: `بعد إنشاء نموذجك الشخصي، يمكنك الحصول على عضوية لإنشاء المزيد من الصور الرائعة.\n\nفقط 9.99 دولار، إنشاء 100 صورة يوميًا لمدة شهر! هل أنت مستعد لإطلاق المزيد من الإبداع؟`,
   },
   'tutorial message': {
-    en: `📸 How to Use FotoLabs.ai\n\nUpload Photos: Send 15 photos of yourself to create your personalized model.\nGet Samples: Once your model is ready, you'll receive a few sample images for free.\nGenerate Images: Purchase credits and start generating images by simply sending prompts like "handsome man as a superhero" or "gorgeous woman in Paris."\nIt's that easy! Ready to explore? 😊`,
-    pt: '📸 Como usar o FotoLabs.ai\n\nEnvie fotos: Envie 15 fotos suas para criar seu modelo personalizado.\nReceba Amostras: Quando seu modelo estiver pronto, você receberá algumas imagens de amostra gratuitamente.\nGere Imagens: Compre créditos e comece a gerar imagens simplesmente enviando solicitações como "homem bonito como super-herói" ou "mulher linda em Paris."\nÉ tão fácil! Pronto para explorar? 😊',
-    ar: '📸 كيفية استخدام FotoLabs.ai\n\nتحميل الصور: أرسل 15 صورة لنفسك لإنشاء النموذج الشخصي الخاص بك.\nاحصل على عينات: بمجرد أن يكون النموذج جاهزًا، ستتلقى بعض الصور النموذجية مجانًا.\nإنشاء الصور: اشترِ أرصدة وابدأ بإنشاء الصور ببساطة عن طريق إرسال الطلبات مثل "رجل وسيم كالبطل الخارق" أو "امرأة رائعة في باريس."\nإنه سهل جدًا! هل أنت مستعد للاستكشاف؟ 😊',
+    en: `📸 How to Use FotoLabs.ai\n\nUpload Photos: Send ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} photos of yourself to create your personalized model.\nGet Samples: Once your model is ready, you'll receive a few sample images for free.\nFree Trial: You can generate ${DEFAULT_CREDITS} images for free.\nGenerate Images: Get a membership and start generating images by sending prompts like "handsome man as a superhero" or "gorgeous woman in Paris."\nIt's that easy! Ready to explore? 😊`,
+    pt: `📸 Como Usar o FotoLabs.ai\n\nEnviar Fotos: Envie ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} fotos suas para criar seu modelo personalizado.\nObter Amostras: Quando seu modelo estiver pronto, você receberá algumas imagens de amostra gratuitamente.\nTeste Gratuito: Você pode gerar ${DEFAULT_CREDITS} imagens gratuitamente.\nGerar Imagens: Adquira uma assinatura e comece a gerar imagens enviando solicitações como "homem bonito como um super-herói" ou "mulher deslumbrante em Paris."\nÉ tão fácil! Pronto para explorar? 😊`,
+    ar: `📸 كيفية استخدام FotoLabs.ai\n\nتحميل الصور: قم بتحميل ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} صورة لنفسك لإنشاء نموذج مخصص.\nالحصول على عينات: بمجرد أن يكون نموذجك جاهزًا، ستتلقى بعض الصور النموذجية مجانًا.\nالنسخة التجريبية المجانية: يمكنك إنشاء ${DEFAULT_CREDITS} صورة مجانًا.\nإنشاء الصور: احصل على عضوية وابدأ في إنشاء الصور بإرسال موجهات مثل "رجل وسيم كأنه بطل خارق" أو "امرأة رائعة في باريس."\nالأمر بهذه السهولة! جاهز للاستكشاف؟ 😊`,
   },
+
   'generating image': {
     en: 'Generating image, please wait 30 seconds...',
     pt: 'Gerando imagem, por favor, aguarde 30 segundos...',

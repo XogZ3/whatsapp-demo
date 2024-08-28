@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from 'uuid';
 import firebase from '@/modules/firebase';
 import { getStorageInstance } from '@/modules/firebase/firebase';
 
-import { DEFAULT_CREDITS } from '../constants';
 import { getBaseUrl, getLanguageFromPhoneNumber } from '../helpers';
 import { type Language } from '../translations';
 
@@ -140,12 +139,10 @@ export async function setDefaultUserFields(clientid: string): Promise<void> {
   // Set default language and credits
   const userLanguage: Language =
     getLanguageFromPhoneNumber(clientid) || 'english';
-  const userCredits = DEFAULT_CREDITS;
 
   // Prepare the updates object
   const updates: Partial<UserFieldsFirebase> = {
     language: userLanguage,
-    creditsUsedToday: userCredits,
   };
 
   // Update the Firestore document with the new default values, merging with existing data

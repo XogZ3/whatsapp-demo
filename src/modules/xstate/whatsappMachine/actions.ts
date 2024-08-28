@@ -2,14 +2,10 @@ import { DateTime } from 'luxon';
 import { assign } from 'xstate';
 
 import type { ICreateMessagePayload } from '@/modules/whatsapp/whatsapp';
-import {
-  DEFAULT_CREDITS,
-  TRAINING_IMAGES_LOWER_LIMIT,
-} from '@/utils/constants';
+import { DEFAULT_CREDITS } from '@/utils/constants';
 import { getImprovedPromptFromGroq } from '@/utils/groq';
 import {
   callTrainingAPI,
-  getPhotoCount,
   getProcessingFlag,
   getTrainingImageURLs,
   getUserFields,
@@ -57,26 +53,6 @@ export const actionsFactory = (config: IMachineConfig): any => {
       modelGenerated: () => false,
       language: () => 'english',
     }),
-    sendPendingPhotos: async (event: any) => {
-      const { clientid, language = event?.context?.language } =
-        config.userMetaData;
-      const updatedPhotoCount = await getPhotoCount(clientid);
-      const pendingPhotos =
-        TRAINING_IMAGES_LOWER_LIMIT - updatedPhotoCount ||
-        TRAINING_IMAGES_LOWER_LIMIT;
-      const message = `${getTranslation(
-        'notify pending photos 1',
-        language,
-      )}: ${pendingPhotos} ${getTranslation('notify pending photos 2', language)}`;
-      const payload: ICreateMessagePayload = {
-        phoneNumber: clientid,
-        quickReply: true,
-        button1id: 'cancel',
-        button1: getTranslation('cancel', language),
-        msgBody: message,
-      };
-      await config.whatsappInstance.send(payload);
-    },
     sendInvalidInputMessage: async (event: any) => {
       const { clientid, language = event?.context?.language } =
         config.userMetaData;
@@ -218,24 +194,14 @@ export const actionsFactory = (config: IMachineConfig): any => {
           }
         })
         .catch(async (error) => {
-          console.error('[!] Error in callStartTrainingAPI action: ', error);
-          if (
-            error.response &&
-            (error.response.error === 'Model already exists' ||
-              error.response.error ===
-                'A training job for this model_name already exists')
-          ) {
-            // Known errors
-            message = error.response.error;
+          if (error.status === 409) {
+            console.log(
+              '[~] Known error in callStartTrainingAPI action: ',
+              error.error,
+            );
           } else {
-            // Generic unknown error
-            message = getTranslation('unknown error', language);
+            console.error('[!] Error in callStartTrainingAPI action: ', error);
           }
-          await config.whatsappInstance.send({
-            phoneNumber: clientid,
-            text: true,
-            msgBody: message,
-          });
         });
     },
     notifyModelExists: async (event: any) => {

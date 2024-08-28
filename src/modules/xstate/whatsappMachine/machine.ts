@@ -86,7 +86,8 @@ export const machineFactory = (config: IMachineConfig): any => {
                 target: 'photoPrompting',
               },
             ],
-            FALLBACK: { actions: ['sendPendingPhotos'] },
+            CANCEL: { target: 'onBoarding' },
+            // Handle fallback in replyHelper async
           },
         },
         generatingModel: {

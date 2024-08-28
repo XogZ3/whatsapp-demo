@@ -40,7 +40,7 @@ export const handleMessage = async (
     [State.imagesIncomplete]: {
       'photo received': 'PHOTO_RECEIVED',
       'generate model': 'GENERATE_MODEL',
-      fallback: 'FALLBACK',
+      cancel: 'CANCEL',
     },
     [State.generatingModel]: {
       'model generated': 'MODEL_GENERATED_UNPAID',

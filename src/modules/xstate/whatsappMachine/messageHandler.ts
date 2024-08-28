@@ -43,6 +43,7 @@ export const handleMessage = async (
       cancel: 'CANCEL',
     },
     [State.generatingModel]: {
+      retry: 'RETRY',
       'model generated': 'MODEL_GENERATED_UNPAID',
       secret: 'SECRET',
     },

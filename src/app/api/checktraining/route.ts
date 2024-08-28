@@ -7,6 +7,8 @@ import {
   sendMessageToWhatsapp,
 } from '@/modules/whatsapp/whatsapp';
 import { getBaseUrl } from '@/utils/helpers';
+import { getUserFields } from '@/utils/ReplyHelper/FirebaseHelpers';
+import { getTranslation } from '@/utils/translations';
 
 const firestore = firebase.getFirestore();
 
@@ -82,10 +84,14 @@ export async function GET(request: NextRequest) {
         new Date(jobData.createdAt).getTime() <= twoHoursAgo.getTime()
       ) {
         newStatus = 'FAILED';
-        const message = `Oops. Your AI model generation has failed. Please contact ${process.env.NEXT_PUBLIC_EMAIL} for support.`;
+        const { language = 'english' } = await getUserFields(jobData.userid);
+
+        const message = getTranslation('model generation failed', language);
         const payload: ICreateMessagePayload = {
           phoneNumber: jobData.userid,
-          text: true,
+          quickReply: true,
+          button1id: 'retry',
+          button1: getTranslation('retry', language),
           msgBody: message,
         };
         await sendMessageToWhatsapp(payload);

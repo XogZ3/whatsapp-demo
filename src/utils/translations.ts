@@ -24,12 +24,14 @@ type TranslationKeys =
   | 'prompt'
   | 'yes'
   | 'no'
+  | 'retry'
   | 'notify pending photos 1'
   | 'notify pending photos 2'
   | 'select language'
   | 'language selected'
   | 'model already exists'
   | 'generating model'
+  | 'model generation failed'
   | 'please wait generating model'
   | 'processing payment'
   | 'prompt photos'
@@ -173,6 +175,11 @@ export const TRANSLATION_MAP: Record<
     pt: 'Gerando modelo... Enviaremos uma mensagem quando estiver pronto. Pode levar de 50 a 60 minutos.',
     ar: 'جاري إنشاء النموذج... سنرسل لك رسالة بمجرد أن يكون جاهزًا. قد يستغرق ذلك من 60 إلى 30 دقيقة.',
   },
+  retry: {
+    en: 'Retry',
+    pt: 'Tentar novamente',
+    ar: 'إعادة المحاولة',
+  },
   'processing payment': {
     en: 'Processing your payment...',
     pt: 'Processando seu pagamento...',
@@ -228,6 +235,11 @@ export const TRANSLATION_MAP: Record<
     en: 'Please wait while we are generating a customized model for you.',
     pt: 'Por favor, aguarde enquanto geramos um modelo personalizado para você.',
     ar: 'يرجى الانتظار بينما نقوم بإنشاء نموذج مخصص لك.',
+  },
+  'model generation failed': {
+    en: `Oops. Your AI model generation has failed. Please click the button below to try again.`,
+    pt: `Ops. A geração do seu modelo de IA falhou. Por favor, clique no botão abaixo para tentar novamente.`,
+    ar: `عذرًا، فشلت عملية إنشاء نموذج الذكاء الاصطناعي الخاص بك. يرجى النقر على الزر أدناه للمحاولة مرة أخرى.`,
   },
   'model already exists': {
     en: 'Your custom AI model already exists. Send your prompt now!',

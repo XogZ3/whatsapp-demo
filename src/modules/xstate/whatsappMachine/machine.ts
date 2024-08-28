@@ -93,6 +93,8 @@ export const machineFactory = (config: IMachineConfig): any => {
         generatingModel: {
           entry: ['sendGeneratingModel'],
           on: {
+            // TODO: Handle multiple retries?
+            RETRY: { actions: 'callStartTrainingAPI' },
             SECRET: { target: 'modelGeneratedFreeTrial' },
             FALLBACK: { actions: 'sendPleaseWaitGeneratingModel' },
           },

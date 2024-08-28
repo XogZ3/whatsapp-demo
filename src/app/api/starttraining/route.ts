@@ -87,7 +87,9 @@ async function notifyGeneratingModel(clientid: string, language: Language) {
 async function checkJobExists(model_name: string): Promise<boolean> {
   try {
     const jobsRef = firestore.collection('training_jobs');
-    const query = jobsRef.where('model_name', '==', model_name);
+    const query = jobsRef
+      .where('model_name', '==', model_name)
+      .where('status', '==', 'IN_PROGRESS');
 
     const snapshot = await query.get();
     return !snapshot.empty;
@@ -128,7 +130,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Reject if job already exists for userid
+    // Reject if job already exists for userid in 'IN_PROGRESS' status
     const jobExists = await checkJobExists(model_name);
     if (jobExists) {
       await notifyGeneratingModel(userid, language);

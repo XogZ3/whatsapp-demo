@@ -75,7 +75,7 @@ export const handleMessage = async (
   if (
     (state === State.modelGeneratedFreeTrial ||
       state === State.photoPrompting) &&
-    !['cancel', 'use prompt', 'improve prompt', 'paywall'].includes(
+    !['cancel', 'use prompt', 'improve prompt', 'paywall', 'fallback'].includes(
       userActionId,
     )
   ) {

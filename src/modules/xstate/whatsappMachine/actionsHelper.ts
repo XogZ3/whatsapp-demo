@@ -7,6 +7,7 @@ import type { ICreateMessagePayload } from '@/modules/whatsapp/whatsapp';
 import { DAILY_CREDITS_LIMIT } from '@/utils/constants';
 import { getBaseUrl } from '@/utils/helpers';
 import type { UserFieldsFirebase } from '@/utils/ReplyHelper/FirebaseHelpers';
+import { getTranslation } from '@/utils/translations';
 
 import type { IMachineConfig } from './types';
 
@@ -90,8 +91,7 @@ export async function processAndSendImages(
     console.log('All images sent successfully.');
     return true; // Indicate success
   }
-  const message =
-    'Uh-oh. Something went wrong, please try again after some time.';
+  const message = getTranslation('unknown error', config.userMetaData.language);
   const payload: ICreateMessagePayload = {
     phoneNumber: config.userMetaData.clientid,
     text: true,
@@ -113,7 +113,7 @@ export async function wipProcessAndSendImages(
 
   let payload: ICreateMessagePayload;
 
-  console.log('[+] receveid runpod urls: ', generatedImageURLs);
+  console.log('[+] receveid urls: ', generatedImageURLs);
   if (generatedImageURLs.length > 0) {
     const sendPromises = generatedImageURLs.map(async (url) => {
       payload = {
@@ -128,8 +128,7 @@ export async function wipProcessAndSendImages(
     console.log('All images sent successfully.');
     return true; // Indicate success
   }
-  const message =
-    'Uh-oh. Something went wrong, please try again after some time.';
+  const message = getTranslation('unknown error', config.userMetaData.language);
   payload = {
     phoneNumber: config.userMetaData.clientid,
     text: true,

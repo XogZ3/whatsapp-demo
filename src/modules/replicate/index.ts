@@ -35,6 +35,7 @@ export async function generateImagesWithReplicateUploadToFirebase(
         guidance_scale: 3.5,
         output_quality: 80,
         num_inference_steps: 28,
+        disable_safety_checker: true,
       },
     });
 

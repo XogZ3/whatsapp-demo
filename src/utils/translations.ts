@@ -1,4 +1,4 @@
-import { TRAINING_IMAGES_LIMIT } from './constants';
+import { DAILY_CREDITS_LIMIT, TRAINING_IMAGES_LIMIT } from './constants';
 
 // Define supported languages
 type LanguageCode = 'en' | 'pt' | 'ar';
@@ -52,7 +52,9 @@ type TranslationKeys =
   | 'buy credits'
   | 'payment confirmed'
   | 'paywall'
-  | 'active membership';
+  | 'active membership'
+  | 'reached limit'
+  | 'unknown error';
 
 // Define the translation map structure directly using Record
 export const TRANSLATION_MAP: Record<
@@ -297,6 +299,16 @@ Exemplo: homem sentado em um banco de parque ou mulher posando para uma foto esp
     en: 'You already have an existing membership',
     pt: 'Você já tem uma assinatura existente',
     ar: 'لديك بالفعل عضوية قائمة',
+  },
+  'reached limit': {
+    en: `Woah, you've generated ${DAILY_CREDITS_LIMIT} images today! Take a break, you can start making images tomorrow :)`,
+    pt: `Uau, você gerou ${DAILY_CREDITS_LIMIT} imagens hoje! Faça uma pausa, você pode começar a criar imagens novamente amanhã :)`,
+    ar: `واو، لقد أنشأت ${DAILY_CREDITS_LIMIT} صورة اليوم! خذ استراحة، يمكنك البدء في إنشاء الصور مرة أخرى غدًا :)`,
+  },
+  'unknown error': {
+    en: 'Uh-oh. Something went wrong, please try again after some time.',
+    pt: 'Ops. Algo deu errado, por favor tente novamente mais tarde.',
+    ar: 'أوه، حدث خطأ ما، يرجى المحاولة مرة أخرى بعد بعض الوقت.',
   },
 };
 

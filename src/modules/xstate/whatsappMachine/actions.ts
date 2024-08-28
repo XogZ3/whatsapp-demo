@@ -440,7 +440,6 @@ Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
             quickReply: true,
             button1: 'Use Prompt',
             button2: 'Improve Prompt',
-            button3: 'Cancel',
             msgBody: message,
           };
           await config.whatsappInstance.send(payload);
@@ -574,17 +573,33 @@ Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
             const canGenerateImages = hasValidMembership && hasCredits;
 
             if (!canGenerateImages) {
-              message = getTranslation('paywall', language);
-              await config.whatsappInstance.send({
-                phoneNumber: clientid,
-                quickReply: true,
-                button1: getTranslation('buy credits', language),
-                msgBody: message,
-              });
+              if (!hasCredits) {
+                message = getTranslation('reached limit', language);
+                await config.whatsappInstance.send({
+                  phoneNumber: clientid,
+                  text: true,
+                  msgBody: message,
+                });
+              } else if (!hasValidMembership) {
+                message = getTranslation('paywall', language);
+                await config.whatsappInstance.send({
+                  phoneNumber: clientid,
+                  quickReply: true,
+                  button1: getTranslation('buy credits', language),
+                  msgBody: message,
+                });
+              } else {
+                message = getTranslation('unknown error', language);
+                await config.whatsappInstance.send({
+                  phoneNumber: clientid,
+                  text: true,
+                  msgBody: message,
+                });
+              }
               // Stop the chain
               return Promise.reject(
                 new Error(
-                  `${!hasValidMembership && 'Membership Expired'} ${!hasCredits && 'Credits Over'}`,
+                  `${!hasValidMembership ? 'Membership Expired' : ''} ${!hasCredits ? 'Credits Over' : ''}`,
                 ),
               );
             }
@@ -626,6 +641,18 @@ Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
                 '[!] Error in processing or setting context:',
                 error,
               );
+              if (error.message && error.message.includes('NSFW')) {
+                message =
+                  'Uh-oh. Something went wrong: NSFW content detected. Please try a different prompt.';
+              } else {
+                message = getTranslation('unknown error', language);
+              }
+              payload = {
+                phoneNumber: config.userMetaData.clientid,
+                text: true,
+                msgBody: message,
+              };
+              await config.whatsappInstance.send(payload);
             });
         })
         .catch(async (error) => {

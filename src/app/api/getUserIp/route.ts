@@ -1,3 +1,9 @@
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST',
+  'Access-Control-Allow-Headers': 'Content-Type',
+};
+
 export async function GET(request: Request) {
   // Get the IP address from the headers
   const headersList = request.headers;
@@ -11,6 +17,7 @@ export async function GET(request: Request) {
     status: 200,
     headers: {
       'Content-Type': 'application/json',
+      ...corsHeaders,
     },
   });
 }

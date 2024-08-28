@@ -529,6 +529,18 @@ Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
         .catch(async (error) => {
           await setProcessingFlag(config.userMetaData.clientid, false);
           console.error('[!] Error in processing or setting context:', error);
+          if (error.message && error.message.includes('NSFW')) {
+            message =
+              'Uh-oh. Something went wrong: unsafe content detected. Please try a different prompt.';
+          } else {
+            message = getTranslation('unknown error', language);
+          }
+          const payload = {
+            phoneNumber: config.userMetaData.clientid,
+            text: true,
+            msgBody: message,
+          };
+          await config.whatsappInstance.send(payload);
         });
     },
 
@@ -643,7 +655,7 @@ Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
               );
               if (error.message && error.message.includes('NSFW')) {
                 message =
-                  'Uh-oh. Something went wrong: NSFW content detected. Please try a different prompt.';
+                  'Uh-oh. Something went wrong: unsafe content detected. Please try a different prompt.';
               } else {
                 message = getTranslation('unknown error', language);
               }

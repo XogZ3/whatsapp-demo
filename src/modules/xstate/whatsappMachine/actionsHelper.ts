@@ -55,7 +55,13 @@ export async function getCreditsAvailability(
   }
   return false;
 }
-export async function getMembershipAvailability(clientid: string) {
+export async function getMembershipAvailability(
+  clientid: string,
+  currentState: string,
+) {
+  // Don't check membership for free trial
+  if (currentState === 'modelGeneratedFreeTrial') return true;
+
   const wabaId = process.env.WABA_ID;
   const clientDoc = firestore
     .collection('apps')

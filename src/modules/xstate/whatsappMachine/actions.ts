@@ -608,7 +608,7 @@ ${stripeLink}`;
         .then(async (machineIsAvailable) => {
           if (machineIsAvailable) {
             const [hasValidMembership, hasCredits] = await Promise.all([
-              getMembershipAvailability(clientid),
+              getMembershipAvailability(clientid, currentState),
               getCreditsAvailability(clientid, currentState),
             ]);
 

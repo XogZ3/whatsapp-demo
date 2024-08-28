@@ -1,7 +1,5 @@
-import { DateTime } from 'luxon';
-
 import firebase from '@/modules/firebase';
-import { DEFAULT_CREDITS, FREE_TRIAL_DAYS } from '@/utils/constants';
+import { DEFAULT_CREDITS } from '@/utils/constants';
 import { generateAndSendModelImages } from '@/utils/sendSampleImages';
 
 const firestore = firebase.getFirestore();
@@ -48,11 +46,6 @@ export async function POST(request: Request) {
       tags: [],
     };
 
-    const currentTimestamp = DateTime.now().toMillis();
-    const freeTrialEndDate = DateTime.fromMillis(currentTimestamp)
-      .plus({ days: FREE_TRIAL_DAYS })
-      .toMillis();
-
     // Token validation
     if (token === trainingToken) {
       // Hard transition xstate
@@ -60,7 +53,6 @@ export async function POST(request: Request) {
         state: JSON.stringify(stateJSON),
         loraURL,
         loraFilename,
-        membershipEndDate: freeTrialEndDate,
       };
       await clientDoc.set(updates, { merge: true });
 

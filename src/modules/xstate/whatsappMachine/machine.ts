@@ -101,10 +101,6 @@ export const machineFactory = (config: IMachineConfig): any => {
         generatingModel: {
           entry: ['sendGeneratingModel'],
           on: {
-            MODEL_GENERATED: {
-              actions: ['sendModelGeneratedSuccess'],
-              target: 'modelGeneratedUnpaid',
-            },
             FALLBACK: {
               actions: 'sendPleaseWaitGeneratingModel',
             },

@@ -12,9 +12,8 @@ export const handleMessage = async (
     onBoarding: 'onBoarding',
     imagesIncomplete: 'imagesIncomplete',
     generatingModel: 'generatingModel',
-    modelGeneratedUnpaid: 'modelGeneratedUnpaid',
+    modelGeneratedFreeTrial: 'modelGeneratedFreeTrial',
     paywall: 'paywall',
-    modelGeneratedPaid: 'modelGeneratedPaid',
     photoPrompting: 'photoPrompting',
     wipPhotoPrompting: 'wipPhotoPrompting',
   });
@@ -37,19 +36,15 @@ export const handleMessage = async (
     [State.generatingModel]: {
       'model generated': 'MODEL_GENERATED_UNPAID',
     },
-    [State.modelGeneratedUnpaid]: {
-      prompt: 'PROMPT',
-    },
     [State.paywall]: {
       'buy credits': 'BUY_CREDITS',
       secret: 'SECRET',
       cancel: 'CANCEL',
     },
-    [State.modelGeneratedPaid]: {
-      'create photo': 'CREATE_PHOTO',
-      bypass: 'BYPASS',
-      cancel: 'CANCEL',
-      'payment confirmed': 'PAYMENT_CONFIRMED',
+    [State.modelGeneratedFreeTrial]: {
+      prompt: 'PROMPT',
+      'use prompt': 'USE_PROMPT',
+      'improve prompt': 'IMPROVE_PROMPT',
     },
     [State.photoPrompting]: {
       prompt: 'PROMPT',

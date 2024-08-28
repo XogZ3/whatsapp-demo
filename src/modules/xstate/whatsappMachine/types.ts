@@ -21,6 +21,7 @@ export interface IMachineContext {
   message: string;
   latestPrompt: string;
   latestImprovedPrompt: string;
+  freeTrialCredits: number;
   modelGenerated: boolean;
   language: Language;
 }

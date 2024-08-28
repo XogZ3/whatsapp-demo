@@ -2,7 +2,10 @@ import { DateTime } from 'luxon';
 import { assign } from 'xstate';
 
 import type { ICreateMessagePayload } from '@/modules/whatsapp/whatsapp';
-import { TRAINING_IMAGES_LOWER_LIMIT } from '@/utils/constants';
+import {
+  DEFAULT_CREDITS,
+  TRAINING_IMAGES_LOWER_LIMIT,
+} from '@/utils/constants';
 import { getImprovedPromptFromGroq } from '@/utils/groq';
 import {
   callTrainingAPI,
@@ -23,7 +26,11 @@ import {
   processAndSendImages,
   wipProcessAndSendImages,
 } from './actionsHelper';
-import type { IMachineConfig, IWhatsappInstance } from './types';
+import type {
+  IMachineConfig,
+  IMachineContext,
+  IWhatsappInstance,
+} from './types';
 
 async function sendMessage(
   whatsappInstance: IWhatsappInstance,
@@ -46,8 +53,9 @@ export const actionsFactory = (config: IMachineConfig): any => {
       message: () => '',
       latestPrompt: () => '',
       latestImprovedPrompt: () => '',
-      language: () => 'english',
+      freeTrialCredits: () => DEFAULT_CREDITS,
       modelGenerated: () => false,
+      language: () => 'english',
     }),
     sendPendingPhotos: async (event: any) => {
       const language = event?.context?.language;
@@ -145,10 +153,10 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const payload: ICreateMessagePayload = {
         phoneNumber: config.userMetaData.clientid,
         quickReply: true,
-        button1id: 'buy credits',
+        button1id: 'get membership',
         button2id: 'tutorial',
         button3id: 'main menu',
-        button1: getTranslation('buy credits', language),
+        button1: getTranslation('get membership', language),
         button2: getTranslation('tutorial', language),
         button3: getTranslation('main menu', language),
         msgBody: message,
@@ -272,6 +280,10 @@ export const actionsFactory = (config: IMachineConfig): any => {
         config.userMetaData.clientid,
       );
     },
+    decrementFreeTrialCredits: assign({
+      freeTrialCredits: ({ context }: { context: IMachineContext }) =>
+        context.freeTrialCredits - 1,
+    }),
     sendPaywall: async (event: any) => {
       const language = event?.context?.language;
       const message = getTranslation('paywall', language);

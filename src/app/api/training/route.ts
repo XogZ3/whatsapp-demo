@@ -38,11 +38,11 @@ export async function POST(request: Request) {
     const stateJSON = {
       status: 'stopped',
       context: {
-        creditsRemaining: DEFAULT_CREDITS,
+        freeTrialCredits: DEFAULT_CREDITS,
         language: language || 'english',
         modelGenerated: true,
       },
-      value: 'photoPrompting',
+      value: 'modelGeneratedFreeTrial',
       children: {},
       historyValue: {},
       tags: [],
@@ -75,4 +75,4 @@ export async function POST(request: Request) {
   }
 }
 
-// {"status":"stopped","context":{"creditsRemaining":1,"language":"english","modelGenerated":true},"value":"photoPrompting","children":{},"historyValue":{},"tags":[]}
+// {"status":"stopped","context":{"freeTrialCredits":10,"language":"english","modelGenerated":true},"value":"photoPrompting","children":{},"historyValue":{},"tags":[]}

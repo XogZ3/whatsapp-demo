@@ -2,8 +2,8 @@ import type { IMachineConfig, IMachineContext } from './types';
 
 export const guardsFactory = (_machineConfig: IMachineConfig): any => {
   return {
-    hasSufficientCredits: (event: any) => {
-      const hasSufficient = event?.context?.creditsRemaining > 0;
+    hasFreeTrialCredits: ({ context }: { context: IMachineContext }) => {
+      const hasSufficient = context?.freeTrialCredits > 0;
       return hasSufficient;
     },
     modelAlreadyGenerated: ({ context }: { context: IMachineContext }) => {

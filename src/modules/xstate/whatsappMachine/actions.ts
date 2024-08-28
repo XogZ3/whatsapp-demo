@@ -92,9 +92,9 @@ export const actionsFactory = (config: IMachineConfig): any => {
         button1id: 'english',
         button2id: 'portuguese',
         button3id: 'arabic',
-        button1: getTranslation('english', language),
-        button2: getTranslation('portuguese', language),
-        button3: getTranslation('arabic', language),
+        button1: 'English',
+        button2: 'Português',
+        button3: 'عربي',
         msgBody: message,
       };
       await config.whatsappInstance.send(payload);

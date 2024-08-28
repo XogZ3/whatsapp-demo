@@ -81,6 +81,7 @@ export async function updateBilling(
   };
 
   await clientDoc.set(updates, { merge: true });
+  console.log('[+] firebase billing updated');
 }
 
 export async function handleCompletedCheckoutSession(
@@ -111,10 +112,7 @@ export async function handleCompletedCheckoutSession(
     .plus({ days: 30 })
     .toMillis();
 
-  await Promise.all([
-    updateBilling(clientid, id, endDate),
-    sendPurchaseToFBCoversionAPI(clientid),
-  ]);
+  await updateBilling(clientid, id, endDate);
 
   const formattedDate = format(new Date(endDate), 'MMMM d, yyyy');
   const message = `${getTranslation('payment confirmation', language)} ${formattedDate}`;
@@ -126,4 +124,6 @@ export async function handleCompletedCheckoutSession(
   await sendMessageToWhatsapp(payload);
 
   await sendPromptingInstruction(clientid, language);
+
+  await sendPurchaseToFBCoversionAPI(clientid);
 }

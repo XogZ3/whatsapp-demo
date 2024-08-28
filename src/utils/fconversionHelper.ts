@@ -1,3 +1,4 @@
+import axios from 'axios';
 import crypto from 'crypto';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -31,8 +32,7 @@ const createPurchaseEventData = async (clientid: string, eventId: string) => {
     event_name: 'Purchase',
     event_id: eventId,
     event_time: Math.floor(Date.now() / 1000),
-    action_source: 'website',
-    event_source_url: `${getBaseUrl()}/success/${clientid}`,
+    action_source: 'other',
     user_data: {
       ph: [hashedClientId],
       client_user_agent: navigator.userAgent,
@@ -55,22 +55,25 @@ export async function sendPurchaseToFBCoversionAPI(clientid: string) {
   // fbq.event('Purchase', { eventID: eventId });
 
   try {
-    const response = await fetch(
-      `https://graph.facebook.com/v20.0/${process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID}/events?access_token=${process.env.FACEBOOK_CONVERSIONS_API_ACCESS_TOKEN}`,
+    const facebookURL = `https://graph.facebook.com/v20.0/${process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID}/events?access_token=${process.env.FACEBOOK_CONVERSIONS_API_ACCESS_TOKEN}`;
+    console.log('[O] Attempting to send fb conversion: ', facebookURL);
+
+    const response = await axios.post(
+      facebookURL,
       {
-        method: 'POST',
+        data: [purchaseEventData],
+        // FIXME: Remove for production
+        test_event_code: 'TEST36365',
+      },
+      {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          data: [purchaseEventData],
-          // FIXME: Remove for production
-          test_event_code: 'TEST36365',
-        }),
       },
     );
-    console.log('fbq data', JSON.stringify(response, null, 2));
+
+    console.log('fbq data', JSON.stringify(response.data, null, 2));
   } catch (error) {
-    console.error('[!] Error sending event to  conversion api', error);
+    console.error('[!] Error sending event to conversion API', error);
   }
 }

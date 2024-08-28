@@ -130,6 +130,7 @@ export const machineFactory = (config: IMachineConfig): any => {
                   'assignMessage',
                   'setProcessingTrue',
                   'sendWIPPromptedPhoto',
+                  'decrementFreeTrialCredits',
                 ],
               },
               {
@@ -143,7 +144,6 @@ export const machineFactory = (config: IMachineConfig): any => {
                 actions: [
                   'assignMessage',
                   'sendImprovedPromptConfirmationAndSetContext',
-                  'decrementFreeTrialCredits',
                 ],
               },
               {

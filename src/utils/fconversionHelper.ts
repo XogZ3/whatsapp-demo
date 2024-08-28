@@ -21,8 +21,6 @@ export async function findUserIpAddress() {
 }
 
 const createPurchaseEventData = async (clientid: string, eventId: string) => {
-  const userIp = await findUserIpAddress();
-
   const hashedClientId = crypto
     .createHash('sha256')
     .update(clientid)
@@ -35,8 +33,6 @@ const createPurchaseEventData = async (clientid: string, eventId: string) => {
     action_source: 'other',
     user_data: {
       ph: [hashedClientId],
-      client_user_agent: navigator.userAgent,
-      client_ip_address: userIp || '0.0.0.0',
     },
     custom_data: {
       currency: 'USD',

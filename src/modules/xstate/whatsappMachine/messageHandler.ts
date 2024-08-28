@@ -69,7 +69,9 @@ export const handleMessage = async (
   let event;
 
   if (
-    (state === 'photoPrompting' || state === 'wipPhotoPrompting') &&
+    (state === 'modelGeneratedFreeTrial' ||
+      state === 'photoPrompting' ||
+      state === 'wipPhotoPrompting') &&
     !['cancel', 'use prompt', 'improve prompt', 'secret', 'paywall'].includes(
       userActionId,
     )

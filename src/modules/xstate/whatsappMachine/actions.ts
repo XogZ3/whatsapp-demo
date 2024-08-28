@@ -84,8 +84,9 @@ export const actionsFactory = (config: IMachineConfig): any => {
       await sendMessage(config.whatsappInstance, message, clientid);
     },
     sendIntroOptionsMessage: async (event: any) => {
-      const { clientid, language = event?.context?.language } =
-        config.userMetaData;
+      const { clientid } = config.userMetaData;
+      // userSelectedLanguage
+      const language = event?.context?.language;
       console.log('[+] sending intro message');
       const message = getTranslation('intro message', language);
       const payload: ICreateMessagePayload = {

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import crypto from 'crypto';
+import { sha256 } from 'js-sha256';
 import { v4 as uuidv4 } from 'uuid';
 
 // import * as fbq from '@/libs/fpixel';
@@ -21,10 +21,7 @@ export async function findUserIpAddress() {
 }
 
 const createPurchaseEventData = async (clientid: string, eventId: string) => {
-  const hashedClientId = crypto
-    .createHash('sha256')
-    .update(clientid)
-    .digest('base64');
+  const hashedClientId = sha256(clientid);
 
   const purchaseEventData = {
     event_name: 'Purchase',

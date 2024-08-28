@@ -118,7 +118,7 @@ export const machineFactory = (config: IMachineConfig): any => {
                 actions: [
                   'assignMessage',
                   'assignPromptToContext',
-                  'sendPromptConfirmation',
+                  'sendWIPPromptConfirmation',
                 ],
               },
             ],
@@ -131,7 +131,7 @@ export const machineFactory = (config: IMachineConfig): any => {
                 actions: [
                   'assignMessage',
                   'setProcessingTrue',
-                  'sendPromptedPhoto',
+                  'sendWIPPromptedPhoto',
                 ],
               },
             ],

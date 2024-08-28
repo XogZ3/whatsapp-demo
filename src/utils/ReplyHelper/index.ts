@@ -13,11 +13,7 @@ import {
   TRAINING_IMAGES_UPPER_LIMIT,
 } from '../constants';
 import { getLanguageFromPhoneNumber } from '../helpers';
-import {
-  getTranslation,
-  type Language,
-  translateSystemMessageToEnglish,
-} from '../translations';
+import { getTranslation, type Language } from '../translations';
 import {
   addTrainingImageURLandIncreaseCount,
   getPhotoCount,
@@ -55,6 +51,7 @@ async function sendUpdatedPhotoCountWithFinishOption(
   const payload: ICreateMessagePayload = {
     phoneNumber: clientid,
     quickReply: true,
+    button1id: 'finish upload',
     button1: getTranslation('finish upload', language),
     msgBody: message,
   };
@@ -76,6 +73,7 @@ async function notifyPendingPhotos(
   const payload: ICreateMessagePayload = {
     phoneNumber: clientid,
     quickReply: true,
+    button1id: 'cancel',
     button1: getTranslation('cancel', language),
     msgBody: message,
   };
@@ -84,7 +82,9 @@ async function notifyPendingPhotos(
 
 // eslint-disable-next-line consistent-return
 export async function replyToUser(messageObject: any) {
-  let message = 'cancel';
+  let message = extractText(messageObject);
+  console.log('[~] extracted received text: ', message);
+
   const messageType = messageObject.message.type;
   const { clientid } = messageObject;
 
@@ -122,7 +122,7 @@ export async function replyToUser(messageObject: any) {
         );
 
         // send photo count to user and give option to finish upload
-        if (updatedPhotoCount > TRAINING_IMAGES_LOWER_LIMIT) {
+        if (updatedPhotoCount >= TRAINING_IMAGES_LOWER_LIMIT) {
           await sendUpdatedPhotoCountWithFinishOption(
             clientid,
             userLanguage,
@@ -144,15 +144,13 @@ export async function replyToUser(messageObject: any) {
     }
     // Handle NON-Images in 'imagesIncomplete' state - Cancel or Fallback
     else if (currentState === 'imagesIncomplete' && messageType !== 'image') {
-      if (extractText(messageObject) === 'cancel') {
-        message = 'cancel';
-      } else {
-        const currentPhotoCount = await getPhotoCount(clientid);
-        if (currentPhotoCount < TRAINING_IMAGES_LOWER_LIMIT) {
-          await notifyPendingPhotos(clientid, language, currentPhotoCount);
-        } else if (extractText(messageObject) === 'finish upload') {
-          message = 'Generate Model';
-        }
+      const currentPhotoCount = await getPhotoCount(clientid);
+      if (currentPhotoCount < TRAINING_IMAGES_LOWER_LIMIT) {
+        await notifyPendingPhotos(clientid, language, currentPhotoCount);
+        return;
+      }
+      if (extractText(messageObject).toLowerCase() === 'finish upload') {
+        message = 'Generate Model';
       }
     }
     // Accept image for image-to-image generation
@@ -167,14 +165,10 @@ export async function replyToUser(messageObject: any) {
     } else message = extractText(messageObject);
   }
 
-  const messageInEnglish = translateSystemMessageToEnglish(
-    message,
-    userLanguage,
-  );
-  console.log('[====] messageInEnglish: ', messageInEnglish);
-  // console.log('[====]: ', JSON.stringify(messageObject, null, 2));
+  console.log('[~] sending text to xstate: ', message);
+
   const newState = await whatsappStateTransition(
-    { type: 'text', text: messageInEnglish },
+    { type: 'text', text: message },
     { state, name, clientid, language: userLanguage } as IUserMetaData,
   );
   if (newState && newState !== state) {

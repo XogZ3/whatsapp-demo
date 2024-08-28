@@ -91,11 +91,8 @@ export const machineFactory = (config: IMachineConfig): any => {
                 target: 'photoPrompting',
               },
             ],
-            CANCEL: {
-              target: 'onBoarding',
-            },
             FALLBACK: {
-              actions: ['notifyPendingPhotos'],
+              actions: ['sendPendingPhotos'],
             },
           },
         },
@@ -111,6 +108,32 @@ export const machineFactory = (config: IMachineConfig): any => {
             },
           },
         },
+        modelGeneratedFreeTrial: {
+          on: {
+            PROMPT: [
+              {
+                actions: [
+                  'assignMessage',
+                  'assignPromptToContext',
+                  'sendPromptConfirmation',
+                ],
+              },
+            ],
+            USE_PROMPT: {
+              actions: [
+                'assignMessage',
+                'setProcessingTrue',
+                'sendPromptedPhoto',
+              ],
+            },
+            IMPROVE_PROMPT: {
+              actions: [
+                'assignMessage',
+                'sendImprovedPromptConfirmationAndSetContext',
+              ],
+            },
+          },
+        },
         paywall: {
           entry: ['sendPaywall'],
           on: {
@@ -122,37 +145,12 @@ export const machineFactory = (config: IMachineConfig): any => {
             FALLBACK: { actions: 'sendPaywall' },
           },
         },
-        modelGeneratedUnpaid: {
-          entry: ['sendUnpaidUserOptions'],
-          on: {
-            PAYMENT_CONFIRMED: {
-              actions: ['sendPaymentConfirmation'],
-              target: 'modelGeneratedPaid',
-            },
-          },
-        },
-        modelGeneratedPaid: {
-          entry: ['sendPaidUserOptions'],
-          on: {
-            CREATE_PHOTO: 'photoPrompting',
-            BYPASS: {
-              target: 'photoPrompting',
-              actions: 'assignMessage',
-            },
-            CANCEL: {
-              target: 'modelGeneratedPaid',
-              actions: 'assignMessage',
-              reenter: true,
-            },
-          },
-        },
         photoPrompting: {
           entry: ['sendPromptingInstruction'],
           on: {
             PROMPT: [
               {
                 actions: [
-                  // 'decrementCredits',
                   'assignMessage',
                   'assignPromptToContext',
                   'sendPromptConfirmation',

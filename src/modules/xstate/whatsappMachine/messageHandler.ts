@@ -32,20 +32,13 @@ export const handleMessage = async (
     [State.imagesIncomplete]: {
       'photo received': 'PHOTO_RECEIVED',
       'generate model': 'GENERATE_MODEL',
-      bypass: 'BYPASS',
-      cancel: 'CANCEL',
+      fallback: 'FALLBACK',
     },
     [State.generatingModel]: {
       'model generated': 'MODEL_GENERATED_UNPAID',
-      bypass: 'BYPASS',
-      cancel: 'CANCEL',
     },
     [State.modelGeneratedUnpaid]: {
       prompt: 'PROMPT',
-      // 'buy credits': 'BUY_CREDITS',
-      // bypass: 'BYPASS',
-      // cancel: 'CANCEL',
-      // 'payment confirmed': 'PAYMENT_CONFIRMED',
     },
     [State.paywall]: {
       'buy credits': 'BUY_CREDITS',

@@ -5,9 +5,9 @@ export function extractText(messageObject: any) {
     if (message.text && message.text.body) {
       text = message.text.body;
     } else if (message.interactive && message.interactive.button_reply) {
-      text = message.interactive.button_reply.title;
+      text = message.interactive.button_reply.id;
     } else if (message.interactive && message.interactive.list_reply) {
-      text = message.interactive.list_reply.title;
+      text = message.interactive.list_reply.id;
     } else if (message.type === 'button' && message.button) {
       text = message.button.text;
     } else if (message.type === 'image' && message.image.caption) {

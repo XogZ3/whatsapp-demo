@@ -2,10 +2,11 @@ import { DateTime } from 'luxon';
 import { assign } from 'xstate';
 
 import type { ICreateMessagePayload } from '@/modules/whatsapp/whatsapp';
-import { TRAINING_IMAGES_UPPER_LIMIT } from '@/utils/constants';
+import { TRAINING_IMAGES_LOWER_LIMIT } from '@/utils/constants';
 import { getImprovedPromptFromGroq } from '@/utils/groq';
 import {
   callTrainingAPI,
+  getPhotoCount,
   getProcessingFlag,
   getTrainingImageURLs,
   getUserFields,
@@ -48,10 +49,26 @@ export const actionsFactory = (config: IMachineConfig): any => {
       language: () => 'english',
       modelGenerated: () => false,
     }),
-    notifyPendingPhotos: assign({
-      message: ({ event }) =>
-        `Send ${TRAINING_IMAGES_UPPER_LIMIT - (event?.context?.photosUploaded || 0)} more photo(s)`,
-    }),
+    sendPendingPhotos: async (event: any) => {
+      const language = event?.context?.language;
+      const { clientid } = config.userMetaData;
+      const updatedPhotoCount = await getPhotoCount(clientid);
+      const pendingPhotos =
+        TRAINING_IMAGES_LOWER_LIMIT - updatedPhotoCount ||
+        TRAINING_IMAGES_LOWER_LIMIT;
+      const message = `${getTranslation(
+        'notify pending photos 1',
+        language,
+      )}: ${pendingPhotos} ${getTranslation('notify pending photos 2', language)}`;
+      const payload: ICreateMessagePayload = {
+        phoneNumber: clientid,
+        quickReply: true,
+        button1id: 'cancel',
+        button1: getTranslation('cancel', language),
+        msgBody: message,
+      };
+      await config.whatsappInstance.send(payload);
+    },
     sendInvalidInputMessage: async (event: any) => {
       const language = event?.context?.language;
       const message = getTranslation('invalid input', language);
@@ -68,6 +85,9 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const payload: ICreateMessagePayload = {
         phoneNumber: config.userMetaData.clientid,
         quickReply: true,
+        button1id: 'upload photos',
+        button2id: 'language',
+        button3id: 'tutorial',
         button1: getTranslation('upload photos', language),
         button2: getTranslation('language', language),
         button3: getTranslation('tutorial', language),
@@ -85,6 +105,9 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const payload: ICreateMessagePayload = {
         phoneNumber: config.userMetaData.clientid,
         quickReply: true,
+        button1id: 'english',
+        button2id: 'portuguese',
+        button3id: 'arabic',
         button1: getTranslation('english', language),
         button2: getTranslation('portuguese', language),
         button3: getTranslation('arabic', language),
@@ -122,6 +145,9 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const payload: ICreateMessagePayload = {
         phoneNumber: config.userMetaData.clientid,
         quickReply: true,
+        button1id: 'buy credits',
+        button2id: 'tutorial',
+        button3id: 'main menu',
         button1: getTranslation('buy credits', language),
         button2: getTranslation('tutorial', language),
         button3: getTranslation('main menu', language),
@@ -135,6 +161,9 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const payload: ICreateMessagePayload = {
         phoneNumber: config.userMetaData.clientid,
         quickReply: true,
+        button1id: 'upload photos',
+        button2id: 'pricing',
+        button3id: 'main menu',
         button1: getTranslation('upload photos', language),
         button2: getTranslation('pricing', language),
         button3: getTranslation('main menu', language),
@@ -249,7 +278,8 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const payload: ICreateMessagePayload = {
         phoneNumber: config.userMetaData.clientid,
         quickReply: true,
-        button1: getTranslation('buy credits', language),
+        button1id: 'get membership',
+        button1: getTranslation('get membership', language),
         msgBody: message,
       };
       await config.whatsappInstance.send(payload);
@@ -280,20 +310,8 @@ ${stripeLink}`;
       const payload: ICreateMessagePayload = {
         phoneNumber: config.userMetaData.clientid,
         quickReply: true,
+        button1id: 'cancel',
         button1: getTranslation('cancel', language),
-        msgBody: message,
-      };
-      await config.whatsappInstance.send(payload);
-    },
-    sendPaymentInstructions: async (event: any) => {
-      const language = event?.context?.language;
-      const message = getTranslation('payment instructions', language);
-      // TODO: implement language in buttons
-      const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.clientid,
-        quickReply: true,
-        button1: 'Cancel',
-        button2: 'Bypass',
         msgBody: message,
       };
       await config.whatsappInstance.send(payload);
@@ -304,23 +322,7 @@ ${stripeLink}`;
       // TODO: implement language in buttons
       const payload: ICreateMessagePayload = {
         phoneNumber: config.userMetaData.clientid,
-        quickReply: true,
-        button1: 'Cancel',
-        button2: 'Bypass',
-        msgBody: message,
-      };
-      await config.whatsappInstance.send(payload);
-    },
-    sendPaidUserOptions: async (event: any) => {
-      const language = event?.context?.language;
-      const message = getTranslation('paid user options', language);
-      // TODO: implement language in buttons
-      const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.clientid,
-        quickReply: true,
-        button1: 'Create Photo',
-        button2: 'Cancel',
-        button3: 'Bypass',
+        text: true,
         msgBody: message,
       };
       await config.whatsappInstance.send(payload);
@@ -363,8 +365,10 @@ ${stripeLink}`;
       const payload: ICreateMessagePayload = {
         phoneNumber: config.userMetaData.clientid,
         quickReply: true,
-        button1: 'Use Prompt',
-        button2: 'Improve Prompt',
+        button1id: 'use prompt',
+        button2id: 'improve prompt',
+        button1: getTranslation('use prompt', language),
+        button2: getTranslation('improve prompt', language),
         msgBody: message,
       };
       await config.whatsappInstance.send(payload);
@@ -390,8 +394,10 @@ ${stripeLink}`;
             payload = {
               phoneNumber: config.userMetaData.clientid,
               quickReply: true,
-              button1: 'Use Prompt',
-              button2: 'Improve Prompt',
+              button1id: 'use prompt',
+              button2id: 'improve prompt',
+              button1: getTranslation('use prompt', language),
+              button2: getTranslation('improve prompt', language),
               msgBody: message,
             };
           } else {
@@ -438,8 +444,10 @@ ${stripeLink}`;
           const payload: ICreateMessagePayload = {
             phoneNumber: config.userMetaData.clientid,
             quickReply: true,
-            button1: 'Use Prompt',
-            button2: 'Improve Prompt',
+            button1id: 'use prompt',
+            button2id: 'improve prompt',
+            button1: getTranslation('use prompt', language),
+            button2: getTranslation('improve prompt', language),
             msgBody: message,
           };
           await config.whatsappInstance.send(payload);
@@ -477,9 +485,10 @@ ${stripeLink}`;
           const payload: ICreateMessagePayload = {
             phoneNumber: config.userMetaData.clientid,
             quickReply: true,
-            button1: 'Use Prompt',
-            button2: 'Improve Prompt',
-            button3: 'Cancel',
+            button1id: 'use prompt',
+            button2id: 'improve prompt',
+            button1: getTranslation('use prompt', language),
+            button2: getTranslation('improve prompt', language),
             msgBody: message,
           };
           await config.whatsappInstance.send(payload);
@@ -597,7 +606,8 @@ ${stripeLink}`;
                 await config.whatsappInstance.send({
                   phoneNumber: clientid,
                   quickReply: true,
-                  button1: getTranslation('buy credits', language),
+                  button1id: 'get membership',
+                  button1: getTranslation('get membership', language),
                   msgBody: message,
                 });
               } else {

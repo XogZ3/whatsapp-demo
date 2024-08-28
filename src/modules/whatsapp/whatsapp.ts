@@ -171,6 +171,9 @@ export interface ICreateMessagePayload {
   button1?: string | boolean;
   button2?: string | boolean;
   button3?: string | boolean;
+  button1id?: string;
+  button2id?: string;
+  button3id?: string;
   video?: boolean;
   videoLink?: string;
   location?: boolean;
@@ -226,6 +229,9 @@ async function createWAMessagePayload(payload: PropsFormatted) {
     button1,
     button2,
     button3,
+    button1id,
+    button2id,
+    button3id,
     video,
     videoLink,
     location,
@@ -419,7 +425,7 @@ async function createWAMessagePayload(payload: PropsFormatted) {
                     {
                       type: 'reply',
                       reply: {
-                        id: 'button1',
+                        id: button1id,
                         title: button1,
                       },
                     },
@@ -430,7 +436,7 @@ async function createWAMessagePayload(payload: PropsFormatted) {
                     {
                       type: 'reply',
                       reply: {
-                        id: 'button2',
+                        id: button2id,
                         title: button2,
                       },
                     },
@@ -441,7 +447,7 @@ async function createWAMessagePayload(payload: PropsFormatted) {
                     {
                       type: 'reply',
                       reply: {
-                        id: 'button3',
+                        id: button3id,
                         title: button3,
                       },
                     },

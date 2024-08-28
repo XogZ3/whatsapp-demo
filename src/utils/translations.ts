@@ -32,6 +32,8 @@ type TranslationKeys =
   | 'please wait generating model'
   | 'processing payment'
   | 'prompt photos'
+  | 'use prompt'
+  | 'improve prompt'
   | 'please wait machine busy'
   | 'photo upload instruction'
   | 'invalid input'
@@ -42,7 +44,6 @@ type TranslationKeys =
   | 'unpaid user options'
   | 'payment instructions'
   | 'payment confirmation'
-  | 'paid user options'
   | 'prompting instruction'
   | 'prompt confirmation'
   | 'new prompt request'
@@ -55,6 +56,7 @@ type TranslationKeys =
   | 'model generated'
   | 'model generated request prompt'
   | 'buy credits'
+  | 'get membership'
   | 'payment confirmed'
   | 'paywall'
   | 'active membership'
@@ -131,6 +133,11 @@ export const TRANSLATION_MAP: Record<
     pt: 'Comprar Créditos',
     ar: 'شراء رصيد',
   },
+  'get membership': {
+    en: 'Get Membership',
+    pt: 'Obter Assinatura',
+    ar: 'احصل على العضوية',
+  },
   'payment confirmed': {
     en: 'Payment Confirmed',
     pt: 'Pagamento Confirmado',
@@ -180,6 +187,16 @@ export const TRANSLATION_MAP: Record<
     en: 'You can now prompt for your own photos!',
     pt: 'Agora você pode solicitar suas próprias fotos!',
     ar: 'يمكنك الآن طلب صورك الخاصة!',
+  },
+  'use prompt': {
+    en: 'Use Prompt',
+    pt: 'Usar Prompt',
+    ar: 'استخدام الموجه',
+  },
+  'improve prompt': {
+    en: 'Improve Prompt',
+    pt: 'Melhorar Prompt',
+    ar: 'تحسين الموجه',
   },
   'photo upload instruction': {
     en: `Send ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} photos...`,
@@ -259,11 +276,6 @@ Exemplo: homem sentado em um banco de parque ou mulher posando para uma foto esp
     en: 'Payment successful. Enjoy creating awesome pictures until',
     pt: 'Pagamento realizado com sucesso. Aproveite para criar fotos incríveis até',
     ar: 'تم الدفع بنجاح. استمتع بإنشاء صور رائعة حتى',
-  },
-  'paid user options': {
-    en: 'Whatcha wanna see your ai self do?',
-    pt: 'O que você quer ver sua versão de IA fazer?',
-    ar: 'ماذا تريد أن ترى نفسك بالذكاء الاصطناعي يفعل؟',
   },
   'prompting instruction': {
     en: 'Send your prompt',

@@ -94,7 +94,6 @@ export async function replyToUser(messageObject: any) {
   const userLanguage = language || getLanguageFromPhoneNumber(clientid);
 
   if (!state) {
-    message = extractText(messageObject);
     await setDefaultUserFields(clientid);
     if (messageObject.message.type === 'image') message = 'FALLBACK';
   } else {
@@ -157,7 +156,7 @@ export async function replyToUser(messageObject: any) {
     // Accept image for image-to-image generation
     else if (
       nonImageAcceptingStates.includes(currentState) &&
-      messageType !== 'text'
+      !['text', 'interactive', 'button'].includes(messageType)
     ) {
       // TODO: handle image generation with image reference
       message = 'FALLBACK';

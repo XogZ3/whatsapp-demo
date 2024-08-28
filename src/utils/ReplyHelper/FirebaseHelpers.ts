@@ -72,6 +72,7 @@ export type UserFieldsFirebase = {
   loraURL: string;
   loraFilename: string;
   trainingToken?: string;
+  creditsUsedLifetime: number;
   creditsUsedToday: number;
   creditsResetDate: number;
   paid: boolean;
@@ -98,6 +99,7 @@ export async function getUserFields(
     trainingImageURLs,
     loraURL,
     loraFilename,
+    creditsUsedLifetime,
     creditsUsedToday,
     creditsResetDate,
     paid,
@@ -116,6 +118,7 @@ export async function getUserFields(
     trainingImageURLs,
     loraURL,
     loraFilename,
+    creditsUsedLifetime,
     creditsUsedToday: creditsUsedToday || 0,
     creditsResetDate,
     paid: paid || false,
@@ -290,10 +293,12 @@ export async function incrementCreditsUsedTodayAndSetProcessingFlagFalse(
 
       const data = clientDoc.data() as UserFieldsFirebase;
       const currentCreditsUsed = data.creditsUsedToday;
+      const creditsUsedLifetime = data.creditsUsedLifetime || 0;
 
       // Increment creditsUsedToday by 1
       transaction.update(clientDocRef, {
         creditsUsedToday: currentCreditsUsed + 1,
+        creditsUsedLifetime: creditsUsedLifetime + 1,
         processing: false,
       });
     });

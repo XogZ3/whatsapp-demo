@@ -55,7 +55,6 @@ type TranslationKeys =
   | 'finish upload'
   | 'model generated'
   | 'model generated request prompt'
-  | 'buy credits'
   | 'get membership'
   | 'payment confirmed'
   | 'paywall'
@@ -128,11 +127,6 @@ export const TRANSLATION_MAP: Record<
     pt: 'Menu Principal',
     ar: 'القائمة الرئيسية',
   },
-  'buy credits': {
-    en: 'Buy Credits',
-    pt: 'Comprar Créditos',
-    ar: 'شراء رصيد',
-  },
   'get membership': {
     en: 'Get Membership',
     pt: 'Obter Assinatura',
@@ -199,9 +193,9 @@ export const TRANSLATION_MAP: Record<
     ar: 'تحسين الموجه',
   },
   'photo upload instruction': {
-    en: `Send ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} photos...`,
-    pt: `Envie ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} fotos...`,
-    ar: `أرسل ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} صورًا...`,
+    en: `Please upload ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} high-quality photos of yourself. Ensure you are the only person in the photo, and that the images have good lighting.`,
+    pt: `Por favor, envie ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} fotos de alta qualidade de você. Certifique-se de que você seja a única pessoa na foto e que as imagens tenham boa iluminação.`,
+    ar: `يرجى تحميل ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} صورة عالية الجودة لنفسك. تأكد من أنك الشخص الوحيد في الصورة وأن تكون الصور ذات إضاءة جيدة.`,
   },
   'invalid input': {
     en: "⚠️ Oops!\n\nIt seems you've provided an invalid input.\n\nLet's give it another try.",

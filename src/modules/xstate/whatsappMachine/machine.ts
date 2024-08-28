@@ -152,7 +152,7 @@ export const machineFactory = (config: IMachineConfig): any => {
         paywall: {
           entry: ['sendPaywall'],
           on: {
-            BUY_CREDITS: {
+            GET_MEMBERSHIP: {
               actions: ['sendStripeLink'],
             },
             SECRET: { target: 'photoPrompting' },

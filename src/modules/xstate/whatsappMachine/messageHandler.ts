@@ -37,7 +37,7 @@ export const handleMessage = async (
       'model generated': 'MODEL_GENERATED_UNPAID',
     },
     [State.paywall]: {
-      'buy credits': 'BUY_CREDITS',
+      'get membership': 'GET_MEMBERSHIP',
       secret: 'SECRET',
       cancel: 'CANCEL',
     },

@@ -55,21 +55,23 @@ export async function sendPurchaseToFBCoversionAPI(clientid: string) {
 
   fbq.event('Purchase', { eventID: eventId });
 
-  fetch(
-    `https://graph.facebook.com/v20.0/${process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID}/events?access_token=${process.env.FACEBOOK_CONVERSIONS_API_ACCESS_TOKEN}`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+  try {
+    const response = await fetch(
+      `https://graph.facebook.com/v20.0/${process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID}/events?access_token=${process.env.FACEBOOK_CONVERSIONS_API_ACCESS_TOKEN}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          data: [purchaseEventData],
+          // FIXME: Remove for production
+          test_event_code: 'TEST36365',
+        }),
       },
-      body: JSON.stringify({
-        data: [purchaseEventData],
-        // FIXME: Remove for production
-        test_event_code: 'TEST52360',
-      }),
-    },
-  )
-    .then((response) => response.json())
-    .then((data) => console.log('fbq data', JSON.stringify(data, null, 2)))
-    .catch((error) => console.error('Error in conversions API: ', error));
+    );
+    console.log('fbq data', JSON.stringify(response, null, 2));
+  } catch (error) {
+    console.error('[!] Error sending event to  conversion api', error);
+  }
 }

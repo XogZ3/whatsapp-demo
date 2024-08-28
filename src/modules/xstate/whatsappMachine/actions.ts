@@ -218,12 +218,19 @@ export const actionsFactory = (config: IMachineConfig): any => {
           }
         })
         .catch(async (error) => {
-          console.error(
-            '[!] Unhandled error in callStartTrainingAPI action: ',
-            error,
-          );
-
-          message = getTranslation('unknown error', language);
+          console.error('[!] Error in callStartTrainingAPI action: ', error);
+          if (
+            error.response &&
+            (error.response.error === 'Model already exists' ||
+              error.response.error ===
+                'A training job for this model_name already exists')
+          ) {
+            // Known errors
+            message = error.response.error;
+          } else {
+            // Generic unknown error
+            message = getTranslation('unknown error', language);
+          }
           await config.whatsappInstance.send({
             phoneNumber: clientid,
             text: true,

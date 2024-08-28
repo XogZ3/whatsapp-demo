@@ -58,7 +58,7 @@ export async function updateBilling(
   const stateJSON = {
     status: 'stopped',
     context: {
-      creditsRemaining: DEFAULT_CREDITS,
+      freeTrialCredits: DEFAULT_CREDITS,
       language: language || 'english',
       modelGenerated: true,
     },

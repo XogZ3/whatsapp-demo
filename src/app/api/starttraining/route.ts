@@ -8,6 +8,7 @@ import {
   type ICreateMessagePayload,
   sendMessageToWhatsapp,
 } from '@/modules/whatsapp/whatsapp';
+import { DEFAULT_CREDITS } from '@/utils/constants';
 import { getUserFields } from '@/utils/ReplyHelper/FirebaseHelpers';
 import { getTranslation, type Language } from '@/utils/translations';
 
@@ -46,8 +47,21 @@ async function notifyModelExists(clientid: string, language: Language) {
     .collection('clients')
     .doc(clientid);
 
+  const stateJSON = {
+    status: 'stopped',
+    context: {
+      freeTrialCredits: DEFAULT_CREDITS,
+      language: language || 'english',
+      modelGenerated: true,
+    },
+    value: 'photoPrompting',
+    children: {},
+    historyValue: {},
+    tags: [],
+  };
+
   const updates: any = {
-    state: `{"status":"stopped","context":{"creditsRemaining":1,"language":${language || 'english'},"modelGenerated":true},"value":"photoPrompting","children":{},"historyValue":{},"tags":[]}`,
+    state: JSON.stringify(stateJSON),
   };
   await clientDoc.set(updates, { merge: true });
   const message = getTranslation('model already exists', language);

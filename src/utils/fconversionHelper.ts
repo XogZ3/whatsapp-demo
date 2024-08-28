@@ -1,8 +1,7 @@
 import crypto from 'crypto';
 import { v4 as uuidv4 } from 'uuid';
 
-import * as fbq from '@/libs/fpixel';
-
+// import * as fbq from '@/libs/fpixel';
 import { getBaseUrl } from './helpers';
 
 export async function findUserIpAddress() {
@@ -42,7 +41,7 @@ const createPurchaseEventData = async (clientid: string, eventId: string) => {
     custom_data: {
       currency: 'USD',
       // TODO: Make this dynamic by calling stripe price id
-      value: 9.99,
+      value: '9.99',
     },
   };
 
@@ -53,7 +52,7 @@ export async function sendPurchaseToFBCoversionAPI(clientid: string) {
   const eventId: string = uuidv4();
   const purchaseEventData = await createPurchaseEventData(clientid, eventId);
 
-  fbq.event('Purchase', { eventID: eventId });
+  // fbq.event('Purchase', { eventID: eventId });
 
   try {
     const response = await fetch(

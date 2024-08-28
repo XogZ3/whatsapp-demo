@@ -58,8 +58,8 @@ export const actionsFactory = (config: IMachineConfig): any => {
       language: () => 'english',
     }),
     sendPendingPhotos: async (event: any) => {
-      const language = event?.context?.language;
-      const { clientid } = config.userMetaData;
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
       const updatedPhotoCount = await getPhotoCount(clientid);
       const pendingPhotos =
         TRAINING_IMAGES_LOWER_LIMIT - updatedPhotoCount ||
@@ -78,20 +78,18 @@ export const actionsFactory = (config: IMachineConfig): any => {
       await config.whatsappInstance.send(payload);
     },
     sendInvalidInputMessage: async (event: any) => {
-      const language = event?.context?.language;
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
       const message = getTranslation('invalid input', language);
-      await sendMessage(
-        config.whatsappInstance,
-        message,
-        config.userMetaData.clientid,
-      );
+      await sendMessage(config.whatsappInstance, message, clientid);
     },
     sendIntroOptionsMessage: async (event: any) => {
-      const language = event?.context?.language;
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
       console.log('[+] sending intro message');
       const message = getTranslation('intro message', language);
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.clientid,
+        phoneNumber: clientid,
         quickReply: true,
         button1id: 'upload photos',
         button2id: 'language',
@@ -108,10 +106,11 @@ export const actionsFactory = (config: IMachineConfig): any => {
       //   '[+] sending select language message on event: ',
       //   JSON.stringify(event, null, 2),
       // );
-      const language = event?.context?.language;
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
       const message = getTranslation('select language', language);
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.clientid,
+        phoneNumber: clientid,
         quickReply: true,
         button1id: 'english',
         button2id: 'portuguese',
@@ -129,7 +128,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       };
     }),
     setLanguageInFirebase: async (event: any) => {
-      const clientid = event?.event?.userMetaData?.phonenumber;
+      const { clientid } = config.userMetaData;
       const language = event?.event?.message;
       await setUserLanguage(language, clientid);
       console.log(`[+] firebase: language ${language} updates successfully`);
@@ -147,11 +146,11 @@ export const actionsFactory = (config: IMachineConfig): any => {
       await config.whatsappInstance.send(payload);
     },
     sendPricing: async (event: any) => {
-      console.log('[-] sendPricing event: ', JSON.stringify(event, null, 2));
-      const language = event?.context?.language;
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
       const message = getTranslation('pricing', language);
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.clientid,
+        phoneNumber: clientid,
         quickReply: true,
         button1id: 'get membership',
         button2id: 'tutorial',
@@ -164,10 +163,11 @@ export const actionsFactory = (config: IMachineConfig): any => {
       await config.whatsappInstance.send(payload);
     },
     sendTutorial: async (event: any) => {
-      const language = event?.context?.language;
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
       const message = getTranslation('tutorial message', language);
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.clientid,
+        phoneNumber: clientid,
         quickReply: true,
         button1id: 'upload photos',
         button2id: 'pricing',
@@ -180,19 +180,20 @@ export const actionsFactory = (config: IMachineConfig): any => {
       await config.whatsappInstance.send(payload);
     },
     sendPhotoUploadInstruction: async (event: any) => {
-      const language = event?.context?.language;
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
       const message = getTranslation('photo upload instruction', language);
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.clientid,
+        phoneNumber: clientid,
         text: true,
         msgBody: message,
       };
       await config.whatsappInstance.send(payload);
     },
     callStartTrainingAPI: async (event: any) => {
-      const language = event?.context?.language;
       let message = '';
-      const { clientid } = config.userMetaData;
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
       async function getTrainingImageURLsFromFirebase() {
         const trainingImageURLs = await getTrainingImageURLs(clientid);
         return trainingImageURLs || [];
@@ -230,65 +231,63 @@ export const actionsFactory = (config: IMachineConfig): any => {
         });
     },
     notifyModelExists: async (event: any) => {
-      const language = event?.context?.language;
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
       const message = getTranslation('model already exists', language);
       // TODO: implement language in buttons
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.clientid,
+        phoneNumber: clientid,
         text: true,
         msgBody: message,
       };
       await config.whatsappInstance.send(payload);
     },
     sendGeneratingModel: async (event: any) => {
-      const language = event?.context?.language;
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
       const message = getTranslation('generating model', language);
       // TODO: implement language in buttons
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.clientid,
+        phoneNumber: clientid,
         text: true,
         msgBody: message,
       };
       await config.whatsappInstance.send(payload);
     },
     sendPleaseWaitGeneratingModel: async (event: any) => {
-      const language = event?.context?.language;
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
       const message = getTranslation('please wait generating model', language);
       // TODO: implement language in buttons
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.clientid,
+        phoneNumber: clientid,
         text: true,
         msgBody: message,
       };
       await config.whatsappInstance.send(payload);
     },
     sendModelGeneratedSuccess: async (event: any) => {
-      const language = event?.context?.language;
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
       const message = getTranslation('model generated', language);
-      await sendMessage(
-        config.whatsappInstance,
-        message,
-        config.userMetaData.clientid,
-      );
+      await sendMessage(config.whatsappInstance, message, clientid);
     },
     sendSamplePhotos: async (event: any) => {
-      const language = event?.context?.language;
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
       const message = getTranslation('sample photos', language);
-      await sendMessage(
-        config.whatsappInstance,
-        message,
-        config.userMetaData.clientid,
-      );
+      await sendMessage(config.whatsappInstance, message, clientid);
     },
     decrementFreeTrialCredits: assign({
       freeTrialCredits: ({ context }: { context: IMachineContext }) =>
         context.freeTrialCredits - 1,
     }),
     sendPaywall: async (event: any) => {
-      const language = event?.context?.language;
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
       const message = getTranslation('paywall', language);
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.clientid,
+        phoneNumber: clientid,
         quickReply: true,
         button1id: 'get membership',
         button1: getTranslation('get membership', language),
@@ -297,8 +296,8 @@ export const actionsFactory = (config: IMachineConfig): any => {
       await config.whatsappInstance.send(payload);
     },
     sendStripeLink: async (event: any) => {
-      const language = event?.context?.language;
-      const { clientid } = config.userMetaData;
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
       const { membershipEndDate } = await getUserFields(clientid);
       const currentTimestamp = DateTime.now();
 
@@ -320,7 +319,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const message = `${getTranslation('payment instructions', language)}
 ${stripeLink}`;
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.clientid,
+        phoneNumber: clientid,
         quickReply: true,
         button1id: 'cancel',
         button1: getTranslation('cancel', language),
@@ -329,21 +328,23 @@ ${stripeLink}`;
       await config.whatsappInstance.send(payload);
     },
     sendPaymentConfirmation: async (event: any) => {
-      const language = event?.context?.language;
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
       const message = getTranslation('payment confirmation', language);
       // TODO: implement language in buttons
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.clientid,
+        phoneNumber: clientid,
         text: true,
         msgBody: message,
       };
       await config.whatsappInstance.send(payload);
     },
     sendPromptingInstruction: async (event: any) => {
-      const language = event?.context?.language;
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
       const message = getTranslation('prompting instruction', language);
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.clientid,
+        phoneNumber: clientid,
         text: true,
         msgBody: message,
       };
@@ -368,14 +369,15 @@ ${stripeLink}`;
       };
     }),
     sendPromptConfirmation: async (event: any) => {
-      const language = event?.context?.language;
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
       const prompt = event?.event?.message;
       console.log('[+] sendPromptConfirmation | prompt: ', prompt);
       const message = `${getTranslation('prompt confirmation', language)}
 *${prompt}*`;
       // TODO: implement language in buttons
       const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.clientid,
+        phoneNumber: clientid,
         quickReply: true,
         button1id: 'use prompt',
         button2id: 'improve prompt',
@@ -387,12 +389,13 @@ ${stripeLink}`;
     },
 
     sendWIPPromptConfirmation: async (event: any) => {
-      const language = event?.context?.language;
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
       const prompt = event?.event?.message;
 
       async function getMachineAvailability() {
         const machineIsAvailable =
-          (await getProcessingFlag(config.userMetaData.clientid)) === false;
+          (await getProcessingFlag(clientid)) === false;
         return machineIsAvailable;
       }
       await getMachineAvailability()
@@ -404,7 +407,7 @@ ${stripeLink}`;
 *${prompt}*`;
             // TODO: implement language in buttons
             payload = {
-              phoneNumber: config.userMetaData.clientid,
+              phoneNumber: clientid,
               quickReply: true,
               button1id: 'use prompt',
               button2id: 'improve prompt',
@@ -419,7 +422,7 @@ ${stripeLink}`;
             );
             // TODO: implement language in buttons
             payload = {
-              phoneNumber: config.userMetaData.clientid,
+              phoneNumber: clientid,
               text: true,
               msgBody: message,
             };
@@ -431,7 +434,8 @@ ${stripeLink}`;
         });
     },
     sendImprovedPromptConfirmationAndSetContext: async (event: any) => {
-      const language = event?.context?.language;
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
       // console.log(
       //   '[+] sendImprovedPromptConfirmationAndSetContext: ',
       //   JSON.stringify(event, null, 2),
@@ -441,7 +445,7 @@ ${stripeLink}`;
         const improvedPrompt = await getImprovedPromptFromGroq(prompt);
         // overwrite latestPrompt with improvedPrompt
         await config.storeInstance.setContext(
-          config.userMetaData.clientid,
+          clientid,
           'latestPrompt',
           improvedPrompt,
         );
@@ -454,7 +458,7 @@ ${stripeLink}`;
   *${improvedPrompt}*`;
           // TODO: implement language in buttons
           const payload: ICreateMessagePayload = {
-            phoneNumber: config.userMetaData.clientid,
+            phoneNumber: clientid,
             quickReply: true,
             button1id: 'use prompt',
             button2id: 'improve prompt',
@@ -472,7 +476,8 @@ ${stripeLink}`;
         });
     },
     sendReImprovedPromptConfirmationAndSetContext: async (event: any) => {
-      const language = event?.context?.language;
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
       // console.log(
       //   '[+] sendReImprovedPromptConfirmationAndSetContext: ',
       //   JSON.stringify(event, null, 2),
@@ -482,7 +487,7 @@ ${stripeLink}`;
         const reImprovedPrompt =
           await getImprovedPromptFromGroq(improvedPrompt);
         await config.storeInstance.setContext(
-          config.userMetaData.clientid,
+          clientid,
           'latestImprovedPrompt',
           reImprovedPrompt,
         );
@@ -495,7 +500,7 @@ ${stripeLink}`;
 *${reImprovedPrompt}*`;
           // TODO: implement language in buttons
           const payload: ICreateMessagePayload = {
-            phoneNumber: config.userMetaData.clientid,
+            phoneNumber: clientid,
             quickReply: true,
             button1id: 'use prompt',
             button2id: 'improve prompt',
@@ -518,21 +523,18 @@ ${stripeLink}`;
       setProcessingFlag(config.userMetaData.clientid, false),
 
     sendPromptedPhoto: async (event: any) => {
-      const language = event?.context?.language;
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
       const prompt = event?.context?.latestPrompt;
       console.log('[+] action: send photo for prompt: ', prompt);
 
       let message = getTranslation('generating image', language);
-      await sendMessage(
-        config.whatsappInstance,
-        message,
-        config.userMetaData.clientid,
-      );
+      await sendMessage(config.whatsappInstance, message, clientid);
 
       processAndSendImages(config, prompt)
         .then(async (success) => {
           console.log('[+] processAndSendImages done');
-          await setProcessingFlag(config.userMetaData.clientid, false);
+          await setProcessingFlag(clientid, false);
           return success; // Pass success to the next .then()
         })
         .then(async (success) => {
@@ -540,7 +542,7 @@ ${stripeLink}`;
           if (success) {
             message = `Cool photo! Just send another prompt.`;
             const payload: ICreateMessagePayload = {
-              phoneNumber: config.userMetaData.clientid,
+              phoneNumber: clientid,
               text: true,
               msgBody: message,
             };
@@ -548,7 +550,7 @@ ${stripeLink}`;
           }
         })
         .catch(async (error) => {
-          await setProcessingFlag(config.userMetaData.clientid, false);
+          await setProcessingFlag(clientid, false);
           console.error('[!] Error in processing or setting context:', error);
           if (error.message && error.message.includes('NSFW')) {
             message =
@@ -557,7 +559,7 @@ ${stripeLink}`;
             message = getTranslation('unknown error', language);
           }
           const payload = {
-            phoneNumber: config.userMetaData.clientid,
+            phoneNumber: clientid,
             text: true,
             msgBody: message,
           };
@@ -566,16 +568,16 @@ ${stripeLink}`;
     },
 
     sendWIPPromptedPhoto: async (event: any) => {
-      const language = event?.context?.language;
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
       const prompt = event?.context?.latestPrompt;
-      const { clientid } = config.userMetaData;
 
       let message;
       let payload: ICreateMessagePayload;
 
       async function getMachineAvailability() {
         const machineIsAvailable =
-          (await getProcessingFlag(config.userMetaData.clientid)) === false;
+          (await getProcessingFlag(clientid)) === false;
         return machineIsAvailable;
       }
 
@@ -647,7 +649,7 @@ ${stripeLink}`;
           await sendMessage(config.whatsappInstance, message, clientid);
 
           // Set Machine Busy
-          await setProcessingFlag(config.userMetaData.clientid, true);
+          await setProcessingFlag(clientid, true);
 
           wipProcessAndSendImages(config, prompt)
             .then(async (success) => {
@@ -670,7 +672,7 @@ ${stripeLink}`;
               }
             })
             .catch(async (error) => {
-              await setProcessingFlag(config.userMetaData.clientid, false);
+              await setProcessingFlag(clientid, false);
               console.error(
                 '[!] Error in processing or setting context:',
                 error,
@@ -682,7 +684,7 @@ ${stripeLink}`;
                 message = getTranslation('unknown error', language);
               }
               payload = {
-                phoneNumber: config.userMetaData.clientid,
+                phoneNumber: clientid,
                 text: true,
                 msgBody: message,
               };
@@ -690,7 +692,7 @@ ${stripeLink}`;
             });
         })
         .catch(async (error) => {
-          await setProcessingFlag(config.userMetaData.clientid, false);
+          await setProcessingFlag(clientid, false);
           console.error('[!] Error in machine & credit check:', error.message);
         });
     },

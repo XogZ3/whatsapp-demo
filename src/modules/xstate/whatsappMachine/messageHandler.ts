@@ -2,22 +2,31 @@
 
 import type { AnyActorRef } from 'xstate';
 
+export const State = Object.freeze({
+  onBoarding: 'onBoarding',
+  imagesIncomplete: 'imagesIncomplete',
+  generatingModel: 'generatingModel',
+  modelGeneratedFreeTrial: 'modelGeneratedFreeTrial',
+  paywall: 'paywall',
+  photoPrompting: 'photoPrompting',
+});
+
+export const states: (keyof typeof State)[] = Object.values(State);
+
+export const imageAcceptingStates: (keyof typeof State)[] = [
+  State.imagesIncomplete,
+];
+
+export const nonImageAcceptingStates = states.filter(
+  (state) => !imageAcceptingStates.includes(state),
+);
+
 export const handleMessage = async (
   actor: AnyActorRef,
   message: string,
   userActionId: string,
   userMetaData: {},
 ) => {
-  const State = Object.freeze({
-    onBoarding: 'onBoarding',
-    imagesIncomplete: 'imagesIncomplete',
-    generatingModel: 'generatingModel',
-    modelGeneratedFreeTrial: 'modelGeneratedFreeTrial',
-    paywall: 'paywall',
-    photoPrompting: 'photoPrompting',
-    wipPhotoPrompting: 'wipPhotoPrompting',
-  });
-
   const STATE_ACTION_EVENT_MAP: any = {
     [State.onBoarding]: {
       'upload photos': 'UPLOAD_PHOTOS',
@@ -35,6 +44,7 @@ export const handleMessage = async (
     },
     [State.generatingModel]: {
       'model generated': 'MODEL_GENERATED_UNPAID',
+      secret: 'SECRET',
     },
     [State.paywall]: {
       'get membership': 'GET_MEMBERSHIP',
@@ -45,21 +55,15 @@ export const handleMessage = async (
       prompt: 'PROMPT',
       'use prompt': 'USE_PROMPT',
       'improve prompt': 'IMPROVE_PROMPT',
+      fallback: 'FALLBACK',
     },
     [State.photoPrompting]: {
       prompt: 'PROMPT',
       'use prompt': 'USE_PROMPT',
       'improve prompt': 'IMPROVE_PROMPT',
-      cancel: 'CANCEL',
-      secret: 'SECRET',
-    },
-    [State.wipPhotoPrompting]: {
-      prompt: 'PROMPT',
-      'use prompt': 'USE_PROMPT',
-      'improve prompt': 'IMPROVE_PROMPT',
-      cancel: 'CANCEL',
-      secret: 'SECRET',
       paywall: 'PAYWALL',
+      fallback: 'FALLBACK',
+      cancel: 'CANCEL',
     },
   };
 
@@ -69,10 +73,9 @@ export const handleMessage = async (
   let event;
 
   if (
-    (state === 'modelGeneratedFreeTrial' ||
-      state === 'photoPrompting' ||
-      state === 'wipPhotoPrompting') &&
-    !['cancel', 'use prompt', 'improve prompt', 'secret', 'paywall'].includes(
+    (state === State.modelGeneratedFreeTrial ||
+      state === State.photoPrompting) &&
+    !['cancel', 'use prompt', 'improve prompt', 'paywall'].includes(
       userActionId,
     )
   ) {

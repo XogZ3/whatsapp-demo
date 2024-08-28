@@ -11,7 +11,7 @@ import type { IMachineConfig, IMachineContext } from './types';
 export const machineFactory = (config: IMachineConfig): any => {
   return createMachine(
     {
-      /** @xstate-layout N4IgpgJg5mDOIC5QHcAWBDALrdAHXAsugMaoCWAdmAMQCqAcgNL0DyA6vQPoCSAyr7QCiAbQAMAXUShcAe1hlMZGRSkgAHogAsAJgA0IAJ6JtARgAcJgHRnR2gJyiAzJoCs2l2bMBfL-rRYcfCJSSjBLZQAhGXQAJwhKKDoABQAZFgBBABFOJIAJFgAVFl4xSSQQWXlFZVUNBAA2RzNLOwB2F1E7etbWuxMTTX0jBFMuls167UcTOzNNTTNtTR8-DGw8QhJyKnCKKNj4ikSU9PoAcVp0s5EJVUqFJRVyuscOy1adF3qujtETR3cQ2MonqzTMvTsbRcjnqJm+y18IH86yCW1Cu32cQS1EE5xSfFypTucgeNWeiEcr0sC3aCyadhcLlaQIQ5nqLha2iWZhhHzMDJWSLWgU2IR2kWiWKO1CSLAASgVaBdBLwbmVpCTqk9QC8qTSXHT+YzmYZEHDJi16pourN-pNRAjVgENsFtmEJQdsek5ekItwAMJE8r3LW1Cl68EGnlGpksgb1USWUSiD6MhlTCaC5Ei13oj1SxJJOUB7jnIMaqqPMMIGH1SwJjpfTROOyaAaOOOU1qWJmppw9ZygrPCl1o8V7SWHRKKorF9IpcsVTVV8k1+p1huiJsttuaDum1mmDkDD7zGwZ7yI7OjsXuiee6UAMXnKQi6X9jEXIZXOvDHP1hoMrGB79DMPYuJC0yvK0sLaMOzqorelhkAAtugMCwNwFDEDIKG4AANmAmA0HkhQsJwcqCP6gjcAAaoImRfsuZK-ggkJWNMLgmNoyYgp4JgsqYJiJmY7IWBYswAuy8EoqKbrIWhGFYTheGEcR1DXPQgg+gUgicAQLCZIIC63MGzHauoZpTN22iLJMrSjDyLiCVydaOJCjJMgMdgwi4Mk5mOYSoehcDKbhBFETQmnaekun6YZxnCCY6pLpWLGWYejg2XZ2gOTMTmCf8IncQ6XKtLYyaOkKCFyeiwVKdh4VqTQz4pK+76fqZFakhZdTsdSHTCV0Ng2Oygl-ByuU8g67SvHY-k3vJMBUDEWAJAQMgQGA+HUK17UfkxaW9WaEGOC0Pl9NxsKtCYMGFc2ljTH0bZ2LZrQWAtiHyShm3bWcYArVgkCPjEYBgAUMRkOgO1FiwBBJAUh09dWjTNFCnTdL0-SDAebZozyN3sh4HzvZ9tU7D9W34f9gPERAINgxDUMw3KcMI0lKXfuluocbYXwGg4p7aPULKvGd13WlyMLC5o7Rk7mFO-dTANgKtdMM+DkPQ3Qqo5Kz8OI11qXI6uqMtO0GM9JdOPDBMzS2eC-xW7luXy4FliU39Ktq8DoOa8zOt6bDBsc8SR3VtM2jWBb7QeAazay+NmiPfMkKuNMya2VV15feinvK7TvuM1rO3cPDrP0XrbOG5z5ko2B0a9Hb67uc5B7QsnjTOFb4IJksbtIfnNOq0D9N+0z2tl7DlfB+zyVhybrHC-brz9k0MEGv8LIWC03meAyCYtpeTqyQrYS4OgBjINDO3XAU+mCAQETabwuTcEkSOhqu3GMuBN25QnGEdgWQTDsD2HyN1OiQl6D0bOI5c47AvlfG+1BVT+kojXBeX9WLcSypYWywsXb5VeCyLi3ZTqQMhG0NorQB7ySQdffCO1-SnGoiZWu4dVyzCjgaDw1pPD8zmIJNo9Y2y3QBE4ewwlHB0PRAwlBe03wHSNlzY6bFFg9lcHMWYZhBE22BFHLcvkoS6IFrIxBqAZCYBkEkGI4VFDSlnpgsynCcGTGaE7eEDIHKvTMNvMYCxIwJmkY7cx59LHWNsfY7EtBdZOM-j+DKcI2z4J6KCdcMxIRjQPCTfBcJ3DTS4u4OCV54Hk3CVYmxdi8IOMSFPCuQd9bsxUXXb+xpHpuCJv8Nsbh9ENCWO8USxTWiOD+MLGRpSapn0sLgCJVTonShYfQNhCTuZmkmByHoZCpj2FEj5Uh9hLD5RGb46EDgSknwCkhWZlSok1OxGgjBqy1HtisHMP4Z4HSNFsCyBkbzRIzB0LLJkHgwmWGQGQXASQ5l3NwLUmUTTnHdWwRlAE3ZyruGut0KWfSHB1gsEsD4nQ9xGLBRCqFMLqlwpiXExFzyI4PV0U0H+vIExWhZO9ZOTQligi4j5EEcCpnu3JdC25VL4X1JYDPOlLTXEZWXvg1eWV17sjbCyDJLRemTFbCSj4ZLIWisieK7ESyVmysXqimE9YQW8J5FlYSbdhhfDclaVsbrvEDH1RSsVCzCzpAAJpsBfPS02TRzYdC6FbbG29pjvEpN8L4yr-gTMuYtdEIrKW+tQVRJ55qUV1DNujSNWMBhxhTIYpo3xbJMmjCUxEFBfrwHKDncpWDEl1AALQiwPF2pMvFRA8gWNaFMTQwX5inG2tZNYpjUjhBnb470eTduGKMNywlkzTFAkOSZp93b1VCo1VSkVJ1qJ8hyDwwtuKtkaCMly-QBqUmmFaUZGywXLRHrUjaVMT3VhMBBSaPFzBDR0NxFyD08VE2VWQsFQ9vajw1hPfCP7VwAjAQmZlklwROD6R0bs+9Zhpz-cLdcYL5FMOQ6xBkyd7A3VuqjU8ICfLWHybxV6MEASkczfco4FGkn-vwYBiwxLTB6BAluRMMEWU3SbPNHdVz5IZp9dxqAvGXjWjjcmRk7kEwLDLbCJM2iboQi+CMnwPggA */
+      /** @xstate-layout N4IgpgJg5mDOIC5QHcAWBDALrdAHXAsugMaoCWAdmAMQCqAcgNL0DyA6vQPoCSAyr7QCiAbQAMAXUShcAe1hlMZGRSkgAHogAsAJgA0IAJ6IAjMYBs2gHTbjAdgActgKz3RogJzGPAX2-60WDj4RKSUYJbKAEIy6ABOEJRQdAAKADIsAIIAIpzJABIsACosvGKSSCCy8orKqhoITtoAzJZmxtpOpqLa9pqaTpr6RgimtraWTW3aovb27k1uTfa+-hjYeIQk5FQRFNFxCRRJqRn0AOK0GWciEqpVCkoqFfULopZOUx-2Tdq22ja2IYmUSadzWdygpx-cxNWErEABdbBLZhXb7eKJaiCc6pPh5Mp3OQPWrPRA9JwTUQWJw04w6f6AwyIXpmCZNWyaMwzaY9HTwxFBTahHZRGIYo7UZIsABKhVoF0EvBu5WkRJqT1A9XJlOptPpvyBCDMmha7Pc7mNOh0TScTX5a0FIW24VFB0xGWlGUi3AAwgSKvd1XUyfYKQtdZ19Yzhn03vTOa4esZ7GZJvbAhsnajXeKkslpb7uOd-arqo9gwgmuZLNbbBZNN9mlymoaq+NzdpOWNjZ1RLZ00ihc60WLDkk5cUCxlUiXKmry6TK9Xa-XG5NRC2mSN3BSPp2zM43N8nBuB46USK9qPMQAxaepSIZH2MWeBheakNhqkdPX-A1b81LHcDlgLsDltDMewOjPTML3CMgAFt0BgWBuAoYgZAQ3AABswEwGh8iKFhOGlQQfUEbgADVBCyV95xJD8EDGYxLFsNw3C5OtIM0YxDS8TxrFcWwIV6Gkmk0fs-ARB1YOFeCkJQtCMKw3D8Ooa56EET1CkETgCBYLJBBnW4A3ojV1GBOxWgPE8oKg9xfncPjplZew6QGOwTVDY0YOROTLEQ5C4CUzCcLwmgNK0jIdL0gyjOEYwVTnMsGIskZRCsswbO5ezHMNY0WIckFRD3DK63cXyh1RQLFPQ0LVJoO9UgfJ8XxM0tiXM+pmMsY83DrFM-ggw1zQpMx5m0c1TDmSDjEqrMdhgKhYiwRICBkCAwGw6glR9UjCjolKupMJwLQmBwxk6MZ-hNZz+ksDxPDAto+htea4MsJawBWxQjnWzbtqalrn0OzqK2MWEWM6dpIItD4sr0LdTGmVjxPacrU0cO0pIFWThwQjatrOMBlqwSAb1iMAwEKWIyHQbb8xYAhkgO9rkrBxdPLBfoTyrWYmmA2Y+I8dtHE5Txvj6Gl3v8gmAeJ0n8IgCmqZpumGelJmWYSpK31SrUZgpV7yrcxoIc3YZTFTCZbUgvtGlsH4ZfxwnsIV76yeVynqdp+m6CVXJNeZ1ndbM8HHZY7pnHDDjNAykaG1Yul3DclNzHc53UTlomSY9pWVZ99X-d0xng51wkjoraZQxrE0TeMM3YWc9pWhccbv2+LxsdWDM-Jd+Xc5+8nvbVv3uGZzXqMDrWQ4rjnGLsUxes8JMqSpGknENKDWV5FOG+A+Y5kznZs7dwfPYL0ftvHxmp9L7XErnoNF2ro26-G02bCbpGIMK1M2JKhuWYoZj7hFPu7IeXtVa+0BveR8IM2Z62OiMBwLE-huAglWFOcwLaIEdm8caHJQyOAhkNUBlhcDoAMMgem21riFD0oIAgkQtK8DyNwZIoNn6MU7MYMEPRHDfEdjxHiwtE6wjbh4GYNosrkModQ2hO0yL7S4e+NK-xvjWUEXwveNp8pVgem5TGfDHZQW0HIqhNDsLbR9KccixlQ6Vxfn0KwJpFidwZLxACjRWINkmJ0NywkLEKOsdQIG8C2qOPnuolxNZXhLCrJ4reUJLDmBmONHm-w4Q4xkn3VEuBUAyEwDIZIsRQq-TzEHbWiCw6cwcJod4nRfiggRh0aMiArpAVBOac0B4DxOxyb3KqOwClFJKWUrCFTi7TzLjUpxC9hLjHGujEEqcJL2FbDud4OjzRsQFsBAYcjCnFNKeUzEN9J4lyqbPUy8y0qLxaFxCCqC2LDS3L8FoMwekQjjj8PhRyxmnMmZiWx9B7GqP1iYBwVhkyOHwV81OfExjvG6LzWwpCaTmMGYOBa4RRknImbgKZyQMgAE02D3ghcg1+td2Qfwbl-XBRpXATBTMaISk0uROABQSs5EpwmtSpeHKCqTZhjFeHMRFW43JAQbv1FO6LZjS3hBQQm8AKi4zyVQJ+aj6gAFozCGgNeQnMY4dWQoQB86wNoMprzMFCA8fE7Csj+JCIh7EQHYvPP5GqwU6oqXCua5B6KKQWmcO0AWB4XJOoEimeyJVoQZU0OQr6P01quyDeDWEVhHbOBus0Ps4lnI2AmDYCw4l-g7mTV6vGWdXYQIviPGBma6kcmshYVBEj7XOR8R0Ua9qSq-HtcEqx2EW08JEaK9ogjTZZSZaYRODku2plBM0bu0khm4oocc8ZfKoDjvua4ewpaOjOsmK4By+U-jWBuo4HoO4QRYt8EAA */
       id: 'whatsappMachine',
       initial: 'onBoarding',
       context: {
@@ -36,9 +36,7 @@ export const machineFactory = (config: IMachineConfig): any => {
               actions: 'assignMessage',
               target: 'imagesIncomplete',
             },
-            LANGUAGE: {
-              actions: ['sendSelectLanguage', 'assignMessage'],
-            },
+            LANGUAGE: { actions: ['sendSelectLanguage', 'assignMessage'] },
             ENGLISH: {
               actions: [
                 'assignMessage',
@@ -66,15 +64,9 @@ export const machineFactory = (config: IMachineConfig): any => {
                 'sendIntroOptionsMessage',
               ],
             },
-            PRICING: {
-              actions: ['assignMessage', 'sendPricing'],
-            },
-            TUTORIAL: {
-              actions: ['assignMessage', 'sendTutorial'],
-            },
-            FALLBACK: {
-              actions: ['sendIntroOptionsMessage'],
-            },
+            PRICING: { actions: ['assignMessage', 'sendPricing'] },
+            TUTORIAL: { actions: ['assignMessage', 'sendTutorial'] },
+            FALLBACK: { actions: ['sendIntroOptionsMessage'] },
           },
         },
         imagesIncomplete: {
@@ -94,17 +86,14 @@ export const machineFactory = (config: IMachineConfig): any => {
                 target: 'photoPrompting',
               },
             ],
-            FALLBACK: {
-              actions: ['sendPendingPhotos'],
-            },
+            FALLBACK: { actions: ['sendPendingPhotos'] },
           },
         },
         generatingModel: {
           entry: ['sendGeneratingModel'],
           on: {
-            FALLBACK: {
-              actions: 'sendPleaseWaitGeneratingModel',
-            },
+            SECRET: { target: 'modelGeneratedFreeTrial' },
+            FALLBACK: { actions: 'sendPleaseWaitGeneratingModel' },
           },
         },
         modelGeneratedFreeTrial: {
@@ -115,7 +104,7 @@ export const machineFactory = (config: IMachineConfig): any => {
                 actions: [
                   'assignMessage',
                   'assignPromptToContext',
-                  'sendWIPPromptConfirmation',
+                  'sendPromptConfirmation',
                 ],
               },
               {
@@ -128,7 +117,7 @@ export const machineFactory = (config: IMachineConfig): any => {
                 guard: 'hasFreeTrialCredits',
                 actions: [
                   'assignMessage',
-                  'sendWIPPromptedPhoto',
+                  'sendPromptedPhoto',
                   'decrementFreeTrialCredits',
                 ],
               },
@@ -150,21 +139,19 @@ export const machineFactory = (config: IMachineConfig): any => {
                 target: 'paywall',
               },
             ],
+            FALLBACK: { actions: ['sendPromptingInstruction'] },
           },
         },
         paywall: {
           entry: ['sendPaywall'],
           on: {
-            GET_MEMBERSHIP: {
-              actions: ['sendStripeLink'],
-            },
+            GET_MEMBERSHIP: { actions: ['sendStripeLink'] },
             SECRET: { target: 'photoPrompting' },
             CANCEL: { actions: 'sendPaywall' },
             FALLBACK: { actions: 'sendPaywall' },
           },
         },
         photoPrompting: {
-          entry: ['sendPromptingInstruction'],
           on: {
             PROMPT: [
               {
@@ -175,92 +162,18 @@ export const machineFactory = (config: IMachineConfig): any => {
                 ],
               },
             ],
-            USE_PROMPT: {
-              actions: [
-                'assignMessage',
-                'setProcessingTrue',
-                'sendPromptedPhoto',
-              ],
-            },
+            USE_PROMPT: { actions: ['assignMessage', 'sendPromptedPhoto'] },
             IMPROVE_PROMPT: {
               actions: [
                 'assignMessage',
                 'sendImprovedPromptConfirmationAndSetContext',
               ],
             },
-            CANCEL: {
-              actions: ['sendPromptingInstruction'],
-            },
-            SECRET: 'wipPhotoPrompting',
-          },
-        },
-        wipPhotoPrompting: {
-          on: {
-            PROMPT: [
-              {
-                actions: [
-                  // 'decrementCredits',
-                  'assignMessage',
-                  'assignPromptToContext',
-                  'sendWIPPromptConfirmation',
-                ],
-              },
-            ],
-            USE_PROMPT: {
-              actions: ['assignMessage', 'sendWIPPromptedPhoto'],
-            },
-            IMPROVE_PROMPT: {
-              actions: [
-                'assignMessage',
-                'sendImprovedPromptConfirmationAndSetContext',
-              ],
-            },
-            CANCEL: {
-              actions: ['sendPromptingInstruction'],
-            },
+            CANCEL: { actions: ['sendPromptingInstruction'] },
             PAYWALL: { target: 'paywall' },
-            SECRET: { target: 'photoPrompting' },
+            FALLBACK: { actions: ['sendPromptingInstruction'] },
           },
         },
-        // improvePrompt: {
-        //   // entry: ['sendTestMessage'],
-        //   invoke: {
-        //     // id: 'fetchImprovedPrompt',
-        //     src: fromPromise(async (context: any) => {
-        //       console.log('[+] invoke: ', JSON.stringify(context, null, 2));
-        //       const improvedPrompt = await getImprovedPromptFromGroq(
-        //         context.context.userMetaData.latestPrompt,
-        //       );
-        //       console.log('[+] improvedPrompt: ', improvedPrompt);
-        //       return improvedPrompt;
-        //     }),
-        //     // input: ({ context: { latestPrompt } }) => ({ latestPrompt }),
-        //     onDone: {
-        //       target: 'photoPrompting',
-        //       actions: [
-        //         assign((event: any) => {
-        //           console.log('[-] on Done: ', JSON.stringify(event, null, 2));
-        //           return {
-        //             latestImprovedPrompt: 'error',
-        //           };
-        //         }),
-        //         // assign({
-        //         //   latestImprovedPrompt: ({ event }) => event.output,
-        //         // }),
-        //         'sendPromptConfirmation',
-        //       ],
-        //     },
-        //     onError: {
-        //       target: 'photoPrompting',
-        //       actions: assign((event: any) => {
-        //         console.log('[-] error: ', JSON.stringify(event, null, 2));
-        //         return {
-        //           latestImprovedPrompt: 'error',
-        //         };
-        //       }),
-        //     },
-        //   },
-        // },
       },
     },
     {

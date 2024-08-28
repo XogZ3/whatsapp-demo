@@ -88,41 +88,6 @@ export async function processAndSendImages(
       config.userMetaData.clientid,
     );
 
-  console.log('[+] receveid runpod urls: ', generatedImageURLs);
-  if (generatedImageURLs.length > 0) {
-    const sendPromises = generatedImageURLs.map(async (url) => {
-      const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.clientid,
-        image: true,
-        imageLink: url,
-      };
-      await config.whatsappInstance.send(payload);
-    });
-    await Promise.all(sendPromises);
-
-    console.log('All images sent successfully.');
-    return true; // Indicate success
-  }
-  const message = getTranslation('unknown error', config.userMetaData.language);
-  const payload: ICreateMessagePayload = {
-    phoneNumber: config.userMetaData.clientid,
-    text: true,
-    msgBody: message,
-  };
-  await config.whatsappInstance.send(payload);
-  return false; // Indicate failure
-}
-
-export async function wipProcessAndSendImages(
-  config: IMachineConfig,
-  prompt: string,
-) {
-  const generatedImageURLs: string[] =
-    await generateImagesWithReplicateUploadToFirebase(
-      prompt,
-      config.userMetaData.clientid,
-    );
-
   let payload: ICreateMessagePayload;
 
   console.log('[+] receveid urls: ', generatedImageURLs);

@@ -25,7 +25,6 @@ import {
   getCreditsAvailability,
   getMembershipAvailability,
   processAndSendImages,
-  wipProcessAndSendImages,
 } from './actionsHelper';
 import type {
   IMachineConfig,
@@ -370,27 +369,8 @@ ${stripeLink}`;
         latestPrompt: improvedPrompt,
       };
     }),
-    sendPromptConfirmation: async (event: any) => {
-      const { clientid, language = event?.context?.language } =
-        config.userMetaData;
-      const prompt = event?.event?.message;
-      console.log('[+] sendPromptConfirmation | prompt: ', prompt);
-      const message = `${getTranslation('prompt confirmation', language)}
-*${prompt}*`;
-      // TODO: implement language in buttons
-      const payload: ICreateMessagePayload = {
-        phoneNumber: clientid,
-        quickReply: true,
-        button1id: 'use prompt',
-        button2id: 'improve prompt',
-        button1: getTranslation('use prompt', language),
-        button2: getTranslation('improve prompt', language),
-        msgBody: message,
-      };
-      await config.whatsappInstance.send(payload);
-    },
 
-    sendWIPPromptConfirmation: async (event: any) => {
+    sendPromptConfirmation: async (event: any) => {
       const { clientid, language = event?.context?.language } =
         config.userMetaData;
       const prompt = event?.event?.message;
@@ -525,51 +505,6 @@ ${stripeLink}`;
       setProcessingFlag(config.userMetaData.clientid, false),
 
     sendPromptedPhoto: async (event: any) => {
-      const { clientid, language = event?.context?.language } =
-        config.userMetaData;
-      const prompt = event?.context?.latestPrompt;
-      console.log('[+] action: send photo for prompt: ', prompt);
-
-      let message = getTranslation('generating image', language);
-      await sendMessage(config.whatsappInstance, message, clientid);
-
-      processAndSendImages(config, prompt)
-        .then(async (success) => {
-          console.log('[+] processAndSendImages done');
-          await setProcessingFlag(clientid, false);
-          return success; // Pass success to the next .then()
-        })
-        .then(async (success) => {
-          console.log('[+] Context updated successfully');
-          if (success) {
-            message = `Cool photo! Just send another prompt.`;
-            const payload: ICreateMessagePayload = {
-              phoneNumber: clientid,
-              text: true,
-              msgBody: message,
-            };
-            await config.whatsappInstance.send(payload);
-          }
-        })
-        .catch(async (error) => {
-          await setProcessingFlag(clientid, false);
-          console.error('[!] Error in processing or setting context:', error);
-          if (error.message && error.message.includes('NSFW')) {
-            message =
-              'Uh-oh. Something went wrong: unsafe content detected. Please try a different prompt.';
-          } else {
-            message = getTranslation('unknown error', language);
-          }
-          const payload = {
-            phoneNumber: clientid,
-            text: true,
-            msgBody: message,
-          };
-          await config.whatsappInstance.send(payload);
-        });
-    },
-
-    sendWIPPromptedPhoto: async (event: any) => {
       const {
         clientid,
         language = event?.context?.language,
@@ -674,7 +609,7 @@ ${stripeLink}`;
           // Set Machine Busy
           await setProcessingFlag(clientid, true);
 
-          wipProcessAndSendImages(config, prompt)
+          processAndSendImages(config, prompt)
             .then(async (success) => {
               console.log('[+] processAndSendImages done');
               await incrementCreditsUsedTodayAndSetProcessingFlagFalse(

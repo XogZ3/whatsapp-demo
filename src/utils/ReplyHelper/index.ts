@@ -6,6 +6,7 @@ import {
   sendMessageToWhatsapp,
 } from '@/modules/whatsapp/whatsapp';
 import { whatsappStateTransition } from '@/modules/xstate/whatsappMachine';
+import { nonImageAcceptingStates } from '@/modules/xstate/whatsappMachine/messageHandler';
 import type { IUserMetaData } from '@/modules/xstate/whatsappMachine/types';
 
 import {
@@ -154,7 +155,10 @@ export async function replyToUser(messageObject: any) {
       }
     }
     // Accept image for image-to-image generation
-    else if (currentState === 'photoPrompting' && messageType === 'image') {
+    else if (
+      nonImageAcceptingStates.includes(currentState) &&
+      messageType !== 'text'
+    ) {
       // TODO: handle image generation with image reference
       message = 'FALLBACK';
     }

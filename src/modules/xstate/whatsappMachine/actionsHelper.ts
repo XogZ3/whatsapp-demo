@@ -13,7 +13,13 @@ import type { IMachineConfig } from './types';
 
 const firestore = firebase.getFirestore();
 
-export async function getCreditsAvailability(clientid: string) {
+export async function getCreditsAvailability(
+  clientid: string,
+  currentState: string,
+) {
+  // Don't check credits usage for free trial, checking it in freeTrialCredits in context instead
+  if (currentState === 'modelGeneratedFreeTrial') return true;
+
   const wabaId = process.env.WABA_ID;
   const clientDoc = firestore
     .collection('apps')

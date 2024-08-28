@@ -27,7 +27,7 @@ export interface IMachineContext {
 }
 
 export interface IUserMetaData {
-  state?: string;
+  state: string;
   clientid: string;
   name?: string;
   language: Language;

@@ -570,9 +570,14 @@ ${stripeLink}`;
     },
 
     sendWIPPromptedPhoto: async (event: any) => {
-      const { clientid, language = event?.context?.language } =
-        config.userMetaData;
+      const {
+        clientid,
+        language = event?.context?.language,
+        state,
+      } = config.userMetaData;
       const prompt = event?.context?.latestPrompt;
+      const stateObj = JSON.parse(state);
+      const currentState = stateObj.value;
 
       let message;
       let payload: ICreateMessagePayload;
@@ -604,7 +609,7 @@ ${stripeLink}`;
           if (machineIsAvailable) {
             const [hasValidMembership, hasCredits] = await Promise.all([
               getMembershipAvailability(clientid),
-              getCreditsAvailability(clientid),
+              getCreditsAvailability(clientid, currentState),
             ]);
 
             const canGenerateImages = hasValidMembership && hasCredits;

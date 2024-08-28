@@ -75,4 +75,4 @@ export async function POST(request: Request) {
   }
 }
 
-// {"status":"stopped","context":{"freeTrialCredits":10,"language":"english","modelGenerated":true},"value":"photoPrompting","children":{},"historyValue":{},"tags":[]}
+// {"status":"stopped","context":{"freeTrialCredits":1,"modelGenerated":true,"message":"photo received","latestPrompt":"","latestImprovedPrompt":"","language":"portuguese"},"value":"modelGeneratedFreeTrial","children":{},"historyValue":{},"tags":[]}

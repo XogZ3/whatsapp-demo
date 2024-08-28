@@ -21,6 +21,7 @@ export async function setUserState(state: string, clientid: string) {
   const updates: any = { state };
   await clientDoc.set(updates, { merge: true });
 }
+
 export async function setUserLanguage(language: Language, clientid: string) {
   const wabaId = process.env.WABA_ID;
   const clientDoc = firestore

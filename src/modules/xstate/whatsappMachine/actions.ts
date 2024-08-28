@@ -16,6 +16,7 @@ import {
   incrementCreditsUsedTodayAndSetProcessingFlagFalse,
   setProcessingFlag,
   setUserLanguage,
+  setUserState,
 } from '@/utils/ReplyHelper/FirebaseHelpers';
 import { getTranslation } from '@/utils/translations';
 
@@ -617,14 +618,30 @@ ${stripeLink}`;
                   msgBody: message,
                 });
               } else if (!hasValidMembership) {
+                // hard transition xstate to paywall
                 message = getTranslation('paywall', language);
-                await config.whatsappInstance.send({
-                  phoneNumber: clientid,
-                  quickReply: true,
-                  button1id: 'get membership',
-                  button1: getTranslation('get membership', language),
-                  msgBody: message,
-                });
+                const stateJSON = {
+                  status: 'stopped',
+                  context: {
+                    freeTrialCredits: 0,
+                    language: language || 'english',
+                    modelGenerated: true,
+                  },
+                  value: 'paywall',
+                  children: {},
+                  historyValue: {},
+                  tags: [],
+                };
+                await Promise.all([
+                  config.whatsappInstance.send({
+                    phoneNumber: clientid,
+                    quickReply: true,
+                    button1id: 'get membership',
+                    button1: getTranslation('get membership', language),
+                    msgBody: message,
+                  }),
+                  setUserState(JSON.stringify(stateJSON), clientid),
+                ]);
               } else {
                 message = getTranslation('unknown error', language);
                 await config.whatsappInstance.send({

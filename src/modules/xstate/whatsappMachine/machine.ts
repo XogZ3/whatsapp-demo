@@ -111,40 +111,44 @@ export const machineFactory = (config: IMachineConfig): any => {
           on: {
             PROMPT: [
               {
-                guard: not('hasFreeTrialCredits'),
-                target: 'paywall',
-              },
-              {
+                guard: 'hasFreeTrialCredits',
                 actions: [
                   'assignMessage',
                   'assignPromptToContext',
                   'sendWIPPromptConfirmation',
                 ],
               },
-            ],
-            USE_PROMPT: [
               {
                 guard: not('hasFreeTrialCredits'),
                 target: 'paywall',
               },
+            ],
+            USE_PROMPT: [
               {
+                guard: 'hasFreeTrialCredits',
                 actions: [
                   'assignMessage',
                   'setProcessingTrue',
                   'sendWIPPromptedPhoto',
                 ],
               },
-            ],
-            IMPROVE_PROMPT: [
               {
                 guard: not('hasFreeTrialCredits'),
                 target: 'paywall',
               },
+            ],
+            IMPROVE_PROMPT: [
               {
+                guard: 'hasFreeTrialCredits',
                 actions: [
                   'assignMessage',
                   'sendImprovedPromptConfirmationAndSetContext',
+                  'decrementFreeTrialCredits',
                 ],
+              },
+              {
+                guard: not('hasFreeTrialCredits'),
+                target: 'paywall',
               },
             ],
           },

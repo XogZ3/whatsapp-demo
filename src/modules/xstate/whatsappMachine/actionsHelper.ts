@@ -35,23 +35,27 @@ export async function getCreditsAvailability(
   const today = DateTime.now().startOf('day');
 
   let resetRequired = false;
-  if (
-    DateTime.fromMillis(creditsResetDate).startOf('day').toMillis() !==
-    today.toMillis()
-  ) {
-    resetRequired = true;
-  }
+  try {
+    if (
+      DateTime.fromMillis(creditsResetDate).startOf('day').toMillis() !==
+      today.toMillis()
+    ) {
+      resetRequired = true;
+    }
 
-  if (resetRequired) {
-    // Reset the count and update the date
-    await clientDoc.update({
-      creditsUsedToday: 0,
-      creditsResetDate: today.toMillis(),
-    });
-    return true;
-  }
-  if (creditsUsedToday < DAILY_CREDITS_LIMIT) {
-    return true;
+    if (resetRequired) {
+      // Reset the count and update the date
+      await clientDoc.update({
+        creditsUsedToday: 0,
+        creditsResetDate: today.toMillis(),
+      });
+      return true;
+    }
+    if (creditsUsedToday < DAILY_CREDITS_LIMIT) {
+      return true;
+    }
+  } catch (error) {
+    console.error('[!] Error in credits check: ', error);
   }
   return false;
 }
@@ -72,8 +76,12 @@ export async function getMembershipAvailability(
 
   const { membershipEndDate } = clientData.data() || {};
 
-  if (DateTime.now() > DateTime.fromMillis(membershipEndDate || 0)) {
-    return false;
+  try {
+    if (DateTime.now() > DateTime.fromMillis(membershipEndDate || 0)) {
+      return false;
+    }
+  } catch (error) {
+    console.error('[!] Error in membership check: ', error);
   }
   return true;
 }

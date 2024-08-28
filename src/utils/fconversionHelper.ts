@@ -7,7 +7,7 @@ import { getBaseUrl } from './helpers';
 
 export async function findUserIpAddress() {
   try {
-    const response = await fetch('/api/getUserIp');
+    const response = await fetch(`${getBaseUrl()}/api/getUserIp`);
     if (!response.ok) {
       throw new Error('Failed to fetch IP address');
     }

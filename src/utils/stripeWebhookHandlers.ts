@@ -9,6 +9,7 @@ import {
 } from '@/modules/whatsapp/whatsapp';
 
 import { DEFAULT_CREDITS } from './constants';
+import { sendPurchaseToFBCoversionAPI } from './fconversionHelper';
 import { getUserFields } from './ReplyHelper/FirebaseHelpers';
 import { sendPromptingInstruction } from './sendSampleImages';
 import { getTranslation } from './translations';
@@ -110,7 +111,10 @@ export async function handleCompletedCheckoutSession(
     .plus({ days: 30 })
     .toMillis();
 
-  await updateBilling(clientid, id, endDate);
+  await Promise.all([
+    updateBilling(clientid, id, endDate),
+    sendPurchaseToFBCoversionAPI(clientid),
+  ]);
 
   const formattedDate = format(new Date(endDate), 'MMMM d, yyyy');
   const message = `${getTranslation('payment confirmation', language)} ${formattedDate}`;

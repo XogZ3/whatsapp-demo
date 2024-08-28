@@ -8,7 +8,10 @@ import {
 import { whatsappStateTransition } from '@/modules/xstate/whatsappMachine';
 import type { IUserMetaData } from '@/modules/xstate/whatsappMachine/types';
 
-import { TRAINING_IMAGES_LIMIT } from '../constants';
+import {
+  TRAINING_IMAGES_LOWER_LIMIT,
+  TRAINING_IMAGES_UPPER_LIMIT,
+} from '../constants';
 import { getLanguageFromPhoneNumber } from '../helpers';
 import {
   getTranslation,
@@ -29,13 +32,30 @@ async function sendUpdatedPhotoCount(
   language: Language,
   updatedPhotoCount: number,
 ) {
-  const message = `${getTranslation(
+  const message = `${updatedPhotoCount || '1'} ${getTranslation(
     'photo received',
     language,
-  )}: ${updatedPhotoCount || '1'} / ${TRAINING_IMAGES_LIMIT}`;
+  )}`;
   const payload: ICreateMessagePayload = {
     phoneNumber: clientid,
     text: true,
+    msgBody: message,
+  };
+  await sendMessageToWhatsapp(payload);
+}
+async function sendUpdatedPhotoCountWithFinishOption(
+  clientid: string,
+  language: Language,
+  updatedPhotoCount: number,
+) {
+  const message = `${updatedPhotoCount || '1'} ${getTranslation(
+    'photo received',
+    language,
+  )}`;
+  const payload: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    quickReply: true,
+    button1: getTranslation('finish upload', language),
     msgBody: message,
   };
   await sendMessageToWhatsapp(payload);
@@ -47,7 +67,8 @@ async function notifyPendingPhotos(
   updatedPhotoCount: number,
 ) {
   const pendingPhotos =
-    TRAINING_IMAGES_LIMIT - updatedPhotoCount || TRAINING_IMAGES_LIMIT;
+    TRAINING_IMAGES_LOWER_LIMIT - updatedPhotoCount ||
+    TRAINING_IMAGES_LOWER_LIMIT;
   const message = `${getTranslation(
     'notify pending photos 1',
     language,
@@ -84,7 +105,7 @@ export async function replyToUser(messageObject: any) {
     if (currentState === 'imagesIncomplete' && messageType === 'image') {
       if (
         !uploadedPhotosCount || // Handles undefined or null
-        uploadedPhotosCount < TRAINING_IMAGES_LIMIT
+        uploadedPhotosCount < TRAINING_IMAGES_UPPER_LIMIT
       ) {
         const imageID = extractImageID(messageObject);
         const imageURL = await fetchWhatsAppImageAndUploadToFirebase(
@@ -99,11 +120,25 @@ export async function replyToUser(messageObject: any) {
           '[+] # of photos uploaded to firebase: ',
           updatedPhotoCount,
         );
-        // send photo count to user
-        await sendUpdatedPhotoCount(clientid, userLanguage, updatedPhotoCount);
+
+        // send photo count to user and give option to finish upload
+        if (updatedPhotoCount > TRAINING_IMAGES_LOWER_LIMIT) {
+          await sendUpdatedPhotoCountWithFinishOption(
+            clientid,
+            userLanguage,
+            updatedPhotoCount,
+          );
+        } else {
+          // send photo count to user
+          await sendUpdatedPhotoCount(
+            clientid,
+            userLanguage,
+            updatedPhotoCount,
+          );
+        }
 
         message = 'Photo Received';
-        if (updatedPhotoCount >= TRAINING_IMAGES_LIMIT)
+        if (updatedPhotoCount >= TRAINING_IMAGES_UPPER_LIMIT)
           message = 'Generate Model';
       }
     }
@@ -113,7 +148,11 @@ export async function replyToUser(messageObject: any) {
         message = 'cancel';
       } else {
         const currentPhotoCount = await getPhotoCount(clientid);
-        await notifyPendingPhotos(clientid, language, currentPhotoCount);
+        if (currentPhotoCount < TRAINING_IMAGES_LOWER_LIMIT) {
+          await notifyPendingPhotos(clientid, language, currentPhotoCount);
+        } else if (extractText(messageObject) === 'finish upload') {
+          message = 'Generate Model';
+        }
       }
     }
     // Accept image for image-to-image generation

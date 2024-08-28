@@ -2,7 +2,7 @@ import { DateTime } from 'luxon';
 import { assign } from 'xstate';
 
 import type { ICreateMessagePayload } from '@/modules/whatsapp/whatsapp';
-import { DEFAULT_CREDITS, TRAINING_IMAGES_LIMIT } from '@/utils/constants';
+import { TRAINING_IMAGES_UPPER_LIMIT } from '@/utils/constants';
 import { getImprovedPromptFromGroq } from '@/utils/groq';
 import {
   callTrainingAPI,
@@ -45,13 +45,12 @@ export const actionsFactory = (config: IMachineConfig): any => {
       message: () => '',
       latestPrompt: () => '',
       latestImprovedPrompt: () => '',
-      creditsRemaining: () => DEFAULT_CREDITS,
       language: () => 'english',
       modelGenerated: () => false,
     }),
     notifyPendingPhotos: assign({
       message: ({ event }) =>
-        `Send ${TRAINING_IMAGES_LIMIT - (event?.context?.photosUploaded || 0)} more photo(s)`,
+        `Send ${TRAINING_IMAGES_UPPER_LIMIT - (event?.context?.photosUploaded || 0)} more photo(s)`,
     }),
     sendInvalidInputMessage: async (event: any) => {
       const language = event?.context?.language;
@@ -153,7 +152,9 @@ export const actionsFactory = (config: IMachineConfig): any => {
       };
       await config.whatsappInstance.send(payload);
     },
-    callStartTrainingAPI: async () => {
+    callStartTrainingAPI: async (event: any) => {
+      const language = event?.context?.language;
+      let message = '';
       const { clientid } = config.userMetaData;
       async function getTrainingImageURLsFromFirebase() {
         const trainingImageURLs = await getTrainingImageURLs(clientid);
@@ -165,16 +166,30 @@ export const actionsFactory = (config: IMachineConfig): any => {
           // console.log('[+] callTrainingAPI called');
           return response;
         })
-        .then((response) => {
+        .then(async (response) => {
           if (response.jobId) console.log('[+] callTrainingAPI job created');
-          if (response.error)
+          if (response.error) {
             console.error('[!] callTrainingAPI call error', response.error);
+            message = getTranslation('unknown error', language);
+            await config.whatsappInstance.send({
+              phoneNumber: clientid,
+              text: true,
+              msgBody: message,
+            });
+          }
         })
-        .catch((error) => {
+        .catch(async (error) => {
           console.error(
             '[!] Unhandled error in callStartTrainingAPI action: ',
             error,
           );
+
+          message = getTranslation('unknown error', language);
+          await config.whatsappInstance.send({
+            phoneNumber: clientid,
+            text: true,
+            msgBody: message,
+          });
         });
     },
     notifyModelExists: async (event: any) => {
@@ -270,18 +285,6 @@ ${stripeLink}`;
       };
       await config.whatsappInstance.send(payload);
     },
-    sendUnpaidUserOptions: async (event: any) => {
-      const language = event?.context?.language;
-      const message = `${getTranslation('prompting instruction', language)}
-Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
-      // TODO: implement language in buttons
-      const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.clientid,
-        text: true,
-        msgBody: message,
-      };
-      await config.whatsappInstance.send(payload);
-    },
     sendPaymentInstructions: async (event: any) => {
       const language = event?.context?.language;
       const message = getTranslation('payment instructions', language);
@@ -325,9 +328,6 @@ Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
     sendPromptingInstruction: async (event: any) => {
       const language = event?.context?.language;
       const message = getTranslation('prompting instruction', language);
-      // TODO: uncomment for paid flow
-      //       const message = `${getTranslation('prompting instruction', language)}
-      // Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
       const payload: ICreateMessagePayload = {
         phoneNumber: config.userMetaData.clientid,
         text: true,
@@ -674,17 +674,6 @@ Credits remaining: ${event?.context?.creditsRemaining || DEFAULT_CREDITS}`;
     },
     sendRequestNewPrompt: async () => {
       const message = 'Alright, send a new prompt. :)';
-      const payload: ICreateMessagePayload = {
-        phoneNumber: config.userMetaData.clientid,
-        text: true,
-        msgBody: message,
-      };
-      await config.whatsappInstance.send(payload);
-    },
-    sendCredits: async (event: any) => {
-      // Logic to send remaining credits
-      const language = event?.context?.language;
-      const message = `${getTranslation('credits remaining', language)}: ${event?.context?.creditsRemaining}`;
       const payload: ICreateMessagePayload = {
         phoneNumber: config.userMetaData.clientid,
         text: true,

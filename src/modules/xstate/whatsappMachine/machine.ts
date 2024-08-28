@@ -2,8 +2,6 @@
 
 import { assign, createMachine, not } from 'xstate';
 
-import { DEFAULT_CREDITS } from '@/utils/constants';
-
 import { actionsFactory } from './actions';
 import { guardsFactory } from './guards';
 import type { IMachineConfig, IMachineContext } from './types';
@@ -18,7 +16,6 @@ export const machineFactory = (config: IMachineConfig): any => {
         message: '',
         latestPrompt: '',
         latestImprovedPrompt: '',
-        creditsRemaining: DEFAULT_CREDITS,
         language: 'english',
         modelGenerated: false,
       } as IMachineContext,

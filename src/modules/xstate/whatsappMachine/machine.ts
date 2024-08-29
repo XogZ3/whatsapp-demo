@@ -89,7 +89,7 @@ export const machineFactory = (config: IMachineConfig): any => {
               },
             ],
             CANCEL: { target: 'onBoarding' },
-            // Handle fallback in replyHelper async
+            FALLBACK: { actions: 'sendPendingPhotos' },
           },
         },
         generatingModel: {

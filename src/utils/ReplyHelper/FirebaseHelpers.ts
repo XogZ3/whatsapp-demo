@@ -247,7 +247,7 @@ export async function getPhotoCount(clientid: string) {
   const clientData = await clientDoc.get();
   const { photosUploaded } = clientData.data() || {};
 
-  return photosUploaded;
+  return photosUploaded || 0;
 }
 
 export async function setProcessingFlag(clientid: string, value: boolean) {

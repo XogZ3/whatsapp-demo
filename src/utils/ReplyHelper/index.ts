@@ -59,28 +59,6 @@ async function sendUpdatedPhotoCountWithFinishOption(
   await sendMessageToWhatsapp(payload);
 }
 
-async function notifyPendingPhotos(
-  clientid: string,
-  language: Language,
-  updatedPhotoCount: number,
-) {
-  const pendingPhotos =
-    TRAINING_IMAGES_LOWER_LIMIT - updatedPhotoCount ||
-    TRAINING_IMAGES_LOWER_LIMIT;
-  const message = `${getTranslation(
-    'notify pending photos 1',
-    language,
-  )}: ${pendingPhotos} ${getTranslation('notify pending photos 2', language)}`;
-  const payload: ICreateMessagePayload = {
-    phoneNumber: clientid,
-    quickReply: true,
-    button1id: 'cancel',
-    button1: getTranslation('cancel', language),
-    msgBody: message,
-  };
-  await sendMessageToWhatsapp(payload);
-}
-
 // eslint-disable-next-line consistent-return
 export async function replyToUser(messageObject: any) {
   let message = extractText(messageObject);
@@ -148,10 +126,6 @@ export async function replyToUser(messageObject: any) {
         message = 'cancel';
       }
       const currentPhotoCount = await getPhotoCount(clientid);
-      if (currentPhotoCount < TRAINING_IMAGES_LOWER_LIMIT) {
-        await notifyPendingPhotos(clientid, language, currentPhotoCount);
-        return;
-      }
       if (currentPhotoCount >= TRAINING_IMAGES_LOWER_LIMIT) {
         // just generate model if have 5 images ffs
         if (extractText(messageObject).toLowerCase() === 'finish upload') {

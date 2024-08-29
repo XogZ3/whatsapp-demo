@@ -6,6 +6,7 @@ import { DEFAULT_CREDITS } from '@/utils/constants';
 import { getImprovedPromptFromGroq } from '@/utils/groq';
 import {
   callTrainingAPI,
+  getPhotoCount,
   getProcessingFlag,
   getTrainingImageURLs,
   getUserFields,
@@ -22,6 +23,7 @@ import {
   createStripeLink,
   getCreditsAvailability,
   getMembershipAvailability,
+  notifyPendingPhotos,
   processAndSendImages,
   setUserStateAndInform,
 } from './actionsHelper';
@@ -191,6 +193,13 @@ export const actionsFactory = (config: IMachineConfig): any => {
         msgBody: message,
       };
       await config.whatsappInstance.send(payload);
+    },
+    sendPendingPhotos: async (event: any) => {
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
+      getPhotoCount(clientid).then(async (currentPhotoCount: number) => {
+        await notifyPendingPhotos(clientid, language, currentPhotoCount);
+      });
     },
     callStartTrainingAPI: async (event: any) => {
       let message = '';

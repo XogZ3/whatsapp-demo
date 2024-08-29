@@ -8,7 +8,11 @@ import {
   type ICreateMessagePayload,
   sendMessageToWhatsapp,
 } from '@/modules/whatsapp/whatsapp';
-import { DAILY_CREDITS_LIMIT, DEFAULT_CREDITS } from '@/utils/constants';
+import {
+  DAILY_CREDITS_LIMIT,
+  DEFAULT_CREDITS,
+  TRAINING_IMAGES_LOWER_LIMIT,
+} from '@/utils/constants';
 import { getBaseUrl } from '@/utils/helpers';
 import {
   getUserFields,
@@ -25,6 +29,28 @@ import type { State } from './messageHandler';
 import type { IMachineConfig } from './types';
 
 const firestore = firebase.getFirestore();
+
+export async function notifyPendingPhotos(
+  clientid: string,
+  language: Language,
+  updatedPhotoCount: number,
+) {
+  const pendingPhotos =
+    TRAINING_IMAGES_LOWER_LIMIT - updatedPhotoCount ||
+    TRAINING_IMAGES_LOWER_LIMIT;
+  const message = `${getTranslation(
+    'notify pending photos 1',
+    language,
+  )}: ${pendingPhotos} ${getTranslation('notify pending photos 2', language)}`;
+  const payload: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    quickReply: true,
+    button1id: 'cancel',
+    button1: getTranslation('cancel', language),
+    msgBody: message,
+  };
+  await sendMessageToWhatsapp(payload);
+}
 
 export async function getCreditsAvailability(
   clientid: string,

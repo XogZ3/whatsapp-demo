@@ -62,10 +62,32 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const message = getTranslation('invalid input', language);
       await sendMessage(config.whatsappInstance, message, clientid);
     },
+    sendIntroOptionsMessageBasedOnPhoneNumber: async () => {
+      const { clientid, language } = config.userMetaData;
+      console.log('[+] sending intro message');
+      const message = getTranslation('intro message', language);
+      const languageButtonTextLocale = getTranslation('language', language);
+      const finalLanguageButtonText = `Language${languageButtonTextLocale !== 'Language' ? ` | ${languageButtonTextLocale}` : ''}`;
+
+      const payload: ICreateMessagePayload = {
+        phoneNumber: clientid,
+        quickReply: true,
+        button1id: 'upload photos',
+        button2id: 'language',
+        button3id: 'tutorial',
+        button1: getTranslation('upload photos', language),
+        button2: finalLanguageButtonText,
+        button3: getTranslation('tutorial', language),
+        msgBody: message,
+      };
+      await config.whatsappInstance.send(payload);
+    },
     sendIntroOptionsMessage: async (event: any) => {
       const { clientid } = config.userMetaData;
       // userSelectedLanguage
       const language = event?.context?.language;
+      const languageButtonTextLocale = getTranslation('language', language);
+      const finalLanguageButtonText = `Language${languageButtonTextLocale !== 'Language' ? ` | ${languageButtonTextLocale}` : ''}`;
       console.log('[+] sending intro message');
       const message = getTranslation('intro message', language);
       const payload: ICreateMessagePayload = {
@@ -75,7 +97,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
         button2id: 'language',
         button3id: 'tutorial',
         button1: getTranslation('upload photos', language),
-        button2: getTranslation('language', language),
+        button2: finalLanguageButtonText,
         button3: getTranslation('tutorial', language),
         msgBody: message,
       };

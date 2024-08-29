@@ -38,6 +38,7 @@ export const getBasePathname = (path: string) => {
 const countryCodeToLanguage: { [key: string]: Language } = {
   '91': 'english', // India - Hindi
   '971': 'arabic', // UAE - Arabic
+  '966': 'arabic', // KSA - Arabic
   '55': 'portuguese', // Brazil - Portuguese
   // Add more mappings here
 };

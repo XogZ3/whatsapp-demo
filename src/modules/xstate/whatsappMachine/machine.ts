@@ -66,7 +66,9 @@ export const machineFactory = (config: IMachineConfig): any => {
             },
             PRICING: { actions: ['assignMessage', 'sendPricing'] },
             TUTORIAL: { actions: ['assignMessage', 'sendTutorial'] },
-            FALLBACK: { actions: ['sendIntroOptionsMessage'] },
+            FALLBACK: {
+              actions: ['sendIntroOptionsMessageBasedOnPhoneNumber'],
+            },
           },
         },
         imagesIncomplete: {

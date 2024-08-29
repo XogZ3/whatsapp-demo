@@ -1,6 +1,5 @@
 import { DateTime } from 'luxon';
 
-import { updateTrainingStatus } from '@/app/api/checktraining/route';
 import type { CreatePaymentLinkResult } from '@/app/api/stripe/createPaymentLink/route';
 import firebase from '@/modules/firebase';
 import { generateImagesWithReplicateUploadToFirebase } from '@/modules/replicate';
@@ -16,6 +15,7 @@ import {
   setUserState,
   type UserFieldsFirebase,
 } from '@/utils/ReplyHelper/FirebaseHelpers';
+import { updateTrainingStatus } from '@/utils/trainingHelpers';
 import { getTranslation, type Language } from '@/utils/translations';
 
 import type { IMachineConfig } from './types';

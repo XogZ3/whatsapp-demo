@@ -88,7 +88,10 @@ export const machineFactory = (config: IMachineConfig): any => {
                 target: 'photoPrompting',
               },
             ],
-            CANCEL: { target: 'onBoarding' },
+            CANCEL: {
+              target: 'onBoarding',
+              actions: 'sendIntroOptionsMessage',
+            },
             FALLBACK: { actions: 'sendPendingPhotos' },
           },
         },

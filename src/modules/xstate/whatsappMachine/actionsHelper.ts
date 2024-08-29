@@ -1,13 +1,22 @@
 import { DateTime } from 'luxon';
 
+import { updateTrainingStatus } from '@/app/api/checktraining/route';
 import type { CreatePaymentLinkResult } from '@/app/api/stripe/createPaymentLink/route';
 import firebase from '@/modules/firebase';
 import { generateImagesWithReplicateUploadToFirebase } from '@/modules/replicate';
-import type { ICreateMessagePayload } from '@/modules/whatsapp/whatsapp';
+import { checkTrainingJob } from '@/modules/runpod';
+import {
+  type ICreateMessagePayload,
+  sendMessageToWhatsapp,
+} from '@/modules/whatsapp/whatsapp';
 import { DAILY_CREDITS_LIMIT } from '@/utils/constants';
 import { getBaseUrl } from '@/utils/helpers';
-import type { UserFieldsFirebase } from '@/utils/ReplyHelper/FirebaseHelpers';
-import { getTranslation } from '@/utils/translations';
+import {
+  getUserFields,
+  setUserState,
+  type UserFieldsFirebase,
+} from '@/utils/ReplyHelper/FirebaseHelpers';
+import { getTranslation, type Language } from '@/utils/translations';
 
 import type { IMachineConfig } from './types';
 
@@ -158,5 +167,212 @@ export async function createStripeLink(clientid: string) {
       errorMessage = error.message;
     }
     return errorMessage;
+  }
+}
+
+async function setUserStatePhotoPromptingAndInform(
+  clientid: string,
+  language: Language,
+) {
+  const stateJSON = {
+    status: 'stopped',
+    context: {
+      freeTrialCredits: 0,
+      language: language || 'english',
+      modelGenerated: true,
+    },
+    value: 'photoPrompting',
+    children: {},
+    historyValue: {},
+    tags: [],
+  };
+  await setUserState(JSON.stringify(stateJSON), clientid);
+  const message = getTranslation('model already exists', language);
+  const payload: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    text: true,
+    msgBody: message,
+  };
+  await sendMessageToWhatsapp(payload);
+}
+
+async function sendModelGenerationFailedWithRetryButton(
+  clientid: string,
+  language: Language,
+) {
+  const message = getTranslation('model generation failed', language);
+  const payload: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    quickReply: true,
+    button1id: 'retry',
+    button1: getTranslation('retry', language),
+    msgBody: message,
+  };
+  await sendMessageToWhatsapp(payload);
+}
+
+async function sendModelGenerationFailedWithSupportEmail(
+  clientid: string,
+  language: Language,
+) {
+  const message = getTranslation('support email', language);
+  const payload: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    text: true,
+    msgBody: message,
+  };
+  await sendMessageToWhatsapp(payload);
+}
+
+async function handleModelGenerationFailedBasedOnRetriedFlag(
+  retriedModelGenFlag: boolean,
+  clientid: string,
+  language: Language,
+) {
+  if (!retriedModelGenFlag) {
+    await sendModelGenerationFailedWithRetryButton(clientid, language);
+    console.log('No active training jobs found for this client, allow RETRY');
+  } else {
+    await sendModelGenerationFailedWithSupportEmail(clientid, language);
+    console.log(
+      'No active training jobs found for this client, allow SUPPORT MAIL',
+    );
+  }
+}
+
+function isJobTimedOut(createdAt: number): boolean {
+  const twoHoursAgo = Date.now() - 2 * 60 * 60 * 1000;
+  return createdAt <= twoHoursAgo;
+}
+
+export async function checkTrainingJobForClient(clientid: string) {
+  // Log the start of the process
+  console.log(`[I] Checking training job status for client ${clientid}...`);
+
+  // Fetch user details from the database
+  const userDetails = await getUserFields(clientid);
+  const { language, loraFilename, loraURL, retriedModelGenFlag, state } =
+    userDetails;
+  const stateObj = JSON.parse(state);
+  const currentState = stateObj.value;
+
+  // Check if the user's state is still 'generatingModel'
+  // If not, exit the function (race condition handling)
+  if (currentState !== 'generatingModel') return;
+
+  // Check if the model already exists
+  // If so, update the user's state and exit
+  if (loraFilename && loraURL) {
+    await setUserStatePhotoPromptingAndInform(clientid, language);
+    return;
+  }
+
+  try {
+    // Query the latest training job for the client
+    const jobsRef = firestore.collection('training_jobs');
+    const query = jobsRef
+      .where('model_name', '==', `person${clientid}`)
+      .orderBy('createdAt', 'desc')
+      .limit(1);
+
+    const snapshot = await query.get();
+    const jobDoc = snapshot.docs[0];
+
+    // If no job exists, handle the failure based on the retry flag
+    if (snapshot.empty || !jobDoc) {
+      await handleModelGenerationFailedBasedOnRetriedFlag(
+        retriedModelGenFlag,
+        clientid,
+        language,
+      );
+      return;
+    }
+
+    const jobData = jobDoc.data();
+
+    let jobStatus;
+    let newStatus;
+    let message;
+    let payload: ICreateMessagePayload;
+
+    // Handle different job statuses
+    switch (jobData.status) {
+      case 'COMPLETED':
+        // If job is completed, update user state
+        await setUserStatePhotoPromptingAndInform(clientid, language);
+        break;
+
+      case 'FAILED':
+        // If job failed, handle failure based on retry flag
+        await handleModelGenerationFailedBasedOnRetriedFlag(
+          retriedModelGenFlag,
+          clientid,
+          language,
+        );
+        break;
+
+      case 'IN_PROGRESS':
+        // If job is in progress, send a wait message to the user
+        message = getTranslation('please wait generating model', language);
+        payload = {
+          phoneNumber: clientid,
+          text: true,
+          msgBody: message,
+        };
+        await sendMessageToWhatsapp(payload);
+
+        // Check the current status of the training job
+        jobStatus = await checkTrainingJob(jobData.jobId);
+
+        // If job not found, handle as a failure
+        if (jobStatus === null) {
+          console.log(`Job not found for client ${clientid}`);
+          await handleModelGenerationFailedBasedOnRetriedFlag(
+            retriedModelGenFlag,
+            clientid,
+            language,
+          );
+          return;
+        }
+
+        newStatus = jobStatus.status;
+
+        // If job completed successfully, update the training status
+        if (newStatus === 'COMPLETED' && jobStatus.output?.firebase_url) {
+          await updateTrainingStatus(
+            jobData.token,
+            clientid,
+            jobStatus.output.firebase_url,
+            jobData.model_name,
+          );
+        } else if (isJobTimedOut(jobData.createdAt)) {
+          // If job timed out, mark as failed and handle accordingly
+          newStatus = 'FAILED';
+          await handleModelGenerationFailedBasedOnRetriedFlag(
+            retriedModelGenFlag,
+            clientid,
+            language,
+          );
+        }
+
+        // Update the job document with the new status
+        await jobDoc.ref.update({
+          status: newStatus,
+          output: jobStatus.output || null,
+          updatedAt: Date.now(),
+        });
+
+        break;
+
+      default:
+        // Log unexpected status
+        console.log(
+          `Unexpected status for client ${clientid}: ${jobData.status}`,
+        );
+    }
+  } catch (error) {
+    // Handle and log any errors that occur during the process
+    console.error(`Error checking training job for client ${clientid}:`, error);
+    throw new Error('Internal Server Error');
   }
 }

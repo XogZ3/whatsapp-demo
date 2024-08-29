@@ -94,9 +94,9 @@ export const machineFactory = (config: IMachineConfig): any => {
           entry: ['sendGeneratingModel'],
           on: {
             // TODO: Handle multiple retries?
-            RETRY: { actions: 'callStartTrainingAPI' },
+            RETRY: { actions: ['callStartTrainingAPI', 'setRetriedFlagTrue'] },
             SECRET: { target: 'modelGeneratedFreeTrial' },
-            FALLBACK: { actions: 'sendPleaseWaitGeneratingModel' },
+            FALLBACK: { actions: 'handleModelGenerationStatus' },
           },
         },
         modelGeneratedFreeTrial: {

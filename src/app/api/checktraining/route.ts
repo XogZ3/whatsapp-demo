@@ -12,12 +12,23 @@ import { getTranslation } from '@/utils/translations';
 
 const firestore = firebase.getFirestore();
 
-async function updateTrainingStatus(
+export async function updateTrainingStatus(
   token: string,
   clientid: string,
   loraURL: string,
   loraFilename: string,
 ) {
+  // Guarding this to prevent duplicate calls b/w n8n and user triggered updates
+  const { state } = await getUserFields(clientid);
+  const stateObj = JSON.parse(state);
+  const currentState = stateObj.value;
+  if (currentState !== 'generatingModel') {
+    console.log(
+      '[O] User is not in generatingModel state anymore. Not updating training status.',
+    );
+    return;
+  }
+
   const response = await fetch(`${getBaseUrl()}/api/training`, {
     method: 'POST',
     headers: {

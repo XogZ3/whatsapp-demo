@@ -11,12 +11,14 @@ import {
   getUserFields,
   incrementCreditsUsedTodayAndSetProcessingFlagFalse,
   setProcessingFlag,
+  setRetriedFlag,
   setUserLanguage,
   setUserState,
 } from '@/utils/ReplyHelper/FirebaseHelpers';
 import { getTranslation } from '@/utils/translations';
 
 import {
+  checkTrainingJobForClient,
   createStripeLink,
   getCreditsAvailability,
   getMembershipAvailability,
@@ -239,6 +241,13 @@ export const actionsFactory = (config: IMachineConfig): any => {
         msgBody: message,
       };
       await config.whatsappInstance.send(payload);
+    },
+    handleModelGenerationStatus: async () => {
+      await checkTrainingJobForClient(config.userMetaData.clientid);
+    },
+    setRetriedFlagTrue: async () => {
+      const { clientid } = config.userMetaData;
+      await setRetriedFlag(clientid, true);
     },
     sendModelGeneratedSuccess: async (event: any) => {
       const { clientid, language = event?.context?.language } =

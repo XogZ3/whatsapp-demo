@@ -63,7 +63,8 @@ type TranslationKeys =
   | 'paywall'
   | 'active membership'
   | 'reached limit'
-  | 'unknown error';
+  | 'unknown error'
+  | 'support email';
 
 // Define the translation map structure directly using Record
 export const TRANSLATION_MAP: Record<
@@ -339,6 +340,11 @@ Exemplo: homem sentado em um banco de parque ou mulher posando para uma foto esp
     en: 'Uh-oh. Something went wrong, please try again after some time.',
     pt: 'Ops. Algo deu errado, por favor tente novamente mais tarde.',
     ar: 'أوه، حدث خطأ ما، يرجى المحاولة مرة أخرى بعد بعض الوقت.',
+  },
+  'support email': {
+    en: `Please email us for support at ${process.env.NEXT_PUBLIC_EMAIL}`,
+    pt: `Por favor, envie um e-mail para suporte em ${process.env.NEXT_PUBLIC_EMAIL}`,
+    ar: `يرجى مراسلتنا عبر البريد الإلكتروني للدعم على ${process.env.NEXT_PUBLIC_EMAIL}`,
   },
 };
 

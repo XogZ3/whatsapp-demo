@@ -79,6 +79,7 @@ export type UserFieldsFirebase = {
   membershipStartDate: number;
   membershipEndDate: number;
   lastStripeEventId: string;
+  retriedModelGenFlag: boolean;
 };
 
 export async function getUserFields(
@@ -106,6 +107,7 @@ export async function getUserFields(
     membershipStartDate,
     membershipEndDate,
     lastStripeEventId,
+    retriedModelGenFlag,
   } = clientData.data() || {};
   const userLanguage = language || getLanguageFromPhoneNumber(clientid);
 
@@ -125,6 +127,7 @@ export async function getUserFields(
     membershipStartDate,
     membershipEndDate,
     lastStripeEventId,
+    retriedModelGenFlag,
   };
 }
 
@@ -269,6 +272,32 @@ export async function getProcessingFlag(clientid: string) {
     (clientData.exists && clientData.data()?.processing) || false;
 
   return processing;
+}
+export async function setRetriedFlag(clientid: string, value: boolean) {
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid);
+
+  await firestore.runTransaction(async (transaction) => {
+    transaction.update(clientDoc, { retried: value });
+  });
+}
+
+export async function getRetriedFlag(clientid: string) {
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid);
+  const clientData = await clientDoc.get();
+  const retried: boolean =
+    (clientData.exists && clientData.data()?.retried) || false;
+
+  return retried;
 }
 
 export async function incrementCreditsUsedTodayAndSetProcessingFlagFalse(

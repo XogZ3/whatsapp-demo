@@ -1,5 +1,6 @@
 import firebase from '@/modules/firebase';
 import { DEFAULT_CREDITS } from '@/utils/constants';
+import type { UserFieldsFirebase } from '@/utils/ReplyHelper/FirebaseHelpers';
 import { generateAndSendModelImages } from '@/utils/sendSampleImages';
 
 const firestore = firebase.getFirestore();
@@ -49,10 +50,11 @@ export async function POST(request: Request) {
     // Token validation
     if (token === trainingToken) {
       // Hard transition xstate
-      const updates: any = {
+      const updates: Partial<UserFieldsFirebase> = {
         state: JSON.stringify(stateJSON),
         loraURL,
         loraFilename,
+        processing: false,
       };
       await clientDoc.set(updates, { merge: true });
 

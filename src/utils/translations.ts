@@ -10,7 +10,7 @@ type LanguageCode = 'en' | 'pt' | 'ar';
 export type Language = 'english' | 'portuguese' | 'arabic';
 
 // Define a type for translation keys
-type TranslationKeys =
+export type TranslationKeys =
   | 'cancel'
   | 'bypass'
   | 'upload photos'
@@ -327,9 +327,9 @@ Exemplo: homem sentado em um banco de parque ou mulher posando para uma foto esp
     ar: 'انتهت صلاحية النسخة التجريبية المجانية/العضوية الخاصة بك. يرجى شراء عضوية لمواصلة استخدام FotoLabs AI.',
   },
   'active membership': {
-    en: 'You already have an existing membership',
-    pt: 'Você já tem uma assinatura existente',
-    ar: 'لديك بالفعل عضوية قائمة',
+    en: 'You already have an existing membership. Send your prompt now. :)',
+    pt: 'Você já tem uma assinatura existente. Envie seu prompt agora. :)',
+    ar: 'لديك عضوية موجودة بالفعل. أرسل طلبك الآن. :)',
   },
   'reached limit': {
     en: `Woah, you've generated ${DAILY_CREDITS_LIMIT} images today! Take a break, you can start making images tomorrow :)`,

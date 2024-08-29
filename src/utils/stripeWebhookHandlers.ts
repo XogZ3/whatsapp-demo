@@ -9,7 +9,10 @@ import {
 } from '@/modules/whatsapp/whatsapp';
 
 import { sendPurchaseToFBCoversionAPI } from './fconversionHelper';
-import { getUserFields } from './ReplyHelper/FirebaseHelpers';
+import {
+  getUserFields,
+  type UserFieldsFirebase,
+} from './ReplyHelper/FirebaseHelpers';
 import { sendPromptingInstruction } from './sendSampleImages';
 import { getTranslation } from './translations';
 
@@ -69,9 +72,10 @@ export async function updateBilling(
 
   const startDate = DateTime.now().toMillis();
 
-  const updates: any = {
+  const updates: Partial<UserFieldsFirebase> = {
     state: JSON.stringify(stateJSON),
     paid: true,
+    processing: false,
     creditsUsedToday: 0,
     creditsResetDate: DateTime.now().toMillis(),
     membershipStartDate: startDate,

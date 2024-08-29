@@ -17,7 +17,7 @@ export async function setUserState(state: string, clientid: string) {
     .doc(wabaId as string)
     .collection('clients')
     .doc(clientid);
-  const updates: any = { state };
+  const updates: Partial<UserFieldsFirebase> = { state, processing: false };
   await clientDoc.set(updates, { merge: true });
 }
 
@@ -76,6 +76,7 @@ export type UserFieldsFirebase = {
   creditsUsedToday: number;
   creditsResetDate: number;
   paid: boolean;
+  processing: boolean;
   membershipStartDate: number;
   membershipEndDate: number;
   lastStripeEventId: string;
@@ -104,6 +105,7 @@ export async function getUserFields(
     creditsUsedToday,
     creditsResetDate,
     paid,
+    processing,
     membershipStartDate,
     membershipEndDate,
     lastStripeEventId,
@@ -124,6 +126,7 @@ export async function getUserFields(
     creditsUsedToday: creditsUsedToday || 0,
     creditsResetDate,
     paid: paid || false,
+    processing: processing || false,
     membershipStartDate,
     membershipEndDate,
     lastStripeEventId,

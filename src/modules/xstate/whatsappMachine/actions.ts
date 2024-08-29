@@ -23,6 +23,7 @@ import {
   getCreditsAvailability,
   getMembershipAvailability,
   processAndSendImages,
+  setUserStateAndInform,
 } from './actionsHelper';
 import type {
   IMachineConfig,
@@ -287,13 +288,13 @@ export const actionsFactory = (config: IMachineConfig): any => {
       // Reject if membership already exists
       if (currentTimestamp < DateTime.fromMillis(membershipEndDate || 0)) {
         console.log('[-] Active membership exists, purchase not allowed.');
-        const message = `${getTranslation('active membership', language)}`;
-        const payload: ICreateMessagePayload = {
-          phoneNumber: clientid,
-          text: true,
-          msgBody: message,
-        };
-        await config.whatsappInstance.send(payload);
+
+        await setUserStateAndInform({
+          clientid,
+          language,
+          stateValue: 'photoPrompting',
+          reason: 'active membership',
+        });
         return;
       }
 

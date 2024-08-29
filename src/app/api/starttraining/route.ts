@@ -9,7 +9,10 @@ import {
   sendMessageToWhatsapp,
 } from '@/modules/whatsapp/whatsapp';
 import { DEFAULT_CREDITS } from '@/utils/constants';
-import { getUserFields } from '@/utils/ReplyHelper/FirebaseHelpers';
+import {
+  getUserFields,
+  type UserFieldsFirebase,
+} from '@/utils/ReplyHelper/FirebaseHelpers';
 import { getTranslation, type Language } from '@/utils/translations';
 
 const firestore = firebase.getFirestore();
@@ -60,8 +63,9 @@ async function notifyModelExists(clientid: string, language: Language) {
     tags: [],
   };
 
-  const updates: any = {
+  const updates: Partial<UserFieldsFirebase> = {
     state: JSON.stringify(stateJSON),
+    processing: false,
   };
   await clientDoc.set(updates, { merge: true });
   const message = getTranslation('model already exists', language);

@@ -8,16 +8,20 @@ import {
   type ICreateMessagePayload,
   sendMessageToWhatsapp,
 } from '@/modules/whatsapp/whatsapp';
-import { DAILY_CREDITS_LIMIT } from '@/utils/constants';
+import { DAILY_CREDITS_LIMIT, DEFAULT_CREDITS } from '@/utils/constants';
 import { getBaseUrl } from '@/utils/helpers';
 import {
   getUserFields,
-  setUserState,
   type UserFieldsFirebase,
 } from '@/utils/ReplyHelper/FirebaseHelpers';
 import { updateTrainingStatus } from '@/utils/trainingHelpers';
-import { getTranslation, type Language } from '@/utils/translations';
+import {
+  getTranslation,
+  type Language,
+  type TranslationKeys,
+} from '@/utils/translations';
 
+import type { State } from './messageHandler';
 import type { IMachineConfig } from './types';
 
 const firestore = firebase.getFirestore();
@@ -170,24 +174,43 @@ export async function createStripeLink(clientid: string) {
   }
 }
 
-async function setUserStatePhotoPromptingAndInform(
-  clientid: string,
-  language: Language,
-) {
+export async function setUserStateAndInform({
+  clientid,
+  language,
+  stateValue,
+  reason,
+}: {
+  clientid: string;
+  language: Language;
+  stateValue: keyof typeof State;
+  reason: TranslationKeys;
+}) {
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid);
+
   const stateJSON = {
     status: 'stopped',
     context: {
-      freeTrialCredits: 0,
+      freeTrialCredits: DEFAULT_CREDITS,
       language: language || 'english',
       modelGenerated: true,
     },
-    value: 'photoPrompting',
+    value: stateValue,
     children: {},
     historyValue: {},
     tags: [],
   };
-  await setUserState(JSON.stringify(stateJSON), clientid);
-  const message = getTranslation('model already exists', language);
+  const updates: Partial<UserFieldsFirebase> = {
+    state: JSON.stringify(stateJSON),
+    processing: false,
+  };
+  await clientDoc.set(updates, { merge: true });
+
+  const message = getTranslation(reason, language);
   const payload: ICreateMessagePayload = {
     phoneNumber: clientid,
     text: true,
@@ -263,7 +286,12 @@ export async function checkTrainingJobForClient(clientid: string) {
   // Check if the model already exists
   // If so, update the user's state and exit
   if (loraFilename && loraURL) {
-    await setUserStatePhotoPromptingAndInform(clientid, language);
+    await setUserStateAndInform({
+      clientid,
+      language,
+      stateValue: 'modelGeneratedFreeTrial',
+      reason: 'model already exists',
+    });
     return;
   }
 
@@ -299,7 +327,12 @@ export async function checkTrainingJobForClient(clientid: string) {
     switch (jobData.status) {
       case 'COMPLETED':
         // If job is completed, update user state
-        await setUserStatePhotoPromptingAndInform(clientid, language);
+        await setUserStateAndInform({
+          clientid,
+          language,
+          stateValue: 'modelGeneratedFreeTrial',
+          reason: 'model already exists',
+        });
         break;
 
       case 'FAILED':

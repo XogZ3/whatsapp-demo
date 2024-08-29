@@ -122,9 +122,6 @@ export async function replyToUser(messageObject: any) {
     }
     // Handle NON-Images in 'imagesIncomplete' state - Cancel or Fallback
     else if (currentState === 'imagesIncomplete' && messageType !== 'image') {
-      if (extractText(messageObject) === 'cancel') {
-        message = 'cancel';
-      }
       const currentPhotoCount = await getPhotoCount(clientid);
       if (currentPhotoCount >= TRAINING_IMAGES_LOWER_LIMIT) {
         // just generate model if have 5 images ffs

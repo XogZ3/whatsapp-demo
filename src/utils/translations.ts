@@ -122,9 +122,9 @@ export const TRANSLATION_MAP: Record<
     ar: 'يرجى إرسال',
   },
   'notify pending photos 2': {
-    en: 'more photos.',
-    pt: 'mais fotos.',
-    ar: 'صورًا إضافية.',
+    en: 'more photos of you.',
+    pt: 'mais fotos suas.',
+    ar: 'مزيد من الصور لك',
   },
   'main menu': {
     en: 'Main Menu',

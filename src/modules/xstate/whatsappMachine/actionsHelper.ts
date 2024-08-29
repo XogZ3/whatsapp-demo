@@ -44,9 +44,7 @@ export async function notifyPendingPhotos(
   )}: ${pendingPhotos} ${getTranslation('notify pending photos 2', language)}`;
   const payload: ICreateMessagePayload = {
     phoneNumber: clientid,
-    quickReply: true,
-    button1id: 'cancel',
-    button1: getTranslation('cancel', language),
+    text: true,
     msgBody: message,
   };
   await sendMessageToWhatsapp(payload);

@@ -41,7 +41,6 @@ export const handleMessage = async (
       'photo received': 'PHOTO_RECEIVED',
       'generate model': 'GENERATE_MODEL',
       fallback: 'FALLBACK',
-      cancel: 'CANCEL',
     },
     [State.generatingModel]: {
       retry: 'RETRY',

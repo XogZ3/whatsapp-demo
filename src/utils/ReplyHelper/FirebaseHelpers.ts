@@ -28,7 +28,7 @@ export async function setUserLanguage(language: Language, clientid: string) {
     .doc(wabaId as string)
     .collection('clients')
     .doc(clientid);
-  const updates: any = { language };
+  const updates: Partial<UserFieldsFirebase> = { language };
   await clientDoc.set(updates, { merge: true });
 }
 
@@ -322,7 +322,7 @@ export async function incrementCreditsUsedTodayAndSetProcessingFlagFalse(
       }
 
       const data = clientDoc.data() as UserFieldsFirebase;
-      const currentCreditsUsed = data.creditsUsedToday;
+      const currentCreditsUsed = data.creditsUsedToday || 0;
       const creditsUsedLifetime = data.creditsUsedLifetime || 0;
 
       // Increment creditsUsedToday by 1

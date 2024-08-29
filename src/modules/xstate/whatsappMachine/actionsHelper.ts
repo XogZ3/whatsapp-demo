@@ -43,7 +43,7 @@ export async function getCreditsAvailability(
 
   const data = clientData.data() as UserFieldsFirebase;
 
-  const { creditsUsedToday, creditsResetDate } = data;
+  const { creditsUsedToday = 0, creditsResetDate } = data;
 
   const today = DateTime.now().startOf('day');
 

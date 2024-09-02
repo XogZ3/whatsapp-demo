@@ -60,7 +60,7 @@ export async function generateAndSendModelImages({
       // Use promise chaining for sequential execution
       return await allImageUrls
         .reduce(async (promise, url) => {
-          return promise.then(() => {
+          return promise.then(async () => {
             const payload: ICreateMessagePayload = {
               phoneNumber: clientid,
               image: true,
@@ -71,17 +71,10 @@ export async function generateAndSendModelImages({
             });
           });
         }, Promise.resolve())
-        .then(() => {
-          console.log('All model images sent successfully');
-          return sendModelGeneratedSuccess(clientid, language || 'english');
-        })
-        .then(() => {
-          console.log('Model generated success message sent');
-          return sendPromptingInstruction(clientid, language || 'english');
-        })
-        .then(() => {
-          console.log('Prompting instruction sent');
-          return true; // Indicate success
+        .then(async () => {
+          console.log('All sample images sent successfully');
+          await sendModelGeneratedSuccess(clientid, language || 'english');
+          return true;
         });
     }
     const errorMessage = 'No images were generated. Please try again later.';

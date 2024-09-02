@@ -1,3 +1,4 @@
+import console from 'console';
 import { DateTime } from 'luxon';
 import { assign } from 'xstate';
 
@@ -17,6 +18,7 @@ import {
   setUserLanguage,
   setUserState,
 } from '@/utils/ReplyHelper/FirebaseHelpers';
+import { sendMessageToTelegram } from '@/utils/telegram';
 import { getTranslation } from '@/utils/translations';
 
 import {
@@ -215,12 +217,30 @@ export const actionsFactory = (config: IMachineConfig): any => {
           if (response.jobId) console.log('[+] callTrainingAPI job created');
           if (response.error) {
             console.error('[!] callTrainingAPI call error', response.error);
-            message = getTranslation('unknown error', language);
-            await config.whatsappInstance.send({
-              phoneNumber: clientid,
-              text: true,
-              msgBody: message,
-            });
+            if (
+              response.error ===
+              'Failed to start training: A training job for this model_name already exists'
+            ) {
+              console.log(
+                '[~] Known error in callStartTrainingAPI action: ',
+                response.error,
+              );
+            } else {
+              console.error(
+                '[!] Error in callStartTrainingAPI action: ',
+                response.error,
+              );
+              console.log('notifying user that something went wrong');
+              message = getTranslation('unknown error', language);
+              await Promise.all([
+                sendMessageToTelegram(`${clientid}: ${response.error}`),
+                config.whatsappInstance.send({
+                  phoneNumber: clientid,
+                  text: true,
+                  msgBody: message,
+                }),
+              ]);
+            }
           }
         })
         .catch(async (error) => {

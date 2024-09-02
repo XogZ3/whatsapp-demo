@@ -6,6 +6,7 @@ import {
 import { createStripeLink } from '@/modules/xstate/whatsappMachine/actionsHelper';
 import type { UserFieldsFirebase } from '@/utils/ReplyHelper/FirebaseHelpers';
 import { generateAndSendModelImages } from '@/utils/sendSampleImages';
+import { sendMessageToTelegram } from '@/utils/telegram';
 import { getTranslation, type Language } from '@/utils/translations';
 
 const firestore = firebase.getFirestore();
@@ -83,16 +84,27 @@ export async function POST(request: Request) {
       };
       await clientDoc.set(updates, { merge: true });
 
-      await generateAndSendModelImages({
+      generateAndSendModelImages({
         age,
         gender,
         loraFilename,
         clientid,
         language,
-      });
-
-      const stripeLink = await createStripeLink(clientid);
-      await sendNewUserPaywall({ clientid, language, stripeLink });
+      })
+        .then(async () => {
+          const stripeLink = await createStripeLink(clientid);
+          await sendNewUserPaywall({ clientid, language, stripeLink });
+          console.log('[+] Paywall msg sent');
+        })
+        .catch(async (error) => {
+          console.error(
+            'Error in api/training/route.ts',
+            JSON.stringify(error, null, 2),
+          );
+          await sendMessageToTelegram(
+            `${clientid}: Error in api/training/route.ts: ${JSON.stringify(error, null, 2)}`,
+          );
+        });
 
       return new Response('success', { status: 200 });
     }

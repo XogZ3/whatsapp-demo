@@ -87,18 +87,16 @@ async function notifyGeneratingModel(clientid: string, language: Language) {
 }
 
 async function checkJobExists(model_name: string): Promise<boolean> {
-  try {
+  return firestore.runTransaction(async (transaction) => {
     const jobsRef = firestore.collection('training_jobs');
     const query = jobsRef
       .where('model_name', '==', model_name)
       .where('status', '==', 'IN_PROGRESS');
 
-    const snapshot = await query.get();
+    const snapshot = await transaction.get(query);
+
     return !snapshot.empty;
-  } catch (error) {
-    console.error('Error checking existing job:', error);
-    throw error;
-  }
+  });
 }
 
 export async function POST(request: NextRequest) {

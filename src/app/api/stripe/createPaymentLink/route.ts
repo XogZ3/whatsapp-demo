@@ -22,10 +22,11 @@ export async function POST(req: NextRequest) {
       await stripe.paymentLinks.create({
         line_items: [
           {
-            price: 'price_1PsJmEDWnX2YhQwse47t8kLL',
+            price: 'price_1PueW9DWnX2YhQws6s7otplP',
             quantity: 1,
           },
         ],
+        allow_promotion_codes: true,
         metadata: {
           clientid,
         },

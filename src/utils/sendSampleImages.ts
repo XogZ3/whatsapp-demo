@@ -1,10 +1,11 @@
-import { generateImagesUploadToFirebaseGetURL } from '@/modules/runpod';
+import { generateImagesWithReplicateUploadToFirebase } from '@/modules/replicate';
 import {
   type ICreateMessagePayload,
   sendMessageToWhatsapp,
 } from '@/modules/whatsapp/whatsapp';
 
 import { generateSamplePrompts } from './constants';
+import { sendMessageToTelegram } from './telegram';
 import { getTranslation, type Language } from './translations';
 
 async function sendModelGeneratedSuccess(clientid: string, language: Language) {
@@ -31,17 +32,25 @@ export async function sendPromptingInstruction(
   await sendMessageToWhatsapp(payload);
 }
 
-export async function generateAndSendModelImages(
-  loraFilename: string,
-  clientid: string,
-  language: Language,
-) {
-  const samplePrompts = generateSamplePrompts(loraFilename);
+export async function generateAndSendModelImages({
+  age,
+  gender,
+  loraFilename,
+  clientid,
+  language,
+}: {
+  age: number;
+  gender: 'male' | 'female';
+  loraFilename: string;
+  clientid: string;
+  language: Language;
+}) {
+  const samplePrompts = generateSamplePrompts({ age, gender, loraFilename });
   try {
     // Generate images for all prompts in parallel
     const imageUrlArrays = await Promise.all(
       samplePrompts.map((prompt) =>
-        generateImagesUploadToFirebaseGetURL(prompt, clientid),
+        generateImagesWithReplicateUploadToFirebase(prompt, clientid),
       ),
     );
     // Flatten the array of arrays into a single array of URLs
@@ -91,7 +100,11 @@ export async function generateAndSendModelImages(
       text: true,
       msgBody: errorMessage,
     };
-    await sendMessageToWhatsapp(payload);
+    await Promise.all([
+      sendMessageToWhatsapp(payload),
+      sendMessageToTelegram(`Error in generating and sending model images for ${clientid}
+${JSON.stringify(error, null, 2)}}`),
+    ]);
     return false; // Indicate failure
   }
 }

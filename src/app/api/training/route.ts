@@ -1,9 +1,35 @@
 import firebase from '@/modules/firebase';
-import { DEFAULT_CREDITS } from '@/utils/constants';
+import {
+  type ICreateMessagePayload,
+  sendMessageToWhatsapp,
+} from '@/modules/whatsapp/whatsapp';
+import { createStripeLink } from '@/modules/xstate/whatsappMachine/actionsHelper';
 import type { UserFieldsFirebase } from '@/utils/ReplyHelper/FirebaseHelpers';
 import { generateAndSendModelImages } from '@/utils/sendSampleImages';
+import { getTranslation, type Language } from '@/utils/translations';
 
 const firestore = firebase.getFirestore();
+
+async function sendNewUserPaywall({
+  clientid,
+  language,
+  stripeLink,
+}: {
+  clientid: string;
+  language: Language;
+  stripeLink: string;
+}) {
+  const message = `${getTranslation('new user paywall', language)}
+
+${stripeLink}`;
+
+  const payload: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    text: true,
+    msgBody: message,
+  };
+  await sendMessageToWhatsapp(payload);
+}
 
 export async function POST(request: Request) {
   try {
@@ -30,18 +56,17 @@ export async function POST(request: Request) {
       .doc(clientid);
 
     const clientData = await clientDoc.get();
-    const { language, trainingToken } = clientData.data() || {};
+    const { age, gender, language, trainingToken } = clientData.data() || {};
 
     console.log('expectedToken', trainingToken);
 
     const stateJSON = {
       status: 'stopped',
       context: {
-        freeTrialCredits: DEFAULT_CREDITS,
         language: language || 'english',
         modelGenerated: true,
       },
-      value: 'modelGeneratedFreeTrial',
+      value: 'paywall',
       children: {},
       historyValue: {},
       tags: [],
@@ -58,7 +83,16 @@ export async function POST(request: Request) {
       };
       await clientDoc.set(updates, { merge: true });
 
-      await generateAndSendModelImages(loraFilename, clientid, language);
+      await generateAndSendModelImages({
+        age,
+        gender,
+        loraFilename,
+        clientid,
+        language,
+      });
+
+      const stripeLink = await createStripeLink(clientid);
+      await sendNewUserPaywall({ clientid, language, stripeLink });
 
       return new Response('success', { status: 200 });
     }
@@ -69,4 +103,4 @@ export async function POST(request: Request) {
   }
 }
 
-// {"status":"stopped","context":{"freeTrialCredits":1,"modelGenerated":true,"message":"photo received","latestPrompt":"","latestImprovedPrompt":"","language":"english"},"value":"modelGeneratedFreeTrial","children":{},"historyValue":{},"tags":[]}
+// {"status":"stopped","context":{"modelGenerated":true,"message":"photo received","latestPrompt":"","latestImprovedPrompt":"","language":"english"},"value":"paywall","children":{},"historyValue":{},"tags":[]}

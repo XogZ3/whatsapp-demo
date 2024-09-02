@@ -47,6 +47,7 @@
     "next-intl": "^3.11.0",
     "next-themes": "^0.3.0",
     "next-view-transitions": "^0.1.1",
+    "openai": "^4.57.0",
     "react": "^18.2.0",
     "react-wrap-balancer": "^1.1.1",
     "replicate": "^0.32.0",

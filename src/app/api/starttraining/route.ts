@@ -8,7 +8,6 @@ import {
   type ICreateMessagePayload,
   sendMessageToWhatsapp,
 } from '@/modules/whatsapp/whatsapp';
-import { DEFAULT_CREDITS } from '@/utils/constants';
 import {
   getUserFields,
   type UserFieldsFirebase,
@@ -53,7 +52,6 @@ async function notifyModelExists(clientid: string, language: Language) {
   const stateJSON = {
     status: 'stopped',
     context: {
-      freeTrialCredits: DEFAULT_CREDITS,
       language: language || 'english',
       modelGenerated: true,
     },

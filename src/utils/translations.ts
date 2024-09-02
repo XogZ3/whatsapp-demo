@@ -1,6 +1,5 @@
 import {
   DAILY_CREDITS_LIMIT,
-  DEFAULT_CREDITS,
   TRAINING_IMAGES_LOWER_LIMIT,
   TRAINING_IMAGES_UPPER_LIMIT,
 } from './constants';
@@ -33,8 +32,6 @@ export type TranslationKeys =
   | 'generating model'
   | 'model generation failed'
   | 'please wait generating model'
-  | 'processing payment'
-  | 'prompt photos'
   | 'use prompt'
   | 'improve prompt'
   | 'please wait machine busy'
@@ -43,28 +40,24 @@ export type TranslationKeys =
   | 'intro message'
   | 'tutorial message'
   | 'generating image'
-  | 'sample photos'
-  | 'unpaid user options'
   | 'payment instructions'
   | 'payment confirmation'
   | 'prompting instruction'
   | 'prompt confirmation'
   | 'new prompt request'
-  | 'credits remaining'
   | 'upload photos'
-  | 'pricing message'
   | 'main menu'
   | 'photo received'
   | 'finish upload'
   | 'model generated'
-  | 'model generated request prompt'
   | 'get membership'
   | 'payment confirmed'
   | 'paywall'
   | 'active membership'
   | 'reached limit'
   | 'unknown error'
-  | 'support email';
+  | 'support email'
+  | 'new user paywall';
 
 // Define the translation map structure directly using Record
 export const TRANSLATION_MAP: Record<
@@ -181,16 +174,6 @@ export const TRANSLATION_MAP: Record<
     pt: 'Tentar novamente',
     ar: 'إعادة المحاولة',
   },
-  'processing payment': {
-    en: 'Processing your payment...',
-    pt: 'Processando seu pagamento...',
-    ar: 'جارٍ معالجة الدفع الخاص بك...',
-  },
-  'prompt photos': {
-    en: 'You can now prompt for your own photos!',
-    pt: 'Agora você pode solicitar suas próprias fotos!',
-    ar: 'يمكنك الآن طلب صورك الخاصة!',
-  },
   'use prompt': {
     en: 'Use Prompt',
     pt: 'Usar Prompt',
@@ -216,17 +199,11 @@ export const TRANSLATION_MAP: Record<
     pt: `👋 Bem-vindo ao FotoLabs.ai! Clique em 'Carregar Fotos' para nos enviar ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} fotos suas. Criaremos um modelo personalizado e forneceremos algumas imagens gratuitamente. Siga as instruções para começar!`,
     ar: `👋 مرحبًا بك في FotoLabs.ai! اضغط على 'رفع الصور' لإرسال ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} صورة لنفسك. سنقوم بإنشاء نموذج شخصي وتزويدك ببعض الصور مجانًا. اتبع التعليمات للبدء!`,
   },
-  'pricing message': {
-    en: `After creating your personalized model, you can get a membership to generate more amazing images.\n\n$9.99 only, create 100 images per day for 1 month! Ready to unlock more creativity?`,
-    pt: `Após criar seu modelo personalizado, você pode obter uma assinatura para gerar mais imagens incríveis.\n\nApenas $9,99, crie 100 imagens por dia durante 1 mês! Pronto para liberar mais criatividade?`,
-    ar: `بعد إنشاء نموذجك الشخصي، يمكنك الحصول على عضوية لإنشاء المزيد من الصور الرائعة.\n\nفقط 9.99 دولار، إنشاء 100 صورة يوميًا لمدة شهر! هل أنت مستعد لإطلاق المزيد من الإبداع؟`,
-  },
   'tutorial message': {
-    en: `📸 How to Use FotoLabs.ai\n\nUpload Photos: Send ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} photos of yourself to create your personalized model.\nGet Samples: Once your model is ready, you'll receive a few sample images for free.\nFree Trial: You can generate ${DEFAULT_CREDITS} images for free.\nGenerate Images: Get a membership and start generating images by sending prompts like "handsome man as a superhero" or "gorgeous woman in Paris."\nIt's that easy! Ready to explore? 😊`,
-    pt: `📸 Como Usar o FotoLabs.ai\n\nEnviar Fotos: Envie ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} fotos suas para criar seu modelo personalizado.\nObter Amostras: Quando seu modelo estiver pronto, você receberá algumas imagens de amostra gratuitamente.\nTeste Gratuito: Você pode gerar ${DEFAULT_CREDITS} imagens gratuitamente.\nGerar Imagens: Adquira uma assinatura e comece a gerar imagens enviando solicitações como "homem bonito como um super-herói" ou "mulher deslumbrante em Paris."\nÉ tão fácil! Pronto para explorar? 😊`,
-    ar: `📸 كيفية استخدام FotoLabs.ai\n\nتحميل الصور: قم بتحميل ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} صورة لنفسك لإنشاء نموذج مخصص.\nالحصول على عينات: بمجرد أن يكون نموذجك جاهزًا، ستتلقى بعض الصور النموذجية مجانًا.\nالنسخة التجريبية المجانية: يمكنك إنشاء ${DEFAULT_CREDITS} صورة مجانًا.\nإنشاء الصور: احصل على عضوية وابدأ في إنشاء الصور بإرسال موجهات مثل "رجل وسيم كأنه بطل خارق" أو "امرأة رائعة في باريس."\nالأمر بهذه السهولة! جاهز للاستكشاف؟ 😊`,
+    en: `📸 How to Use FotoLabs.ai\n\nUpload Photos: Send ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} photos of yourself to create your personalized model.\nGet Samples: Once your model is ready, you'll receive a few sample images for free.\nPricing: Create unlimited photos of your AI self in any scenario you can imagine for just ~$29.99~ $19.99/month.\nGenerate Images: Start generating images by sending prompts like "handsome man as a superhero" or "gorgeous woman in Paris."\nIt's that easy! Ready to explore? 😊`,
+    pt: `📸 Como Usar o FotoLabs.ai\n\nEnviar Fotos: Envie ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} fotos suas para criar seu modelo personalizado.\nObter Amostras: Quando seu modelo estiver pronto, você receberá algumas imagens de amostra gratuitamente.\nPreços: Crie fotos ilimitadas de sua versão de IA em qualquer cenário que você puder imaginar por apenas ~$29,99~ $19,99/mês.\nGerar Imagens: Comece a gerar imagens enviando prompts como "homem bonito como um super-herói" ou "mulher deslumbrante em Paris."\nÉ tão fácil! Pronto para explorar? 😊`,
+    ar: `📸 كيفية استخدام FotoLabs.ai\n\nتحميل الصور: قم بتحميل ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} صورة لنفسك لإنشاء نموذج مخصص.\nالحصول على عينات: بمجرد أن يكون نموذجك جاهزًا، ستتلقى بعض الصور النموذجية مجانًا.\nالتسعير: قم بإنشاء صور غير محدودة لنفسك بنسخة الذكاء الاصطناعي في أي سيناريو يمكنك تخيله مقابل ~$29.99~ $19.99/شهر.\nإنشاء الصور: ابدأ في إنشاء الصور عن طريق إرسال موجهات مثل "رجل وسيم كبطل خارق" أو "امرأة رائعة في باريس."\nالأمر بهذه السهولة! جاهز للاستكشاف؟ 😊`,
   },
-
   'generating image': {
     en: 'Generating image, please wait 30 seconds...',
     pt: 'Gerando imagem, por favor, aguarde 30 segundos...',
@@ -251,30 +228,6 @@ export const TRANSLATION_MAP: Record<
     en: 'Your model has been successfully generated! :D',
     pt: 'Seu modelo foi gerado com sucesso! :D',
     ar: 'تم إنشاء النموذج الخاص بك بنجاح! :D',
-  },
-  'model generated request prompt': {
-    en: `Your model has been successfully generated! :D
-Send a prompt and watch the magic happen.
-
-Example: man sitting on a park bench or woman posing for a candid photo at office`,
-    pt: `Seu modelo foi gerado com sucesso! :D
-Envie um prompt e veja a mágica acontecer.
-
-Exemplo: homem sentado em um banco de parque ou mulher posando para uma foto espontânea no escritório`,
-    ar: `تم إنشاء النموذج الخاص بك بنجاح! :D
-أرسل موجهًا وشاهد السحر يحدث.
-
-مثال: رجل يجلس على مقعد في الحديقة أو امرأة تتظاهر لالتقاط صورة عفوية في المكتب`,
-  },
-  'sample photos': {
-    en: 'Here you go, some sample photos, some blurred..',
-    pt: 'Aqui estão algumas fotos de amostra, algumas desfocadas...',
-    ar: 'إليك بعض الصور النموذجية، بعضها ضبابية..',
-  },
-  'unpaid user options': {
-    en: 'Wanna make your own photos?',
-    pt: 'Quer fazer suas próprias fotos?',
-    ar: 'هل تريد إنشاء صورك الخاصة؟',
   },
   'payment instructions': {
     en: 'Please complete payment using this link.',
@@ -306,11 +259,6 @@ Exemplo: homem sentado em um banco de parque ou mulher posando para uma foto esp
     pt: 'Tudo bem, envie uma nova solicitação. :)',
     ar: 'حسنًا، أرسل طلبًا جديدًا. :)',
   },
-  'credits remaining': {
-    en: 'Credits remaining',
-    pt: 'Créditos restantes',
-    ar: 'الرصيد المتبقي',
-  },
   'photo received': {
     en: 'Photos uploaded',
     pt: 'Fotos carregadas',
@@ -320,6 +268,14 @@ Exemplo: homem sentado em um banco de parque ou mulher posando para uma foto esp
     en: 'Finish Upload',
     pt: 'Concluir Upload',
     ar: 'إنهاء الرفع',
+  },
+  'new user paywall': {
+    en: `*Love these AI-generated photos of you?*
+You can create unlimited photos of yourself in any scenario you can imagine for just ~$29.99~ $19.99/month.`,
+    pt: `*Gostou dessas fotos geradas por IA de você?*
+Você pode criar fotos ilimitadas de si mesmo em qualquer cenário que puder imaginar por apenas ~$29,99~ $19,99/mês.`,
+    ar: `*أعجبتك هذه الصور التي تم إنشاؤها بواسطة الذكاء الاصطناعي لك؟*
+يمكنك إنشاء صور غير محدودة لنفسك في أي سيناريو يمكنك تخيله مقابل ~$29.99~ $19.99/شهر.`,
   },
   paywall: {
     en: 'Your free trial/membership has expired. Please purchase a membership to continue using FotoLabs AI.',

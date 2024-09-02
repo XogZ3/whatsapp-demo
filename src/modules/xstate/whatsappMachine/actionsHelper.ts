@@ -10,7 +10,6 @@ import {
 } from '@/modules/whatsapp/whatsapp';
 import {
   DAILY_CREDITS_LIMIT,
-  DEFAULT_CREDITS,
   TRAINING_IMAGES_LOWER_LIMIT,
 } from '@/utils/constants';
 import { getBaseUrl } from '@/utils/helpers';
@@ -50,13 +49,7 @@ export async function notifyPendingPhotos(
   await sendMessageToWhatsapp(payload);
 }
 
-export async function getCreditsAvailability(
-  clientid: string,
-  currentState: string,
-) {
-  // Don't check credits usage for free trial, checking it in freeTrialCredits in context instead
-  if (currentState === 'modelGeneratedFreeTrial') return true;
-
+export async function getCreditsAvailability(clientid: string) {
   const wabaId = process.env.WABA_ID;
   const clientDoc = firestore
     .collection('apps')
@@ -96,13 +89,7 @@ export async function getCreditsAvailability(
   }
   return false;
 }
-export async function getMembershipAvailability(
-  clientid: string,
-  currentState: string,
-) {
-  // Don't check membership for free trial
-  if (currentState === 'modelGeneratedFreeTrial') return true;
-
+export async function getMembershipAvailability(clientid: string) {
   const wabaId = process.env.WABA_ID;
   const clientDoc = firestore
     .collection('apps')
@@ -219,7 +206,6 @@ export async function setUserStateAndInform({
   const stateJSON = {
     status: 'stopped',
     context: {
-      freeTrialCredits: DEFAULT_CREDITS,
       language: language || 'english',
       modelGenerated: true,
     },
@@ -313,7 +299,7 @@ export async function checkTrainingJobForClient(clientid: string) {
     await setUserStateAndInform({
       clientid,
       language,
-      stateValue: 'modelGeneratedFreeTrial',
+      stateValue: 'paywall',
       reason: 'model already exists',
     });
     return;
@@ -354,7 +340,7 @@ export async function checkTrainingJobForClient(clientid: string) {
         await setUserStateAndInform({
           clientid,
           language,
-          stateValue: 'modelGeneratedFreeTrial',
+          stateValue: 'paywall',
           reason: 'model already exists',
         });
         break;

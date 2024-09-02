@@ -1,8 +1,8 @@
 import { DateTime } from 'luxon';
 import { assign } from 'xstate';
 
+import { getAgeAndGenderFromImageURL } from '@/modules/openai';
 import type { ICreateMessagePayload } from '@/modules/whatsapp/whatsapp';
-import { DEFAULT_CREDITS } from '@/utils/constants';
 import { getImprovedPromptFromGroq } from '@/utils/groq';
 import {
   callTrainingAPI,
@@ -13,6 +13,7 @@ import {
   incrementCreditsUsedTodayAndSetProcessingFlagFalse,
   setProcessingFlag,
   setRetriedFlag,
+  setUserAgeAndGender,
   setUserLanguage,
   setUserState,
 } from '@/utils/ReplyHelper/FirebaseHelpers';
@@ -27,11 +28,7 @@ import {
   processAndSendImages,
   setUserStateAndInform,
 } from './actionsHelper';
-import type {
-  IMachineConfig,
-  IMachineContext,
-  IWhatsappInstance,
-} from './types';
+import type { IMachineConfig, IWhatsappInstance } from './types';
 
 async function sendMessage(
   whatsappInstance: IWhatsappInstance,
@@ -54,7 +51,6 @@ export const actionsFactory = (config: IMachineConfig): any => {
       message: () => '',
       latestPrompt: () => '',
       latestImprovedPrompt: () => '',
-      freeTrialCredits: () => DEFAULT_CREDITS,
       modelGenerated: () => false,
       language: () => 'english',
     }),
@@ -238,6 +234,32 @@ export const actionsFactory = (config: IMachineConfig): any => {
           }
         });
     },
+    saveAgeAndGenderUsingOpenAI: async () => {
+      const { clientid } = config.userMetaData;
+      try {
+        const imageUrls = await getTrainingImageURLs(clientid);
+        if (imageUrls.length === 0) {
+          throw new Error('No training image URLs available.');
+        }
+        const randomIndex = Math.floor(Math.random() * imageUrls.length);
+        const randomImageUrl = imageUrls[randomIndex];
+
+        if (!randomImageUrl) {
+          throw new Error('Failed to select a random image URL.');
+        }
+        // Step 3: Get age and gender using the OpenAI API
+        const result = await getAgeAndGenderFromImageURL(randomImageUrl);
+        if (result) {
+          // Step 4: Save the age and gender to Firebase
+          await setUserAgeAndGender(clientid, result.age, result.gender);
+          console.log('Age and gender saved successfully.');
+        } else {
+          console.warn('Failed to get age and gender from the image.');
+        }
+      } catch (error) {
+        console.error('Error in saveAgeAndGenderUsingOpenAI:', error);
+      }
+    },
     notifyModelExists: async (event: any) => {
       const { clientid, language = event?.context?.language } =
         config.userMetaData;
@@ -287,30 +309,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const message = getTranslation('model generated', language);
       await sendMessage(config.whatsappInstance, message, clientid);
     },
-    sendSamplePhotos: async (event: any) => {
-      const { clientid, language = event?.context?.language } =
-        config.userMetaData;
-      const message = getTranslation('sample photos', language);
-      await sendMessage(config.whatsappInstance, message, clientid);
-    },
-    decrementFreeTrialCredits: assign({
-      freeTrialCredits: ({ context }: { context: IMachineContext }) =>
-        context.freeTrialCredits - 1,
-    }),
     sendPaywall: async (event: any) => {
-      const { clientid, language = event?.context?.language } =
-        config.userMetaData;
-      const message = getTranslation('paywall', language);
-      const payload: ICreateMessagePayload = {
-        phoneNumber: clientid,
-        quickReply: true,
-        button1id: 'get membership',
-        button1: getTranslation('get membership', language),
-        msgBody: message,
-      };
-      await config.whatsappInstance.send(payload);
-    },
-    sendStripeLink: async (event: any) => {
       const { clientid, language = event?.context?.language } =
         config.userMetaData;
       const { membershipEndDate } = await getUserFields(clientid);
@@ -331,13 +330,12 @@ export const actionsFactory = (config: IMachineConfig): any => {
 
       // Allow buying membership
       const stripeLink = await createStripeLink(clientid);
-      const message = `${getTranslation('payment instructions', language)}
+      const message = `${getTranslation('new user paywall', language)}
+
 ${stripeLink}`;
       const payload: ICreateMessagePayload = {
         phoneNumber: clientid,
-        quickReply: true,
-        button1id: 'cancel',
-        button1: getTranslation('cancel', language),
+        text: true,
         msgBody: message,
       };
       await config.whatsappInstance.send(payload);
@@ -520,13 +518,13 @@ ${stripeLink}`;
 
     sendPromptedPhoto: async (event: any) => {
       const {
+        age = 26,
+        gender = 'male',
         clientid,
         language = event?.context?.language,
-        state,
       } = config.userMetaData;
-      const prompt = event?.context?.latestPrompt;
-      const stateObj = JSON.parse(state);
-      const currentState = stateObj.value;
+      const genderCommon = gender === 'male' ? 'man' : 'woman';
+      const prompt = `${age} year old ${genderCommon} ${event?.context?.latestPrompt}`;
 
       let message;
       let payload: ICreateMessagePayload;
@@ -557,8 +555,8 @@ ${stripeLink}`;
         .then(async (machineIsAvailable) => {
           if (machineIsAvailable) {
             const [hasValidMembership, hasCredits] = await Promise.all([
-              getMembershipAvailability(clientid, currentState),
-              getCreditsAvailability(clientid, currentState),
+              getMembershipAvailability(clientid),
+              getCreditsAvailability(clientid),
             ]);
 
             const canGenerateImages = hasValidMembership && hasCredits;
@@ -577,7 +575,6 @@ ${stripeLink}`;
                 const stateJSON = {
                   status: 'stopped',
                   context: {
-                    freeTrialCredits: 0,
                     language: language || 'english',
                     modelGenerated: true,
                   },

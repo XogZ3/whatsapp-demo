@@ -21,12 +21,13 @@ export interface IMachineContext {
   message: string;
   latestPrompt: string;
   latestImprovedPrompt: string;
-  freeTrialCredits: number;
   modelGenerated: boolean;
   language: Language;
 }
 
 export interface IUserMetaData {
+  age: number;
+  gender: 'male' | 'female';
   state: string;
   clientid: string;
   name?: string;

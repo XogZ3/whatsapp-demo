@@ -69,6 +69,8 @@ export type UserFieldsFirebase = {
   lastupdatedat: number;
   language: Language;
   trainingImageURLs: any;
+  age: number;
+  gender: 'male' | 'female';
   loraURL: string;
   loraFilename: string;
   trainingToken?: string;
@@ -99,6 +101,8 @@ export async function getUserFields(
     lastupdatedat,
     language,
     trainingImageURLs,
+    age,
+    gender,
     loraURL,
     loraFilename,
     creditsUsedLifetime,
@@ -120,6 +124,8 @@ export async function getUserFields(
     lastupdatedat,
     language: userLanguage,
     trainingImageURLs,
+    age,
+    gender,
     loraURL,
     loraFilename,
     creditsUsedLifetime,
@@ -152,6 +158,21 @@ export async function setDefaultUserFields(clientid: string): Promise<void> {
   };
 
   // Update the Firestore document with the new default values, merging with existing data
+  await clientDoc.set(updates, { merge: true });
+}
+
+export async function setUserAgeAndGender(
+  clientid: string,
+  age: number,
+  gender: 'male' | 'female',
+) {
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid);
+  const updates: Partial<UserFieldsFirebase> = { age, gender };
   await clientDoc.set(updates, { merge: true });
 }
 

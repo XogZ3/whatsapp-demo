@@ -6,7 +6,6 @@ export const State = Object.freeze({
   onBoarding: 'onBoarding',
   imagesIncomplete: 'imagesIncomplete',
   generatingModel: 'generatingModel',
-  modelGeneratedFreeTrial: 'modelGeneratedFreeTrial',
   paywall: 'paywall',
   photoPrompting: 'photoPrompting',
 });
@@ -44,20 +43,8 @@ export const handleMessage = async (
     },
     [State.generatingModel]: {
       retry: 'RETRY',
-      'model generated': 'MODEL_GENERATED_UNPAID',
-      secret: 'SECRET',
     },
-    [State.paywall]: {
-      'get membership': 'GET_MEMBERSHIP',
-      secret: 'SECRET',
-      cancel: 'CANCEL',
-    },
-    [State.modelGeneratedFreeTrial]: {
-      prompt: 'PROMPT',
-      'use prompt': 'USE_PROMPT',
-      'improve prompt': 'IMPROVE_PROMPT',
-      fallback: 'FALLBACK',
-    },
+    [State.paywall]: {},
     [State.photoPrompting]: {
       prompt: 'PROMPT',
       'use prompt': 'USE_PROMPT',
@@ -74,8 +61,7 @@ export const handleMessage = async (
   let event;
 
   if (
-    (state === State.modelGeneratedFreeTrial ||
-      state === State.photoPrompting) &&
+    state === State.photoPrompting &&
     !['cancel', 'use prompt', 'improve prompt', 'paywall', 'fallback'].includes(
       userActionId,
     )

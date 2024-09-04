@@ -13,22 +13,28 @@ export function generateSamplePrompts({
   loraFilename: string;
 }) {
   const modelName = loraFilename.split('.')[0];
-  const genderPronoun = gender === 'male' ? 'he' : 'she';
-  const genderPronounOther = gender === 'male' ? 'his' : 'her';
-  const genderCommon = gender === 'male' ? 'man' : 'woman';
+  const genderHeShe = gender === 'male' ? 'he' : 'she';
+  const genderHisHer = gender === 'male' ? 'his' : 'her';
+  const genderManWoman = gender === 'male' ? 'man' : 'woman';
 
   const samplePrompts = [
-    `A stylish ${genderCommon} ${modelName} around ${age} years old, a travel blogger with sun-kissed skin and tousled beach waves, sitting on a tropical beach at sunset. ${genderPronoun} is wearing crisp white clothes and holding up a weathered postcard with 'FotoLabs AI' written clearly and legibly in neat handwriting. The scene is bathed in warm, golden hour lighting.`,
+    `A stylish ${genderManWoman} ${modelName} around ${age} years old, a travel blogger with sun-kissed skin and tousled beach waves, sitting on a tropical beach at sunset. ${genderHeShe} is wearing crisp white clothes and holding up a weathered postcard with only "FotoLabs AI" written clearly and legibly in neat handwriting. The scene is bathed in warm, golden hour lighting.`,
 
-    `A portrait of ${modelName}, who is ${age} years old, facing the camera directly. Soft side lighting casts gentle shadows on ${genderPronounOther} serene, neutral expression. The mood is calm and focused on ${genderPronounOther} striking eyes, with vibrant colors.`,
+    `Long photo shot of ${genderManWoman} ${modelName}, Portrait photography, professional boudoir photo shoot, saloon ${genderManWoman} cosplay, 1800’s aesthetic, beautiful body type, cute face and smile, beautiful skin, saloon background, dust-filled sun rays sun coming through window at an angle, golden-hour light, realistic, stand, very high angle shot, hyper realistic, ultra-detailed, 8k, , realism, Super photoreal, hyperreal, photorealistic, colored photo, very close shot, open mouth`,
 
     `Photograph of ${modelName}, who is ${age} years old, with short hair. BREAK black sweater BREAK shopping in an outdoor market, autumn, extremely intricate details, masterpiece, clear shadows and highlights, realistic, enhanced contrast, highly detailed skin, f/2.8, bokeh.`,
 
-    `A serious ${genderCommon} ${modelName} around ${age} years old, in a tailored suit, posing candidly for a professional photoshoot. The office lobby’s modern architecture is reflected in ${genderPronounOther} glasses.`,
+    `A serious ${genderManWoman} ${modelName} around ${age} years old, in a tailored suit, posing candidly for a professional photoshoot. The office lobby’s modern architecture is reflected in ${genderHisHer} glasses.`,
 
-    `Editorial avant-garde dramatic action pose of ${genderCommon} ${modelName}, who is ${age} years old, wearing 60s round wacky sunglasses with gemstones hanging pulling glasses down looking forward, in Italy at sunset with a vibrant illustrated jacket surrounded by illustrations of flowers, smoke, flames, ice cream, sparkles, rock and roll.`,
+    `Editorial avant-garde dramatic action pose of ${genderManWoman} ${modelName}, who is ${age} years old, wearing 60s round wacky sunglasses with gemstones hanging pulling glasses down looking forward, in Italy at sunset with a vibrant illustrated jacket surrounded by illustrations of flowers, smoke, flames, ice cream, sparkles, rock and roll.`,
 
-    `A charismatic speaker, around ${age} years old, is captured mid-speech. ${modelName} wears [rounded rectangular glasses with dark rims]. ${genderPronoun} is holding a black microphone in the right hand, speaking passionately. ${genderPronounOther} expression is animated as ${genderPronoun} gestures with the left hand. Dressed in [a light blue sweater over a white t-shirt]. The background is blurred, showcasing a white banner with logos and text, including ["FotoLabs AI"], suggesting a professional [conference] setting.`,
+    `a beautiful cute joyful and playful ${age} year old ${genderManWoman} ${modelName} view from bottom, dressed in a cozy sherpa jacket over a turtleneck and skinny jeans,in the street of paris at night eiffel tower in background,detailed masterpiece most beautiful artwork in the world Ultrarealistic,Sony A7,Nostalgic lighting`,
+
+    // Backup Prompts
+
+    // `A charismatic speaker, around ${age} years old, is captured mid-speech. ${modelName} wears [rounded rectangular glasses with dark rims]. ${genderHeShe} is holding a black microphone in the right hand, speaking passionately. ${genderHisHer} expression is animated as ${genderHeShe} gestures with the left hand. Dressed in [a light blue sweater over a white t-shirt]. The background is blurred, showcasing a white banner with logos and text, including ["FotoLabs AI"], suggesting a professional [conference] setting.`,
+
+    // `Candid image, photography, natural textures, highly realistic light, editorial, Capture the essence of 90s studio fashion editorials with a contemporary twist. Envision a minimalist studio with bold, clean backgrounds, showcasing ${gender} ${modelName} as the centerpiece. ${genderHeShe} is dressed in vibrant, postmodernist ensembles, mixing textures and bright colors. Create dramatic lighting producing sharp, contrasting shadows. Emulate the visual quality of a high-end medium format camera, with a wide dynamic range and crisp details. Emphasize textures in clothing and skin for a hyperrealistic finish. The overall composition should exude a blend of retro glamour and modern sophistication.nostalgic scenes, medium body shot, mid distance ${gender} wide shot`,
   ];
 
   return samplePrompts;

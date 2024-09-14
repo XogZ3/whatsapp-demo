@@ -41,19 +41,18 @@ async function handleSubscriptionEvent(event: Stripe.Event) {
   }
 
   // Save subscription data to a separate collection
-  await firestore
-    .collection('subscriptions')
-    .doc(subscriptionId)
-    .set(
-      {
-        subscriptionId,
-        status: subscription.status,
-        currentPeriodStart: subscription.current_period_start * 1000,
-        currentPeriodEnd: subscription.current_period_end * 1000,
-        planId: subscription.items.data[0]?.price.id,
-      },
-      { merge: true },
-    );
+  await firestore.runTransaction(async (transaction) => {
+    const subscriptionRef = firestore
+      .collection('subscriptions')
+      .doc(subscriptionId);
+    const subscriptionDoc = await transaction.get(subscriptionRef);
+
+    if (!subscriptionDoc.exists) {
+      transaction.set(subscriptionRef, updates);
+    } else {
+      transaction.update(subscriptionRef, updates);
+    }
+  });
 
   console.log(
     `Subscription ${event.type} processed for subscriptionId: ${subscriptionId}`,
@@ -76,7 +75,10 @@ async function handleInvoiceEvent(event: Stripe.Event) {
   };
 
   // Save invoice data
-  await firestore.collection('invoices').doc(invoice.id).set(invoiceData);
+  await firestore.runTransaction(async (transaction) => {
+    const invoiceRef = firestore.collection('invoices').doc(invoice.id);
+    transaction.set(invoiceRef, invoiceData);
+  });
 
   console.log(
     `Invoice ${event.type} processed for subscriptionId: ${subscriptionId}`,
@@ -105,41 +107,71 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
     return;
   }
 
-  // Update the subscription document with the clientid
-  await firestore.collection('subscriptions').doc(subscriptionId).update({
-    clientid,
+  let subscriptionData: Stripe.Subscription;
+
+  await firestore.runTransaction(async (transaction) => {
+    const subscriptionRef = firestore
+      .collection('subscriptions')
+      .doc(subscriptionId);
+    const clientDocRef = firestore
+      .collection('apps')
+      .doc(process.env.WABA_ID!)
+      .collection('clients')
+      .doc(clientid);
+
+    const subscriptionDoc = await transaction.get(subscriptionRef);
+    if (!subscriptionDoc.exists) {
+      transaction.set(subscriptionRef, { clientid, subscriptionId });
+    } else {
+      transaction.update(subscriptionRef, { clientid });
+    }
+
+    subscriptionData = await stripe.subscriptions.retrieve(subscriptionId);
+    if (subscriptionData) {
+      const stateJSON = {
+        status: 'stopped',
+        context: {
+          language: language || 'english',
+          modelGenerated: true,
+        },
+        value: 'photoPrompting',
+        children: {},
+        historyValue: {},
+        tags: [],
+      };
+
+      const updates: Partial<UserFieldsFirebase> = {
+        subscriptionId,
+        state: JSON.stringify(stateJSON),
+        paid: subscriptionData.status === 'active',
+        subscriptionStatus: subscriptionData.status,
+        membershipStartDate: subscriptionData.current_period_start,
+        membershipEndDate: subscriptionData.current_period_end,
+      };
+
+      transaction.update(clientDocRef, updates);
+    }
   });
 
-  // Update client document with subscription info
-  const clientDocRef = firestore
-    .collection('apps')
-    .doc(process.env.WABA_ID!)
-    .collection('clients')
-    .doc(clientid);
+  const formattedDate = format(
+    new Date(subscriptionData!.current_period_end * 1000),
+    'MMMM d, yyyy',
+  );
 
-  const subscriptionData = await stripe.subscriptions.retrieve(subscriptionId);
+  const message = `${getTranslation('payment confirmation', language)} ${formattedDate}`;
+  const payload: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    text: true,
+    msgBody: message,
+  };
 
-  if (subscriptionData) {
-    const stateJSON = {
-      status: 'stopped',
-      context: {
-        language: language || 'english',
-        modelGenerated: true,
-      },
-      value: 'photoPrompting',
-      children: {},
-      historyValue: {},
-      tags: [],
-    };
-    const updates: Partial<UserFieldsFirebase> = {
-      subscriptionId,
-      state: JSON.stringify(stateJSON),
-      paid: subscriptionData.status === 'active',
-      subscriptionStatus: subscriptionData.status,
-      membershipStartDate: subscriptionData.current_period_start,
-      membershipEndDate: subscriptionData.current_period_end,
-    };
-    await clientDocRef.update(updates);
+  if (status === 'complete' && subscriptionData!.status === 'active') {
+    await sendMessageToWhatsapp(payload);
+    await sendPromptingInstruction(clientid, language);
+    await sendPurchaseToFBCoversionAPI(clientid);
+    console.log(
+      `Checkout session completed for clientid: ${clientid}, subscriptionId: ${subscriptionId}`,
+    );
   }
 
   // Update all related invoices with the clientid
@@ -153,26 +185,6 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
     batch.update(doc.ref, { clientid });
   });
   await batch.commit();
-
-  const formattedDate = format(
-    new Date(subscriptionData.current_period_end),
-    'MMMM d, yyyy',
-  );
-  const message = `${getTranslation('payment confirmation', language)} ${formattedDate}`;
-  const payload: ICreateMessagePayload = {
-    phoneNumber: clientid,
-    text: true,
-    msgBody: message,
-  };
-
-  if (status === 'complete' && subscriptionData.status === 'active') {
-    await sendMessageToWhatsapp(payload);
-    await sendPromptingInstruction(clientid, language);
-    await sendPurchaseToFBCoversionAPI(clientid);
-    console.log(
-      `Checkout session completed for clientid: ${clientid}, subscriptionId: ${subscriptionId}`,
-    );
-  }
 }
 
 export async function POST(req: NextRequest) {

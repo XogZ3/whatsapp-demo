@@ -2,9 +2,15 @@ import console from 'console';
 import { DateTime } from 'luxon';
 import { assign } from 'xstate';
 
-import { getAgeAndGenderFromImageURL } from '@/modules/openai';
+import {
+  getAgeAndGenderFromImageURLUsingGroq,
+  getImprovedPromptFromGroq,
+} from '@/modules/groq';
+import {
+  type GenderAndAgeType,
+  getAgeAndGenderFromImageURLUsingOpenAI,
+} from '@/modules/openai';
 import type { ICreateMessagePayload } from '@/modules/whatsapp/whatsapp';
-import { getImprovedPromptFromGroq } from '@/utils/groq';
 import {
   callTrainingAPI,
   getPhotoCount,
@@ -254,7 +260,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
           }
         });
     },
-    saveAgeAndGenderUsingOpenAI: async () => {
+    saveAgeAndGender: async () => {
       const { clientid } = config.userMetaData;
       try {
         const imageUrls = await getTrainingImageURLs(clientid);
@@ -267,10 +273,17 @@ export const actionsFactory = (config: IMachineConfig): any => {
         if (!randomImageUrl) {
           throw new Error('Failed to select a random image URL.');
         }
-        // Step 3: Get age and gender using the OpenAI API
-        const result = await getAgeAndGenderFromImageURL(randomImageUrl);
+        // Step 1: Try using Groq API
+        let result: GenderAndAgeType | null;
+        result = await getAgeAndGenderFromImageURLUsingGroq(randomImageUrl);
+        // Step 2: If Groq API fails, try using OpenAI API
+        if (!result) {
+          console.warn(
+            'Groq API failed to return valid age and gender. Falling back to OpenAI API.',
+          );
+          result = await getAgeAndGenderFromImageURLUsingOpenAI(randomImageUrl);
+        }
         if (result) {
-          // Step 4: Save the age and gender to Firebase
           await setUserAgeAndGender(clientid, result.age, result.gender);
           console.log('Age and gender saved successfully.');
         } else {

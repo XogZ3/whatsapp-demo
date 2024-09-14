@@ -57,6 +57,7 @@ export type TranslationKeys =
   | 'reached limit'
   | 'unknown error'
   | 'support email'
+  | 'payment failed'
   | 'new user paywall';
 
 // Define the translation map structure directly using Record
@@ -296,6 +297,11 @@ Você pode criar fotos ilimitadas de si mesmo em qualquer cenário que puder ima
     en: 'Uh-oh. Something went wrong, please try again after some time.',
     pt: 'Ops. Algo deu errado, por favor tente novamente mais tarde.',
     ar: 'أوه، حدث خطأ ما، يرجى المحاولة مرة أخرى بعد بعض الوقت.',
+  },
+  'payment failed': {
+    en: 'Payment failed. Please try again or contact support if the issue persists.',
+    pt: 'O pagamento falhou. Por favor, tente novamente ou entre em contato com o suporte se o problema persistir.',
+    ar: 'فشل الدفع. يرجى المحاولة مرة أخرى أو الاتصال بالدعم إذا استمرت المشكلة.',
   },
   'support email': {
     en: `Please email us for support at ${process.env.NEXT_PUBLIC_EMAIL}`,

@@ -83,6 +83,8 @@ export type UserFieldsFirebase = {
   membershipEndDate: number;
   lastStripeEventId: string;
   retriedModelGenFlag: boolean;
+  subscriptionId: string;
+  subscriptionStatus: string;
 };
 
 export async function getUserFields(
@@ -114,6 +116,8 @@ export async function getUserFields(
     membershipEndDate,
     lastStripeEventId,
     retriedModelGenFlag,
+    subscriptionId,
+    subscriptionStatus,
   } = clientData.data() || {};
   const userLanguage = language || getLanguageFromPhoneNumber(clientid);
 
@@ -137,6 +141,8 @@ export async function getUserFields(
     membershipEndDate,
     lastStripeEventId,
     retriedModelGenFlag,
+    subscriptionId,
+    subscriptionStatus,
   };
 }
 

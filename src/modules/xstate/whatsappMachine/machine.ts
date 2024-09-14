@@ -78,10 +78,7 @@ export const machineFactory = (config: IMachineConfig): any => {
               {
                 guard: not('modelAlreadyGenerated'),
                 target: 'generatingModel',
-                actions: [
-                  'callStartTrainingAPI',
-                  'saveAgeAndGenderUsingOpenAI',
-                ],
+                actions: ['callStartTrainingAPI', 'saveAgeAndGender'],
               },
               {
                 actions: ['notifyModelExists'],

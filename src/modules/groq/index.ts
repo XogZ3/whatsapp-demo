@@ -1,5 +1,7 @@
 import Groq from 'groq-sdk';
 
+import type { GenderAndAgeType } from '../openai';
+
 export const getGroqResult = async (
   query: string,
   systemPrompt: string,
@@ -43,4 +45,58 @@ Examples:
 3. "Fashion model, blonde woman, green eyes. White shirt, blue jeans. Black background. Studio lighting, professional shot. Sharp focus on facial features. Minimalist style, high contrast. Fashion magazine aesthetic."
 Respond only with the generated image prompt, without any additional explanation or commentary.`;
   return getGroqResult(query, systemPrompt, temperature);
+};
+
+// Model currently does not support JSON structured response
+export const getAgeAndGenderFromImageURLUsingGroq = async (
+  imageURL: string,
+): Promise<GenderAndAgeType | null> => {
+  const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+  const chatCompletion = await groq.chat.completions.create({
+    messages: [
+      {
+        role: 'user',
+        content: [
+          {
+            type: 'text',
+            text: 'Analyze this image and provide the gender and approximate age of the person in the image. If multiple people are present, focus on the most prominent individual. Give the result in a json format with gender (male or female) and age (number)',
+          },
+          {
+            type: 'image_url',
+            image_url: {
+              url: imageURL,
+            },
+          },
+        ],
+      },
+    ],
+    model: 'llava-v1.5-7b-4096-preview',
+    temperature: 0,
+    max_tokens: 1024,
+    top_p: 1,
+    stream: false,
+    stop: null,
+  });
+  // Asserting gender and age JSON response
+  try {
+    const result = JSON.parse(chatCompletion.choices[0]?.message?.content!);
+    if (
+      result &&
+      (result.gender === 'male' || result.gender === 'female') &&
+      typeof result.age === 'number'
+    ) {
+      // Return the extracted gender and age
+      return {
+        gender: result.gender,
+        age: result.age,
+      };
+    }
+    return null;
+  } catch (error) {
+    console.error(
+      'Error parsing response in getAgeAndGenderFromImageURLUsingGroq:',
+      error,
+    );
+    return null;
+  }
 };

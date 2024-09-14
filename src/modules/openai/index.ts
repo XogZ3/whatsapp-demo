@@ -12,7 +12,7 @@ const GenderAndAge = z.object({
 });
 export type GenderAndAgeType = z.infer<typeof GenderAndAge>;
 
-export async function getAgeAndGenderFromImageURL(
+export async function getAgeAndGenderFromImageURLUsingOpenAI(
   imageURL: string,
 ): Promise<GenderAndAgeType | null> {
   try {

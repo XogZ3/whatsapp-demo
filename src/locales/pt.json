@@ -87,5 +87,22 @@
     "button_loading": "Carregando...",
     "button_cancelling": "Cancelando...",
     "button_return_to_whatsapp": "Voltar ao WhatsApp"
+  },
+  "RequestRefund": {
+    "header": "Cancelar Assinatura",
+    "danger": "Zona de Perigo!",
+    "instruction": "Você pode cancelar sua assinatura a qualquer momento. Por favor, insira o número do WhatsApp que você está usando com o FotoLabs AI",
+    "label": "Número do WhatsApp com código do país",
+    "subscription_header": "Informações da Assinatura",
+    "start_date": "Data de Início:",
+    "end_date": "Data de Término:",
+    "subscription_note_1": "Observe que sua assinatura é válida até",
+    "subscription_note_2": ". Você NÃO receberá nenhum reembolso.",
+    "subscription_note_3": "Após o cancelamento bem-sucedido, você não será cobrado no mês seguinte.",
+    "button_get_subscription_info": "Obter Informações da Assinatura",
+    "button_cancel_subscription": "Cancelar Assinatura",
+    "button_loading": "Carregando...",
+    "button_cancelling": "Cancelando...",
+    "button_return_to_whatsapp": "Voltar ao WhatsApp"
   }
 }

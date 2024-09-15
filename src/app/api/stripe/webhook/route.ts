@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import { DateTime } from 'luxon';
 import { type NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
@@ -26,8 +27,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
 async function handleSubscriptionEvent(event: Stripe.Event) {
   const subscription = event.data.object as Stripe.Subscription;
   const subscriptionId = subscription.id;
-
-  const updates: any = {
+  const { clientid } = subscription?.metadata || null;
+  let updates: any;
+  updates = {
     subscriptionId,
     subscriptionStatus: subscription.status,
     membershipStartDate: subscription.current_period_start * 1000,
@@ -51,6 +53,46 @@ async function handleSubscriptionEvent(event: Stripe.Event) {
       transaction.set(subscriptionRef, updates);
     } else {
       transaction.update(subscriptionRef, updates);
+    }
+
+    const subscriptionData = subscriptionDoc.data();
+
+    if (clientid) {
+      const clientDocRef = firestore
+        .collection('apps')
+        .doc(process.env.WABA_ID!)
+        .collection('clients')
+        .doc(clientid);
+
+      const clientDoc = (await transaction.get(clientDocRef)).data();
+
+      const stateJSON = {
+        status: 'stopped',
+        context: {
+          language: clientDoc?.language || 'english',
+          modelGenerated: true,
+        },
+        value: 'photoPrompting',
+        children: {},
+        historyValue: {},
+        tags: [],
+      };
+
+      updates = {
+        subscriptionId,
+        state: JSON.stringify(stateJSON),
+        paid: subscriptionData?.status === 'active',
+        processing: false,
+        creditsUsedToday: 0,
+        creditsResetDate: DateTime.now().toMillis(),
+        subscriptionStatus: subscriptionData?.status,
+        membershipStartDate:
+          (subscriptionData?.current_period_start ?? 0) * 1000,
+        membershipEndDate: (subscriptionData?.current_period_end ?? 0) * 1000,
+        lastStripeEventId: subscriptionId,
+      };
+
+      transaction.update(clientDocRef, updates);
     }
   });
 
@@ -90,6 +132,7 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
   const session = event.data.object as Stripe.Checkout.Session;
   const clientid = session.metadata?.clientid;
   const subscriptionId = session.subscription as string;
+  const customerId = session.customer as string;
 
   const { id, status } = session;
   const { language = 'english', lastStripeEventId } = await getUserFields(
@@ -141,12 +184,17 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
       };
 
       const updates: Partial<UserFieldsFirebase> = {
+        customerId,
         subscriptionId,
         state: JSON.stringify(stateJSON),
         paid: subscriptionData.status === 'active',
+        processing: false,
+        creditsUsedToday: 0,
+        creditsResetDate: DateTime.now().toMillis(),
         subscriptionStatus: subscriptionData.status,
-        membershipStartDate: subscriptionData.current_period_start,
-        membershipEndDate: subscriptionData.current_period_end,
+        membershipStartDate: subscriptionData.current_period_start * 1000,
+        membershipEndDate: subscriptionData.current_period_end * 1000,
+        lastStripeEventId: id,
       };
 
       transaction.update(clientDocRef, updates);

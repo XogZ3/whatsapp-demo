@@ -83,6 +83,7 @@ export type UserFieldsFirebase = {
   membershipEndDate: number;
   lastStripeEventId: string;
   retriedModelGenFlag: boolean;
+  customerId: string;
   subscriptionId: string;
   subscriptionStatus: string;
 };
@@ -116,6 +117,7 @@ export async function getUserFields(
     membershipEndDate,
     lastStripeEventId,
     retriedModelGenFlag,
+    customerId,
     subscriptionId,
     subscriptionStatus,
   } = clientData.data() || {};
@@ -141,6 +143,7 @@ export async function getUserFields(
     membershipEndDate,
     lastStripeEventId,
     retriedModelGenFlag,
+    customerId,
     subscriptionId,
     subscriptionStatus,
   };

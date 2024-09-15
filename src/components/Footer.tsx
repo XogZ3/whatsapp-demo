@@ -76,6 +76,18 @@ export function Footer() {
           href: `mailto:${AppConfig.email}`,
           description: `${t('Title_2.Email.description')}`,
         },
+        {
+          id: 'cancel-subscription',
+          label: `${t('Title_2.CancelSubscription.label')}`,
+          href: '/cancel-subscription',
+          description: `${t('Title_2.CancelSubscription.description')}`,
+        },
+        {
+          id: 'request-refund',
+          label: `${t('Title_2.RequestRefund.label')}`,
+          href: '/request-refund',
+          description: `${t('Title_2.RequestRefund.description')}`,
+        },
       ],
     },
   ];

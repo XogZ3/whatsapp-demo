@@ -82,12 +82,6 @@ export function Footer() {
           href: '/cancel-subscription',
           description: `${t('Title_2.CancelSubscription.description')}`,
         },
-        {
-          id: 'request-refund',
-          label: `${t('Title_2.RequestRefund.label')}`,
-          href: '/request-refund',
-          description: `${t('Title_2.RequestRefund.description')}`,
-        },
       ],
     },
   ];

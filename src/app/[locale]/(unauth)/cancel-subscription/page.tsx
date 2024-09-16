@@ -30,9 +30,8 @@ export default function CancelSubscriptionPage() {
   // };
 
   useEffect(() => {
-    if (message === 'Subscription successfully canceled.')
-      setCancellationStatus(true);
-  }, [message]);
+    if (message === t('subscription_cancelled')) setCancellationStatus(true);
+  }, [message, t]);
 
   const getSubscription = async (clientid: any) => {
     setLoading(true);
@@ -55,7 +54,7 @@ export default function CancelSubscriptionPage() {
 
   const cancelSubscription = async () => {
     if (!subscriptionId) {
-      setMessage('No subscription ID available.');
+      setMessage(t('subscription_not_found'));
       return;
     }
 
@@ -71,10 +70,10 @@ export default function CancelSubscriptionPage() {
 
       const data = await response.json();
       console.log('[!] cancellation res: ', JSON.stringify(data, null, 2));
-      setMessage('Subscription successfully canceled.');
+      setMessage(t('subscription_cancelled'));
     } catch (error) {
       console.error('Error canceling subscription:', error);
-      setMessage('Failed to cancel subscription.');
+      setMessage(t('subscription_cancellation_failed'));
     } finally {
       setLoading(false);
     }

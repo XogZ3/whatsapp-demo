@@ -10,7 +10,6 @@ export const pages = [
   'sign-in',
   'dashboard',
   'cancel-subscription',
-  'request-refund',
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

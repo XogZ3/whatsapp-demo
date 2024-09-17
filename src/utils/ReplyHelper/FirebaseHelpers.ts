@@ -540,25 +540,24 @@ export async function createZipFromImages(
     archive.on('error', reject);
 
     // Use Promise.all to download images and generate captions concurrently
-    const tasks = imageUrls.map(async (url, index) => {
-      const imageBuffer = await downloadImage(url);
-      const caption = await generateImageCaptionUsingGroq(url);
+    Promise.all(
+      imageUrls.map(async (url, index) => {
+        const imageBuffer = await downloadImage(url);
+        const caption = await generateImageCaptionUsingGroq(url);
 
-      const extension = extname(url).toLowerCase() || '.jpeg';
+        const extension = extname(url).toLowerCase() || '.jpeg';
 
-      // Append image to the zip archive
-      archive.append(imageBuffer, {
-        name: `person${clientid}_${index + 1}${extension}`,
-      });
+        // Append image to the zip archive
+        archive.append(imageBuffer, {
+          name: `person${clientid}_${index + 1}${extension}`,
+        });
 
-      // Append caption as a text file to the zip archive
-      archive.append(caption, {
-        name: `person${clientid}_${index + 1}.txt`,
-      });
-    });
-
-    // Wait for all tasks to complete and then finalize the archive
-    Promise.all(tasks)
+        // Append caption as a text file to the zip archive
+        archive.append(caption, {
+          name: `person${clientid}_${index + 1}.txt`,
+        });
+      }),
+    )
       .then(() => archive.finalize())
       .catch(reject);
   });

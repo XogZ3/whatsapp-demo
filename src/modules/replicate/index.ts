@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import {
   getUserLoraDetails,
-  uploadFileToFirebase,
+  uploadImageFileToFirebase,
 } from '@/utils/ReplyHelper/FirebaseHelpers';
 
 const replicate = new Replicate({
@@ -56,7 +56,7 @@ export async function generateImagesWithReplicateUploadToFirebase(
           const base64Content = Buffer.from(arrayBuffer).toString('base64');
 
           const filename = `${clientid || 'test'}_${uuidv4()}_${index + 1}.png`;
-          const firebaseUrl = await uploadFileToFirebase(
+          const firebaseUrl = await uploadImageFileToFirebase(
             base64Content,
             clientid,
             foldername,

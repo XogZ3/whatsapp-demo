@@ -100,3 +100,37 @@ export const getAgeAndGenderFromImageURLUsingGroq = async (
     return null;
   }
 };
+
+export const generateImageCaptionUsingGroq = async (imageURL: string) => {
+  const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+  const chatCompletion = await groq.chat.completions.create({
+    messages: [
+      {
+        role: 'user',
+        content: [
+          {
+            type: 'text',
+            text: `Analyze this image and provide a caption of the image. If multiple people are present, focus on the most prominent individual.`,
+          },
+          {
+            type: 'image_url',
+            image_url: {
+              url: imageURL,
+            },
+          },
+        ],
+      },
+    ],
+    model: 'llava-v1.5-7b-4096-preview',
+    temperature: 0,
+    max_tokens: 1024,
+    top_p: 1,
+    stream: false,
+    stop: null,
+  });
+  const caption = chatCompletion.choices[0]?.message?.content;
+  const captionWithTriggerWord = caption
+    ?.replace(/\bman\b/g, '[trigger]')
+    .replace(/\bwoman\b/g, '[trigger]');
+  return captionWithTriggerWord!;
+};

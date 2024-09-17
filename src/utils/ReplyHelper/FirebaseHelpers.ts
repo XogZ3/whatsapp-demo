@@ -1,9 +1,13 @@
+import archiver from 'archiver';
+import axios from 'axios';
 import { FieldValue } from 'firebase-admin/firestore';
+import { extname } from 'path';
 import { Readable } from 'stream';
 import { v4 as uuidv4 } from 'uuid';
 
 import firebase from '@/modules/firebase';
 import { getStorageInstance } from '@/modules/firebase/firebase';
+import { generateImageCaptionUsingGroq } from '@/modules/groq';
 
 import { getBaseUrl, getLanguageFromPhoneNumber } from '../helpers';
 import { type Language } from '../translations';
@@ -402,7 +406,7 @@ export async function getUserLoraDetails(clientid: string): Promise<{
   };
 }
 
-export async function uploadFileToFirebase(
+export async function uploadImageFileToFirebase(
   base64Content: string,
   clientid: string,
   foldername: string,
@@ -515,4 +519,98 @@ export async function getClientFields(clientid: string) {
     .get();
 
   return clientfield;
+}
+
+async function downloadImage(url: string): Promise<Buffer> {
+  const response = await axios.get(url, { responseType: 'arraybuffer' });
+  return Buffer.from(response.data);
+}
+
+// Step 3: Create zip file from array of image URLs
+export async function createZipFromImages(
+  imageUrls: string[],
+  clientid: string,
+): Promise<Buffer> {
+  return new Promise((resolve, reject) => {
+    const archive = archiver('zip', { zlib: { level: 9 } });
+    const buffers: Buffer[] = [];
+
+    archive.on('data', (chunk: Buffer) => buffers.push(chunk));
+    archive.on('end', () => resolve(Buffer.concat(buffers)));
+    archive.on('error', reject);
+
+    // Use Promise.all to download images and generate captions concurrently
+    const tasks = imageUrls.map(async (url, index) => {
+      const imageBuffer = await downloadImage(url);
+      const caption = await generateImageCaptionUsingGroq(url);
+
+      const extension = extname(url).toLowerCase() || '.jpeg';
+
+      // Append image to the zip archive
+      archive.append(imageBuffer, {
+        name: `person${clientid}_${index + 1}${extension}`,
+      });
+
+      // Append caption as a text file to the zip archive
+      archive.append(caption, {
+        name: `person${clientid}_${index + 1}.txt`,
+      });
+    });
+
+    // Wait for all tasks to complete and then finalize the archive
+    Promise.all(tasks)
+      .then(() => archive.finalize())
+      .catch(reject);
+  });
+}
+
+// Step 4: Upload zip file to Firebase Storage
+export async function uploadZipFileToFirebase(
+  zipBuffer: Buffer,
+  zipFileName: string,
+): Promise<string> {
+  const storage = getStorageInstance();
+  const bucket = storage.bucket();
+  const filePath = `training_images_captioned_zipped/${zipFileName}`;
+  const file = bucket.file(filePath);
+
+  const readableStream = Readable.from(zipBuffer);
+
+  await new Promise((resolve, reject) => {
+    readableStream
+      .pipe(
+        file.createWriteStream({
+          metadata: { contentType: 'application/zip' },
+        }),
+      )
+      .on('error', reject)
+      .on('finish', resolve);
+  });
+
+  const [url] = await file.getSignedUrl({
+    action: 'read',
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 365, // 1 year
+  });
+
+  return url;
+}
+
+export async function createAndUploadZipFile(
+  clientid: string,
+): Promise<string> {
+  const trainingImageURLs = await getTrainingImageURLs(clientid);
+  if (trainingImageURLs.length === 0) {
+    throw new Error('No training images found.');
+  }
+
+  // Create zip file from images
+  const zipBuffer = await createZipFromImages(trainingImageURLs, clientid);
+
+  // Upload zip file to Firebase
+  const zipFileURL = await uploadZipFileToFirebase(
+    zipBuffer,
+    `person${clientid}.zip`,
+  );
+
+  return zipFileURL;
 }

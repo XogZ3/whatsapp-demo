@@ -13,6 +13,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@fal-ai/serverless-client": "^0.14.2",
     "@gsap/react": "^2.1.1",
     "@lottiefiles/lottie-player": "^2.0.4",
     "@next/third-parties": "^14.2.3",
@@ -29,6 +30,7 @@
     "@radix-ui/react-toast": "^1.2.1",
     "@t3-oss/env-nextjs": "^0.10.1",
     "@tabler/icons-react": "^3.2.0",
+    "archiver": "^7.0.1",
     "axios": "^1.7.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
@@ -70,6 +72,7 @@
     "@next/bundle-analyzer": "^14.1.4",
     "@testing-library/jest-dom": "^6.4.5",
     "@testing-library/react": "^16.0.0",
+    "@types/archiver": "^6.0.2",
     "@types/jest": "^29.5.12",
     "@types/luxon": "^3.4.2",
     "@types/node": "^20.12.4",

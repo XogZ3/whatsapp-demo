@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import {
   getUserLoraDetails,
-  uploadFileToFirebase,
+  uploadImageFileToFirebase,
 } from '@/utils/ReplyHelper/FirebaseHelpers';
 
 const runpodURL = process.env.RUNPOD_URL as string;
@@ -151,7 +151,7 @@ export async function generateImagesUploadToFirebaseGetURL(
 
       try {
         const filename = `${clientid || 'test'}_${uuidv4()}_${index + 1}.png`;
-        const firebaseUrl = await uploadFileToFirebase(
+        const firebaseUrl = await uploadImageFileToFirebase(
           base64Content,
           clientid,
           foldername,

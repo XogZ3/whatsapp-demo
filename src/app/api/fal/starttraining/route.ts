@@ -7,6 +7,7 @@ import {
   type ICreateMessagePayload,
   sendMessageToWhatsapp,
 } from '@/modules/whatsapp/whatsapp';
+import { getBaseUrl } from '@/utils/helpers';
 import {
   createAndUploadZipFile,
   getUserFields,
@@ -21,30 +22,30 @@ fal.config({
 });
 const firestore = firebase.getFirestore();
 
-// async function storeJobInFirestore(
-//   jobId: string,
-//   image_urls: string[],
-//   model_name: string,
-//   token: string,
-//   userid: string,
-// ) {
-//   try {
-//     const jobRef = firestore.collection('training_jobs').doc(jobId);
-//     await jobRef.set({
-//       image_urls,
-//       model_name,
-//       token,
-//       jobId,
-//       status: 'IN_QUEUE',
-//       userid,
-//       createdAt: Date.now(),
-//     });
-//     console.log(`Firestore document created for jobId: ${jobId}`);
-//   } catch (error) {
-//     console.error(`Error storing job in Firestore for jobId: ${jobId}`, error);
-//     throw error;
-//   }
-// }
+async function storeJobInFirestore(
+  jobId: string,
+  image_urls: string[],
+  model_name: string,
+  token: string,
+  userid: string,
+) {
+  try {
+    const jobRef = firestore.collection('training_jobs').doc(jobId);
+    await jobRef.set({
+      image_urls,
+      model_name,
+      token,
+      jobId,
+      status: 'IN_QUEUE',
+      userid,
+      createdAt: Date.now(),
+    });
+    console.log(`Firestore document created for jobId: ${jobId}`);
+  } catch (error) {
+    console.error(`Error storing job in Firestore for jobId: ${jobId}`, error);
+    throw error;
+  }
+}
 
 async function notifyModelExists(clientid: string, language: Language) {
   const wabaId = process.env.WABA_ID;
@@ -143,34 +144,33 @@ export async function POST(request: NextRequest) {
     }
 
     // Prepare training zip file
-    const images_data_url = await createAndUploadZipFile(userid);
+    const images_data_url = await createAndUploadZipFile(image_urls, userid);
 
-    return NextResponse.json({ images_data_url }, { status: 200 });
+    // Create training job
+    const { request_id } = await fal.queue.submit(
+      'fal-ai/flux-lora-fast-training',
+      {
+        input: {
+          images_data_url,
+          trigger_word: model_name,
+        },
+        webhookUrl: `${getBaseUrl()}/api/fal/webhook`,
+      },
+    );
 
-    // // Create training job
-    // const { request_id } = await fal.queue.submit(
-    //   'fal-ai/flux-lora-fast-training',
-    //   {
-    //     input: {
-    //       images_data_url,
-    //     },
-    //     webhookUrl: 'https://optional.webhook.url/for/results',
-    //   },
-    // );
+    // Store information in Firestore
+    await storeJobInFirestore(
+      request_id,
+      image_urls,
+      model_name,
+      token,
+      userid,
+    );
 
-    // // Store information in Firestore
-    // await storeJobInFirestore(
-    //   request_id,
-    //   image_urls,
-    //   model_name,
-    //   token,
-    //   userid,
-    // );
-
-    // return NextResponse.json(
-    //   { request_id, status: 'IN_QUEUE' },
-    //   { status: 200 },
-    // );
+    return NextResponse.json(
+      { request_id, status: 'IN_QUEUE' },
+      { status: 200 },
+    );
   } catch (error) {
     console.error('Error starting training job:', error);
     return NextResponse.json(

@@ -536,7 +536,6 @@ function getFileExtensionFromUrl(url: string): string {
 async function downloadImage(url: string): Promise<Buffer> {
   try {
     const response = await axios.get(url, { responseType: 'arraybuffer' });
-    console.log(`Successfully downloaded image from ${url}`);
     return Buffer.from(response.data);
   } catch (error) {
     console.error(`Failed to download image from ${url}:`, error);
@@ -554,7 +553,6 @@ export async function createZipFromImages(
 
     archive.on('data', (chunk: Buffer) => buffers.push(chunk));
     archive.on('end', () => {
-      console.log('Archive finalized successfully');
       resolve(Buffer.concat(buffers));
     });
     archive.on('error', (err) => {
@@ -574,16 +572,14 @@ export async function createZipFromImages(
       try {
         const imageBuffer = await downloadImage(url);
         const caption = await generateImageCaptionUsingGroq(url);
+        const prefixedCaption = `a photo of person${clientid}. ${caption}`;
 
         const extension = getFileExtensionFromUrl(url);
         const imageName = `person${clientid}_${index + 1}${extension}`;
         const textName = `person${clientid}_${index + 1}.txt`;
 
         archive.append(imageBuffer, { name: imageName });
-        console.log(`Added image to archive: ${imageName}`);
-
-        archive.append(caption, { name: textName });
-        console.log(`Added caption to archive: ${textName}`);
+        archive.append(prefixedCaption, { name: textName });
       } catch (error) {
         console.error(`Error processing image ${url}:`, error);
       }
@@ -591,7 +587,6 @@ export async function createZipFromImages(
 
     Promise.all(imageUrls.map((url, index) => processImage(url, index)))
       .then(() => {
-        console.log('All images processed, finalizing archive...');
         archive.finalize();
       })
       .catch((error) => {
@@ -633,9 +628,10 @@ export async function uploadZipFileToFirebase(
 }
 
 export async function createAndUploadZipFile(
+  trainingImageURLs: string[],
   clientid: string,
 ): Promise<string> {
-  const trainingImageURLs = await getTrainingImageURLs(clientid);
+  // const trainingImageURLs = await getTrainingImageURLs(clientid);
   if (trainingImageURLs.length === 0) {
     throw new Error('No training images found.');
   }

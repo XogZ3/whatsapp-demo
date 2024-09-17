@@ -1,7 +1,6 @@
 import archiver from 'archiver';
 import axios from 'axios';
 import { FieldValue } from 'firebase-admin/firestore';
-import { extname } from 'path';
 import { Readable } from 'stream';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -521,12 +520,30 @@ export async function getClientFields(clientid: string) {
   return clientfield;
 }
 
-async function downloadImage(url: string): Promise<Buffer> {
-  const response = await axios.get(url, { responseType: 'arraybuffer' });
-  return Buffer.from(response.data);
+function getFileExtensionFromUrl(url: string): string {
+  // Extract the file name from the URL
+  const urlParts = url.split('/');
+  const fileNameWithParams = urlParts[urlParts.length - 1];
+
+  // Remove query parameters
+  const fileName = fileNameWithParams?.split('?')[0];
+
+  // Extract extension
+  const extensionMatch = fileName?.match(/\.[0-9a-z]+$/i);
+  return extensionMatch ? extensionMatch[0].toLowerCase() : '.jpeg';
 }
 
-// Step 3: Create zip file from array of image URLs
+async function downloadImage(url: string): Promise<Buffer> {
+  try {
+    const response = await axios.get(url, { responseType: 'arraybuffer' });
+    console.log(`Successfully downloaded image from ${url}`);
+    return Buffer.from(response.data);
+  } catch (error) {
+    console.error(`Failed to download image from ${url}:`, error);
+    throw error;
+  }
+}
+
 export async function createZipFromImages(
   imageUrls: string[],
   clientid: string,
@@ -536,30 +553,51 @@ export async function createZipFromImages(
     const buffers: Buffer[] = [];
 
     archive.on('data', (chunk: Buffer) => buffers.push(chunk));
-    archive.on('end', () => resolve(Buffer.concat(buffers)));
-    archive.on('error', reject);
+    archive.on('end', () => {
+      console.log('Archive finalized successfully');
+      resolve(Buffer.concat(buffers));
+    });
+    archive.on('error', (err) => {
+      console.error('Archive error:', err);
+      reject(err);
+    });
+    archive.on('warning', (err) => {
+      if (err.code === 'ENOENT') {
+        console.warn('Archive warning:', err);
+      } else {
+        console.error('Archive warning:', err);
+        reject(err);
+      }
+    });
 
-    // Use Promise.all to download images and generate captions concurrently
-    Promise.all(
-      imageUrls.map(async (url, index) => {
+    const processImage = async (url: string, index: number) => {
+      try {
         const imageBuffer = await downloadImage(url);
         const caption = await generateImageCaptionUsingGroq(url);
 
-        const extension = extname(url).toLowerCase() || '.jpeg';
+        const extension = getFileExtensionFromUrl(url);
+        const imageName = `person${clientid}_${index + 1}${extension}`;
+        const textName = `person${clientid}_${index + 1}.txt`;
 
-        // Append image to the zip archive
-        archive.append(imageBuffer, {
-          name: `person${clientid}_${index + 1}${extension}`,
-        });
+        archive.append(imageBuffer, { name: imageName });
+        console.log(`Added image to archive: ${imageName}`);
 
-        // Append caption as a text file to the zip archive
-        archive.append(caption, {
-          name: `person${clientid}_${index + 1}.txt`,
-        });
-      }),
-    )
-      .then(() => archive.finalize())
-      .catch(reject);
+        archive.append(caption, { name: textName });
+        console.log(`Added caption to archive: ${textName}`);
+      } catch (error) {
+        console.error(`Error processing image ${url}:`, error);
+      }
+    };
+
+    Promise.all(imageUrls.map((url, index) => processImage(url, index)))
+      .then(() => {
+        console.log('All images processed, finalizing archive...');
+        archive.finalize();
+      })
+      .catch((error) => {
+        console.error('Error in processing images:', error);
+        reject(error);
+      });
   });
 }
 

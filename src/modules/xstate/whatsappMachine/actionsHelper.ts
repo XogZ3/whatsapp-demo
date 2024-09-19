@@ -98,10 +98,10 @@ export async function getMembershipAvailability(clientid: string) {
     .doc(clientid);
   const clientData = await clientDoc.get();
 
-  const { membershipEndDate, paid } = clientData.data() || {};
+  const { membershipEndDate } = clientData.data() || {};
 
   try {
-    if (DateTime.now() > DateTime.fromMillis(membershipEndDate || 0) || !paid) {
+    if (DateTime.now() > DateTime.fromMillis(membershipEndDate || 0)) {
       return false;
     }
   } catch (error) {

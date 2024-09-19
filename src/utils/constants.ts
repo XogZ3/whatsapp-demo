@@ -3,6 +3,13 @@ export const TRAINING_IMAGES_UPPER_LIMIT = 15;
 export const DEFAULT_CREDITS = 5;
 export const DAILY_CREDITS_LIMIT = 100;
 
+export const samplePhotoURLs = [
+  'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fphotograph_of_brazilman_001.jpg?alt=media&token=9855c6d9-652b-488f-a598-5b3e7cb4980a',
+  'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fphotograph_of_brazilman_006.jpg?alt=media&token=44b39821-b370-43a0-bdc1-d30482e7e252',
+  'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fphotograph_of_brazilwoman_001.jpg?alt=media&token=dcb2589c-73db-441f-b9b8-e4ed44469d7c',
+  'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fphotograph_of_brazilwoman_002.jpg?alt=media&token=1fc0130f-59df-451a-ae54-bf4fe128ee98',
+];
+
 export function generateSamplePrompts({
   age,
   gender,

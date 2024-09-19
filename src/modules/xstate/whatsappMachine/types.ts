@@ -23,6 +23,8 @@ export interface IMachineContext {
   latestImprovedPrompt: string;
   modelGenerated: boolean;
   language: Language;
+  age: number;
+  gender: 'male' | 'female';
 }
 
 export interface IUserMetaData {

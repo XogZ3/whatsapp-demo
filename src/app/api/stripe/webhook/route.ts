@@ -14,7 +14,7 @@ import {
   type UserFieldsFirebase,
 } from '@/utils/ReplyHelper/FirebaseHelpers';
 import { sendPromptingInstruction } from '@/utils/sendSampleImages';
-import { getTranslation } from '@/utils/translations';
+import { getTranslation, type Language } from '@/utils/translations';
 
 // import type { StripeEvent } from './types';
 const firestore = firebase.getFirestore();
@@ -24,12 +24,26 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: '2024-06-20',
 });
 
+async function sendPhotoUploadInstruction(
+  clientid: string,
+  language: Language,
+) {
+  const message = getTranslation('photo upload instruction', language);
+  const payload: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    text: true,
+    msgBody: message,
+  };
+  await sendMessageToWhatsapp(payload);
+}
+
 async function handleSubscriptionEvent(event: Stripe.Event) {
   const subscription = event.data.object as Stripe.Subscription;
   const subscriptionId = subscription.id;
   const { clientid } = subscription?.metadata || null;
   let updates: any;
   updates = {
+    clientid,
     subscriptionId,
     subscriptionStatus: subscription.status,
     membershipStartDate: subscription.current_period_start * 1000,
@@ -41,6 +55,8 @@ async function handleSubscriptionEvent(event: Stripe.Event) {
   } else {
     updates.paid = subscription.status === 'active';
   }
+
+  let language: Language = 'english';
 
   // Save subscription data to a separate collection
   await firestore.runTransaction(async (transaction) => {
@@ -65,14 +81,15 @@ async function handleSubscriptionEvent(event: Stripe.Event) {
         .doc(clientid);
 
       const clientDoc = (await transaction.get(clientDocRef)).data();
+      language = clientDoc?.language;
 
       const stateJSON = {
         status: 'stopped',
         context: {
-          language: clientDoc?.language || 'english',
+          language,
           modelGenerated: true,
         },
-        value: 'photoPrompting',
+        value: 'imagesIncomplete',
         children: {},
         historyValue: {},
         tags: [],
@@ -95,6 +112,12 @@ async function handleSubscriptionEvent(event: Stripe.Event) {
       transaction.update(clientDocRef, updates);
     }
   });
+  if (clientid) {
+    await Promise.all([
+      sendPurchaseToFBCoversionAPI(clientid),
+      sendPhotoUploadInstruction(clientid, language),
+    ]);
+  }
 
   console.log(
     `Subscription ${event.type} processed for subscriptionId: ${subscriptionId}`,
@@ -177,7 +200,7 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
           language: language || 'english',
           modelGenerated: true,
         },
-        value: 'photoPrompting',
+        value: 'imagesIncomplete',
         children: {},
         historyValue: {},
         tags: [],
@@ -253,6 +276,7 @@ export async function POST(req: NextRequest) {
       case 'customer.subscription.created':
       case 'customer.subscription.updated':
       case 'customer.subscription.deleted':
+      case 'customer.subscription.paused':
         await handleSubscriptionEvent(event);
         return NextResponse.json({ status: 200 });
       case 'invoice.payment_succeeded':

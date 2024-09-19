@@ -18,6 +18,8 @@ export const machineFactory = (config: IMachineConfig): any => {
         latestImprovedPrompt: '',
         modelGenerated: false,
         language: 'english',
+        age: 0,
+        gender: 'male',
       } as IMachineContext,
       on: {
         UNKNOWN_ISSUE: {
@@ -69,7 +71,7 @@ export const machineFactory = (config: IMachineConfig): any => {
           },
         },
         imagesIncomplete: {
-          entry: ['sendPhotoUploadInstruction'],
+          // entry: ['sendPhotoUploadInstruction'],
           on: {
             PHOTO_RECEIVED: {
               actions: [assign({ message: () => 'photo received' })],

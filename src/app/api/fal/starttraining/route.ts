@@ -147,7 +147,7 @@ export async function POST(request: NextRequest) {
     const images_data_url = await createAndUploadZipFile(image_urls, userid);
 
     // Create training job
-    const { request_id } = await fal.queue.submit(
+    const falResponse = await fal.queue.submit(
       'fal-ai/flux-lora-fast-training',
       {
         input: {
@@ -157,7 +157,8 @@ export async function POST(request: NextRequest) {
         webhookUrl: `${getBaseUrl()}/api/fal/webhook`,
       },
     );
-
+    console.log('[+] falResponse: ', JSON.stringify(falResponse, null, 2));
+    const { request_id } = falResponse;
     // Store information in Firestore
     await storeJobInFirestore(
       request_id,

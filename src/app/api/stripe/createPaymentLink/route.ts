@@ -22,7 +22,8 @@ export async function POST(req: NextRequest) {
       await stripe.paymentLinks.create({
         line_items: [
           {
-            price: 'price_1PueW9DWnX2YhQws6s7otplP',
+            price:
+              process.env.STRIPE_PRICE_ID || 'price_1Q0lf9JHS9DkVfWMKZEkJpiJ',
             quantity: 1,
           },
         ],

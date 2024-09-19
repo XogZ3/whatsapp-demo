@@ -196,14 +196,14 @@ export const TRANSLATION_MAP: Record<
     ar: '⚠️ عذرًا!\n\nيبدو أنك قدمت إدخالاً غير صالح.\n\nدعنا نحاول مرة أخرى.',
   },
   'intro message': {
-    en: `👋 Welcome to FotoLabs.ai! Click *'Upload Photos'* to send us ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} photos of yourself. We'll create a personalized model and provide some images for free. Follow the instructions to get started!`,
-    pt: `👋 Bem-vindo ao FotoLabs.ai! Clique em 'Carregar Fotos' para nos enviar ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} fotos suas. Criaremos um modelo personalizado e forneceremos algumas imagens gratuitamente. Siga as instruções para começar!`,
-    ar: `👋 مرحبًا بك في FotoLabs.ai! اضغط على 'رفع الصور' لإرسال ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} صورة لنفسك. سنقوم بإنشاء نموذج شخصي وتزويدك ببعض الصور مجانًا. اتبع التعليمات للبدء!`,
+    en: `👋 Welcome to FotoLabs.ai! Want to create cool AI photos like these? Make a payment of ~$29.99~ $19.99 using the link below and generate unlimited images for 30 days!`,
+    pt: `👋 Bem-vindo ao FotoLabs.ai! Quer criar fotos incríveis de IA como essas? Faça um pagamento de ~$29,99~ $19,99 usando o link abaixo e gere imagens ilimitadas por 30 dias!`,
+    ar: `👋 مرحبًا بك في FotoLabs.ai! هل تريد إنشاء صور رائعة بالذكاء الاصطناعي مثل هذه؟ قم بالدفع ~$29.99~ $19.99 باستخدام الرابط أدناه وابدأ في إنشاء صور غير محدودة لمدة 30 يومًا!`,
   },
   'tutorial message': {
-    en: `📸 How to Use FotoLabs.ai\n\nUpload Photos: Send ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} photos of yourself to create your personalized model.\nGet Samples: Once your model is ready, you'll receive a few sample images for free.\nPricing: Create unlimited photos of your AI self in any scenario you can imagine for just ~$29.99~ $19.99/month.\nGenerate Images: Start generating images by sending prompts like "handsome man as a superhero" or "gorgeous woman in Paris."\nIt's that easy! Ready to explore? 😊`,
-    pt: `📸 Como Usar o FotoLabs.ai\n\nEnviar Fotos: Envie ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} fotos suas para criar seu modelo personalizado.\nObter Amostras: Quando seu modelo estiver pronto, você receberá algumas imagens de amostra gratuitamente.\nPreços: Crie fotos ilimitadas de sua versão de IA em qualquer cenário que você puder imaginar por apenas ~$29,99~ $19,99/mês.\nGerar Imagens: Comece a gerar imagens enviando prompts como "homem bonito como um super-herói" ou "mulher deslumbrante em Paris."\nÉ tão fácil! Pronto para explorar? 😊`,
-    ar: `📸 كيفية استخدام FotoLabs.ai\n\nتحميل الصور: قم بتحميل ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} صورة لنفسك لإنشاء نموذج مخصص.\nالحصول على عينات: بمجرد أن يكون نموذجك جاهزًا، ستتلقى بعض الصور النموذجية مجانًا.\nالتسعير: قم بإنشاء صور غير محدودة لنفسك بنسخة الذكاء الاصطناعي في أي سيناريو يمكنك تخيله مقابل ~$29.99~ $19.99/شهر.\nإنشاء الصور: ابدأ في إنشاء الصور عن طريق إرسال موجهات مثل "رجل وسيم كبطل خارق" أو "امرأة رائعة في باريس."\nالأمر بهذه السهولة! جاهز للاستكشاف؟ 😊`,
+    en: `📸 How to Use FotoLabs.ai\n\nMake Payment: Create unlimited photos of your AI self in any scenario you can imagine for just ~$29.99~ $19.99/month.\nUpload Photos: Send ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} photos of yourself to create your personalized model.\nGet Samples: Once your model is ready, you'll receive a few sample images.\nGenerate Images: Start generating images by sending prompts like "handsome man as a superhero" or "gorgeous woman in Paris."\nIt's that easy! Ready to explore? 😊`,
+    pt: `📸 Como Usar o FotoLabs.ai\n\nFaça o Pagamento: Crie fotos ilimitadas de sua versão de IA em qualquer cenário que puder imaginar por apenas ~$29,99~ $19,99/mês.\nEnviar Fotos: Envie ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} fotos suas para criar seu modelo personalizado.\nObter Amostras: Quando seu modelo estiver pronto, você receberá algumas imagens de amostra.\nGerar Imagens: Comece a gerar imagens enviando prompts como "homem bonito como um super-herói" ou "mulher deslumbrante em Paris."\nÉ tão fácil! Pronto para explorar? 😊`,
+    ar: `📸 كيفية استخدام FotoLabs.ai\n\nقم بالدفع: أنشئ صورًا غير محدودة لنسخة الذكاء الاصطناعي الخاصة بك في أي سيناريو يمكنك تخيله مقابل ~$29.99~ $19.99/شهر.\nتحميل الصور: أرسل ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} صورة لنفسك لإنشاء نموذجك المخصص.\nاحصل على عينات: بمجرد أن يصبح نموذجك جاهزًا، ستتلقى بعض الصور النموذجية.\nإنشاء الصور: ابدأ في إنشاء الصور عن طريق إرسال موجهات مثل "رجل وسيم كبطل خارق" أو "امرأة رائعة في باريس."\nالأمر بهذه السهولة! جاهز للاستكشاف؟ 😊`,
   },
   'generating image': {
     en: 'Generating image, please wait 30 seconds...',
@@ -226,9 +226,9 @@ export const TRANSLATION_MAP: Record<
     ar: 'نموذج الذكاء الاصطناعي المخصص لك موجود بالفعل. أرسل موجهك الآن!',
   },
   'model generated': {
-    en: 'Your model has been successfully generated! :D',
-    pt: 'Seu modelo foi gerado com sucesso! :D',
-    ar: 'تم إنشاء النموذج الخاص بك بنجاح! :D',
+    en: `Your model has been successfully generated! :D\nSend your prompt now.`,
+    pt: `Seu modelo foi gerado com sucesso! :D\nEnvie seu prompt agora.`,
+    ar: `تم إنشاء نموذجك بنجاح! :D\nأرسل موجهك الآن.`,
   },
   'payment instructions': {
     en: 'Please complete payment using this link.',

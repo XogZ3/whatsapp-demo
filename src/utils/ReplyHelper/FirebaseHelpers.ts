@@ -201,7 +201,7 @@ export async function callTrainingAPI(
   };
 
   try {
-    const response = await fetch(`${getBaseUrl()}/api/starttraining`, {
+    const response = await fetch(`${getBaseUrl()}/api/fal/starttraining`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -596,7 +596,6 @@ export async function createZipFromImages(
   });
 }
 
-// Step 4: Upload zip file to Firebase Storage
 export async function uploadZipFileToFirebase(
   zipBuffer: Buffer,
   zipFileName: string,
@@ -646,4 +645,43 @@ export async function createAndUploadZipFile(
   );
 
   return zipFileURL;
+}
+
+export async function uploadLoraFileToFirebase(
+  loraUrl: string,
+  fileName: string,
+): Promise<string> {
+  const storage = getStorageInstance();
+  const bucket = storage.bucket();
+  const filePath = `lora_files/${fileName}`;
+  const file = bucket.file(filePath);
+
+  // Fetch the LoRA file from the given URL using native fetch
+  const response = await fetch(loraUrl);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch LoRA file from ${loraUrl}`);
+  }
+
+  const fileBuffer = await response.arrayBuffer();
+  const readableStream = Readable.from(Buffer.from(fileBuffer));
+
+  // Upload the LoRA file to Firebase Storage
+  await new Promise((resolve, reject) => {
+    readableStream
+      .pipe(
+        file.createWriteStream({
+          metadata: { contentType: 'application/octet-stream' },
+        }),
+      )
+      .on('error', reject)
+      .on('finish', resolve);
+  });
+
+  // Generate a signed URL for the uploaded file (valid for 1 year)
+  const [url] = await file.getSignedUrl({
+    action: 'read',
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 365, // 1 year
+  });
+
+  return url;
 }

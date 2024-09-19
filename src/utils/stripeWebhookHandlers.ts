@@ -63,7 +63,7 @@ export async function updateBilling(
       language: language || 'english',
       modelGenerated: true,
     },
-    value: 'photoPrompting',
+    value: 'imagesIncomplete',
     children: {},
     historyValue: {},
     tags: [],

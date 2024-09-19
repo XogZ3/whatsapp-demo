@@ -10,6 +10,7 @@ import { nonImageAcceptingStates } from '@/modules/xstate/whatsappMachine/messag
 import type { IUserMetaData } from '@/modules/xstate/whatsappMachine/types';
 
 import {
+  samplePhotoURLs,
   TRAINING_IMAGES_LOWER_LIMIT,
   TRAINING_IMAGES_UPPER_LIMIT,
 } from '../constants';
@@ -23,6 +24,20 @@ import {
   setUserState,
 } from './FirebaseHelpers';
 import { extractImageID, extractText } from './MessageParsers';
+
+async function sendSamplePhotos(clientid: string) {
+  let payload: ICreateMessagePayload;
+  await Promise.all(
+    samplePhotoURLs.map((URL: string) => {
+      payload = {
+        phoneNumber: clientid,
+        image: true,
+        imageLink: URL,
+      };
+      return sendMessageToWhatsapp(payload);
+    }),
+  );
+}
 
 async function sendUpdatedPhotoCount(
   clientid: string,
@@ -73,6 +88,7 @@ export async function replyToUser(messageObject: any) {
 
   if (!state) {
     await setDefaultUserFields(clientid);
+    await sendSamplePhotos(clientid);
     if (messageObject.message.type === 'image') message = 'FALLBACK';
   } else {
     const stateObj = JSON.parse(state);

@@ -68,22 +68,35 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const message = getTranslation('invalid input', language);
       await sendMessage(config.whatsappInstance, message, clientid);
     },
+    // sendSamplePhotos: async () => {
+    //   const { clientid } = config.userMetaData;
+    //   await Promise.all(
+    //     samplePhotoURLs.map((URL: string) =>
+    //       config.whatsappInstance.send({
+    //         phoneNumber: clientid,
+    //         image: true,
+    //         imageLink: URL,
+    //       }),
+    //     ),
+    //   );
+    // },
     sendIntroOptionsMessageBasedOnPhoneNumber: async () => {
       const { clientid, language } = config.userMetaData;
       console.log('[+] sending intro message');
-      const message = getTranslation('intro message', language);
       const languageButtonTextLocale = getTranslation('language', language);
       const finalLanguageButtonText = `Language${languageButtonTextLocale !== 'Language' ? ` | ${languageButtonTextLocale}` : ''}`;
+      const stripeLink = await createStripeLink(clientid);
+      const message = `${getTranslation('intro message', language)}
+
+${stripeLink}}`;
 
       const payload: ICreateMessagePayload = {
         phoneNumber: clientid,
         quickReply: true,
-        button1id: 'upload photos',
-        button2id: 'language',
-        button3id: 'tutorial',
-        button1: getTranslation('upload photos', language),
-        button2: finalLanguageButtonText,
-        button3: getTranslation('tutorial', language),
+        button1id: 'language',
+        button2id: 'tutorial',
+        button1: finalLanguageButtonText,
+        button2: getTranslation('tutorial', language),
         msgBody: message,
       };
       await config.whatsappInstance.send(payload);
@@ -94,17 +107,19 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const language = event?.context?.language;
       const languageButtonTextLocale = getTranslation('language', language);
       const finalLanguageButtonText = `Language${languageButtonTextLocale !== 'Language' ? ` | ${languageButtonTextLocale}` : ''}`;
-      console.log('[+] sending intro message');
-      const message = getTranslation('intro message', language);
+
+      const stripeLink = await createStripeLink(clientid);
+      const message = `${getTranslation('intro message', language)}
+
+${stripeLink}}`;
+
       const payload: ICreateMessagePayload = {
         phoneNumber: clientid,
         quickReply: true,
-        button1id: 'upload photos',
-        button2id: 'language',
-        button3id: 'tutorial',
-        button1: getTranslation('upload photos', language),
-        button2: finalLanguageButtonText,
-        button3: getTranslation('tutorial', language),
+        button1id: 'language',
+        button2id: 'tutorial',
+        button1: finalLanguageButtonText,
+        button2: getTranslation('tutorial', language),
         msgBody: message,
       };
       await config.whatsappInstance.send(payload);
@@ -284,7 +299,10 @@ export const actionsFactory = (config: IMachineConfig): any => {
           result = await getAgeAndGenderFromImageURLUsingOpenAI(randomImageUrl);
         }
         if (result) {
-          await setUserAgeAndGender(clientid, result.age, result.gender);
+          await Promise.all([
+            setUserAgeAndGender(clientid, result.age, result.gender),
+            assign({ age: result.age, gender: result.gender }),
+          ]);
           console.log('Age and gender saved successfully.');
         } else {
           console.warn('Failed to get age and gender from the image.');
@@ -461,15 +479,23 @@ ${stripeLink}`;
         });
     },
     sendImprovedPromptConfirmationAndSetContext: async (event: any) => {
-      const { clientid, language = event?.context?.language } =
-        config.userMetaData;
+      const {
+        clientid,
+        language = event?.context?.language,
+        age,
+        gender,
+      } = config.userMetaData;
       // console.log(
       //   '[+] sendImprovedPromptConfirmationAndSetContext: ',
       //   JSON.stringify(event, null, 2),
       // );
-      const prompt = event?.context?.latestPrompt;
+      const prompt: string = event?.context?.latestPrompt;
       async function getImprovedPromptSetItInContext() {
-        const improvedPrompt = await getImprovedPromptFromGroq(prompt);
+        const improvedPrompt = await getImprovedPromptFromGroq({
+          prompt,
+          age,
+          gender,
+        });
         // overwrite latestPrompt with improvedPrompt
         await config.storeInstance.setContext(
           clientid,
@@ -616,12 +642,14 @@ ${stripeLink}`;
                   historyValue: {},
                   tags: [],
                 };
+                const stripeLink = await createStripeLink(clientid);
+                message = `${getTranslation('new user paywall', language)}
+
+${stripeLink}`;
                 await Promise.all([
                   config.whatsappInstance.send({
                     phoneNumber: clientid,
-                    quickReply: true,
-                    button1id: 'get membership',
-                    button1: getTranslation('get membership', language),
+                    text: true,
                     msgBody: message,
                   }),
                   setUserState(JSON.stringify(stateJSON), clientid),

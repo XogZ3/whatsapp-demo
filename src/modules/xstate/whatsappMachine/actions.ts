@@ -88,7 +88,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const stripeLink = await createStripeLink(clientid);
       const message = `${getTranslation('intro message', language)}
 
-${stripeLink}}`;
+${stripeLink}`;
 
       const payload: ICreateMessagePayload = {
         phoneNumber: clientid,
@@ -110,7 +110,7 @@ ${stripeLink}}`;
       const stripeLink = await createStripeLink(clientid);
       const message = `${getTranslation('intro message', language)}
 
-${stripeLink}}`;
+${stripeLink}`;
 
       const payload: ICreateMessagePayload = {
         phoneNumber: clientid,

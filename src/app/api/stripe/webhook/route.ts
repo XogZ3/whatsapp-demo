@@ -9,10 +9,7 @@ import {
   sendMessageToWhatsapp,
 } from '@/modules/whatsapp/whatsapp';
 import { sendPurchaseToFBCoversionAPI } from '@/utils/fconversionHelper';
-import {
-  getUserFields,
-  type UserFieldsFirebase,
-} from '@/utils/ReplyHelper/FirebaseHelpers';
+import { type UserFieldsFirebase } from '@/utils/ReplyHelper/FirebaseHelpers';
 import { getTranslation, type Language } from '@/utils/translations';
 
 // import type { StripeEvent } from './types';
@@ -39,7 +36,18 @@ async function sendPhotoUploadInstruction(
 async function handleSubscriptionEvent(event: Stripe.Event) {
   const subscription = event.data.object as Stripe.Subscription;
   const subscriptionId = subscription.id;
-  const { clientid } = subscription?.metadata || null;
+  let clientid = subscription?.metadata?.clientid;
+
+  // Use subscription-client id mapping
+  if (!clientid) {
+    const subscriptionRef = firestore.collection('subscriptions');
+    const query = subscriptionRef.where('subscriptionId', '==', subscriptionId);
+    const snapshot = await query.get();
+    const subscriptionDoc = snapshot.docs[0];
+    const subscriptionData = subscriptionDoc?.data();
+    clientid = subscriptionData?.clientid;
+  }
+
   let updates: any;
   updates = {
     clientid,
@@ -156,22 +164,31 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
   const customerId = session.customer as string;
 
   const { id, status } = session;
-  const { language = 'english', lastStripeEventId } = await getUserFields(
-    clientid!,
-  );
-
-  // Check if the event ID has already been processed
-  if (lastStripeEventId === id) {
-    console.log('[-] Duplicate event received, ignoring.');
-    return;
-  }
-
   if (!clientid || !subscriptionId) {
-    console.error('Missing clientid or subscriptionId in session metadata');
-    return;
+    console.error(
+      'Missing clientid or subscriptionId in session metadata',
+      clientid,
+      subscriptionId,
+    );
+    return NextResponse.json({
+      status: 400,
+      error: 'Missing clientid or subscriptionId',
+    });
   }
 
   let subscriptionData: Stripe.Subscription;
+  try {
+    subscriptionData = await stripe.subscriptions.retrieve(subscriptionId);
+  } catch (error) {
+    console.error('Error retrieving subscription from Stripe:', error);
+    return NextResponse.json({
+      status: 500,
+      error: 'Error retrieving subscription',
+    });
+  }
+
+  let clientData: FirebaseFirestore.DocumentData | undefined;
+  let language: Language = 'english';
 
   await firestore.runTransaction(async (transaction) => {
     const subscriptionRef = firestore
@@ -183,44 +200,55 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
       .collection('clients')
       .doc(clientid);
 
-    const subscriptionDoc = await transaction.get(subscriptionRef);
+    // Perform all reads first
+    const [subscriptionDoc, clientDoc] = await Promise.all([
+      transaction.get(subscriptionRef),
+      transaction.get(clientDocRef),
+    ]);
+
+    clientData = clientDoc.data();
+    language = clientData?.language || 'english';
+    const state = clientData?.state;
+    const lastStripeEventId = clientData?.lastStripeEventId;
+
+    // Check if the event ID has already been processed
+    if (lastStripeEventId === id) {
+      console.log('[-] Duplicate event received, ignoring.');
+      return;
+    }
+
+    // Now perform writes
     if (!subscriptionDoc.exists) {
       transaction.set(subscriptionRef, { clientid, subscriptionId });
     } else {
       transaction.update(subscriptionRef, { clientid });
     }
 
-    subscriptionData = await stripe.subscriptions.retrieve(subscriptionId);
-    if (subscriptionData) {
-      const clientData = (await transaction.get(clientDocRef)).data();
-      const state = clientData?.state;
-
-      let stateJSON;
-      try {
-        stateJSON = state ? JSON.parse(state) : {};
-      } catch (error) {
-        console.error('Error parsing state:', error);
-        stateJSON = {};
-      }
-
-      stateJSON.value = 'imagesIncomplete';
-
-      const updates: Partial<UserFieldsFirebase> = {
-        customerId,
-        subscriptionId,
-        state: JSON.stringify(stateJSON),
-        paid: subscriptionData.status === 'active',
-        processing: false,
-        creditsUsedToday: 0,
-        creditsResetDate: DateTime.now().toMillis(),
-        subscriptionStatus: subscriptionData.status,
-        membershipStartDate: subscriptionData.current_period_start * 1000,
-        membershipEndDate: subscriptionData.current_period_end * 1000,
-        lastStripeEventId: id,
-      };
-
-      transaction.update(clientDocRef, updates);
+    let stateJSON;
+    try {
+      stateJSON = state ? JSON.parse(state) : {};
+    } catch (error) {
+      console.error('Error parsing state:', error);
+      stateJSON = {};
     }
+
+    stateJSON.value = 'imagesIncomplete';
+
+    const updates: Partial<UserFieldsFirebase> = {
+      customerId,
+      subscriptionId,
+      state: JSON.stringify(stateJSON),
+      paid: subscriptionData.status === 'active',
+      processing: false,
+      creditsUsedToday: 0,
+      creditsResetDate: DateTime.now().toMillis(),
+      subscriptionStatus: subscriptionData.status,
+      membershipStartDate: subscriptionData.current_period_start * 1000,
+      membershipEndDate: subscriptionData.current_period_end * 1000,
+      lastStripeEventId: id,
+    };
+
+    transaction.update(clientDocRef, updates);
   });
 
   const formattedDate = format(
@@ -257,6 +285,7 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
     batch.update(doc.ref, { clientid });
   });
   await batch.commit();
+  return NextResponse.json({ status: 200 });
 }
 
 export async function POST(req: NextRequest) {

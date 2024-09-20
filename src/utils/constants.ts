@@ -27,7 +27,7 @@ export function generateSamplePrompts({
   const samplePrompts = [
     `A stylish ${genderManWoman} ${modelName} around ${age} years old, a travel blogger with sun-kissed skin and tousled beach waves, sitting on a tropical beach at sunset. ${genderHeShe} is wearing crisp white clothes and holding up a weathered postcard with only "FotoLabs AI" written clearly and legibly in neat handwriting. The scene is bathed in warm, golden hour lighting.`,
 
-    `Long photo shot of ${genderManWoman} ${modelName}, Portrait photography, professional boudoir photo shoot, saloon ${genderManWoman} cosplay, 1800’s aesthetic, beautiful body type, cute face and smile, beautiful skin, saloon background, dust-filled sun rays sun coming through window at an angle, golden-hour light, realistic, stand, very high angle shot, hyper realistic, ultra-detailed, 8k, , realism, Super photoreal, hyperreal, photorealistic, colored photo, very close shot, open mouth`,
+    `Long photo shot of ${genderManWoman} ${modelName}, Portrait photography, professional boudoir photo shoot, saloon ${genderManWoman} cosplay, 1800’s aesthetic, beautiful body type, cute face and smile, beautiful skin, saloon background, dust-filled sun rays sun coming through window at an angle, golden-hour light, realistic, stand, very high angle shot, hyper realistic, ultra-detailed, 8k, realism, Super photoreal, hyperreal, photorealistic, colored photo, very close shot, open mouth`,
 
     `Photograph of ${modelName}, who is ${age} years old, with short hair. BREAK black sweater BREAK shopping in an outdoor market, autumn, extremely intricate details, masterpiece, clear shadows and highlights, realistic, enhanced contrast, highly detailed skin, f/2.8, bokeh.`,
 

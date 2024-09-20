@@ -46,7 +46,7 @@ export const getImprovedPromptFromGroq = async ({
 13. Include specific camera settings when relevant (e.g., "F1.4, 1/800s, ISO 100").
 14. Incorporate artistic techniques (e.g., "depth of field," "sharp focus").
 15. Use evocative mood words (e.g., "alluring," "seductive").
-16. Include the age ${age} and use gendered language as "${gender}" in the generated prompt (e.g., "photo of 26 year old woman as she runs", "30 year old man, he is smiling")
+16. Include the age as ${age} and use gendered language for gender "${gender}" in the generated prompt (e.g., "photo of 26 year old woman as she runs", "30 year old man, he is smiling")
 Examples:
 1. "Moulin Rouge, cabaret style, burlesque photograph. Gorgeous woman, slender body, posing in smoky club. Dark, low-key lighting, muted colors, red pop. Alluring, seductive. Shot with DSLR, F1.4, 1/800s, ISO 100. Sharp focus, depth of field, cinematic."
 2. "Cyberpunk girl, Prompt Hero logo on chest. Rooftop stance, dystopian city background. Dynamic pose, fierce expression. Comic style, intricate details. Ominous lighting, stormy night. Hasselblad long exposure shot. Dramatic, detailed cityscape."

@@ -165,9 +165,9 @@ export const TRANSLATION_MAP: Record<
     ar: 'العربية المختارة',
   },
   'generating model': {
-    en: "Generating model... Will send message once it's ready. It may take 50-60 minutes.",
-    pt: 'Gerando modelo... Enviaremos uma mensagem quando estiver pronto. Pode levar de 50 a 60 minutos.',
-    ar: 'جاري إنشاء النموذج... سنرسل لك رسالة بمجرد أن يكون جاهزًا. قد يستغرق ذلك من 60 إلى 30 دقيقة.',
+    en: "Generating model... Will send a message once it's ready. It will only take 2-3 minutes. ⚡",
+    pt: 'Gerando modelo... Enviaremos uma mensagem quando estiver pronto. Isso levará apenas 2-3 minutos. ⚡',
+    ar: 'جاري إنشاء النموذج... سنرسل لك رسالة بمجرد أن يصبح جاهزًا. سيستغرق الأمر دقيقتين إلى ثلاث دقائق فقط. ⚡',
   },
   retry: {
     en: 'Retry',
@@ -235,9 +235,9 @@ export const TRANSLATION_MAP: Record<
     ar: 'يرجى إكمال الدفع باستخدام هذا الرابط.',
   },
   'payment confirmation': {
-    en: 'Payment successful. Enjoy creating awesome pictures until',
-    pt: 'Pagamento realizado com sucesso. Aproveite para criar fotos incríveis até',
-    ar: 'تم الدفع بنجاح. استمتع بإنشاء صور رائعة حتى',
+    en: 'Payment successful. ✅🎉',
+    pt: 'Pagamento bem-sucedido. ✅🎉',
+    ar: 'تم الدفع بنجاح. ✅🎉',
   },
   'prompting instruction': {
     en: 'Send your prompt',

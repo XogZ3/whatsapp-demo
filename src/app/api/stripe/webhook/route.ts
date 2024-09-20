@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+// import { format } from 'date-fns';
 import { DateTime } from 'luxon';
 import { type NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
@@ -252,12 +252,12 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
     transaction.update(clientDocRef, updates);
   });
 
-  const formattedDate = format(
-    new Date(subscriptionData!.current_period_end * 1000),
-    'MMMM d, yyyy',
-  );
+  // const formattedDate = format(
+  //   new Date(subscriptionData!.current_period_end * 1000),
+  //   'MMMM d, yyyy',
+  // );
 
-  const message = `${getTranslation('payment confirmation', language)} ${formattedDate}`;
+  const message = `${getTranslation('payment confirmation', language)}`;
   const payload: ICreateMessagePayload = {
     phoneNumber: clientid,
     text: true,

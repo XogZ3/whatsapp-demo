@@ -155,8 +155,8 @@ export async function POST(request: NextRequest) {
       await batch.commit();
 
       generateAndSendModelImages({
-        age: stateJSON.context.age,
-        gender: stateJSON.context.gender,
+        age,
+        gender,
         loraFilename: fileName,
         clientid,
         language,

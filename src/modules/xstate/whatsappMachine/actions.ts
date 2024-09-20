@@ -34,6 +34,7 @@ import {
   getMembershipAvailability,
   notifyPendingPhotos,
   processAndSendImages,
+  sendIntroTemplateMessage,
   setUserStateAndInform,
 } from './actionsHelper';
 import type { IMachineConfig, IWhatsappInstance } from './types';
@@ -81,47 +82,17 @@ export const actionsFactory = (config: IMachineConfig): any => {
     //   );
     // },
     sendIntroOptionsMessageBasedOnPhoneNumber: async () => {
+      // use language based on phone number
       const { clientid, language } = config.userMetaData;
-      console.log('[+] sending intro message');
-      const languageButtonTextLocale = getTranslation('language', language);
-      const finalLanguageButtonText = `Language${languageButtonTextLocale !== 'Language' ? ` | ${languageButtonTextLocale}` : ''}`;
       const stripeLink = await createStripeLink(clientid);
-      const message = `${getTranslation('intro message', language)}
-
-${stripeLink}`;
-
-      const payload: ICreateMessagePayload = {
-        phoneNumber: clientid,
-        quickReply: true,
-        button1id: 'language',
-        button2id: 'tutorial',
-        button1: finalLanguageButtonText,
-        button2: getTranslation('tutorial', language),
-        msgBody: message,
-      };
-      await config.whatsappInstance.send(payload);
+      await sendIntroTemplateMessage(clientid, language, stripeLink);
     },
     sendIntroOptionsMessage: async (event: any) => {
+      // use language based on the user's selection
       const { clientid } = config.userMetaData;
-      // userSelectedLanguage
       const language = event?.context?.language;
-      const languageButtonTextLocale = getTranslation('language', language);
-      const finalLanguageButtonText = `Language${languageButtonTextLocale !== 'Language' ? ` | ${languageButtonTextLocale}` : ''}`;
       const stripeLink = await createStripeLink(clientid);
-      const message = `${getTranslation('intro message', language)}
-
-${stripeLink}`;
-
-      const payload: ICreateMessagePayload = {
-        phoneNumber: clientid,
-        quickReply: true,
-        button1id: 'language',
-        button2id: 'tutorial',
-        button1: finalLanguageButtonText,
-        button2: getTranslation('tutorial', language),
-        msgBody: message,
-      };
-      await config.whatsappInstance.send(payload);
+      await sendIntroTemplateMessage(clientid, language, stripeLink);
     },
     sendSelectLanguage: async (event: any) => {
       // console.log(
@@ -296,7 +267,8 @@ ${stripeLink}`;
         if (result) {
           await Promise.all([
             setUserAgeAndGender(clientid, result.age, result.gender),
-            assign({ age: result.age, gender: result.gender }),
+            config.storeInstance.setContext(clientid, 'age', result.age),
+            config.storeInstance.setContext(clientid, 'gender', result.gender),
           ]);
           console.log('Age and gender saved successfully.');
         } else {
@@ -379,18 +351,6 @@ ${stripeLink}`;
       const message = `${getTranslation('new user paywall', language)}
 
 ${stripeLink}`;
-      const payload: ICreateMessagePayload = {
-        phoneNumber: clientid,
-        text: true,
-        msgBody: message,
-      };
-      await config.whatsappInstance.send(payload);
-    },
-    sendPaymentConfirmation: async (event: any) => {
-      const { clientid, language = event?.context?.language } =
-        config.userMetaData;
-      const message = getTranslation('payment confirmation', language);
-      // TODO: implement language in buttons
       const payload: ICreateMessagePayload = {
         phoneNumber: clientid,
         text: true,

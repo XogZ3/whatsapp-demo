@@ -6,6 +6,7 @@ import firebase from '@/modules/firebase';
 import { generateImagesWithReplicateUploadToFirebase } from '@/modules/replicate';
 import {
   type ICreateMessagePayload,
+  makeRequestToWhatsapp,
   sendMessageToWhatsapp,
 } from '@/modules/whatsapp/whatsapp';
 import {
@@ -403,6 +404,7 @@ export async function checkTrainingJobForClient(clientid: string) {
         break;
 
       case 'IN_PROGRESS':
+      case 'IN_QUEUE':
         // If job is in progress, send a wait message to the user
         message = getTranslation('please wait generating model', language);
         payload = {
@@ -466,4 +468,114 @@ export async function checkTrainingJobForClient(clientid: string) {
     console.error(`Error checking training job for client ${clientid}:`, error);
     throw new Error('Internal Server Error');
   }
+}
+
+function extractPath(url: string) {
+  try {
+    const parsedUrl = new URL(url);
+    return parsedUrl.pathname.substring(1); // Remove the leading '/'
+  } catch (error) {
+    console.error('Invalid URL', error);
+    return null;
+  }
+}
+
+export async function sendIntroTemplateMessage(
+  clientid: string,
+  langauge: Language,
+  stripeLink: string,
+) {
+  let whatsappLanguageCode: 'en' | 'pt_br' | 'ar';
+  let whatsappTemplateName:
+    | 'fotolabs_intro_en'
+    | 'fotolabs_intro_pt_br'
+    | 'fotolabs_intro_ar';
+  switch (langauge) {
+    case 'english':
+      whatsappLanguageCode = 'en';
+      whatsappTemplateName = 'fotolabs_intro_en';
+      break;
+    case 'arabic':
+      whatsappLanguageCode = 'ar';
+      whatsappTemplateName = 'fotolabs_intro_ar';
+      break;
+    case 'portuguese':
+      whatsappLanguageCode = 'pt_br';
+      whatsappTemplateName = 'fotolabs_intro_pt_br';
+      break;
+    default:
+      whatsappLanguageCode = 'en';
+      whatsappTemplateName = 'fotolabs_intro_en';
+      break;
+  }
+  const stripePath = extractPath(stripeLink);
+
+  console.log(
+    '[~] sending intro template: lang, template, stripe path',
+    whatsappLanguageCode,
+    whatsappTemplateName,
+    stripePath,
+  );
+
+  const payload = {
+    messaging_product: 'whatsapp',
+    recipient_type: 'individual',
+    to: clientid,
+    type: 'template',
+    template: {
+      name: whatsappTemplateName,
+      language: {
+        code: whatsappLanguageCode,
+      },
+      components: [
+        {
+          type: 'body',
+          parameters: [
+            {
+              type: 'text',
+              text: '29.99',
+            },
+            {
+              type: 'text',
+              text: '19.99',
+            },
+          ],
+        },
+        {
+          type: 'button',
+          sub_type: 'URL',
+          index: '0',
+          parameters: [
+            {
+              type: 'text',
+              text: stripePath,
+            },
+          ],
+        },
+        {
+          type: 'button',
+          sub_type: 'QUICK_REPLY',
+          index: '1',
+          parameters: [
+            {
+              type: 'payload',
+              payload: 'language',
+            },
+          ],
+        },
+        {
+          type: 'button',
+          sub_type: 'QUICK_REPLY',
+          index: '2',
+          parameters: [
+            {
+              type: 'payload',
+              payload: 'tutorial',
+            },
+          ],
+        },
+      ],
+    },
+  };
+  await makeRequestToWhatsapp(payload);
 }

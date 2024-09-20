@@ -9,7 +9,7 @@ export function extractText(messageObject: any) {
     } else if (message.interactive && message.interactive.list_reply) {
       text = message.interactive.list_reply.id;
     } else if (message.type === 'button' && message.button) {
-      text = message.button.text;
+      text = message.button.payload;
     } else if (message.type === 'image' && message.image.caption) {
       text = message.image.caption;
     }

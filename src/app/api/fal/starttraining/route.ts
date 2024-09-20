@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as fal from '@fal-ai/serverless-client';
+import { DateTime } from 'luxon';
 import { type NextRequest, NextResponse } from 'next/server';
 
 import firebase from '@/modules/firebase';
@@ -26,19 +27,17 @@ async function storeJobInFirestore(
   jobId: string,
   image_urls: string[],
   model_name: string,
-  token: string,
-  userid: string,
+  clientid: string,
 ) {
   try {
     const jobRef = firestore.collection('training_jobs').doc(jobId);
     await jobRef.set({
       image_urls,
       model_name,
-      token,
       jobId,
       status: 'IN_QUEUE',
-      userid,
-      createdAt: Date.now(),
+      clientid,
+      createdAt: DateTime.now().toMillis(),
     });
     console.log(`Firestore document created for jobId: ${jobId}`);
   } catch (error) {
@@ -47,7 +46,11 @@ async function storeJobInFirestore(
   }
 }
 
-async function notifyModelExists(clientid: string, language: Language) {
+async function notifyModelExists(
+  clientid: string,
+  language: Language,
+  state: string,
+) {
   const wabaId = process.env.WABA_ID;
   const clientDoc = firestore
     .collection('apps')
@@ -55,17 +58,17 @@ async function notifyModelExists(clientid: string, language: Language) {
     .collection('clients')
     .doc(clientid);
 
-  const stateJSON = {
-    status: 'stopped',
-    context: {
-      language: language || 'english',
-      modelGenerated: true,
-    },
-    value: 'photoPrompting',
-    children: {},
-    historyValue: {},
-    tags: [],
-  };
+  let stateJSON;
+
+  try {
+    stateJSON = state ? JSON.parse(state) : {}; // Handle null or undefined state
+  } catch (error) {
+    console.error('Error parsing state:', error);
+    stateJSON = {}; // Fallback to empty state if parsing fails
+  }
+
+  // Update or initialize the state fields
+  stateJSON.value = 'photoPrompting';
 
   const updates: Partial<UserFieldsFirebase> = {
     state: JSON.stringify(stateJSON),
@@ -106,9 +109,9 @@ async function checkJobExists(model_name: string): Promise<boolean> {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { image_urls, model_name, token, userid } = body;
+    const { image_urls, model_name, clientid } = body;
 
-    if (!image_urls || !model_name || !token || !userid) {
+    if (!image_urls || !model_name || !clientid) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 },
@@ -118,33 +121,32 @@ export async function POST(request: NextRequest) {
       loraURL,
       loraFilename,
       language = 'english',
-    } = await getUserFields(userid);
-
-    // Validate token here if needed
+      state,
+    } = await getUserFields(clientid);
 
     // Reject if model already exists
     const modelAlreadyExists = !!(loraURL && loraFilename);
 
     if (modelAlreadyExists) {
-      await notifyModelExists(userid, language);
+      await notifyModelExists(clientid, language, state);
       return NextResponse.json(
         { error: 'Model already exists' },
         { status: 409 },
       );
     }
 
-    // Reject if job already exists for userid in 'IN_PROGRESS' status
+    // Reject if job already exists for client's model_name in 'IN_PROGRESS' status
     const jobExists = await checkJobExists(model_name);
     if (jobExists) {
-      await notifyGeneratingModel(userid, language);
+      await notifyGeneratingModel(clientid, language);
       return NextResponse.json(
         { error: 'A training job for this model_name already exists' },
         { status: 409 },
       );
     }
 
-    // Prepare training zip file
-    const images_data_url = await createAndUploadZipFile(image_urls, userid);
+    // Prepare training zip file containing images and corresponding ai generated captions
+    const images_data_url = await createAndUploadZipFile(image_urls, clientid);
 
     // Create training job
     const falResponse = await fal.queue.submit(
@@ -160,13 +162,7 @@ export async function POST(request: NextRequest) {
     console.log('[+] falResponse: ', JSON.stringify(falResponse, null, 2));
     const { request_id } = falResponse;
     // Store information in Firestore
-    await storeJobInFirestore(
-      request_id,
-      image_urls,
-      model_name,
-      token,
-      userid,
-    );
+    await storeJobInFirestore(request_id, image_urls, model_name, clientid);
 
     return NextResponse.json(
       { request_id, status: 'IN_QUEUE' },

@@ -107,7 +107,6 @@ ${stripeLink}}`;
       const language = event?.context?.language;
       const languageButtonTextLocale = getTranslation('language', language);
       const finalLanguageButtonText = `Language${languageButtonTextLocale !== 'Language' ? ` | ${languageButtonTextLocale}` : ''}`;
-
       const stripeLink = await createStripeLink(clientid);
       const message = `${getTranslation('intro message', language)}
 
@@ -192,12 +191,8 @@ ${stripeLink}}`;
       const payload: ICreateMessagePayload = {
         phoneNumber: clientid,
         quickReply: true,
-        button1id: 'upload photos',
-        button2id: 'pricing',
-        button3id: 'main menu',
-        button1: getTranslation('upload photos', language),
-        button2: getTranslation('pricing', language),
-        button3: getTranslation('main menu', language),
+        button1id: 'main menu',
+        button1: getTranslation('main menu', language),
         msgBody: message,
       };
       await config.whatsappInstance.send(payload);
@@ -587,11 +582,10 @@ ${stripeLink}`;
 
       let message;
       let payload: ICreateMessagePayload;
+      const clientData = await getUserFields(clientid);
 
       async function getMachineAvailability() {
-        const machineIsAvailable =
-          (await getProcessingFlag(clientid)) === false;
-        return machineIsAvailable;
+        return !clientData.processing;
       }
 
       // if machine available && credits available, then send prompted photo
@@ -614,8 +608,8 @@ ${stripeLink}`;
         .then(async (machineIsAvailable) => {
           if (machineIsAvailable) {
             const [hasValidMembership, hasCredits] = await Promise.all([
-              getMembershipAvailability(clientid),
-              getCreditsAvailability(clientid),
+              getMembershipAvailability(clientData),
+              getCreditsAvailability(clientData),
             ]);
 
             const canGenerateImages = hasValidMembership && hasCredits;
@@ -631,17 +625,9 @@ ${stripeLink}`;
               } else if (!hasValidMembership) {
                 // hard transition xstate to paywall
                 message = getTranslation('paywall', language);
-                const stateJSON = {
-                  status: 'stopped',
-                  context: {
-                    language: language || 'english',
-                    modelGenerated: true,
-                  },
-                  value: 'paywall',
-                  children: {},
-                  historyValue: {},
-                  tags: [],
-                };
+                const stateJSON = JSON.parse(clientData.state);
+                stateJSON.value = 'paywall';
+
                 const stripeLink = await createStripeLink(clientid);
                 message = `${getTranslation('new user paywall', language)}
 

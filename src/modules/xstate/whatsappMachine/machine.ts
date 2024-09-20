@@ -31,10 +31,10 @@ export const machineFactory = (config: IMachineConfig): any => {
         onBoarding: {
           entry: ['assignDefaultValues'],
           on: {
-            UPLOAD_PHOTOS: {
-              actions: 'assignMessage',
-              target: 'imagesIncomplete',
-            },
+            // UPLOAD_PHOTOS: {
+            //   actions: 'assignMessage',
+            //   target: 'imagesIncomplete',
+            // },
             LANGUAGE: { actions: ['sendSelectLanguage', 'assignMessage'] },
             ENGLISH: {
               actions: [
@@ -121,8 +121,6 @@ export const machineFactory = (config: IMachineConfig): any => {
                 'sendImprovedPromptConfirmationAndSetContext',
               ],
             },
-            CANCEL: { actions: ['sendPromptingInstruction'] },
-            PAYWALL: { target: 'paywall' },
             FALLBACK: { actions: ['sendPromptingInstruction'] },
           },
         },

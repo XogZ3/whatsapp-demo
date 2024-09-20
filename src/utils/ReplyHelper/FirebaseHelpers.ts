@@ -648,18 +648,18 @@ export async function createAndUploadZipFile(
 }
 
 export async function uploadLoraFileToFirebase(
-  loraUrl: string,
+  loraURL: string,
   fileName: string,
 ): Promise<string> {
   const storage = getStorageInstance();
   const bucket = storage.bucket();
-  const filePath = `lora_files/${fileName}`;
+  const filePath = `private/lora_models/${fileName}`;
   const file = bucket.file(filePath);
 
   // Fetch the LoRA file from the given URL using native fetch
-  const response = await fetch(loraUrl);
+  const response = await fetch(loraURL);
   if (!response.ok) {
-    throw new Error(`Failed to fetch LoRA file from ${loraUrl}`);
+    throw new Error(`Failed to fetch LoRA file from ${loraURL}`);
   }
 
   const fileBuffer = await response.arrayBuffer();

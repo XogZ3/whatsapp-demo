@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  console.log('[O] n8n: checking training job status...');
+  // console.log('[O] n8n: checking training job status...');
 
   try {
     const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
 
       if (jobStatus === null) {
         // Job not found, skip updating
-        console.log('[O] n8n: No jobs found...');
+        // console.log('[O] n8n: No jobs found...');
         return null;
       }
 

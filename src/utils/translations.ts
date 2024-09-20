@@ -45,7 +45,6 @@ export type TranslationKeys =
   | 'prompting instruction'
   | 'prompt confirmation'
   | 'new prompt request'
-  | 'upload photos'
   | 'main menu'
   | 'photo received'
   | 'finish upload'

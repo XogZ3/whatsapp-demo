@@ -13,7 +13,6 @@ import {
   getUserFields,
   type UserFieldsFirebase,
 } from '@/utils/ReplyHelper/FirebaseHelpers';
-import { sendPromptingInstruction } from '@/utils/sendSampleImages';
 import { getTranslation, type Language } from '@/utils/translations';
 
 // import type { StripeEvent } from './types';
@@ -80,20 +79,19 @@ async function handleSubscriptionEvent(event: Stripe.Event) {
         .collection('clients')
         .doc(clientid);
 
-      const clientDoc = (await transaction.get(clientDocRef)).data();
-      language = clientDoc?.language;
+      const clientData = (await transaction.get(clientDocRef)).data();
+      language = clientData?.language;
+      const state = clientData?.state;
 
-      const stateJSON = {
-        status: 'stopped',
-        context: {
-          language,
-          modelGenerated: true,
-        },
-        value: 'imagesIncomplete',
-        children: {},
-        historyValue: {},
-        tags: [],
-      };
+      let stateJSON;
+      try {
+        stateJSON = state ? JSON.parse(state) : {};
+      } catch (error) {
+        console.error('Error parsing state:', error);
+        stateJSON = {};
+      }
+
+      stateJSON.value = 'imagesIncomplete';
 
       updates = {
         subscriptionId,
@@ -194,17 +192,18 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
 
     subscriptionData = await stripe.subscriptions.retrieve(subscriptionId);
     if (subscriptionData) {
-      const stateJSON = {
-        status: 'stopped',
-        context: {
-          language: language || 'english',
-          modelGenerated: true,
-        },
-        value: 'imagesIncomplete',
-        children: {},
-        historyValue: {},
-        tags: [],
-      };
+      const clientData = (await transaction.get(clientDocRef)).data();
+      const state = clientData?.state;
+
+      let stateJSON;
+      try {
+        stateJSON = state ? JSON.parse(state) : {};
+      } catch (error) {
+        console.error('Error parsing state:', error);
+        stateJSON = {};
+      }
+
+      stateJSON.value = 'imagesIncomplete';
 
       const updates: Partial<UserFieldsFirebase> = {
         customerId,
@@ -237,9 +236,11 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
   };
 
   if (status === 'complete' && subscriptionData!.status === 'active') {
-    await sendMessageToWhatsapp(payload);
-    await sendPromptingInstruction(clientid, language);
-    await sendPurchaseToFBCoversionAPI(clientid);
+    await Promise.all([
+      sendMessageToWhatsapp(payload),
+      sendPurchaseToFBCoversionAPI(clientid),
+    ]);
+    await sendPhotoUploadInstruction(clientid, language);
     console.log(
       `Checkout session completed for clientid: ${clientid}, subscriptionId: ${subscriptionId}`,
     );

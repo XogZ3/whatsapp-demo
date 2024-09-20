@@ -9,6 +9,7 @@ import {
   sendMessageToWhatsapp,
 } from '@/modules/whatsapp/whatsapp';
 import {
+  getUserFields,
   uploadLoraFileToFirebase,
   type UserFieldsFirebase,
 } from '@/utils/ReplyHelper/FirebaseHelpers';
@@ -71,71 +72,91 @@ export async function POST(request: NextRequest) {
     // Check if the status is OK and if payload exists
     if (status === 'OK' && payload) {
       const { diffusers_lora_file, config_file } = payload;
-      const loraUrl = diffusers_lora_file?.url;
+      const loraURL = diffusers_lora_file?.url;
       const configFileUrl = config_file?.url;
 
       // Update Firestore with the status, LoRA URL, and config file URL
-      const docRef = firestore.collection('training_jobs').doc(request_id);
-      const doc = await docRef.get();
+      const trainingJobsRef = firestore
+        .collection('training_jobs')
+        .doc(request_id);
+      const trainingJobsDoc = await trainingJobsRef.get();
 
-      if (!doc.exists) {
+      if (!trainingJobsDoc.exists) {
         throw new Error(
           `Document ${request_id} not found in collection training_jobs`,
         );
       }
-      const data = doc.data();
+      const trainingJobsData = trainingJobsDoc.data();
 
-      const clientid = data?.clientid;
+      // Find corresponding clientid to the fal job
+      const clientid = trainingJobsData?.clientid;
+
       const generator = new RandomStringGenerator();
       const randomString = generator.generate();
       const fileName = `person${clientid}_${randomString}.safetensors`;
 
       const [fotolabsLoraURL, fotolabsConfigFileURL] = await Promise.all([
-        uploadLoraFileToFirebase(loraUrl, fileName),
+        uploadLoraFileToFirebase(loraURL, fileName),
         uploadLoraFileToFirebase(configFileUrl, `zconfig_${fileName}`),
       ]);
 
-      await docRef.update({
-        status: 'COMPLETED',
-        loraUrl: fotolabsLoraURL,
-        configFileUrl: fotolabsConfigFileURL,
-        completedAt: DateTime.now().toMillis(),
-      });
       console.log(
         `[+] Training job ${request_id} completed. LoRA URL: ${fotolabsLoraURL}`,
       );
-      const wabaId = process.env.WABA_ID;
-      const clientDoc = firestore
-        .collection('apps')
-        .doc(wabaId as string)
-        .collection('clients')
-        .doc(clientid);
 
-      const clientData = await clientDoc.get();
-      const { age, gender, language } = clientData.data() || {};
+      const { age, gender, state, language } = await getUserFields(clientid);
 
-      const stateJSON = {
-        status: 'stopped',
-        context: {
-          language: language || 'english',
-          modelGenerated: true,
-        },
-        value: 'photoPrompting',
-        children: {},
-        historyValue: {},
-        tags: [],
-      };
+      let stateJSON;
+
+      try {
+        stateJSON = state ? JSON.parse(state) : {}; // Handle null or undefined state
+      } catch (error) {
+        console.error('Error parsing state:', error);
+        stateJSON = {
+          status: 'stopped',
+          context: {
+            language: language || 'english',
+            modelGenerated: true,
+            age,
+            gender,
+          },
+          value: 'photoPrompting',
+          children: {},
+          historyValue: {},
+          tags: [],
+        };
+      }
+
+      // Update or initialize the state fields
+      stateJSON.value = 'photoPrompting';
+
       const updates: Partial<UserFieldsFirebase> = {
         state: JSON.stringify(stateJSON),
         loraURL: fotolabsLoraURL,
         loraFilename: fileName,
         processing: false,
       };
-      await clientDoc.set(updates, { merge: true });
+
+      // batch updates
+      const batch = firestore.batch();
+      batch.update(trainingJobsRef, {
+        status: 'COMPLETED',
+        loraURL: fotolabsLoraURL,
+        configFileUrl: fotolabsConfigFileURL,
+        completedAt: DateTime.now().toMillis(),
+      });
+      const wabaId = process.env.WABA_ID;
+      const clientDoc = firestore
+        .collection('apps')
+        .doc(wabaId as string)
+        .collection('clients')
+        .doc(clientid);
+      batch.set(clientDoc, updates, { merge: true });
+      await batch.commit();
 
       generateAndSendModelImages({
-        age,
-        gender,
+        age: stateJSON.context.age,
+        gender: stateJSON.context.gender,
         loraFilename: fileName,
         clientid,
         language,

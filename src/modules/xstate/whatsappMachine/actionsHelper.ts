@@ -1,9 +1,9 @@
+import * as fal from '@fal-ai/serverless-client';
 import { DateTime } from 'luxon';
 
 import type { CreatePaymentLinkResult } from '@/app/api/stripe/createPaymentLink/route';
 import firebase from '@/modules/firebase';
 import { generateImagesWithReplicateUploadToFirebase } from '@/modules/replicate';
-import { checkTrainingJob } from '@/modules/runpod';
 import {
   type ICreateMessagePayload,
   sendMessageToWhatsapp,
@@ -49,18 +49,8 @@ export async function notifyPendingPhotos(
   await sendMessageToWhatsapp(payload);
 }
 
-export async function getCreditsAvailability(clientid: string) {
-  const wabaId = process.env.WABA_ID;
-  const clientDoc = firestore
-    .collection('apps')
-    .doc(wabaId as string)
-    .collection('clients')
-    .doc(clientid);
-  const clientData = await clientDoc.get();
-
-  const data = clientData.data() as UserFieldsFirebase;
-
-  const { creditsUsedToday = 0, creditsResetDate } = data;
+export async function getCreditsAvailability(clientData: UserFieldsFirebase) {
+  const { clientid, creditsUsedToday = 0, creditsResetDate } = clientData;
 
   const today = DateTime.now().startOf('day');
 
@@ -75,10 +65,15 @@ export async function getCreditsAvailability(clientid: string) {
 
     if (resetRequired) {
       // Reset the count and update the date
-      await clientDoc.update({
-        creditsUsedToday: 0,
-        creditsResetDate: today.toMillis(),
-      });
+      await firestore
+        .collection('apps')
+        .doc(process.env.WABA_ID as string)
+        .collection('clients')
+        .doc(clientid)
+        .update({
+          creditsUsedToday: 0,
+          creditsResetDate: today.toMillis(),
+        });
       return true;
     }
     if (creditsUsedToday < DAILY_CREDITS_LIMIT) {
@@ -89,25 +84,20 @@ export async function getCreditsAvailability(clientid: string) {
   }
   return false;
 }
-export async function getMembershipAvailability(clientid: string) {
-  const wabaId = process.env.WABA_ID;
-  const clientDoc = firestore
-    .collection('apps')
-    .doc(wabaId as string)
-    .collection('clients')
-    .doc(clientid);
-  const clientData = await clientDoc.get();
-
-  const { membershipEndDate } = clientData.data() || {};
-
+export async function getMembershipAvailability(
+  clientData: UserFieldsFirebase,
+) {
   try {
-    if (DateTime.now() > DateTime.fromMillis(membershipEndDate || 0)) {
+    if (
+      DateTime.now() > DateTime.fromMillis(clientData.membershipEndDate || 0)
+    ) {
       return false;
     }
+    return true;
   } catch (error) {
     console.error('[!] Error in membership check: ', error);
+    return false;
   }
-  return true;
 }
 
 export async function processAndSendImages(
@@ -274,8 +264,67 @@ async function handleModelGenerationFailedBasedOnRetriedFlag(
 }
 
 function isJobTimedOut(createdAt: number): boolean {
-  const twoHoursAgo = Date.now() - 2 * 60 * 60 * 1000;
-  return createdAt <= twoHoursAgo;
+  const tenMinutesAgo = DateTime.now().toMillis() - 10 * 60 * 1000 * 1000;
+  return createdAt <= tenMinutesAgo;
+}
+
+export async function checkTrainingJob(requestId: string) {
+  const FAL_KEY = process.env.FAL_KEY!;
+
+  fal.config({
+    credentials: FAL_KEY,
+  });
+  try {
+    const falStatus = await fal.queue.status('fal-ai/flux-lora-fast-training', {
+      requestId,
+      logs: true,
+    });
+    return falStatus;
+  } catch (error) {
+    // Only re-throw for non-404 errors
+    if (error instanceof Error && !error.message.includes('404')) {
+      throw error;
+    }
+    return null;
+  }
+}
+
+interface FalResult {
+  diffusers_lora_file: {
+    url: string;
+    content_type: 'image/png';
+    file_name: string;
+    file_size: number;
+  };
+  config_file: {
+    url: string;
+    content_type: 'image/png';
+    file_name: string;
+    file_size: number;
+  };
+}
+
+export async function getFalResult(requestId: string) {
+  const FAL_KEY = process.env.FAL_KEY!;
+  fal.config({
+    credentials: FAL_KEY,
+  });
+  try {
+    const result: FalResult = await fal.queue.result(
+      'fal-ai/flux-lora-fast-training',
+      {
+        requestId,
+      },
+    );
+
+    return result.diffusers_lora_file.url;
+  } catch (error) {
+    // Only re-throw for non-404 errors
+    if (error instanceof Error && !error.message.includes('404')) {
+      throw error;
+    }
+    return null;
+  }
 }
 
 export async function checkTrainingJobForClient(clientid: string) {
@@ -283,9 +332,8 @@ export async function checkTrainingJobForClient(clientid: string) {
   console.log(`[I] Checking training job status for client ${clientid}...`);
 
   // Fetch user details from the database
-  const userDetails = await getUserFields(clientid);
   const { language, loraFilename, loraURL, retriedModelGenFlag, state } =
-    userDetails;
+    await getUserFields(clientid);
   const stateObj = JSON.parse(state);
   const currentState = stateObj.value;
 
@@ -299,7 +347,7 @@ export async function checkTrainingJobForClient(clientid: string) {
     await setUserStateAndInform({
       clientid,
       language,
-      stateValue: 'paywall',
+      stateValue: 'photoPrompting',
       reason: 'model already exists',
     });
     return;
@@ -340,7 +388,7 @@ export async function checkTrainingJobForClient(clientid: string) {
         await setUserStateAndInform({
           clientid,
           language,
-          stateValue: 'paywall',
+          stateValue: 'photoPrompting',
           reason: 'model already exists',
         });
         break;
@@ -381,11 +429,12 @@ export async function checkTrainingJobForClient(clientid: string) {
         newStatus = jobStatus.status;
 
         // If job completed successfully, update the training status
-        if (newStatus === 'COMPLETED' && jobStatus.output?.firebase_url) {
+        if (newStatus === 'COMPLETED') {
+          const newLoraURL = await getFalResult(jobData.jobId);
           await updateTrainingStatus(
             jobData.token,
             clientid,
-            jobStatus.output.firebase_url,
+            newLoraURL!,
             jobData.model_name,
           );
         } else if (isJobTimedOut(jobData.createdAt)) {
@@ -401,8 +450,7 @@ export async function checkTrainingJobForClient(clientid: string) {
         // Update the job document with the new status
         await jobDoc.ref.update({
           status: newStatus,
-          output: jobStatus.output || null,
-          updatedAt: Date.now(),
+          updatedAt: DateTime.now().toMillis(),
         });
 
         break;

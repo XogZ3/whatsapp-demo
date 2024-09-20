@@ -29,6 +29,7 @@ import { getTranslation } from '@/utils/translations';
 
 import {
   checkTrainingJobForClient,
+  createReferralPromoCode,
   createStripeLink,
   getCreditsAvailability,
   getMembershipAvailability,
@@ -95,6 +96,17 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const language = event?.context?.language;
       const stripeLink = await createStripeLink(clientid);
       await sendIntroTemplateMessage(clientid, language, stripeLink);
+    },
+    sendPromoMessage: async () => {
+      const { clientid, language } = config.userMetaData;
+      const promoCode = await createReferralPromoCode(clientid);
+      const message = `${getTranslation('referral 1', language)} *${promoCode}* ${getTranslation('referral 2', language)}`;
+      const payload: ICreateMessagePayload = {
+        phoneNumber: clientid,
+        text: true,
+        msgBody: message,
+      };
+      await config.whatsappInstance.send(payload);
     },
     sendSelectLanguage: async (event: any) => {
       // console.log(

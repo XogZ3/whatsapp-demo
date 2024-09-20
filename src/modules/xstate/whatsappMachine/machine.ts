@@ -122,6 +122,7 @@ export const machineFactory = (config: IMachineConfig): any => {
               ],
             },
             FALLBACK: { actions: ['sendPromptingInstruction'] },
+            SECRET: { actions: ['sendPromoMessage'] },
           },
         },
       },

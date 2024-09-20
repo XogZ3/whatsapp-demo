@@ -49,9 +49,8 @@ export const handleMessage = async (
       prompt: 'PROMPT',
       'use prompt': 'USE_PROMPT',
       'improve prompt': 'IMPROVE_PROMPT',
-      paywall: 'PAYWALL',
       fallback: 'FALLBACK',
-      cancel: 'CANCEL',
+      secret: 'SECRET',
     },
   };
 
@@ -62,7 +61,7 @@ export const handleMessage = async (
 
   if (
     state === State.photoPrompting &&
-    !['cancel', 'use prompt', 'improve prompt', 'paywall', 'fallback'].includes(
+    !['use prompt', 'improve prompt', 'fallback', 'secret'].includes(
       userActionId,
     )
   ) {

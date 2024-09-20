@@ -2,6 +2,7 @@ import * as fal from '@fal-ai/serverless-client';
 import { DateTime } from 'luxon';
 
 import type { CreatePaymentLinkResult } from '@/app/api/stripe/createPaymentLink/route';
+import type { CreateReferralPromoCodeResult } from '@/app/api/stripe/createReferralPromoCode/route';
 import firebase from '@/modules/firebase';
 import { generateImagesWithReplicateUploadToFirebase } from '@/modules/replicate';
 import {
@@ -164,6 +165,44 @@ export async function createStripeLink(clientid: string) {
     if (contentType && contentType.includes('application/json')) {
       const result: CreatePaymentLinkResult = await response.json();
       return result.paymentLink;
+    }
+    const textResponse = await response.text();
+    throw new Error(`Unexpected response format: ${textResponse}`);
+  } catch (error) {
+    let errorMessage = 'An unknown error occurred';
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    return errorMessage;
+  }
+}
+
+export async function createReferralPromoCode(clientid: string) {
+  try {
+    const response = await fetch(
+      `${getBaseUrl()}/api/stripe/createReferralPromoCode`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ clientid }),
+      },
+    );
+
+    const contentType = response.headers.get('Content-Type');
+    if (!response.ok) {
+      let errorMessage = `Failed to create referral promo code: ${response.statusText}`;
+      if (contentType && contentType.includes('application/json')) {
+        const errorResponse = await response.json();
+        errorMessage = errorResponse.error || errorMessage;
+      }
+      throw new Error(errorMessage);
+    }
+
+    if (contentType && contentType.includes('application/json')) {
+      const result: CreateReferralPromoCodeResult = await response.json();
+      return result.code;
     }
     const textResponse = await response.text();
     throw new Error(`Unexpected response format: ${textResponse}`);

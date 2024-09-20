@@ -18,7 +18,7 @@ export const machineFactory = (config: IMachineConfig): any => {
         latestImprovedPrompt: '',
         modelGenerated: false,
         language: 'english',
-        age: 0,
+        age: 25,
         gender: 'male',
       } as IMachineContext,
       on: {

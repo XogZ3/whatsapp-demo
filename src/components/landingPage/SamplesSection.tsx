@@ -7,7 +7,7 @@ import * as React from 'react';
 import { Section } from '../GeneralContainers';
 import { SampleImagesCarousel } from '../InfiniteCards';
 
-export default function UsecasesSection() {
+export default function SamplesSection() {
   return (
     <Section className="relative w-full overflow-hidden bg-purple-200 py-10 dark:bg-purple-900 sm:py-14">
       {/* Main Content Container */}

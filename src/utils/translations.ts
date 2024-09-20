@@ -57,7 +57,9 @@ export type TranslationKeys =
   | 'unknown error'
   | 'support email'
   | 'payment failed'
-  | 'new user paywall';
+  | 'new user paywall'
+  | 'referral 1'
+  | 'referral 2';
 
 // Define the translation map structure directly using Record
 export const TRANSLATION_MAP: Record<
@@ -306,6 +308,16 @@ Você pode criar fotos ilimitadas de si mesmo em qualquer cenário que puder ima
     en: `Please email us for support at ${process.env.NEXT_PUBLIC_EMAIL}`,
     pt: `Por favor, envie um e-mail para suporte em ${process.env.NEXT_PUBLIC_EMAIL}`,
     ar: `يرجى مراسلتنا عبر البريد الإلكتروني للدعم على ${process.env.NEXT_PUBLIC_EMAIL}`,
+  },
+  'referral 1': {
+    en: `Hey! 🎉 Like these AI-generated images? Share this awesomeness! Try FotoLabs AI to create your own in WhatsApp. Use promo code`,
+    pt: `Ei! 🎉 Gostou dessas imagens geradas por IA? Compartilhe essa novidade! Experimente o FotoLabs AI para criar as suas no WhatsApp. Use o código promocional`,
+    ar: `مرحبًا! 🎉 هل أعجبتك هذه الصور المولدة بالذكاء الاصطناعي؟ شارك هذه الروعة! جرب FotoLabs AI لإنشاء صورك الخاصة على WhatsApp. استخدم رمز العرض الترويجي`,
+  },
+  'referral 2': {
+    en: `for your *first month FREE*! Feel free to forward this message to friends and family!`,
+    pt: `para o seu *primeiro mês GRATUITO*! Sinta-se à vontade para encaminhar esta mensagem para amigos e familiares!`,
+    ar: `للحصول على *الشهر الأول مجانًا*! لا تتردد في إعادة توجيه هذه الرسالة إلى الأصدقاء والعائلة!`,
   },
 };
 

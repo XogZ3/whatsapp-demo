@@ -2,15 +2,20 @@ import '@/styles/global.css';
 
 import { Footer } from '@/components/Footer';
 import Header from '@/components/Header';
-import ScrollToTopButton from '@/components/ScrollToTopButton';
+import { DotPattern } from '@/components/ui/magicui/dot';
+import { cn } from '@/libs/utils';
 
 export default function WebsiteLayout(props: { children: React.ReactNode }) {
   return (
-    <div className="flex h-screen w-full flex-col">
+    <div className="flex size-full flex-col">
       <Header />
       <div className="h-full grow">{props.children}</div>
+      <DotPattern
+        className={cn(
+          '[mask-image:radial-gradient(800px_circle_at_center,white,transparent)] -z-10',
+        )}
+      />
       <Footer />
-      <ScrollToTopButton />
     </div>
   );
 }

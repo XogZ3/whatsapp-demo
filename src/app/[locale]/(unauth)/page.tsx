@@ -1,11 +1,13 @@
 import HeroSection from '@/components/landingPage/HeroSection';
-import UsecasesSection from '@/components/landingPage/UsecasesSection';
+import SamplesSection from '@/components/landingPage/SamplesSection';
+import UsesSection from '@/components/landingPage/UsesSection';
 
 export default function Index() {
   return (
     <>
       <HeroSection />
-      <UsecasesSection />
+      <SamplesSection />
+      <UsesSection />
     </>
   );
 }

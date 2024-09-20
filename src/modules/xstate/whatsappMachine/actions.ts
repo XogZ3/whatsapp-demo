@@ -62,6 +62,8 @@ export const actionsFactory = (config: IMachineConfig): any => {
       latestImprovedPrompt: () => '',
       modelGenerated: () => false,
       language: () => 'english',
+      age: () => 25,
+      gender: () => 'male',
     }),
     sendInvalidInputMessage: async (event: any) => {
       const { clientid, language = event?.context?.language } =
@@ -320,12 +322,6 @@ export const actionsFactory = (config: IMachineConfig): any => {
     setRetriedFlagTrue: async () => {
       const { clientid } = config.userMetaData;
       await setRetriedFlag(clientid, true);
-    },
-    sendModelGeneratedSuccess: async (event: any) => {
-      const { clientid, language = event?.context?.language } =
-        config.userMetaData;
-      const message = getTranslation('model generated', language);
-      await sendMessage(config.whatsappInstance, message, clientid);
     },
     sendPaywall: async (event: any) => {
       const { clientid, language = event?.context?.language } =

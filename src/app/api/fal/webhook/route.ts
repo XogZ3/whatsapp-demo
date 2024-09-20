@@ -8,6 +8,7 @@ import {
   type ICreateMessagePayload,
   sendMessageToWhatsapp,
 } from '@/modules/whatsapp/whatsapp';
+import { createReferralPromoCode } from '@/modules/xstate/whatsappMachine/actionsHelper';
 import {
   getUserFields,
   uploadLoraFileToFirebase,
@@ -163,6 +164,17 @@ export async function POST(request: NextRequest) {
       })
         .then(async () => {
           const message = getTranslation('model generated', language);
+          const whatsappPayload: ICreateMessagePayload = {
+            phoneNumber: clientid,
+            text: true,
+            msgBody: message,
+          };
+          await sendMessageToWhatsapp(whatsappPayload);
+          console.log('[+] Prompt msg sent');
+        })
+        .then(async () => {
+          const promoCode = await createReferralPromoCode(clientid);
+          const message = `${getTranslation('referral 1', language)} *${promoCode}* ${getTranslation('referral 2', language)}`;
           const whatsappPayload: ICreateMessagePayload = {
             phoneNumber: clientid,
             text: true,

@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { cn } from '@/libs/utils';
 
@@ -10,8 +11,12 @@ export const InfiniteMovingCards = ({
   className,
 }: {
   cards: {
-    id: number;
-    videoSrc: string;
+    id: string;
+    image: {
+      imageSrc: any;
+      priority: boolean;
+      loading: any;
+    };
   }[];
   direction?: 'left' | 'right';
   speed?: 'fast' | 'normal' | 'slow';
@@ -61,41 +66,41 @@ export const InfiniteMovingCards = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    const videos = document.querySelectorAll('video');
-    videos.forEach((video) => {
-      // eslint-disable-next-line no-param-reassign
-      video.muted = true;
-    });
-  }, [cards]);
-
   return (
     <div
       ref={containerRef}
       className={cn(
-        'scroller relative z-20 max-w-[95vw] sm:max-w-7xl overflow-hidden sm:[mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)] [mask-image:linear-gradient(to_right,transparent,white_5%,white_95%,transparent)]',
+        'scroller relative z-20  max-w-7xl overflow-hidden  [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]',
         className,
       )}
     >
       <ul
         ref={scrollerRef}
         className={cn(
-          'flex min-w-full w-max flex-nowrap list-none my-0',
-          start && 'animate-scroll',
+          ' flex min-w-full md:py-4 w-max flex-nowrap',
+          start && 'animate-scroll ',
           pauseOnHover && 'hover:[animation-play-state:paused]',
         )}
       >
         {cards.map((card) => (
-          <li className="rounded-2xl px-2 py-1" key={card.id}>
+          <li
+            className="relative h-[25rem] w-56 max-w-full rounded-2xl px-2 py-1 md:h-[40rem] md:w-[22.5rem]"
+            key={card.id}
+          >
+            <div
+              aria-hidden="true"
+              className="absolute -left-0.5 -top-0.5 -z-10 size-[calc(100%_+_4px)] cursor-pointer select-none"
+            />
+
             <div className="relative size-full">
-              <video
-                src={card.videoSrc}
-                style={{ objectFit: 'cover' }}
-                className="m-0 h-[465px] w-[270px] rounded-2xl"
-                autoPlay
-                muted
-                loop
-                playsInline
+              <Image
+                src={card.image.imageSrc}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                style={{ objectFit: 'cover', objectPosition: 'center' }}
+                className="rounded-2xl"
+                alt="fotolabs.ai"
+                placeholder="blur"
               />
             </div>
           </li>

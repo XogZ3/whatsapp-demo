@@ -2,7 +2,6 @@ import archiver from 'archiver';
 import axios from 'axios';
 import { FieldValue } from 'firebase-admin/firestore';
 import { Readable } from 'stream';
-import { v4 as uuidv4 } from 'uuid';
 
 import firebase from '@/modules/firebase';
 import { getStorageInstance } from '@/modules/firebase/firebase';
@@ -35,7 +34,7 @@ export async function setUserLanguage(language: Language, clientid: string) {
   await clientDoc.set(updates, { merge: true });
 }
 
-async function setUserTrainingToken(token: string, clientid: string) {
+export async function setUserTrainingToken(token: string, clientid: string) {
   const wabaId = process.env.WABA_ID;
   const clientDoc = firestore
     .collection('apps')
@@ -192,12 +191,10 @@ export async function callTrainingAPI(
   clientid: string,
   imageURLs: string[],
 ): Promise<{ jobId?: string; status?: string; error?: string }> {
-  const token = uuidv4();
   const data = {
     image_urls: imageURLs,
     model_name: `person${clientid}`,
-    token,
-    userid: clientid,
+    clientid,
   };
 
   try {
@@ -219,9 +216,6 @@ export async function callTrainingAPI(
     const result = await response.json();
 
     console.log('Training job started successfully:', result);
-
-    // saving token for validation for /api/training
-    await setUserTrainingToken(token, clientid);
 
     return { jobId: result.jobId, status: result.status };
   } catch (error) {

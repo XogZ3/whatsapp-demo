@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
         line_items: [
           {
             price:
-              process.env.STRIPE_PRICE_ID || 'price_1Q0lf9JHS9DkVfWMKZEkJpiJ',
+              process.env.STRIPE_PRICE_ID || 'price_1Q14rbJHS9DkVfWMTzCYeo34',
             quantity: 1,
           },
         ],

@@ -2,66 +2,20 @@
 
 'use client';
 
-import Image from 'next/image';
 import * as React from 'react';
 
-import { Container } from '../GeneralContainers';
+import { Section } from '../GeneralContainers';
+import { SampleImagesCarousel } from '../InfiniteCards';
 
 export default function UsecasesSection() {
   return (
-    <div className="bg-green-300 py-4 dark:bg-green-600 sm:py-14">
-      <Container className="relative flex flex-col items-center justify-center gap-y-2 text-center sm:static">
-        <div className="grid grid-flow-row sm:grid-flow-col sm:grid-cols-2 sm:gap-x-4 md:grid-cols-4">
-          <div className="relative h-48 w-60 md:h-60">
-            <Image
-              src="/assets/images/test.png"
-              sizes="(min-width: 780px) calc(33.33vw - 64px), calc(100vw - 80px)"
-              fill
-              style={{
-                objectFit: 'cover',
-                objectPosition: 'center',
-              }}
-              alt="test"
-            />
-          </div>
-          <div className="relative h-48 w-60 md:h-60">
-            <Image
-              src="/assets/images/test.png"
-              sizes="(min-width: 780px) calc(33.33vw - 64px), calc(100vw - 80px)"
-              fill
-              style={{
-                objectFit: 'cover',
-                objectPosition: 'center',
-              }}
-              alt="test"
-            />
-          </div>
-          <div className="relative h-48 w-60 md:h-60">
-            <Image
-              src="/assets/images/test.png"
-              sizes="(min-width: 780px) calc(33.33vw - 64px), calc(100vw - 80px)"
-              fill
-              style={{
-                objectFit: 'cover',
-                objectPosition: 'center',
-              }}
-              alt="test"
-            />
-          </div>
-          <div className="relative h-48 w-60 md:h-60">
-            <Image
-              src="/assets/images/test.png"
-              sizes="(min-width: 780px) calc(33.33vw - 64px), calc(100vw - 80px)"
-              fill
-              style={{
-                objectFit: 'cover',
-                objectPosition: 'center',
-              }}
-              alt="test"
-            />
-          </div>
-        </div>
-      </Container>
-    </div>
+    <Section className="relative w-full overflow-hidden bg-purple-200 py-10 dark:bg-purple-900 sm:py-14">
+      {/* Main Content Container */}
+      <div className="relative z-10 flex size-full flex-col gap-x-8 sm:grid sm:grid-cols-10 sm:px-8">
+        {/* Circle Element */}
+        <div className="absolute -left-20 -top-40 z-0 min-h-[240px] min-w-[240px] rounded-full border-[30px] border-purple-500/40" />
+        <SampleImagesCarousel />
+      </div>
+    </Section>
   );
 }

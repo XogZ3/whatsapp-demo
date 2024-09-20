@@ -46,6 +46,7 @@ async function handleSubscriptionEvent(event: Stripe.Event) {
     const subscriptionDoc = snapshot.docs[0];
     const subscriptionData = subscriptionDoc?.data();
     clientid = subscriptionData?.clientid;
+    if (!clientid) return NextResponse.json({ status: 200 });
   }
 
   let updates: any;

@@ -6,10 +6,54 @@ import Image from 'next/image';
 import * as React from 'react';
 import Balancer from 'react-wrap-balancer';
 
-import img6 from '@/public/assets/images/woman_4.webp';
+import professional from '@/public/assets/images/man_professional.webp';
+import travel from '@/public/assets/images/man_travel.webp';
+import outfit from '@/public/assets/images/woman_1.webp';
+import dating from '@/public/assets/images/woman_4.webp';
+import instagram from '@/public/assets/images/woman_instagram.webp';
+import keynote from '@/public/assets/images/woman_keynote.webp';
 
 import { Container } from '../GeneralContainers';
 import { Card, CardContent, CardDescription, CardHeader } from '../ui/card';
+
+const CardData = [
+  {
+    image: dating,
+    heading: '❤️‍🔥 AI Dating',
+    content:
+      'Use AI to generate better dating photos for Tinder, Bumble and Hinge. Get more matches and make your dating profile stand out on dating apps with personalized, high-quality images. Experiment with different poses, outfits, and settings',
+  },
+  {
+    image: professional,
+    heading: '🕵🏽 Professional headshots',
+    content:
+      'Get a professional look with professional headshots you can use on your LinkedIn. Stand out from the competition, increase your visibility, attract more job offers by making a strong first impression',
+  },
+  {
+    image: outfit,
+    heading: '👗 Outfit ideas',
+    content:
+      'Capture different outfits and styles to see what fits you best. Use AI to visualize how various clothes look on you before making a choice. Ideas: trendy, casual, beach, provocative, retro, traditional, cyberpunk, biker, etc. ',
+  },
+  {
+    image: travel,
+    heading: '🌎 Travel',
+    content:
+      'Travel the world and capture stunning photos from Paris to Tokyo. Showcase your global adventures with vibrant images from iconic cities and diverse cultures',
+  },
+  {
+    image: instagram,
+    heading: '📸 Instagram',
+    content:
+      'Take engaging and visually stunning photos that showcase your personality as an Instagram influencer. Boost your confidence, likes and followers with captivating images that reflect your unique style and charisma',
+  },
+  {
+    image: keynote,
+    heading: '🗣️ Keynote speaker',
+    content:
+      'Take compelling photos of yourself speaking with authority on stage at a conference. Showcase your leadership and expertise in a professional setting, capturing powerful moments that highlight your confidence and influence',
+  },
+];
 
 const UseCaseCard = ({
   imageSrc,
@@ -21,20 +65,20 @@ const UseCaseCard = ({
   content: string;
 }) => {
   return (
-    <Card className="col-span-1 row-span-1 pb-4">
+    <Card key={heading} className="col-span-1 row-span-1 pb-4">
       <CardHeader>
         <div className="relative h-44 w-full overflow-hidden">
           <Image
             src={imageSrc}
             fill
             sizes="(min-width: 780px) calc(33.33vw - 64px), calc(100vw - 80px)"
-            style={{ objectPosition: '0% 15%', objectFit: 'cover' }}
+            style={{ objectPosition: '0% 25%', objectFit: 'cover' }}
             alt="test"
             placeholder="blur"
           />
         </div>
       </CardHeader>
-      <CardContent className="text-3xl">{heading}</CardContent>
+      <CardContent className="text-xl">{heading}</CardContent>
       <CardDescription className="px-6 text-base">{content}</CardDescription>
     </Card>
   );
@@ -48,42 +92,14 @@ export default function UsesSection() {
           <Balancer>FotoLabs Uses</Balancer>
         </h3>
         <div className="flex w-full flex-col gap-y-4 text-5xl tracking-normal sm:grid sm:grid-cols-3 sm:gap-x-4 sm:text-7xl">
-          <UseCaseCard
-            imageSrc={img6}
-            heading="Dating Profile"
-            content="
-							Use AI to generate better dating photos for Tinder, Bumble and Hinge. Get more matches and make your dating profile stand out on dating apps with personalized, high-quality images. Experiment with different poses, outfits, and settings to showcase your best self and increase your chances of finding love"
-          />
-          <div className="row-span-1 flex flex-col space-y-4 rounded-xl bg-white p-4 shadow-md dark:bg-zinc-900">
-            <div className="relative h-48 w-full md:h-60">
-              <Image
-                src={img6}
-                alt="test"
-                fill
-                sizes="(min-width: 780px) calc(33.33vw - 64px), calc(100vw - 80px)"
-                style={{ objectPosition: '0% 15%', objectFit: 'cover' }}
-              />
-            </div>
-            <div className="mt-4 text-center transition duration-200 group-hover/bento:-translate-y-2">
-              <h4 className="my-2 text-2xl font-bold text-neutral-600 dark:text-neutral-200">
-                Dating Profile
-              </h4>
-              <div className="text-base font-normal text-neutral-600 dark:text-neutral-300">
-                Use AI to generate better dating photos for Tinder, Bumble and
-                Hinge. Get more matches and make your dating profile stand out
-                on dating apps with personalized, high-quality images.
-                Experiment with different poses, outfits, and settings to
-                showcase your best self and increase your chances of finding
-                love
-              </div>
-            </div>
-          </div>
-          <UseCaseCard
-            imageSrc={img6}
-            heading="Dating Profile"
-            content="
-							Use AI to generate better dating photos for Tinder, Bumble and Hinge. Get more matches and make your dating profile stand out on dating apps with personalized, high-quality images. Experiment with different poses, outfits, and settings to showcase your best self and increase your chances of finding love"
-          />
+          {CardData.map((card) => (
+            <UseCaseCard
+              key={card.heading}
+              imageSrc={card.image}
+              heading={card.heading}
+              content={card.content}
+            />
+          ))}
         </div>
       </Container>
     </div>

@@ -14,7 +14,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { AppConfig } from '@/utils/appConfig';
 import { getBaseUrl } from '@/utils/helpers';
 
-import ogImage from '../opengraph-image.png';
+import ogImage from '../opengraph-image.webp';
 import LoadingPage from './loading';
 import { Providers } from './providers';
 

@@ -25,6 +25,7 @@ export interface IMachineContext {
   language: Language;
   age: number;
   gender: 'male' | 'female';
+  shortenedStripeLink: string;
 }
 
 export interface IUserMetaData {

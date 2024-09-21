@@ -684,13 +684,8 @@ export async function generateAndSaveShortURLMap(
   longURL: string,
   clientid: string,
 ) {
-  const token = 'ncuwegf5682rc';
   const response = await fetch(`/api/createShortURL`, {
     method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
     body: JSON.stringify({
       longURL,
       clientid,

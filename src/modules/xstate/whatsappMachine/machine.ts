@@ -20,6 +20,7 @@ export const machineFactory = (config: IMachineConfig): any => {
         language: 'english',
         age: 25,
         gender: 'male',
+        shortenedStripeLink: '',
       } as IMachineContext,
       on: {
         UNKNOWN_ISSUE: {

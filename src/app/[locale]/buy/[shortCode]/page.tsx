@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import NotFound from '@/app/[locale]/not-found';
 import { AppConfig } from '@/utils/appConfig';
 
+import LoadingPage from '../../loading';
+
 export default function BuyPage({ params }: { params: any }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -35,11 +37,7 @@ export default function BuyPage({ params }: { params: any }) {
   }, [shortCode, router]);
 
   if (loading) {
-    return (
-      <div className="flex size-full items-center justify-center">
-        <h1>Loading...</h1>
-      </div>
-    );
+    return <LoadingPage />;
   }
 
   if (error) {

@@ -703,19 +703,3 @@ export async function generateAndSaveShortURLMap(
   const urlResponse = await response.json();
   return urlResponse.shortURL;
 }
-
-export async function getLongURLFromMap(shortCode: string) {
-  try {
-    const response = await fetch(`/api/getLongURL?shortCode=${shortCode}`);
-
-    if (!response.ok) {
-      throw new Error(`Error fetching longURL: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    return data.longURL || null;
-  } catch (error) {
-    console.error(`Failed to fetch longURL: ${error}`);
-    return null;
-  }
-}

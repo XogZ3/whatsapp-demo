@@ -1,5 +1,3 @@
-// app/buy/[shorturl]/page.tsx
-
 'use client';
 
 import { useRouter } from 'next/navigation';
@@ -7,25 +5,32 @@ import { useEffect, useState } from 'react';
 
 import NotFound from '@/app/[locale]/not-found';
 import { AppConfig } from '@/utils/appConfig';
-import { getLongURLFromMap } from '@/utils/ReplyHelper/FirebaseHelpers';
 
 export default function BuyPage({ params }: { params: any }) {
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const { shortCode } = params;
 
   useEffect(() => {
     const redirectToLongURL = async () => {
-      const longURL = await getLongURLFromMap(shortCode);
+      try {
+        const response = await fetch(`/api/getLongURL?shortCode=${shortCode}`);
+        const data = await response.json();
 
-      if (longURL) {
-        router.push(longURL);
-      } else {
+        if (data.longURL) {
+          router.push(data.longURL);
+        } else {
+          throw new Error('Long URL not found');
+        }
+      } catch (err) {
         setLoading(false);
-        setError(true);
+        setError(
+          err instanceof Error ? err.message : 'An unexpected error occurred',
+        );
       }
     };
+
     redirectToLongURL();
   }, [shortCode, router]);
 

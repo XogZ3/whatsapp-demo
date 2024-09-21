@@ -88,10 +88,6 @@ export const actionsFactory = (config: IMachineConfig): any => {
     // },
     sendIntroOptionsMessageBasedOnPhoneNumber: async (event: any) => {
       try {
-        // Log initial event and config values
-        console.log('Event received:', event);
-        console.log('Config userMetaData:', config.userMetaData);
-
         // use language based on phone number
         const { clientid, language } = config.userMetaData;
 

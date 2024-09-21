@@ -274,7 +274,7 @@ async function createWAMessagePayload(payload: PropsFormatted) {
     ...(text && {
       type: 'text',
       text: {
-        preview_url: false,
+        preview_url: true,
         body: msgBody,
       },
     }),

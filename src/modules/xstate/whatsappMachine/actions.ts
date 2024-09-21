@@ -35,6 +35,7 @@ import {
   getMembershipAvailability,
   notifyPendingPhotos,
   processAndSendImages,
+  sendContactInfoMessage,
   sendIntroTemplateMessage,
   setUserStateAndInform,
 } from './actionsHelper';
@@ -107,6 +108,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
         msgBody: message,
       };
       await config.whatsappInstance.send(payload);
+      await sendContactInfoMessage(clientid);
     },
     sendSelectLanguage: async (event: any) => {
       // console.log(
@@ -662,8 +664,7 @@ ${stripeLink}`;
                 error,
               );
               if (error.message && error.message.includes('NSFW')) {
-                message =
-                  'Uh-oh. Something went wrong: unsafe content detected. Please try a different prompt.';
+                message = getTranslation('nsfw error', language);
               } else {
                 message = getTranslation('unknown error', language);
               }

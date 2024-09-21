@@ -1,11 +1,12 @@
 import React from 'react';
 
-import img1 from '@/public/assets/images/man_3.webp';
-import img5 from '@/public/assets/images/man_professional.webp';
-import img2 from '@/public/assets/images/woman_1.webp';
-import img4 from '@/public/assets/images/woman_2.webp';
-import img6 from '@/public/assets/images/woman_4.webp';
-import img3 from '@/public/assets/images/woman_instagram.webp';
+import img5 from '@/public/assets/images/woman_angel.webp';
+import img2 from '@/public/assets/images/woman_cafe.webp';
+import img4 from '@/public/assets/images/woman_fire.webp';
+import img3 from '@/public/assets/images/woman_ft.webp';
+import img7 from '@/public/assets/images/woman_mermaid.webp';
+import img6 from '@/public/assets/images/woman_studio_ft.webp';
+import img1 from '@/public/assets/images/woman_studio_ft2.webp';
 
 import { InfiniteMovingCards } from './ui/infinite-moving-cards';
 
@@ -54,6 +55,14 @@ const cards = [
     id: '6',
     image: {
       imageSrc: img6,
+      priority: false,
+      loading: 'lazy',
+    },
+  },
+  {
+    id: '7',
+    image: {
+      imageSrc: img7,
       priority: false,
       loading: 'lazy',
     },

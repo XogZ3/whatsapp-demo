@@ -59,7 +59,8 @@ export type TranslationKeys =
   | 'payment failed'
   | 'new user paywall'
   | 'referral 1'
-  | 'referral 2';
+  | 'referral 2'
+  | 'nsfw error';
 
 // Define the translation map structure directly using Record
 export const TRANSLATION_MAP: Record<
@@ -310,14 +311,27 @@ Você pode criar fotos ilimitadas de si mesmo em qualquer cenário que puder ima
     ar: `يرجى مراسلتنا عبر البريد الإلكتروني للدعم على ${process.env.NEXT_PUBLIC_EMAIL}`,
   },
   'referral 1': {
-    en: `Hey! 🎉 Like these AI-generated images? Share this awesomeness! Try FotoLabs AI to create your own in WhatsApp. Use promo code`,
-    pt: `Ei! 🎉 Gostou dessas imagens geradas por IA? Compartilhe essa novidade! Experimente o FotoLabs AI para criar as suas no WhatsApp. Use o código promocional`,
-    ar: `مرحبًا! 🎉 هل أعجبتك هذه الصور المولدة بالذكاء الاصطناعي؟ شارك هذه الروعة! جرب FotoLabs AI لإنشاء صورك الخاصة على WhatsApp. استخدم رمز العرض الترويجي`,
+    en: `Hey! 🎉 Like these AI-generated images? Share this awesomeness! Feel free to forward this message to friends and family.
+
+Try FotoLabs AI to create awesome AI photos of you in WhatsApp. Use promo code`,
+    pt: `Ei! 🎉 Gostou dessas imagens geradas por IA? Compartilhe essa novidade! Sinta-se à vontade para encaminhar esta mensagem para amigos e familiares.
+
+Experimente o FotoLabs AI para criar fotos incríveis de IA suas no WhatsApp. Use o código promocional`,
+    ar: `مرحبًا! 🎉 هل أعجبتك هذه الصور المولدة بالذكاء الاصطناعي؟ شارك هذه الروعة! لا تتردد في إعادة توجيه هذه الرسالة إلى الأصدقاء والعائلة.
+
+جرب FotoLabs AI لإنشاء صور رائعة لك بالذكاء الاصطناعي على WhatsApp. استخدم رمز العرض الترويجي`,
   },
+
   'referral 2': {
-    en: `for your *first month FREE*! Feel free to forward this message to friends and family!`,
-    pt: `para o seu *primeiro mês GRATUITO*! Sinta-se à vontade para encaminhar esta mensagem para amigos e familiares!`,
-    ar: `للحصول على *الشهر الأول مجانًا*! لا تتردد في إعادة توجيه هذه الرسالة إلى الأصدقاء والعائلة!`,
+    en: `for your *first month FREE*! Just send message to contact info below.`,
+    pt: `para o seu *primeiro mês GRATUITO*! Basta enviar uma mensagem para as informações de contato abaixo.`,
+    ar: `للحصول على *الشهر الأول مجانًا*! فقط أرسل رسالة إلى معلومات الاتصال أدناه.`,
+  },
+
+  'nsfw error': {
+    en: `Uh-oh. Unsafe content detected 🚫. Please try a different prompt.`,
+    pt: `Ops. Conteúdo inseguro detectado 🚫. Tente um prompt diferente.`,
+    ar: `عذرًا. تم اكتشاف محتوى غير آمن 🚫. يرجى تجربة موجه آخر.`,
   },
 };
 

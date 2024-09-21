@@ -4,10 +4,10 @@ export const DEFAULT_CREDITS = 5;
 export const DAILY_CREDITS_LIMIT = 100;
 
 export const samplePhotoURLs = [
-  'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fphotograph_of_brazilman_001.jpg?alt=media&token=9855c6d9-652b-488f-a598-5b3e7cb4980a',
-  'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fphotograph_of_brazilman_006.jpg?alt=media&token=44b39821-b370-43a0-bdc1-d30482e7e252',
-  'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fphotograph_of_brazilwoman_001.jpg?alt=media&token=dcb2589c-73db-441f-b9b8-e4ed44469d7c',
-  'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fphotograph_of_brazilwoman_002.jpg?alt=media&token=1fc0130f-59df-451a-ae54-bf4fe128ee98',
+  'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fwoman_studio_ft_compressed.png?alt=media&token=24c4c0aa-393e-4552-8445-0279b57d9bb4',
+  'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fwoman_fire-fs8.png?alt=media&token=e7688e70-0807-4858-bab1-2246cf12724f',
+  'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fwoman_cafe-fs8.png?alt=media&token=bcad6af1-140a-4619-94da-7cf6d3632f4c',
+  'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fwoman_angel-fs8.png?alt=media&token=ae14c2dc-849e-4974-ba18-6a3bb6f2e1c1',
 ];
 
 export function generateSamplePrompts({

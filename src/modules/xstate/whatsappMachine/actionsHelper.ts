@@ -618,3 +618,41 @@ export async function sendIntroTemplateMessage(
   };
   await makeRequestToWhatsapp(payload);
 }
+
+export async function sendContactInfoMessage(clientid: string) {
+  const payload = {
+    messaging_product: 'whatsapp',
+    recipient_type: 'individual',
+    to: clientid,
+    type: 'contacts',
+    contacts: [
+      {
+        emails: [
+          {
+            email: 'hello@fotolabs.ai',
+            type: 'Work',
+          },
+        ],
+        name: {
+          formatted_name: 'FotoLabs AI',
+          first_name: 'FotoLabs',
+          last_name: 'AI',
+        },
+        phones: [
+          {
+            phone: '+971505072100',
+            type: 'Mobile',
+            wa_id: '971505072100',
+          },
+        ],
+        urls: [
+          {
+            url: 'https://fotolabs.ai',
+            type: 'Company',
+          },
+        ],
+      },
+    ],
+  };
+  await makeRequestToWhatsapp(payload);
+}

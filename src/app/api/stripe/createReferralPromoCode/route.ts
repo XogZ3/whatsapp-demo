@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon';
 import { type NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
@@ -20,6 +21,7 @@ export async function POST(req: NextRequest) {
       await stripe.promotionCodes.create({
         coupon: '452bg9UZ',
         max_redemptions: 3,
+        expires_at: DateTime.now().toMillis(),
         metadata: {
           clientid,
         },

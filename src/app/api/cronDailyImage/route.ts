@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import { format } from 'date-fns';
 import type { NextRequest } from 'next/server';
 
@@ -49,8 +50,14 @@ function fillPrompt(prompt: string, age: number, gender: 'male' | 'female') {
   return prompt
     .replace(/PERSON_Age/g, age.toString())
     .replace(/PERSON_GENDER_HeShe/g, genderHeShe)
+    .replace(/PERSON_GENDER_He/g, genderHeShe)
+    .replace(/PERSON_GENDER_She/g, genderHeShe)
     .replace(/PERSON_GENDER_HisHer/g, genderHisHer)
-    .replace(/PERSON_GENDER_ManWoman/g, genderManWoman);
+    .replace(/PERSON_GENDER_Her/g, genderHisHer)
+    .replace(/PERSON_GENDER_Her/g, genderHisHer)
+    .replace(/PERSON_GENDER_ManWoman/g, genderManWoman)
+    .replace(/PERSON_GENDER_Woman/g, genderManWoman)
+    .replace(/PERSON_GENDER_Man/g, genderManWoman);
 }
 
 export async function POST(request: NextRequest) {
@@ -142,29 +149,30 @@ export async function POST(request: NextRequest) {
     });
   const rateLimit = 5000; // 1 second between messages
 
-  const sendPromises = Object.entries(clientGeneratedImageMap).map(
-    async ([clientid, urls]) => {
-      return Promise.all(
-        urls.map(async (url) => {
-          const payload: ICreateMessagePayload = {
-            phoneNumber: clientid,
-            image: true,
-            imageLink: url,
-            imageCaption: location,
-          };
+  const sendMessages = async () => {
+    for (const [clientid, urls] of Object.entries(clientGeneratedImageMap)) {
+      for (const url of urls) {
+        const payload: ICreateMessagePayload = {
+          phoneNumber: clientid,
+          image: true,
+          imageLink: url,
+          imageCaption: location,
+        };
 
-          try {
-            await sendMessageToWhatsapp(payload);
-            await delay(rateLimit);
-          } catch (error) {
-            console.error(`Error sending message to ${clientid}:`, error);
-          }
-        }),
-      );
-    },
-  );
+        try {
+          await sendMessageToWhatsapp(payload);
+          console.log(`Message sent to ${clientid}`);
+        } catch (error) {
+          console.error(`Error sending message to ${clientid}:`, error);
+        }
 
-  await Promise.all(sendPromises);
+        // Wait for the specified delay before sending the next message
+        await delay(rateLimit);
+      }
+    }
+  };
+
+  await sendMessages();
 
   console.log('All images sent successfully.');
   return new Response('success', { status: 200, headers: corsHeaders });

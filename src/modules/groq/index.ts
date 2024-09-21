@@ -47,6 +47,7 @@ export const getImprovedPromptFromGroq = async ({
 14. Incorporate artistic techniques (e.g., "depth of field," "sharp focus").
 15. Use evocative mood words (e.g., "alluring," "seductive").
 16. Include the age as ${age} and use gendered language for gender "${gender}" in the generated prompt (e.g., "photo of 26 year old woman as she runs", "30 year old man, he is smiling")
+17. Ensure that the prompt does NOT result in NSFW images. Keep it safe for work.
 Examples:
 1. "Moulin Rouge, cabaret style, burlesque photograph. Gorgeous woman, slender body, posing in smoky club. Dark, low-key lighting, muted colors, red pop. Alluring, seductive. Shot with DSLR, F1.4, 1/800s, ISO 100. Sharp focus, depth of field, cinematic."
 2. "Cyberpunk girl, Prompt Hero logo on chest. Rooftop stance, dystopian city background. Dynamic pose, fierce expression. Comic style, intricate details. Ominous lighting, stormy night. Hasselblad long exposure shot. Dramatic, detailed cityscape."
@@ -167,6 +168,7 @@ export const getCronDailyImagePromptFromGroq = async ({
 14. Incorporate artistic techniques (e.g., "depth of field," "sharp focus").
 15. Use evocative mood words (e.g., "alluring," "seductive").
 16. Include the age as "PERSON_Age" and use gendered language in the generated prompt, replace gendered language with "PERSON_GENDER_HeShe", "PERSON_GENDER_HisHer", "PERSON_GENDER_ManWoman" (e.g., "photo of PERSON_Age year old PERSON_GENDER_ManWoman as PERSON_GENDER_HeShe runs", "PERSON_Age year old PERSON_GENDER_ManWoman, PERSON_GENDER_HeShe is smiling")
+17. Ensure that the prompt does NOT result in NSFW images. Keep it safe for work.
 Examples:
 1. "Moulin Rouge, cabaret style, burlesque photograph. Gorgeous woman, slender body, posing in smoky club. Dark, low-key lighting, muted colors, red pop. Alluring, seductive. Shot with DSLR, F1.4, 1/800s, ISO 100. Sharp focus, depth of field, cinematic."
 2. "Cyberpunk girl, Prompt Hero logo on chest. Rooftop stance, dystopian city background. Dynamic pose, fierce expression. Comic style, intricate details. Ominous lighting, stormy night. Hasselblad long exposure shot. Dramatic, detailed cityscape."

@@ -91,17 +91,38 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const { clientid, language } = config.userMetaData;
 
       let shortenedStripeLink = event?.context?.shortenedStripeLink;
-      if (shortenedStripeLink === '') {
-        const stripeLink = await createStripeLink(clientid);
-        shortenedStripeLink = await generateAndSaveShortURLMap(
-          stripeLink,
-          clientid,
-        );
-        config.storeInstance.setContext(
-          clientid,
-          'shortenedStripeLink',
-          shortenedStripeLink,
-        );
+      console.log('[~] shortenedStripeLink: ', shortenedStripeLink);
+      if (shortenedStripeLink === '' || !shortenedStripeLink) {
+        createStripeLink(clientid)
+          .then(async (stripeLink) => {
+            shortenedStripeLink = await generateAndSaveShortURLMap(
+              stripeLink,
+              clientid,
+            );
+            return shortenedStripeLink;
+          })
+          .then(async (shortLink) => {
+            config.storeInstance.setContext(
+              clientid,
+              'shortenedStripeLink',
+              shortLink,
+            );
+          })
+          .catch(async (error) => {
+            await sendMessageToTelegram(
+              `error in sending intro msg: ${JSON.stringify(error, null, 2)}`,
+            );
+          });
+        // const stripeLink = await createStripeLink(clientid);
+        // shortenedStripeLink = await generateAndSaveShortURLMap(
+        //   stripeLink,
+        //   clientid,
+        // );
+        // config.storeInstance.setContext(
+        //   clientid,
+        //   'shortenedStripeLink',
+        //   shortenedStripeLink,
+        // );
       }
 
       const languageButtonTextLocale = getTranslation('language', language);
@@ -127,17 +148,27 @@ ${shortenedStripeLink}`;
       const language = event?.context?.language;
 
       let shortenedStripeLink = event?.context?.shortenedStripeLink;
-      if (shortenedStripeLink === '') {
-        const stripeLink = await createStripeLink(clientid);
-        shortenedStripeLink = await generateAndSaveShortURLMap(
-          stripeLink,
-          clientid,
-        );
-        config.storeInstance.setContext(
-          clientid,
-          'shortenedStripeLink',
-          shortenedStripeLink,
-        );
+      if (shortenedStripeLink === '' || !shortenedStripeLink) {
+        createStripeLink(clientid)
+          .then(async (stripeLink) => {
+            shortenedStripeLink = await generateAndSaveShortURLMap(
+              stripeLink,
+              clientid,
+            );
+            return shortenedStripeLink;
+          })
+          .then(async (shortLink) => {
+            config.storeInstance.setContext(
+              clientid,
+              'shortenedStripeLink',
+              shortLink,
+            );
+          })
+          .catch(async (error) => {
+            await sendMessageToTelegram(
+              `error in sending intro msg: ${JSON.stringify(error, null, 2)}`,
+            );
+          });
       }
 
       const languageButtonTextLocale = getTranslation('language', language);

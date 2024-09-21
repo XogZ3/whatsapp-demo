@@ -37,6 +37,11 @@ export const whatsappStateTransition = async (
 
   const storeInstance: IStoreInstance = {
     setContext: async (clientid: string, key: string, value: any) => {
+      if (!clientid || typeof clientid !== 'string') {
+        console.error('Invalid or missing clientid');
+        return;
+      }
+
       const clientDocRef = firestore
         .collection('apps')
         .doc(process.env.WABA_ID as string)
@@ -47,8 +52,20 @@ export const whatsappStateTransition = async (
         const clientDocSnapshot = await clientDocRef.get();
 
         if (clientDocSnapshot.exists) {
-          const state = clientDocSnapshot.get('state');
+          let state = clientDocSnapshot.get('state');
+
+          // Initialize state if it doesn't exist
+          if (!state) {
+            state = JSON.stringify({ context: {} });
+          }
+
           const stateObj = JSON.parse(state);
+
+          // Check if the key exists, and if not, create it
+          if (!stateObj.context) {
+            stateObj.context = {};
+          }
+
           stateObj.context[key] = value;
 
           console.log('[===] firebase update key value: ', key, value);
@@ -57,11 +74,9 @@ export const whatsappStateTransition = async (
             state: JSON.stringify(stateObj),
           });
         } else {
-          // Handle case when client doesn't exist
           console.error('Client does not exist');
         }
       } catch (error) {
-        // Handle error
         console.error('Error updating Firestore value:', error);
         throw error;
       }

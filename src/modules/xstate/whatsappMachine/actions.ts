@@ -67,7 +67,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
       language: () => 'english',
       age: () => 25,
       gender: () => 'male',
-      stripeLink: () => '',
+      shortenedStripeLink: () => '',
     }),
     sendInvalidInputMessage: async (event: any) => {
       const { clientid, language = event?.context?.language } =

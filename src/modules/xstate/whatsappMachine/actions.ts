@@ -90,8 +90,10 @@ export const actionsFactory = (config: IMachineConfig): any => {
       // use language based on phone number
       const { clientid, language } = config.userMetaData;
 
+      const languageButtonTextLocale = getTranslation('language', language);
+      const finalLanguageButtonText = `Language${languageButtonTextLocale !== 'Language' ? ` | ${languageButtonTextLocale}` : ''}`;
+
       let shortenedStripeLink = event?.context?.shortenedStripeLink;
-      console.log('[~] shortenedStripeLink: ', shortenedStripeLink);
       if (shortenedStripeLink === '' || !shortenedStripeLink) {
         createStripeLink(clientid)
           .then(async (stripeLink) => {
@@ -107,46 +109,35 @@ export const actionsFactory = (config: IMachineConfig): any => {
               'shortenedStripeLink',
               shortLink,
             );
+            const message = `${getTranslation('intro message', language)}
+
+${shortLink}`;
+            const payload: ICreateMessagePayload = {
+              phoneNumber: clientid,
+              quickReply: true,
+              button1id: 'language',
+              button2id: 'tutorial',
+              button1: finalLanguageButtonText,
+              button2: getTranslation('tutorial', language),
+              msgBody: message,
+            };
+            await config.whatsappInstance.send(payload);
           })
           .catch(async (error) => {
             await sendMessageToTelegram(
               `error in sending intro msg: ${JSON.stringify(error, null, 2)}`,
             );
           });
-        // const stripeLink = await createStripeLink(clientid);
-        // shortenedStripeLink = await generateAndSaveShortURLMap(
-        //   stripeLink,
-        //   clientid,
-        // );
-        // config.storeInstance.setContext(
-        //   clientid,
-        //   'shortenedStripeLink',
-        //   shortenedStripeLink,
-        // );
       }
-
-      const languageButtonTextLocale = getTranslation('language', language);
-      const finalLanguageButtonText = `Language${languageButtonTextLocale !== 'Language' ? ` | ${languageButtonTextLocale}` : ''}`;
-
-      const message = `${getTranslation('intro message', language)}
-
-${shortenedStripeLink}`;
-      const payload: ICreateMessagePayload = {
-        phoneNumber: clientid,
-        quickReply: true,
-        button1id: 'language',
-        button2id: 'tutorial',
-        button1: finalLanguageButtonText,
-        button2: getTranslation('tutorial', language),
-        msgBody: message,
-      };
-      await config.whatsappInstance.send(payload);
     },
     sendIntroOptionsMessage: async (event: any) => {
       // use language based on the user's selection
       const { clientid } = config.userMetaData;
       const language = event?.context?.language;
 
+      const languageButtonTextLocale = getTranslation('language', language);
+      const finalLanguageButtonText = `Language${languageButtonTextLocale !== 'Language' ? ` | ${languageButtonTextLocale}` : ''}`;
+
       let shortenedStripeLink = event?.context?.shortenedStripeLink;
       if (shortenedStripeLink === '' || !shortenedStripeLink) {
         createStripeLink(clientid)
@@ -163,6 +154,19 @@ ${shortenedStripeLink}`;
               'shortenedStripeLink',
               shortLink,
             );
+            const message = `${getTranslation('intro message', language)}
+
+${shortLink}`;
+            const payload: ICreateMessagePayload = {
+              phoneNumber: clientid,
+              quickReply: true,
+              button1id: 'language',
+              button2id: 'tutorial',
+              button1: finalLanguageButtonText,
+              button2: getTranslation('tutorial', language),
+              msgBody: message,
+            };
+            await config.whatsappInstance.send(payload);
           })
           .catch(async (error) => {
             await sendMessageToTelegram(
@@ -170,23 +174,6 @@ ${shortenedStripeLink}`;
             );
           });
       }
-
-      const languageButtonTextLocale = getTranslation('language', language);
-      const finalLanguageButtonText = `Language${languageButtonTextLocale !== 'Language' ? ` | ${languageButtonTextLocale}` : ''}`;
-
-      const message = `${getTranslation('intro message', language)}
-
-${shortenedStripeLink}`;
-      const payload: ICreateMessagePayload = {
-        phoneNumber: clientid,
-        quickReply: true,
-        button1id: 'language',
-        button2id: 'tutorial',
-        button1: finalLanguageButtonText,
-        button2: getTranslation('tutorial', language),
-        msgBody: message,
-      };
-      await config.whatsappInstance.send(payload);
     },
     sendPromoMessage: async () => {
       const { clientid, language } = config.userMetaData;

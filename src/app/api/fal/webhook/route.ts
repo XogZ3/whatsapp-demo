@@ -9,7 +9,6 @@ import {
   sendMessageToWhatsapp,
 } from '@/modules/whatsapp/whatsapp';
 import { createReferralPromoCode } from '@/modules/xstate/whatsappMachine/actionsHelper';
-import { RandomStringGenerator } from '@/utils/helpers';
 import {
   getUserFields,
   uploadLoraFileToFirebase,
@@ -43,6 +42,24 @@ interface FalWebhookBody {
     diffusers_lora_file: FalWebhookPayload;
     config_file: FalWebhookPayload;
   };
+}
+
+class RandomStringGenerator {
+  private characters: string;
+
+  constructor() {
+    this.characters =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  }
+
+  generate(length: number = 6): string {
+    let result = '';
+    for (let i = 0; i < length; i += 1) {
+      const randomIndex = Math.floor(Math.random() * this.characters.length);
+      result += this.characters[randomIndex];
+    }
+    return result;
+  }
 }
 
 export async function POST(request: NextRequest) {

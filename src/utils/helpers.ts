@@ -66,21 +66,3 @@ export function getLanguageFromPhoneNumber(clientid: string): Language {
   // Return the language or 'en' if not found
   return language || 'english';
 }
-
-export class RandomStringGenerator {
-  private characters: string;
-
-  constructor() {
-    this.characters =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  }
-
-  generate(length: number = 6): string {
-    let result = '';
-    for (let i = 0; i < length; i += 1) {
-      const randomIndex = Math.floor(Math.random() * this.characters.length);
-      result += this.characters[randomIndex];
-    }
-    return result;
-  }
-}

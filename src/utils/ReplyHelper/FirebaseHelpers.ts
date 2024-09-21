@@ -1,18 +1,13 @@
 import archiver from 'archiver';
 import axios from 'axios';
 import { FieldValue } from 'firebase-admin/firestore';
-import { DateTime } from 'luxon';
 import { Readable } from 'stream';
 
 import firebase from '@/modules/firebase';
 import { getStorageInstance } from '@/modules/firebase/firebase';
 import { generateImageCaptionUsingGroq } from '@/modules/groq';
 
-import {
-  getBaseUrl,
-  getLanguageFromPhoneNumber,
-  RandomStringGenerator,
-} from '../helpers';
+import { getBaseUrl, getLanguageFromPhoneNumber } from '../helpers';
 import { type Language } from '../translations';
 
 const firestore = firebase.getFirestore();
@@ -689,28 +684,29 @@ export async function generateAndSaveShortURLMap(
   longURL: string,
   clientid: string,
 ) {
-  const generator = new RandomStringGenerator();
-  const shortCode = generator.generate(8);
-  const shortURL = `${getBaseUrl()}/buy/${shortCode}`;
-  try {
-    const urlMapDoc = firestore.collection('short_url_map').doc(shortCode);
-    const updates = {
+  const token = 'ncuwegf5682rc';
+  const response = await fetch(`/api/createShortURL`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
       longURL,
-      shortURL,
       clientid,
-      createdAt: DateTime.now().toMillis(),
-    };
-    await urlMapDoc.set(updates, { merge: true });
-    return shortURL;
-  } catch (error) {
-    console.error('error: ', JSON.stringify(error, null, 2));
-    return null;
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to shorten URL: ${response.statusText}`);
   }
+  const urlResponse = await response.json();
+  return urlResponse.shortURL;
 }
 
 export async function getLongURLFromMap(shortCode: string) {
   try {
-    const response = await fetch(`/api/urlHelper?shortCode=${shortCode}`);
+    const response = await fetch(`/api/getLongURL?shortCode=${shortCode}`);
 
     if (!response.ok) {
       throw new Error(`Error fetching longURL: ${response.statusText}`);

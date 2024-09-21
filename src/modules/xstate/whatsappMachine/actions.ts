@@ -87,47 +87,80 @@ export const actionsFactory = (config: IMachineConfig): any => {
     //   );
     // },
     sendIntroOptionsMessageBasedOnPhoneNumber: async (event: any) => {
-      // use language based on phone number
-      const { clientid, language } = config.userMetaData;
+      try {
+        // Log initial event and config values
+        console.log('Event received:', event);
+        console.log('Config userMetaData:', config.userMetaData);
 
-      const languageButtonTextLocale = getTranslation('language', language);
-      const finalLanguageButtonText = `Language${languageButtonTextLocale !== 'Language' ? ` | ${languageButtonTextLocale}` : ''}`;
+        // use language based on phone number
+        const { clientid, language } = config.userMetaData;
 
-      let shortenedStripeLink = event?.context?.shortenedStripeLink;
-      if (shortenedStripeLink === '' || !shortenedStripeLink) {
-        createStripeLink(clientid)
-          .then(async (stripeLink) => {
-            shortenedStripeLink = await generateAndSaveShortURLMap(
-              stripeLink,
-              clientid,
-            );
-            return shortenedStripeLink;
-          })
-          .then(async (shortLink) => {
-            config.storeInstance.setContext(
-              clientid,
-              'shortenedStripeLink',
-              shortLink,
-            );
-            const message = `${getTranslation('intro message', language)}
+        const languageButtonTextLocale = getTranslation('language', language);
+        const finalLanguageButtonText = `Language${languageButtonTextLocale !== 'Language' ? ` | ${languageButtonTextLocale}` : ''}`;
 
-${shortLink}`;
-            const payload: ICreateMessagePayload = {
-              phoneNumber: clientid,
-              quickReply: true,
-              button1id: 'language',
-              button2id: 'tutorial',
-              button1: finalLanguageButtonText,
-              button2: getTranslation('tutorial', language),
-              msgBody: message,
-            };
-            await config.whatsappInstance.send(payload);
-          })
-          .catch(async (error) => {
-            await sendMessageToTelegram(
-              `error in sending intro msg: ${JSON.stringify(error, null, 2)}`,
-            );
-          });
+        let shortenedStripeLink = event?.context?.shortenedStripeLink;
+        console.log('Initial shortenedStripeLink:', shortenedStripeLink);
+
+        if (shortenedStripeLink === '' || !shortenedStripeLink) {
+          console.log('shortenedStripeLink is empty, creating new Stripe link');
+          createStripeLink(clientid)
+            .then(async (stripeLink) => {
+              console.log('Created Stripe link:', stripeLink);
+              shortenedStripeLink = await generateAndSaveShortURLMap(
+                stripeLink,
+                clientid,
+              );
+              console.log(
+                'Generated and saved short URL:',
+                shortenedStripeLink,
+              );
+              return shortenedStripeLink;
+            })
+            .then(async (shortLink) => {
+              console.log(
+                'Saving shortened Stripe link to storeInstance:',
+                shortLink,
+              );
+              config.storeInstance.setContext(
+                clientid,
+                'shortenedStripeLink',
+                shortLink,
+              );
+
+              const message = `${getTranslation('intro message', language)}\n\n${shortLink}`;
+              console.log('Message to send:', message);
+
+              const payload: ICreateMessagePayload = {
+                phoneNumber: clientid,
+                quickReply: true,
+                button1id: 'language',
+                button2id: 'tutorial',
+                button1: finalLanguageButtonText,
+                button2: getTranslation('tutorial', language),
+                msgBody: message,
+              };
+
+              console.log('Sending WhatsApp payload:', payload);
+              await config.whatsappInstance.send(payload);
+            })
+            .catch(async (error) => {
+              console.error(
+                'Error in creating/sending shortened Stripe link:',
+                error,
+              );
+              await sendMessageToTelegram(
+                `Error in sending intro msg: ${JSON.stringify(error, null, 2)}`,
+              );
+            });
+        }
+      } catch (err) {
+        console.error(
+          'Error in sendIntroOptionsMessageBasedOnPhoneNumber:',
+          err,
+        );
+        await sendMessageToTelegram(
+          `Error in sendIntroOptionsMessageBasedOnPhoneNumber: ${JSON.stringify(err, null, 2)}`,
+        );
       }
     },
     sendIntroOptionsMessage: async (event: any) => {

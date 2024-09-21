@@ -684,17 +684,33 @@ export async function generateAndSaveShortURLMap(
   longURL: string,
   clientid: string,
 ) {
-  const response = await fetch(`/api/createShortURL`, {
-    method: 'POST',
-    body: JSON.stringify({
-      longURL,
-      clientid,
-    }),
-  });
+  const apiUrl = `${getBaseUrl()}/api/createShortURL`;
 
-  if (!response.ok) {
-    throw new Error(`Failed to shorten URL: ${response.statusText}`);
+  try {
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        longURL,
+        clientid,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const urlResponse = await response.json();
+
+    if (!urlResponse.shortURL) {
+      throw new Error('Short URL not received in response');
+    }
+
+    return urlResponse.shortURL;
+  } catch (error) {
+    console.error('Error in generating and saving short URL:', error);
+    return null;
   }
-  const urlResponse = await response.json();
-  return urlResponse.shortURL;
 }

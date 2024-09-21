@@ -95,10 +95,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
         const finalLanguageButtonText = `Language${languageButtonTextLocale !== 'Language' ? ` | ${languageButtonTextLocale}` : ''}`;
 
         let shortenedStripeLink = event?.context?.shortenedStripeLink;
-        console.log('Initial shortenedStripeLink:', shortenedStripeLink);
-
         if (shortenedStripeLink === '' || !shortenedStripeLink) {
-          console.log('shortenedStripeLink is empty, creating new Stripe link');
           createStripeLink(clientid)
             .then(async (stripeLink) => {
               console.log('Created Stripe link:', stripeLink);
@@ -113,10 +110,6 @@ export const actionsFactory = (config: IMachineConfig): any => {
               return shortenedStripeLink;
             })
             .then(async (shortLink) => {
-              console.log(
-                'Saving shortened Stripe link to storeInstance:',
-                shortLink,
-              );
               config.storeInstance.setContext(
                 clientid,
                 'shortenedStripeLink',
@@ -124,7 +117,6 @@ export const actionsFactory = (config: IMachineConfig): any => {
               );
 
               const message = `${getTranslation('intro message', language)}\n\n${shortLink}`;
-              console.log('Message to send:', message);
 
               const payload: ICreateMessagePayload = {
                 phoneNumber: clientid,

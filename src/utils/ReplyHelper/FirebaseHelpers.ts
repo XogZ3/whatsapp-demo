@@ -1,13 +1,18 @@
 import archiver from 'archiver';
 import axios from 'axios';
 import { FieldValue } from 'firebase-admin/firestore';
+import { DateTime } from 'luxon';
 import { Readable } from 'stream';
 
 import firebase from '@/modules/firebase';
 import { getStorageInstance } from '@/modules/firebase/firebase';
 import { generateImageCaptionUsingGroq } from '@/modules/groq';
 
-import { getBaseUrl, getLanguageFromPhoneNumber } from '../helpers';
+import {
+  getBaseUrl,
+  getLanguageFromPhoneNumber,
+  RandomStringGenerator,
+} from '../helpers';
 import { type Language } from '../translations';
 
 const firestore = firebase.getFirestore();
@@ -678,4 +683,38 @@ export async function uploadLoraFileToFirebase(
   });
 
   return url;
+}
+
+export async function generateAndSaveShortURLMap(
+  longURL: string,
+  clientid: string,
+) {
+  const generator = new RandomStringGenerator();
+  const shortCode = generator.generate(8);
+  const shortURL = `${getBaseUrl()}/buy/${shortCode}`;
+  try {
+    const urlMapDoc = firestore.collection('short_url_map').doc(shortCode);
+    const updates = {
+      longURL,
+      shortURL,
+      clientid,
+      createdAt: DateTime.now().toMillis(),
+    };
+    await urlMapDoc.set(updates, { merge: true });
+    return shortURL;
+  } catch (error) {
+    console.error('error: ', JSON.stringify(error, null, 2));
+    return null;
+  }
+}
+
+export async function getLongURLFromMap(shortCode: string) {
+  const urlMapDoc = firestore.collection('short_url_map').doc(shortCode);
+  const urlMapData = await urlMapDoc.get();
+  if (!urlMapData) {
+    console.error('[!] shortURL not found in map');
+    return null;
+  }
+  const { longURL } = urlMapData.data() || {};
+  return longURL;
 }

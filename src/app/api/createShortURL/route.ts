@@ -24,18 +24,11 @@ export async function POST(req: NextRequest) {
   let shortCode;
   let shortURL;
 
-  const baseUrl = getBaseUrl();
-  console.log('Base URL:', baseUrl);
-
-  if (!baseUrl || !/^https?:\/\/.+/i.test(baseUrl)) {
-    return NextResponse.json({ error: 'Invalid Base URL' }, { status: 400 });
-  }
-
   // Generate a unique shortCode
   let isUnique = false;
   while (!isUnique) {
     shortCode = nanoid();
-    shortURL = `${baseUrl}/buy/${shortCode}`;
+    shortURL = `${getBaseUrl()}/buy/${shortCode}`;
 
     console.log('[x] checking shortCode:', shortCode);
 

@@ -656,3 +656,48 @@ export async function sendContactInfoMessage(clientid: string) {
   };
   await makeRequestToWhatsapp(payload);
 }
+
+export async function sendIntroQuickReplyMessage(
+  clientid: string,
+  message: string,
+  languageButtonText: string,
+  tutorialButtonText: string,
+) {
+  const payload = {
+    messaging_product: 'whatsapp',
+    recipient_type: 'individual',
+    to: clientid,
+    type: 'interactive',
+    interactive: {
+      type: 'button',
+      header: {
+        type: 'image',
+        image: {
+          link: 'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fopengraph-image.png?alt=media&token=ed50e70e-540d-4f0a-a7f5-0c7c4fbbf2f5',
+        },
+      },
+      body: {
+        text: message,
+      },
+      action: {
+        buttons: [
+          {
+            type: 'reply',
+            reply: {
+              id: 'language',
+              title: languageButtonText,
+            },
+          },
+          {
+            type: 'reply',
+            reply: {
+              id: 'tutorial',
+              title: tutorialButtonText,
+            },
+          },
+        ],
+      },
+    },
+  };
+  await sendMessageToWhatsapp(payload);
+}

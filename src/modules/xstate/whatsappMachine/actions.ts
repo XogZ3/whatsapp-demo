@@ -37,6 +37,7 @@ import {
   notifyPendingPhotos,
   processAndSendImages,
   sendContactInfoMessage,
+  sendIntroQuickReplyMessage,
   setUserStateAndInform,
 } from './actionsHelper';
 import type { IMachineConfig, IWhatsappInstance } from './types';
@@ -88,6 +89,9 @@ export const actionsFactory = (config: IMachineConfig): any => {
     // },
     sendIntroOptionsMessageBasedOnPhoneNumber: async (event: any) => {
       try {
+        console.log(
+          '[~] attempting to sendIntroOptionsMessageBasedOnPhoneNumber',
+        );
         // use language based on phone number
         const { clientid, language } = config.userMetaData;
 
@@ -95,6 +99,8 @@ export const actionsFactory = (config: IMachineConfig): any => {
         const finalLanguageButtonText = `Language${languageButtonTextLocale !== 'Language' ? ` | ${languageButtonTextLocale}` : ''}`;
 
         let shortenedStripeLink = event?.context?.shortenedStripeLink;
+        let message;
+
         if (shortenedStripeLink === '' || !shortenedStripeLink) {
           createStripeLink(clientid)
             .then(async (stripeLink) => {
@@ -116,20 +122,14 @@ export const actionsFactory = (config: IMachineConfig): any => {
                 shortLink,
               );
 
-              const message = `${getTranslation('intro message', language)}\n\n${shortLink}`;
+              message = `${getTranslation('intro message', language)}\n\n${shortLink}`;
 
-              const payload: ICreateMessagePayload = {
-                phoneNumber: clientid,
-                quickReply: true,
-                button1id: 'language',
-                button2id: 'tutorial',
-                button1: finalLanguageButtonText,
-                button2: getTranslation('tutorial', language),
-                msgBody: message,
-              };
-
-              console.log('Sending WhatsApp payload:', payload);
-              await config.whatsappInstance.send(payload);
+              await sendIntroQuickReplyMessage(
+                clientid,
+                message,
+                finalLanguageButtonText,
+                getTranslation('tutorial', language),
+              );
             })
             .catch(async (error) => {
               console.error(
@@ -140,6 +140,14 @@ export const actionsFactory = (config: IMachineConfig): any => {
                 `Error in sending intro msg: ${JSON.stringify(error, null, 2)}`,
               );
             });
+        } else {
+          message = `${getTranslation('intro message', language)}\n\n${shortenedStripeLink}`;
+          await sendIntroQuickReplyMessage(
+            clientid,
+            message,
+            finalLanguageButtonText,
+            getTranslation('tutorial', language),
+          );
         }
       } catch (err) {
         console.error(
@@ -153,6 +161,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
     },
     sendIntroOptionsMessage: async (event: any) => {
       try {
+        console.log('[~] attempting to sendIntroOptionsMessage');
         // use language based on the user's selection
         const { clientid } = config.userMetaData;
         const language = event?.context?.language;
@@ -161,6 +170,13 @@ export const actionsFactory = (config: IMachineConfig): any => {
         const finalLanguageButtonText = `Language${languageButtonTextLocale !== 'Language' ? ` | ${languageButtonTextLocale}` : ''}`;
 
         let shortenedStripeLink = event?.context?.shortenedStripeLink;
+        console.log(
+          '[~] shortenedStripeLink in context: ',
+          shortenedStripeLink,
+        );
+
+        let message;
+
         if (shortenedStripeLink === '' || !shortenedStripeLink) {
           createStripeLink(clientid)
             .then(async (stripeLink) => {
@@ -182,20 +198,14 @@ export const actionsFactory = (config: IMachineConfig): any => {
                 shortLink,
               );
 
-              const message = `${getTranslation('intro message', language)}\n\n${shortLink}`;
+              message = `${getTranslation('intro message', language)}\n\n${shortLink}`;
 
-              const payload: ICreateMessagePayload = {
-                phoneNumber: clientid,
-                quickReply: true,
-                button1id: 'language',
-                button2id: 'tutorial',
-                button1: finalLanguageButtonText,
-                button2: getTranslation('tutorial', language),
-                msgBody: message,
-              };
-
-              console.log('Sending WhatsApp payload:', payload);
-              await config.whatsappInstance.send(payload);
+              await sendIntroQuickReplyMessage(
+                clientid,
+                message,
+                finalLanguageButtonText,
+                getTranslation('tutorial', language),
+              );
             })
             .catch(async (error) => {
               console.error(
@@ -206,14 +216,19 @@ export const actionsFactory = (config: IMachineConfig): any => {
                 `Error in sending intro msg: ${JSON.stringify(error, null, 2)}`,
               );
             });
+        } else {
+          message = `${getTranslation('intro message', language)}\n\n${shortenedStripeLink}`;
+          await sendIntroQuickReplyMessage(
+            clientid,
+            message,
+            finalLanguageButtonText,
+            getTranslation('tutorial', language),
+          );
         }
       } catch (err) {
-        console.error(
-          'Error in sendIntroOptionsMessageBasedOnPhoneNumber:',
-          err,
-        );
+        console.error('Error in sendIntroOptionsMessage:', err);
         await sendMessageToTelegram(
-          `Error in sendIntroOptionsMessageBasedOnPhoneNumber: ${JSON.stringify(err, null, 2)}`,
+          `Error in sendIntroOptionsMessage: ${JSON.stringify(err, null, 2)}`,
         );
       }
     },

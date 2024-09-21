@@ -699,5 +699,5 @@ export async function sendIntroQuickReplyMessage(
       },
     },
   };
-  await sendMessageToWhatsapp(payload);
+  await makeRequestToWhatsapp(payload);
 }

@@ -559,10 +559,13 @@ async function createWAMessagePayload(payload: PropsFormatted) {
 }
 
 export async function sendMessageToWhatsapp(payload: any, seed?: number) {
+  // TODO: can remove after debugging
+  console.log('[0] sending wa msg to user: ', JSON.stringify(payload, null, 2));
   const data = await createWAMessagePayload(payload);
   const res = await makeRequestToWhatsapp(data);
+  const whatsappMessageID = res?.messages?.id;
   if (res) {
-    await setSystemMessage(data, seed);
+    await setSystemMessage(data, whatsappMessageID, seed);
     return true;
   }
   // if (res?.data?.messages?.length) {

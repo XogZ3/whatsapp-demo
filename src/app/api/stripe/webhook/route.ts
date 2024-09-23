@@ -10,6 +10,7 @@ import {
 } from '@/modules/whatsapp/whatsapp';
 import { sendPurchaseToFBCoversionAPI } from '@/utils/fconversionHelper';
 import { type UserFieldsFirebase } from '@/utils/ReplyHelper/FirebaseHelpers';
+import { sendMessageToTelegram } from '@/utils/telegram';
 import { getTranslation, type Language } from '@/utils/translations';
 
 // import type { StripeEvent } from './types';
@@ -264,14 +265,33 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
     msgBody: message,
   };
 
-  if (status === 'complete' && subscriptionData!.status === 'active') {
-    await Promise.all([
-      sendMessageToWhatsapp(payload),
-      sendPurchaseToFBCoversionAPI(clientid),
-    ]);
-    await sendPhotoUploadInstruction(clientid, language);
+  try {
+    if (status === 'complete') {
+      await Promise.all([
+        sendMessageToWhatsapp(payload),
+        sendPurchaseToFBCoversionAPI(clientid),
+      ]);
+      await sendPhotoUploadInstruction(clientid, language);
+      console.log(
+        `Checkout session completed for clientid: ${clientid}, subscriptionId: ${subscriptionId}`,
+      );
+    } else {
+      console.log(
+        '[!] checkout session error: ',
+        JSON.stringify(session, null, 2),
+      );
+      await sendMessageToTelegram(
+        `error in session checkout ${JSON.stringify(session, null, 2)}`,
+      );
+    }
+  } catch (error) {
     console.log(
-      `Checkout session completed for clientid: ${clientid}, subscriptionId: ${subscriptionId}`,
+      '[!] checkout session error: ',
+      JSON.stringify(error, null, 2),
+      JSON.stringify(session, null, 2),
+    );
+    await sendMessageToTelegram(
+      `error ${JSON.stringify(error, null, 2)} in session checkout ${JSON.stringify(session, null, 2)}`,
     );
   }
 

@@ -45,7 +45,11 @@ export async function setUserTrainingToken(token: string, clientid: string) {
   await clientDoc.set(updates, { merge: true });
 }
 
-export async function setSystemMessage(originalPayload: any, seed?: number) {
+export async function setSystemMessage(
+  originalPayload: any,
+  whatsappMessageID: string,
+  seed?: number,
+) {
   const wabaId = process.env.WABA_ID;
   const clientid = originalPayload.to;
 
@@ -58,6 +62,7 @@ export async function setSystemMessage(originalPayload: any, seed?: number) {
   // Create a new object by merging the seed into the payload
   const payload = {
     ...originalPayload,
+    ...(whatsappMessageID !== undefined && { whatsappMessageID }),
     ...(seed !== undefined && { seed }),
   };
 

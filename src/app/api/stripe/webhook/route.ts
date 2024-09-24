@@ -30,7 +30,7 @@ async function sendPhotoUploadInstruction(
     phoneNumber: clientid,
     image: true,
     imageLink:
-      'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fphoto_instruction.png?alt=media&token=8fcf1f3b-8136-47ed-bef2-e9dc354a9f02',
+      'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fphoto_instruction.png?alt=media&token=5982c2d9-8ccf-47c1-8a03-eef5ab61d280',
     imageCaption: message,
   };
   await sendMessageToWhatsapp(payload);

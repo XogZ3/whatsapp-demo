@@ -200,10 +200,32 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
     });
   }
 
-  let clientData: FirebaseFirestore.DocumentData | undefined;
   let language: Language = 'english';
-  let whatsappExpiration: number | undefined;
 
+  // Perform all reads first
+  const [subscriptionDoc, clientDoc] = await Promise.all([
+    firestore.collection('subscriptions').doc(subscriptionId).get(),
+    firestore
+      .collection('apps')
+      .doc(process.env.WABA_ID!)
+      .collection('clients')
+      .doc(clientid)
+      .get(),
+  ]);
+
+  const clientData = clientDoc.data();
+  language = clientData?.language || 'english';
+  const state = clientData?.state;
+  const lastStripeEventId = clientData?.lastStripeEventId;
+  const whatsappExpiration = clientData?.whatsappExpiration;
+
+  // Check if the event ID has already been processed
+  if (lastStripeEventId === id) {
+    console.log('[-] Duplicate event received, ignoring.');
+    return NextResponse.json({ status: 200 });
+  }
+
+  // Now perform writes
   await firestore.runTransaction(async (transaction) => {
     const subscriptionRef = firestore
       .collection('subscriptions')
@@ -214,25 +236,6 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
       .collection('clients')
       .doc(clientid);
 
-    // Perform all reads first
-    const [subscriptionDoc, clientDoc] = await Promise.all([
-      transaction.get(subscriptionRef),
-      transaction.get(clientDocRef),
-    ]);
-
-    clientData = clientDoc.data();
-    language = clientData?.language || 'english';
-    const state = clientData?.state;
-    const lastStripeEventId = clientData?.lastStripeEventId;
-    whatsappExpiration = clientData?.whatsappExpiration;
-
-    // Check if the event ID has already been processed
-    if (lastStripeEventId === id) {
-      console.log('[-] Duplicate event received, ignoring.');
-      return;
-    }
-
-    // Now perform writes
     if (!subscriptionDoc.exists) {
       transaction.set(subscriptionRef, { clientid, subscriptionId });
     } else {
@@ -311,7 +314,11 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
       JSON.stringify(session, null, 2),
     );
     await sendMessageToTelegram(
-      `error ${JSON.stringify(error, null, 2)} in session checkout ${JSON.stringify(session, null, 2)}`,
+      `error ${JSON.stringify(error, null, 2)} in session checkout ${JSON.stringify(
+        session,
+        null,
+        2,
+      )}`,
     );
   }
 

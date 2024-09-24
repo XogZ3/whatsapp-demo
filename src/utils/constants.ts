@@ -29,11 +29,11 @@ export function generateSamplePrompts({
 
     `Long photo shot of ${genderManWoman} ${modelName}, Portrait photography, professional boudoir photo shoot, saloon ${genderManWoman} cosplay, 1800’s aesthetic, beautiful body type, cute face and smile, beautiful skin, saloon background, dust-filled sun rays sun coming through window at an angle, golden-hour light, realistic, stand, very high angle shot, hyper realistic, ultra-detailed, 8k, realism, Super photoreal, hyperreal, photorealistic, colored photo, very close shot, open mouth`,
 
-    `Photograph of ${modelName}, who is ${age} years old, with short hair. BREAK black sweater BREAK shopping in an outdoor market, autumn, extremely intricate details, masterpiece, clear shadows and highlights, realistic, enhanced contrast, highly detailed skin, f/2.8, bokeh.`,
+    `Realistc photograph of ${modelName}, who is ${age} years old, with short hair. BREAK black sweater BREAK shopping in an outdoor market, autumn, extremely intricate details, masterpiece, clear shadows and highlights, realistic, enhanced contrast, highly detailed skin, f/2.8, bokeh.`,
 
-    `A serious ${genderManWoman} ${modelName} around ${age} years old, in a tailored suit, posing candidly for a professional photoshoot. The office lobby’s modern architecture is reflected in ${genderHisHer} glasses.`,
+    `A serious ${genderManWoman} ${modelName} around ${age} years old, in a tailored suit, posing candidly for a professional realistc photoshoot. The office lobby’s modern architecture is reflected in ${genderHisHer} glasses.`,
 
-    `Editorial avant-garde dramatic action pose of ${genderManWoman} ${modelName}, who is ${age} years old, wearing 60s round wacky sunglasses with gemstones hanging pulling glasses down looking forward, in Italy at sunset with a vibrant illustrated jacket surrounded by illustrations of flowers, smoke, flames, ice cream, sparkles, rock and roll.`,
+    `Realistc editorial avant-garde dramatic action pose of ${genderManWoman} ${modelName}, who is ${age} years old, wearing 60s round wacky sunglasses with gemstones hanging pulling glasses down looking forward, in Italy at sunset with a vibrant illustrated jacket surrounded by illustrations of flowers, smoke, flames, ice cream, sparkles, rock and roll.`,
 
     `a beautiful cute joyful and playful ${age} year old ${genderManWoman} ${modelName} view from bottom, dressed in a cozy sherpa jacket over a turtleneck and skinny jeans,in the street of paris at night eiffel tower in background,detailed masterpiece most beautiful artwork in the world Ultrarealistic,Sony A7,Nostalgic lighting`,
 

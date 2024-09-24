@@ -1,6 +1,7 @@
 import archiver from 'archiver';
 import axios from 'axios';
 import { FieldValue } from 'firebase-admin/firestore';
+import { DateTime } from 'luxon';
 import { Readable } from 'stream';
 
 import firebase from '@/modules/firebase';
@@ -64,6 +65,7 @@ export async function setSystemMessage(
     ...originalPayload,
     ...(whatsappMessageID !== undefined && { whatsappMessageID }),
     ...(seed !== undefined && { seed }),
+    timestamp: DateTime.now().toMillis(),
   };
 
   await clientDoc.collection('messages').add(payload);
@@ -93,6 +95,7 @@ export type UserFieldsFirebase = {
   customerId: string;
   subscriptionId: string;
   subscriptionStatus: string;
+  whatsappExpiration: number;
 };
 
 export async function getUserFields(
@@ -127,6 +130,7 @@ export async function getUserFields(
     customerId,
     subscriptionId,
     subscriptionStatus,
+    whatsappExpiration,
   } = clientData.data() || {};
   const userLanguage = language || getLanguageFromPhoneNumber(clientid);
 
@@ -153,6 +157,7 @@ export async function getUserFields(
     customerId,
     subscriptionId,
     subscriptionStatus,
+    whatsappExpiration,
   };
 }
 

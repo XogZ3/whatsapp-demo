@@ -28,8 +28,19 @@ async function sendPhotoUploadInstruction(
   const message = getTranslation('photo upload instruction', language);
   const payload: ICreateMessagePayload = {
     phoneNumber: clientid,
-    text: true,
-    msgBody: message,
+    image: true,
+    imageLink:
+      'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fphoto_instruction.png?alt=media&token=8fcf1f3b-8136-47ed-bef2-e9dc354a9f02',
+    imageCaption: message,
+  };
+  await sendMessageToWhatsapp(payload);
+}
+async function sendWhatsappRefreshTemplate(clientid: string) {
+  const payload: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    template: true,
+    templateLanguageCode: 'en',
+    templateName: 'fotolabs_wa_refresh',
   };
   await sendMessageToWhatsapp(payload);
 }
@@ -191,6 +202,7 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
 
   let clientData: FirebaseFirestore.DocumentData | undefined;
   let language: Language = 'english';
+  let whatsappExpiration: number | undefined;
 
   await firestore.runTransaction(async (transaction) => {
     const subscriptionRef = firestore
@@ -212,6 +224,7 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
     language = clientData?.language || 'english';
     const state = clientData?.state;
     const lastStripeEventId = clientData?.lastStripeEventId;
+    whatsappExpiration = clientData?.whatsappExpiration;
 
     // Check if the event ID has already been processed
     if (lastStripeEventId === id) {
@@ -258,6 +271,11 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
   //   'MMMM d, yyyy',
   // );
 
+  console.log(
+    `[~] checking if data can be used outside firebase txn: `,
+    language,
+    whatsappExpiration,
+  );
   const message = `${getTranslation('payment confirmation', language)}`;
   const payload: ICreateMessagePayload = {
     phoneNumber: clientid,
@@ -268,7 +286,9 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
   try {
     if (status === 'complete') {
       await Promise.all([
-        sendMessageToWhatsapp(payload),
+        DateTime.now().toMillis() < (whatsappExpiration ?? Infinity)
+          ? sendMessageToWhatsapp(payload)
+          : sendWhatsappRefreshTemplate(clientid),
         sendPurchaseToFBCoversionAPI(clientid),
       ]);
       await sendPhotoUploadInstruction(clientid, language);

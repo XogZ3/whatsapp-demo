@@ -74,7 +74,8 @@ export async function POST(request: Request) {
           const updates: any = { lastupdatedat: messageObject.timestamp };
           if (messageObject.status_raw?.conversation?.expiration_timestamp) {
             updates.whatsappExpiration =
-              messageObject.status_raw?.conversation?.expiration_timestamp;
+              (messageObject.status_raw?.conversation?.expiration_timestamp ??
+                0) * 1000;
           }
           if (messageObject.type === 'message') {
             updates.lastseen = messageObject.timestamp;

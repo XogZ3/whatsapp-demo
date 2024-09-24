@@ -682,7 +682,7 @@ ${stripeLink}`;
         language = event?.context?.language,
       } = config.userMetaData;
       const genderCommon = gender === 'male' ? 'man' : 'woman';
-      const prompt = `${age} year old ${genderCommon} ${event?.context?.latestPrompt}`;
+      const prompt = `photograph of ${age} year old ${genderCommon} person${clientid} ${event?.context?.latestPrompt}`;
 
       let message;
       let payload: ICreateMessagePayload;

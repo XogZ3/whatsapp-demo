@@ -14,6 +14,7 @@ import {
   getUserFields,
   type UserFieldsFirebase,
 } from '@/utils/ReplyHelper/FirebaseHelpers';
+import { sendMessageToTelegram } from '@/utils/telegram';
 import { getTranslation, type Language } from '@/utils/translations';
 
 const FAL_KEY = process.env.FAL_KEY!;
@@ -128,7 +129,10 @@ export async function POST(request: NextRequest) {
     const modelAlreadyExists = !!(loraURL && loraFilename);
 
     if (modelAlreadyExists) {
-      await notifyModelExists(clientid, language, state);
+      await Promise.all([
+        sendMessageToTelegram(`${clientid}: model already exists`),
+        notifyModelExists(clientid, language, state),
+      ]);
       return NextResponse.json(
         { error: 'Model already exists' },
         { status: 409 },

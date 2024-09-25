@@ -123,11 +123,13 @@ export async function replyToUser(messageObject: any) {
           imageID,
           clientid,
         );
-        const updatedPhotoCount =
+        const photoUpdates =
           await addTrainingImageURLandIncreaseCountDecreasePendingUploads(
             clientid,
             imageURL,
           );
+        const updatedPhotoCount = photoUpdates.newPhotosUploaded;
+        const updatedPendingUploads = photoUpdates.newPendingUploads;
         console.log(
           '[+] # of photos uploaded to firebase: ',
           updatedPhotoCount,
@@ -150,7 +152,10 @@ export async function replyToUser(messageObject: any) {
         }
 
         message = 'Photo Received';
-        if (updatedPhotoCount >= TRAINING_IMAGES_UPPER_LIMIT)
+        if (
+          updatedPhotoCount >= TRAINING_IMAGES_UPPER_LIMIT &&
+          updatedPendingUploads === 0
+        )
           message = 'Generate Model';
       }
     }

@@ -294,7 +294,7 @@ export async function addTrainingImageURLandIncreaseCountDecreasePendingUploads(
         pendingUploads: newPendingUploads,
       });
 
-      return newPhotosUploaded;
+      return { newPhotosUploaded, newPendingUploads };
     });
 
     console.log('Updated photosUploaded count:', result);
@@ -302,7 +302,7 @@ export async function addTrainingImageURLandIncreaseCountDecreasePendingUploads(
   } catch (error) {
     console.error('Transaction failed: ', error);
   }
-  return -1;
+  return { newPhotosUploaded: -1, newPendingUploads: -1 };
 }
 
 export async function getPhotoCount(clientid: string) {

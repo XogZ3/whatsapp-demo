@@ -17,9 +17,11 @@ import {
 import { getLanguageFromPhoneNumber } from '../helpers';
 import { getTranslation, type Language } from '../translations';
 import {
-  addTrainingImageURLandIncreaseCount,
+  addTrainingImageURLandIncreaseCountDecreasePendingUploads,
+  getPendingUploadsCount,
   getPhotoCount,
   getUserFields,
+  incrementPendingUploads,
   setDefaultUserFields,
   setUserState,
 } from './FirebaseHelpers';
@@ -73,6 +75,20 @@ async function sendUpdatedPhotoCountWithFinishOption(
   };
   await sendMessageToWhatsapp(payload);
 }
+async function sendWaitForUploadToComplete(
+  clientid: string,
+  language: Language,
+) {
+  const message = getTranslation('uploading please wait', language);
+  const payload: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    quickReply: true,
+    button1id: 'finish upload',
+    button1: getTranslation('finish upload', language),
+    msgBody: message,
+  };
+  await sendMessageToWhatsapp(payload);
+}
 
 // eslint-disable-next-line consistent-return
 export async function replyToUser(messageObject: any) {
@@ -101,15 +117,17 @@ export async function replyToUser(messageObject: any) {
         !uploadedPhotosCount || // Handles undefined or null
         uploadedPhotosCount < TRAINING_IMAGES_UPPER_LIMIT
       ) {
+        await incrementPendingUploads(clientid);
         const imageID = extractImageID(messageObject);
         const imageURL = await fetchWhatsAppImageAndUploadToFirebase(
           imageID,
           clientid,
         );
-        const updatedPhotoCount = await addTrainingImageURLandIncreaseCount(
-          clientid,
-          imageURL,
-        );
+        const updatedPhotoCount =
+          await addTrainingImageURLandIncreaseCountDecreasePendingUploads(
+            clientid,
+            imageURL,
+          );
         console.log(
           '[+] # of photos uploaded to firebase: ',
           updatedPhotoCount,
@@ -139,12 +157,16 @@ export async function replyToUser(messageObject: any) {
     // Handle NON-Images in 'imagesIncomplete' state - Cancel or Fallback
     else if (currentState === 'imagesIncomplete' && messageType !== 'image') {
       const currentPhotoCount = await getPhotoCount(clientid);
+      const currentPendingUploadsCount = await getPendingUploadsCount(clientid);
       if (currentPhotoCount >= TRAINING_IMAGES_LOWER_LIMIT) {
-        // just generate model if have 5 images ffs
-        if (extractText(messageObject).toLowerCase() === 'finish upload') {
+        if (currentPendingUploadsCount === 0) {
+          // just generate model if have 5 images ffs
           message = 'Generate Model';
+        } else {
+          // photo upload incomplete, ask user to wait and then click "finish upload"
+          await sendWaitForUploadToComplete(clientid, userLanguage);
+          return;
         }
-        message = 'Generate Model';
       }
     }
     // Accept image for image-to-image generation

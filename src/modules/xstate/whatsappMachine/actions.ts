@@ -340,16 +340,24 @@ export const actionsFactory = (config: IMachineConfig): any => {
       let message = '';
       const { clientid, language = event?.context?.language } =
         config.userMetaData;
-      async function getTrainingImageURLsFromFirebase() {
-        const trainingImageURLs = await getTrainingImageURLs(clientid);
-        return trainingImageURLs || [];
+      const userFields = await getUserFields(clientid);
+      const { loraFilename, loraURL, state, trainingImageURLs } = userFields;
+      const stateJSON = state ? JSON.parse(state) : {};
+      if (loraURL && loraFilename) {
+        stateJSON.value = 'photoPrompting';
+        message = getTranslation('model already exists', language);
+        await Promise.all([
+          setUserState(JSON.stringify(stateJSON), clientid),
+          sendMessageToTelegram(`${clientid}: ${message}`),
+          config.whatsappInstance.send({
+            phoneNumber: clientid,
+            text: true,
+            msgBody: message,
+          }),
+        ]);
       }
-      await getTrainingImageURLsFromFirebase()
-        .then(async (trainingImageURLs) => {
-          const response = await callTrainingAPI(clientid, trainingImageURLs);
-          // console.log('[+] callTrainingAPI called');
-          return response;
-        })
+
+      await callTrainingAPI(clientid, trainingImageURLs)
         .then(async (response) => {
           if (response.jobId) console.log('[+] callTrainingAPI job created');
           if (response.error) {

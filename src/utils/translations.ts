@@ -26,6 +26,7 @@ export type TranslationKeys =
   | 'retry'
   | 'notify pending photos 1'
   | 'notify pending photos 2'
+  | 'uploading please wait'
   | 'select language'
   | 'language selected'
   | 'model already exists'
@@ -274,6 +275,11 @@ Quer criar fotos incríveis de IA como essas? Faça um pagamento de ~$29,99~ $19
     en: 'Finish Upload',
     pt: 'Concluir Upload',
     ar: 'إنهاء الرفع',
+  },
+  'uploading please wait': {
+    en: 'Some images are still being uploaded, please wait.\n\nClick "finish upload" button after all the images have been uploaded.',
+    pt: 'Algumas imagens ainda estão sendo enviadas, por favor, aguarde.\n\nClique no botão "concluir upload" após o envio de todas as imagens.',
+    ar: 'يتم تحميل بعض الصور، يرجى الانتظار.\n\nانقر على زر "إكمال التحميل" بعد تحميل جميع الصور.',
   },
   'new user paywall': {
     en: `*Love these AI-generated photos of you?*

@@ -238,7 +238,34 @@ export async function callTrainingAPI(
   }
 }
 
-export async function addTrainingImageURLandIncreaseCount(
+export async function incrementPendingUploads(clientid: string) {
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid);
+
+  try {
+    const result = await firestore.runTransaction(async (transaction) => {
+      const doc = await transaction.get(clientDoc);
+      if (!doc.exists) {
+        throw new Error('Client document does not exist!');
+      }
+
+      transaction.update(clientDoc, {
+        pendingUploads: FieldValue.increment(1),
+      });
+    });
+
+    console.log('pendingUploads incremented:');
+    return result;
+  } catch (error) {
+    console.error('Transaction failed: ', error);
+  }
+  return -1;
+}
+export async function addTrainingImageURLandIncreaseCountDecreasePendingUploads(
   clientid: string,
   imageURL: string,
 ) {
@@ -257,23 +284,27 @@ export async function addTrainingImageURLandIncreaseCount(
       }
 
       const currentPhotosUploaded = doc.data()?.photosUploaded || 0;
+      const currentPendingUploads = doc.data()?.pendingUploads || 0;
       const newPhotosUploaded = currentPhotosUploaded + 1;
+      const newPendingUploads = currentPendingUploads - 1;
 
       transaction.update(clientDoc, {
         trainingImageURLs: FieldValue.arrayUnion(imageURL),
         photosUploaded: newPhotosUploaded,
+        pendingUploads: newPendingUploads,
       });
 
       return newPhotosUploaded;
     });
 
     console.log('Updated photosUploaded count:', result);
-    return result;
+    // return result;
   } catch (error) {
     console.error('Transaction failed: ', error);
   }
   return -1;
 }
+
 export async function getPhotoCount(clientid: string) {
   const wabaId = process.env.WABA_ID;
   const clientDoc = firestore
@@ -285,6 +316,19 @@ export async function getPhotoCount(clientid: string) {
   const { photosUploaded } = clientData.data() || {};
 
   return photosUploaded || 0;
+}
+
+export async function getPendingUploadsCount(clientid: string) {
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid);
+  const clientData = await clientDoc.get();
+  const { pendingUploads } = clientData.data() || {};
+
+  return pendingUploads || 0;
 }
 
 export async function setProcessingFlag(clientid: string, value: boolean) {

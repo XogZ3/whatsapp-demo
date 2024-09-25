@@ -298,7 +298,7 @@ export async function addTrainingImageURLandIncreaseCountDecreasePendingUploads(
     });
 
     console.log('Updated photosUploaded count:', result);
-    // return result;
+    return result;
   } catch (error) {
     console.error('Transaction failed: ', error);
   }

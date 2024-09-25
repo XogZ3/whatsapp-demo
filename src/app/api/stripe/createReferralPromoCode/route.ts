@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
       await stripe.promotionCodes.create({
         coupon: '452bg9UZ',
         max_redemptions: 3,
-        expires_at: DateTime.now().toMillis(),
+        expires_at: Math.floor(DateTime.now().plus({ months: 1 }).toSeconds()),
         metadata: {
           clientid,
         },

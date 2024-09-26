@@ -40,7 +40,7 @@ async function sendWhatsappRefreshTemplate(clientid: string) {
     phoneNumber: clientid,
     template: true,
     templateLanguageCode: 'en',
-    templateName: 'fotolabs_wa_refresh',
+    templateName: 'fotolabs_whatsapp_refresh',
   };
   await sendMessageToWhatsapp(payload);
 }

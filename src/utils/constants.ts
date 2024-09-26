@@ -5,8 +5,8 @@ export const DAILY_CREDITS_LIMIT = 100;
 
 export const samplePhotoURLs = [
   'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fwoman_studio_ft_compressed.png?alt=media&token=24c4c0aa-393e-4552-8445-0279b57d9bb4',
-  'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fbrazil-man.jpeg?alt=media&token=30f06317-15e3-443b-be6d-a8b6f7ac40ee',
   'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fwoman_angel-fs8.png?alt=media&token=ae14c2dc-849e-4974-ba18-6a3bb6f2e1c1',
+  'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fbrazil-man.jpeg?alt=media&token=30f06317-15e3-443b-be6d-a8b6f7ac40ee',
   'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fbrazil-man-2.jpeg?alt=media&token=b2bac655-47cf-4bba-acb2-178f51737e4d',
 ];
 

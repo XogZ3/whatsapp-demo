@@ -52,7 +52,10 @@ export async function GET(req: NextRequest) {
 
     // Check if the difference is less than 6 hours
     if (timeDiffInHours < 6) {
-      return NextResponse.json(false);
+      return NextResponse.json(
+        { cancellationFrequent: true, cancellationStat: false, error: '' },
+        { status: 200 },
+      );
     }
 
     let stateJSON;
@@ -89,10 +92,17 @@ export async function GET(req: NextRequest) {
       button2: getTranslation('back to safety', language),
     };
     const result = await sendMessageToWhatsapp(payload);
-    return NextResponse.json(result);
+    return NextResponse.json(
+      { cancellationFrequent: false, cancellationStat: result, error: '' },
+      { status: 200 },
+    );
   } catch (error) {
     return NextResponse.json(
-      { error: (error as Error).message },
+      {
+        cancellationFrequent: false,
+        cancellationStat: false,
+        error: (error as Error).message,
+      },
       { status: 400 },
     );
   }

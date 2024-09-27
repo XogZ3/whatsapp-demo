@@ -37,9 +37,10 @@ export default function CancelSubscriptionPage() {
       if (!response.ok) throw new Error('Failed to send WhatsApp message');
 
       const data = await response.json();
+      const { cancellationFrequent, cancellationStat } = data;
       console.log(JSON.stringify(data, null, 2));
-      setCancellationStatus(data);
-      if (data !== true) setCancellationTooFrequent(true);
+      setCancellationStatus(cancellationStat);
+      setCancellationTooFrequent(cancellationFrequent);
     } catch (err) {
       console.error('Error sending cancellation message:', err);
       setError(
@@ -53,7 +54,7 @@ export default function CancelSubscriptionPage() {
   return (
     <div className="flex min-h-[calc(100vh-3.5rem)] w-full items-center justify-center">
       <Container className="relative mx-4 flex h-[25rem] w-full flex-col items-center justify-center gap-y-2 rounded-2xl border border-current bg-zinc-50 text-center dark:bg-zinc-900 sm:static sm:mx-0">
-        {!cancellationStatus && !error && (
+        {!cancellationStatus && !cancellationTooFrequent && (
           <>
             <div className="flex w-full flex-row items-center justify-between">
               <div className="!mb-1 w-full text-start text-2xl tracking-tight opacity-100 sm:!mb-0 sm:text-4xl">
@@ -110,7 +111,7 @@ export default function CancelSubscriptionPage() {
             </motion.div>
           )}
 
-          {cancellationStatus && cancellationTooFrequent && (
+          {!cancellationStatus && cancellationTooFrequent && (
             <motion.div
               key="cancel-frequent"
               initial={{ opacity: 0, height: 0 }}

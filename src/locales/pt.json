@@ -82,10 +82,10 @@
     "subscription_note_1": "Observe que sua assinatura é válida até",
     "subscription_note_2": ". Você NÃO receberá nenhum reembolso.",
     "subscription_note_3": "Após o cancelamento bem-sucedido, você não será cobrado no mês seguinte.",
-    "button_get_subscription_info": "Obter Informações da Assinatura",
-    "button_cancel_subscription": "Cancelar Assinatura",
+    "button_cancel_subscription": "Solicitar cancelamento",
     "button_loading": "Carregando...",
-    "button_cancelling": "Cancelando...",
-    "button_return_to_whatsapp": "Voltar ao WhatsApp"
+    "button_return_to_whatsapp": "Voltar ao WhatsApp",
+    "confirm_message": "Se você tem uma conta com a FotoLabs.ai, enviamos uma mensagem no WhatsApp para confirmar seu pedido de cancelamento. Por favor, confirme no WhatsApp.",
+    "too_frequent": "Tente novamente após algumas horas."
   }
 }

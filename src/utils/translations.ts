@@ -1,3 +1,4 @@
+import { AppConfig } from './appConfig';
 import {
   DAILY_CREDITS_LIMIT,
   TRAINING_IMAGES_LOWER_LIMIT,
@@ -55,6 +56,13 @@ export type TranslationKeys =
   | 'paywall'
   | 'active membership'
   | 'reached limit'
+  | 'confirm cancellation 1'
+  | 'confirm cancellation 2'
+  | 'cancel subscription'
+  | 'back to safety'
+  | 'cancellation success'
+  | 'cancellation fail'
+  | 'cancellation cancelled'
   | 'unknown error'
   | 'support email'
   | 'payment failed'
@@ -303,6 +311,41 @@ Você pode criar fotos ilimitadas de si mesmo em qualquer cenário que puder ima
     en: `Woah, you've generated ${DAILY_CREDITS_LIMIT} images today! Take a break, you can start making images tomorrow :)`,
     pt: `Uau, você gerou ${DAILY_CREDITS_LIMIT} imagens hoje! Faça uma pausa, você pode começar a criar imagens novamente amanhã :)`,
     ar: `واو، لقد أنشأت ${DAILY_CREDITS_LIMIT} صورة اليوم! خذ استراحة، يمكنك البدء في إنشاء الصور مرة أخرى غدًا :)`,
+  },
+  'confirm cancellation 1': {
+    en: 'Please note that your subscription is valid till',
+    pt: 'Observe que sua assinatura é válida até',
+    ar: 'يرجى ملاحظة أن اشتراكك ساري حتى',
+  },
+  'confirm cancellation 2': {
+    en: 'You will NOT receive any refunds.\nAfter successful cancellation, you will not be charged anything in the following month.\n\nClick "Cancel Subscription" button to confirm.\nClick "Back to Safety" button to return to generating awesome photos.',
+    pt: 'Você NÃO receberá reembolsos.\nApós o cancelamento bem-sucedido, você não será cobrado no mês seguinte.\n\nClique no botão "Cancelar Assinatura" para confirmar.\nClique no botão "Voltar para Segurança" para continuar gerando fotos incríveis.',
+    ar: 'لن تتلقى أي رد أموال.\nبعد إلغاء الاشتراك بنجاح، لن يتم خصم أي رسوم في الشهر التالي.\n\nانقر على زر "إلغاء الاشتراك" للتأكيد.\nانقر على زر "العودة إلى الأمان" للعودة إلى إنشاء صور رائعة.',
+  },
+  'cancel subscription': {
+    en: 'Cancel Subscription',
+    pt: 'Cancelar Assinatura',
+    ar: 'إلغاء الاشتراك',
+  },
+  'back to safety': {
+    en: 'Back to Safety',
+    pt: 'Voltar para Segurança',
+    ar: 'العودة إلى الأمان',
+  },
+  'cancellation success': {
+    en: 'Your FotoLabs subscription has been cancelled successfully. 🤝',
+    pt: 'Sua assinatura do FotoLabs foi cancelada com sucesso. 🤝',
+    ar: 'تم إلغاء اشتراكك في FotoLabs بنجاح. 🤝',
+  },
+  'cancellation fail': {
+    en: `There was an issue with the cancellation request. Please send an email to ${AppConfig.email}`,
+    pt: `Houve um problema com o pedido de cancelamento. Por favor, envie um e-mail para ${AppConfig.email}`,
+    ar: `حدثت مشكلة في طلب الإلغاء. يرجى إرسال بريد إلكتروني إلى ${AppConfig.email}`,
+  },
+  'cancellation cancelled': {
+    en: 'Cool. Your cancellation request has been cancelled. You can safely continue enjoying FotoLabs. 😮‍💨',
+    pt: 'Legal. Seu pedido de cancelamento foi cancelado. Você pode continuar aproveitando o FotoLabs com segurança. 😮‍💨',
+    ar: 'رائع. تم إلغاء طلب الإلغاء الخاص بك. يمكنك الاستمرار في الاستمتاع بـ FotoLabs بأمان. 😮‍💨',
   },
   'unknown error': {
     en: 'Uh-oh. Something went wrong, please try again after some time.',

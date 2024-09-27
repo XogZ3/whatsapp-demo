@@ -701,3 +701,54 @@ export async function sendIntroQuickReplyMessage(
   };
   await makeRequestToWhatsapp(payload);
 }
+
+async function getSubscriptionId(clientid: any) {
+  try {
+    const response = await fetch(
+      `/api/stripe/getSubscription?clientid=${clientid.replace('+', '')}`,
+    );
+    if (!response.ok) throw new Error('Failed to fetch subscription info');
+
+    const data = await response.json();
+    return data.subscriptionId;
+  } catch (error) {
+    console.error('Error fetching subscription:', error);
+    return error;
+  }
+}
+
+async function cancelSubscription(subscriptionId: string) {
+  try {
+    const response = await fetch('/api/stripe/cancelSubscription', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ subscriptionId }),
+    });
+
+    if (!response.ok) throw new Error('Failed to cancel subscription');
+
+    const data = await response.json();
+    console.log('[!] cancellation res: ', JSON.stringify(data, null, 2));
+    return data.subscriptionStatus;
+  } catch (error) {
+    console.error('Error canceling subscription:', error);
+    return error;
+  }
+}
+
+export async function callCancelSubscription(clientid: string) {
+  const subscriptionId = await getSubscriptionId(clientid);
+  const subscriptionStatus = await cancelSubscription(subscriptionId);
+  const isSubscriptionCancelled = subscriptionStatus === 'cancelled';
+  return isSubscriptionCancelled;
+}
+
+export async function sendWhatsappRefreshTemplate(clientid: string) {
+  const payload: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    template: true,
+    templateLanguageCode: 'en',
+    templateName: 'fotolabs_whatsapp_refresh',
+  };
+  await sendMessageToWhatsapp(payload);
+}

@@ -563,7 +563,7 @@ export async function sendMessageToWhatsapp(payload: any, seed?: number) {
   console.log('[0] sending wa msg to user: ', JSON.stringify(payload, null, 2));
   const data = await createWAMessagePayload(payload);
   const res = await makeRequestToWhatsapp(data);
-  const whatsappMessageID = res?.messages?.id;
+  const whatsappMessageID = res?.messages[0]?.id;
   if (res) {
     await setSystemMessage(data, whatsappMessageID, seed);
     return true;

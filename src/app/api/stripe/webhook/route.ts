@@ -8,6 +8,7 @@ import {
   type ICreateMessagePayload,
   sendMessageToWhatsapp,
 } from '@/modules/whatsapp/whatsapp';
+import { sendWhatsappRefreshTemplate } from '@/modules/xstate/whatsappMachine/actionsHelper';
 import { sendPurchaseToFBCoversionAPI } from '@/utils/fconversionHelper';
 import { type UserFieldsFirebase } from '@/utils/ReplyHelper/FirebaseHelpers';
 import { sendMessageToTelegram } from '@/utils/telegram';
@@ -32,15 +33,6 @@ async function sendPhotoUploadInstruction(
     imageLink:
       'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fphoto_instruction.png?alt=media&token=5982c2d9-8ccf-47c1-8a03-eef5ab61d280',
     imageCaption: message,
-  };
-  await sendMessageToWhatsapp(payload);
-}
-async function sendWhatsappRefreshTemplate(clientid: string) {
-  const payload: ICreateMessagePayload = {
-    phoneNumber: clientid,
-    template: true,
-    templateLanguageCode: 'en',
-    templateName: 'fotolabs_whatsapp_refresh',
   };
   await sendMessageToWhatsapp(payload);
 }
@@ -291,7 +283,11 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
       await Promise.all([
         DateTime.now().toMillis() < (whatsappExpiration ?? Infinity)
           ? sendMessageToWhatsapp(payload)
-          : sendWhatsappRefreshTemplate(clientid),
+          : [
+              sendWhatsappRefreshTemplate(clientid).then(() =>
+                sendMessageToWhatsapp(payload),
+              ),
+            ],
         sendPurchaseToFBCoversionAPI(clientid),
       ]);
       await sendPhotoUploadInstruction(clientid, language);

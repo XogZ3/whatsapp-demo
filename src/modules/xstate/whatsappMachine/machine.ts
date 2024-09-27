@@ -126,6 +126,21 @@ export const machineFactory = (config: IMachineConfig): any => {
             SECRET: { actions: ['sendPromoMessage'] },
           },
         },
+        cancelSubscription: {
+          on: {
+            cancel: {
+              actions: ['cancelSubscription', 'sendPromptingInstruction'],
+              target: 'photoPrompting',
+            },
+            safe: {
+              actions: [
+                'sendCancellationCancelled',
+                'sendPromptingInstruction',
+              ],
+              target: 'photoPrompting',
+            },
+          },
+        },
       },
     },
     {

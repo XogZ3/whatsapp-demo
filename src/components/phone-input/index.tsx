@@ -31,11 +31,9 @@ i18nIsoCountries.registerLocale(enCountries);
 export const PhoneInputShadcnUiPhoneInput = ({
   phoneNumber,
   setPhoneNumber,
-  setMessage,
 }: {
   phoneNumber: any;
   setPhoneNumber: any;
-  setMessage: any;
 }) => {
   const options = getCountriesOptions();
 
@@ -84,7 +82,6 @@ export const PhoneInputShadcnUiPhoneInput = ({
           placeholder={placeholder}
           onChange={(value) => {
             setPhoneNumber(value);
-            setMessage('');
           }}
         />
       </div>

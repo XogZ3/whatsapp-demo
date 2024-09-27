@@ -29,6 +29,7 @@ import { sendMessageToTelegram } from '@/utils/telegram';
 import { getTranslation } from '@/utils/translations';
 
 import {
+  callCancelSubscription,
   checkTrainingJobForClient,
   createReferralPromoCode,
   createStripeLink,
@@ -797,6 +798,34 @@ ${stripeLink}`;
           await setProcessingFlag(clientid, false);
           console.error('[!] Error in machine & credit check:', error.message);
         });
+    },
+    cancelSubscription: async (event: any) => {
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
+      let message;
+      callCancelSubscription(clientid).then(async (isSubscriptionCancelled) => {
+        if (isSubscriptionCancelled) {
+          message = getTranslation('cancellation success', language);
+        } else {
+          message = getTranslation('cancellation fail', language);
+        }
+        const payload: ICreateMessagePayload = {
+          phoneNumber: clientid,
+          text: true,
+          msgBody: message,
+        };
+        await config.whatsappInstance.send(payload);
+      });
+    },
+    sendCancellationCancelled: async (event: any) => {
+      const { language = event?.context?.language } = config.userMetaData;
+      const message = getTranslation('cancellation cancelled', language);
+      const payload: ICreateMessagePayload = {
+        phoneNumber: config.userMetaData.clientid,
+        text: true,
+        msgBody: message,
+      };
+      await config.whatsappInstance.send(payload);
     },
     sendRequestNewPrompt: async () => {
       const message = 'Alright, send a new prompt. :)';

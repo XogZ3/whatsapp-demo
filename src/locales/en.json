@@ -82,13 +82,10 @@
     "subscription_note_1": "Please note that your subscription is valid till",
     "subscription_note_2": ". You will NOT receive any refunds.",
     "subscription_note_3": "After successful cancellation, you will not be charged anything in the following month.",
-    "button_get_subscription_info": "Get Subscription Info",
-    "button_cancel_subscription": "Cancel Subscription",
+    "button_cancel_subscription": "Request Cancellation",
     "button_loading": "Loading...",
-    "button_cancelling": "Cancelling...",
     "button_return_to_whatsapp": "Return to WhatsApp",
-    "subscription_not_found": "No subscription ID available.",
-    "subscription_cancelled": "Subscription successfully canceled.",
-    "subscription_cancellation_failed": "Failed to cancel subscription."
+    "confirm_message": "If you have an account with FotoLabs.ai, we will have sent a message on WhatsApp to confirm your request for cancellation. Please confirm inside WhatsApp.",
+    "too_frequent": "Please try again after few hours."
   }
 }

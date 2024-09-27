@@ -96,14 +96,14 @@ export default function CancelSubscriptionPage() {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, type: 'tween' }}
-              className="flex w-full flex-col items-center justify-center"
+              className="flex w-full flex-col items-center justify-center gap-y-4"
             >
               <MessagesSquareIcon size={96} />
               <p>{t('confirm_message')}</p>
               <Link href="https://wa.me/971505072100">
                 <Button
                   variant="default"
-                  className="mt-4 min-w-[185px] text-sm font-semibold sm:text-lg"
+                  className="min-w-[185px] text-sm font-semibold sm:text-lg"
                 >
                   {t('button_return_to_whatsapp')}
                 </Button>
@@ -118,14 +118,14 @@ export default function CancelSubscriptionPage() {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, type: 'tween' }}
-              className="flex w-full flex-col items-center justify-center"
+              className="flex w-full flex-col items-center justify-center gap-y-4"
             >
               <AlertOctagonIcon size={96} />
               <p>{t('too_frequent')}</p>
               <Link href="https://wa.me/971505072100">
                 <Button
                   variant="default"
-                  className="mt-4 min-w-[185px] text-sm font-semibold sm:text-lg"
+                  className="min-w-[185px] text-sm font-semibold sm:text-lg"
                 >
                   {t('button_return_to_whatsapp')}
                 </Button>

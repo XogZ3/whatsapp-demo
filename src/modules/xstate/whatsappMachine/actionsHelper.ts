@@ -705,7 +705,7 @@ export async function sendIntroQuickReplyMessage(
 async function getSubscriptionId(clientid: any) {
   try {
     const response = await fetch(
-      `/api/stripe/getSubscription?clientid=${clientid.replace('+', '')}`,
+      `${getBaseUrl()}/api/stripe/getSubscription?clientid=${clientid.replace('+', '')}`,
     );
     if (!response.ok) throw new Error('Failed to fetch subscription info');
 
@@ -719,11 +719,14 @@ async function getSubscriptionId(clientid: any) {
 
 async function cancelSubscription(subscriptionId: string) {
   try {
-    const response = await fetch('/api/stripe/cancelSubscription', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ subscriptionId }),
-    });
+    const response = await fetch(
+      `${getBaseUrl()}/api/stripe/cancelSubscription`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ subscriptionId }),
+      },
+    );
 
     if (!response.ok) throw new Error('Failed to cancel subscription');
 

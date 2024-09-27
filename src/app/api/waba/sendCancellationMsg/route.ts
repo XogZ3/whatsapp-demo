@@ -86,7 +86,7 @@ export async function GET(req: NextRequest) {
       phoneNumber: clientid,
       quickReply: true,
       msgBody: message,
-      button1id: 'confirm cancel',
+      button1id: 'cancel subscription',
       button1: getTranslation('cancel subscription', language),
       button2id: 'back to safety',
       button2: getTranslation('back to safety', language),

@@ -42,7 +42,7 @@ async function handleSubscriptionEvent(event: Stripe.Event) {
   const subscriptionId = subscription.id;
   let clientid = subscription?.metadata?.clientid;
 
-  // Use subscription-client id mapping
+  // Use subscription-client id mapping if clientid is not in metadata
   if (!clientid) {
     const subscriptionRef = firestore.collection('subscriptions');
     const query = subscriptionRef.where('subscriptionId', '==', subscriptionId);
@@ -53,49 +53,51 @@ async function handleSubscriptionEvent(event: Stripe.Event) {
     if (!clientid) return NextResponse.json({ status: 200 });
   }
 
-  let updates: any;
-  updates = {
+  const updates = {
     clientid,
     subscriptionId,
     subscriptionStatus: subscription.status,
     membershipStartDate: subscription.current_period_start * 1000,
     membershipEndDate: subscription.current_period_end * 1000,
+    paid:
+      event.type === 'customer.subscription.deleted'
+        ? false
+        : subscription.status === 'active',
   };
-
-  if (event.type === 'customer.subscription.deleted') {
-    updates.paid = false;
-  } else {
-    updates.paid = subscription.status === 'active';
-  }
 
   let language: Language = 'english';
 
   // Save subscription data to a separate collection
   await firestore.runTransaction(async (transaction) => {
+    // Perform all read operations first
     const subscriptionRef = firestore
       .collection('subscriptions')
       .doc(subscriptionId);
     const subscriptionDoc = await transaction.get(subscriptionRef);
 
+    let clientDocRef;
+    let clientData;
+    let state;
+    if (clientid) {
+      clientDocRef = firestore
+        .collection('apps')
+        .doc(process.env.WABA_ID!)
+        .collection('clients')
+        .doc(clientid);
+      const clientDocSnapshot = await transaction.get(clientDocRef);
+      clientData = clientDocSnapshot.data();
+      language = clientData?.language ?? 'english';
+      state = clientData?.state;
+    }
+
+    // Now perform all write operations
     if (!subscriptionDoc.exists) {
       transaction.set(subscriptionRef, updates);
     } else {
       transaction.update(subscriptionRef, updates);
     }
 
-    const subscriptionData = subscriptionDoc.data();
-
-    if (clientid) {
-      const clientDocRef = firestore
-        .collection('apps')
-        .doc(process.env.WABA_ID!)
-        .collection('clients')
-        .doc(clientid);
-
-      const clientData = (await transaction.get(clientDocRef)).data();
-      language = clientData?.language;
-      const state = clientData?.state;
-
+    if (clientid && clientDocRef) {
       let stateJSON;
       try {
         stateJSON = state ? JSON.parse(state) : {};
@@ -106,23 +108,23 @@ async function handleSubscriptionEvent(event: Stripe.Event) {
 
       stateJSON.value = 'imagesIncomplete';
 
-      updates = {
+      const clientUpdates = {
         subscriptionId,
         state: JSON.stringify(stateJSON),
-        paid: subscriptionData?.status === 'active',
+        paid: updates.paid,
         processing: false,
         creditsUsedToday: 0,
         creditsResetDate: DateTime.now().toMillis(),
-        subscriptionStatus: subscriptionData?.status,
-        membershipStartDate:
-          (subscriptionData?.current_period_start ?? 0) * 1000,
-        membershipEndDate: (subscriptionData?.current_period_end ?? 0) * 1000,
+        subscriptionStatus: updates.subscriptionStatus,
+        membershipStartDate: updates.membershipStartDate,
+        membershipEndDate: updates.membershipEndDate,
         lastStripeEventId: subscriptionId,
       };
 
-      transaction.update(clientDocRef, updates);
+      transaction.update(clientDocRef, clientUpdates);
     }
   });
+
   if (clientid) {
     await Promise.all([
       sendPurchaseToFBCoversionAPI(clientid),

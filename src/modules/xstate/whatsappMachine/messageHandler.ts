@@ -8,6 +8,7 @@ export const State = Object.freeze({
   generatingModel: 'generatingModel',
   paywall: 'paywall',
   photoPrompting: 'photoPrompting',
+  cancelSubscription: 'cancelSubscription',
 });
 
 export const states: (keyof typeof State)[] = Object.values(State);
@@ -51,6 +52,10 @@ export const handleMessage = async (
       'improve prompt': 'IMPROVE_PROMPT',
       fallback: 'FALLBACK',
       secret: 'SECRET',
+    },
+    [State.cancelSubscription]: {
+      'cancel subscription': 'CANCEL',
+      'back to safety': 'SAFE',
     },
   };
 

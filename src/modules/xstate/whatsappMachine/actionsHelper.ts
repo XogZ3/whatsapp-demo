@@ -19,6 +19,7 @@ import {
 } from '@/utils/constants';
 import { getBaseUrl } from '@/utils/helpers';
 import {
+  getPhotoCount,
   getUserFields,
   type UserFieldsFirebase,
 } from '@/utils/ReplyHelper/FirebaseHelpers';
@@ -52,6 +53,69 @@ export async function notifyPendingPhotos(
     msgBody: message,
   };
   await sendMessageToWhatsapp(payload);
+}
+
+export async function checkExistingSubscription(config: IMachineConfig) {
+  const { clientid } = config.userMetaData;
+  const userMetaDataLanguage = config.userMetaData.language;
+  let finalLanguage: Language = userMetaDataLanguage;
+  try {
+    const clientDocRef = firestore
+      .collection('apps')
+      .doc(process.env.WABA_ID!)
+      .collection('clients')
+      .doc(clientid);
+
+    const clientDocSnapshot = await clientDocRef.get();
+
+    // Ensure document exists
+    if (!clientDocSnapshot.exists) return false;
+
+    const clientData = clientDocSnapshot.data();
+
+    let stateJSON: { value?: string } = {}; // Initialize stateJSON
+
+    // Safely check if clientData is defined and contains subscriptionStatus
+    if (clientData && clientData.subscriptionStatus) {
+      const { language, loraFilename, loraURL, state } = clientData;
+      finalLanguage = language;
+
+      // Check if both loraFilename and loraURL exist
+      if (loraFilename && loraURL) {
+        stateJSON = state ? JSON.parse(state) : {};
+        stateJSON.value = 'photoPrompting';
+      } else {
+        stateJSON.value = 'imagesIncomplete';
+      }
+    }
+
+    const updates: Partial<UserFieldsFirebase> = {
+      state: JSON.stringify(stateJSON),
+    };
+
+    // Merge updates with the existing document
+    await clientDocRef.set(updates, { merge: true });
+    if (stateJSON.value === 'imagesIncomplete') {
+      getPhotoCount(clientid).then(async (currentPhotoCount: number) => {
+        await notifyPendingPhotos(clientid, finalLanguage, currentPhotoCount);
+      });
+    } else if (stateJSON.value === 'photoPrompting') {
+      const message = getTranslation('prompting instruction', finalLanguage);
+      const payload: ICreateMessagePayload = {
+        phoneNumber: clientid,
+        text: true,
+        msgBody: message,
+      };
+      await config.whatsappInstance.send(payload);
+    }
+    return true;
+  } catch (error) {
+    console.error(
+      '[!] Error checkExistingSubscription: ',
+      JSON.stringify(error, null, 2),
+    );
+    return false;
+  }
 }
 
 export async function getCreditsAvailability(clientData: UserFieldsFirebase) {
@@ -94,7 +158,8 @@ export async function getMembershipAvailability(
 ) {
   try {
     if (
-      DateTime.now() > DateTime.fromMillis(clientData.membershipEndDate || 0)
+      DateTime.now() > DateTime.fromMillis(clientData.membershipEndDate || 0) ||
+      clientData.subscriptionStatus !== 'active'
     ) {
       return false;
     }

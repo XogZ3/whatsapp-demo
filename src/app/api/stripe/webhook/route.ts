@@ -59,10 +59,7 @@ async function handleSubscriptionEvent(event: Stripe.Event) {
     subscriptionStatus: subscription.status,
     membershipStartDate: subscription.current_period_start * 1000,
     membershipEndDate: subscription.current_period_end * 1000,
-    paid:
-      event.type === 'customer.subscription.deleted'
-        ? false
-        : subscription.status === 'active',
+    paid: subscription.status === 'active',
   };
 
   let language: Language = 'english';
@@ -78,6 +75,7 @@ async function handleSubscriptionEvent(event: Stripe.Event) {
     let clientDocRef;
     let clientData;
     let state;
+
     if (clientid) {
       clientDocRef = firestore
         .collection('apps')

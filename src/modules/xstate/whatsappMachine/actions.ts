@@ -30,6 +30,7 @@ import { getTranslation } from '@/utils/translations';
 
 import {
   callCancelSubscription,
+  checkExistingSubscription,
   checkTrainingJobForClient,
   createReferralPromoCode,
   createStripeLink,
@@ -89,6 +90,8 @@ export const actionsFactory = (config: IMachineConfig): any => {
     //   );
     // },
     sendIntroOptionsMessageBasedOnPhoneNumber: async (event: any) => {
+      const subscriptionExists = await checkExistingSubscription(config);
+      if (subscriptionExists) return;
       try {
         console.log(
           '[~] attempting to sendIntroOptionsMessageBasedOnPhoneNumber',
@@ -161,6 +164,8 @@ export const actionsFactory = (config: IMachineConfig): any => {
       }
     },
     sendIntroOptionsMessage: async (event: any) => {
+      const subscriptionExists = await checkExistingSubscription(config);
+      if (subscriptionExists) return;
       try {
         console.log('[~] attempting to sendIntroOptionsMessage');
         // use language based on the user's selection

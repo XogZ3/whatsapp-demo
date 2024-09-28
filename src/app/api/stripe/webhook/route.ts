@@ -106,7 +106,11 @@ async function handleSubscriptionEvent(event: Stripe.Event) {
         stateJSON = {};
       }
 
-      stateJSON.value = 'imagesIncomplete';
+      if (event.type === 'customer.subscription.created') {
+        stateJSON.value = 'imagesIncomplete';
+      } else if (event.type === 'customer.subscription.deleted') {
+        stateJSON.value = 'paywall';
+      }
 
       const clientUpdates = {
         subscriptionId,
@@ -125,7 +129,7 @@ async function handleSubscriptionEvent(event: Stripe.Event) {
     }
   });
 
-  if (clientid) {
+  if (clientid && event.type === 'customer.subscription.created') {
     await Promise.all([
       sendPurchaseToFBCoversionAPI(clientid),
       sendPhotoUploadInstruction(clientid, language),

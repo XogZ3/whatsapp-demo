@@ -4,7 +4,10 @@ import { DateTime } from 'luxon';
 import type { CreatePaymentLinkResult } from '@/app/api/stripe/createPaymentLink/route';
 import type { CreateReferralPromoCodeResult } from '@/app/api/stripe/createReferralPromoCode/route';
 import firebase from '@/modules/firebase';
-import { generateImagesWithReplicateUploadToFirebase } from '@/modules/replicate';
+import {
+  generateImagesWithReplicateUploadToFirebase,
+  testClothing,
+} from '@/modules/replicate';
 import {
   type ICreateMessagePayload,
   makeRequestToWhatsapp,
@@ -106,12 +109,23 @@ export async function processAndSendImages(
   config: IMachineConfig,
   prompt: string,
 ) {
-  const generatedImageURLs: string[] =
-    await generateImagesWithReplicateUploadToFirebase(
+  let generatedImageURLs: string[];
+
+  if (
+    ['918754535859', '918056977300', '971562457525'].includes(
+      config.userMetaData.clientid,
+    )
+  ) {
+    generatedImageURLs = await testClothing(
       prompt,
       config.userMetaData.clientid,
     );
-
+  } else {
+    generatedImageURLs = await generateImagesWithReplicateUploadToFirebase(
+      prompt,
+      config.userMetaData.clientid,
+    );
+  }
   let payload: ICreateMessagePayload;
 
   console.log('[+] receveid urls: ', generatedImageURLs);

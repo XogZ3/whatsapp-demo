@@ -68,25 +68,23 @@ export async function checkExistingSubscription(config: IMachineConfig) {
 
     const clientDocSnapshot = await clientDocRef.get();
 
-    // Ensure document exists
-    if (!clientDocSnapshot.exists) return false;
-
     const clientData = clientDocSnapshot.data();
 
+    // Check if active subscription exists
+    if (clientData?.subscriptionStatus !== 'active') return false;
+
+    // If subscription is active, manually fixing state value based on lora availability
     let stateJSON: { value?: string } = {}; // Initialize stateJSON
 
-    // Safely check if clientData is defined and contains subscriptionStatus
-    if (clientData && clientData.subscriptionStatus === 'active') {
-      const { language, loraFilename, loraURL, state } = clientData;
-      finalLanguage = language;
+    const { language, loraFilename, loraURL, state } = clientData;
+    finalLanguage = language;
 
-      // Check if both loraFilename and loraURL exist
-      if (loraFilename && loraURL) {
-        stateJSON = state ? JSON.parse(state) : {};
-        stateJSON.value = 'photoPrompting';
-      } else {
-        stateJSON.value = 'imagesIncomplete';
-      }
+    // Check if both loraFilename and loraURL exist
+    if (loraFilename && loraURL) {
+      stateJSON = state ? JSON.parse(state) : {};
+      stateJSON.value = 'photoPrompting';
+    } else {
+      stateJSON.value = 'imagesIncomplete';
     }
 
     const updates: Partial<UserFieldsFirebase> = {
@@ -95,6 +93,7 @@ export async function checkExistingSubscription(config: IMachineConfig) {
 
     // Merge updates with the existing document
     await clientDocRef.set(updates, { merge: true });
+
     if (stateJSON.value === 'imagesIncomplete') {
       getPhotoCount(clientid).then(async (currentPhotoCount: number) => {
         await notifyPendingPhotos(clientid, finalLanguage, currentPhotoCount);

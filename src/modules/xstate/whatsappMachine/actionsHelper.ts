@@ -76,7 +76,7 @@ export async function checkExistingSubscription(config: IMachineConfig) {
     let stateJSON: { value?: string } = {}; // Initialize stateJSON
 
     // Safely check if clientData is defined and contains subscriptionStatus
-    if (clientData && clientData.subscriptionStatus) {
+    if (clientData && clientData.subscriptionStatus === 'active') {
       const { language, loraFilename, loraURL, state } = clientData;
       finalLanguage = language;
 

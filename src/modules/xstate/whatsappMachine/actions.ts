@@ -480,16 +480,52 @@ export const actionsFactory = (config: IMachineConfig): any => {
       }
 
       // Allow buying membership
-      const stripeLink = await createStripeLink(clientid);
-      const message = `${getTranslation('new user paywall', language)}
+      let message;
+      let shortenedStripeLink = event?.context?.shortenedStripeLink;
+      if (shortenedStripeLink === '' || !shortenedStripeLink) {
+        createStripeLink(clientid)
+          .then(async (stripeLink) => {
+            console.log('Created Stripe link:', stripeLink);
+            shortenedStripeLink = await generateAndSaveShortURLMap(
+              stripeLink,
+              clientid,
+            );
+            console.log('Generated and saved short URL:', shortenedStripeLink);
+            return shortenedStripeLink;
+          })
+          .then(async (shortLink) => {
+            await config.storeInstance.setContext(
+              clientid,
+              'shortenedStripeLink',
+              shortLink,
+            );
 
-${stripeLink}`;
-      const payload: ICreateMessagePayload = {
-        phoneNumber: clientid,
-        text: true,
-        msgBody: message,
-      };
-      await config.whatsappInstance.send(payload);
+            message = `${getTranslation('new user paywall', language)}
+
+${shortLink}`;
+            await config.whatsappInstance.send({
+              phoneNumber: clientid,
+              text: true,
+              msgBody: message,
+            });
+          })
+          .catch(async (error) => {
+            console.error(
+              'Error in creating/sending shortened Stripe link:',
+              error,
+            );
+            await sendMessageToTelegram(
+              `Error in sending intro msg: ${JSON.stringify(error, null, 2)}`,
+            );
+          });
+      } else {
+        message = `${getTranslation('new user paywall', language)}\n\n${shortenedStripeLink}`;
+        await config.whatsappInstance.send({
+          phoneNumber: clientid,
+          text: true,
+          msgBody: message,
+        });
+      }
     },
     sendPromptingInstruction: async (event: any) => {
       const { clientid, language = event?.context?.language } =
@@ -721,45 +757,54 @@ ${stripeLink}`;
                 const stateJSON = JSON.parse(clientData.state);
                 stateJSON.value = 'paywall';
 
-                createStripeLink(clientid)
-                  .then(async (stripeLink) => {
-                    console.log('Created Stripe link:', stripeLink);
-                    const shortenedStripeLink =
-                      await generateAndSaveShortURLMap(stripeLink, clientid);
-                    console.log(
-                      'Generated and saved short URL:',
-                      shortenedStripeLink,
-                    );
-                    return shortenedStripeLink;
-                  })
-                  .then(async (shortLink) => {
-                    config.storeInstance.setContext(
-                      clientid,
-                      'shortenedStripeLink',
-                      shortLink,
-                    );
+                let shortenedStripeLink = event?.context?.shortenedStripeLink;
+                if (shortenedStripeLink === '' || !shortenedStripeLink) {
+                  createStripeLink(clientid)
+                    .then(async (stripeLink) => {
+                      console.log('Created Stripe link:', stripeLink);
+                      shortenedStripeLink = await generateAndSaveShortURLMap(
+                        stripeLink,
+                        clientid,
+                      );
+                      console.log(
+                        'Generated and saved short URL:',
+                        shortenedStripeLink,
+                      );
+                      return shortenedStripeLink;
+                    })
+                    .then(async (shortLink) => {
+                      await config.storeInstance.setContext(
+                        clientid,
+                        'shortenedStripeLink',
+                        shortLink,
+                      );
 
-                    message = `${getTranslation('new user paywall', language)}
+                      message = `${getTranslation('new user paywall', language)}
 
 ${shortLink}`;
-                  })
-                  .catch(async (error) => {
-                    console.error(
-                      'Error in creating/sending shortened Stripe link:',
-                      error,
-                    );
-                    await sendMessageToTelegram(
-                      `Error in sending intro msg: ${JSON.stringify(error, null, 2)}`,
-                    );
-                  });
-                await Promise.all([
-                  config.whatsappInstance.send({
+                      await config.whatsappInstance.send({
+                        phoneNumber: clientid,
+                        text: true,
+                        msgBody: message,
+                      });
+                    })
+                    .catch(async (error) => {
+                      console.error(
+                        'Error in creating/sending shortened Stripe link:',
+                        error,
+                      );
+                      await sendMessageToTelegram(
+                        `Error in sending intro msg: ${JSON.stringify(error, null, 2)}`,
+                      );
+                    });
+                } else {
+                  message = `${getTranslation('new user paywall', language)}\n\n${shortenedStripeLink}`;
+                  await config.whatsappInstance.send({
                     phoneNumber: clientid,
                     text: true,
                     msgBody: message,
-                  }),
-                  setUserState(JSON.stringify(stateJSON), clientid),
-                ]);
+                  });
+                }
               } else {
                 message = getTranslation('unknown error', language);
                 await config.whatsappInstance.send({

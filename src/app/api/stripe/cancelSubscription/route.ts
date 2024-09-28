@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     });
 
     const result = {
-      subscriptionStatus: subscription.status,
+      cancellationStatus: subscription.cancel_at_period_end,
     };
     return NextResponse.json(result);
   } catch (error) {

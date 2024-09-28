@@ -810,7 +810,7 @@ async function cancelSubscription(subscriptionId: string) {
 
     const data = await response.json();
     console.log('[!] cancellation res: ', JSON.stringify(data, null, 2));
-    return data.subscriptionStatus;
+    return data.cancellationStatus;
   } catch (error) {
     console.error('Error canceling subscription:', error);
     return error;
@@ -819,9 +819,8 @@ async function cancelSubscription(subscriptionId: string) {
 
 export async function callCancelSubscription(clientid: string) {
   const subscriptionId = await getSubscriptionId(clientid);
-  const subscriptionStatus = await cancelSubscription(subscriptionId);
-  const isSubscriptionCancelled = subscriptionStatus === 'cancelled';
-  return isSubscriptionCancelled;
+  const cancellationStatus = await cancelSubscription(subscriptionId);
+  return cancellationStatus;
 }
 
 export async function sendWhatsappRefreshTemplate(clientid: string) {

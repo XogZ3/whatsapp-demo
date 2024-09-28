@@ -63,6 +63,7 @@ export type TranslationKeys =
   | 'cancellation success'
   | 'cancellation fail'
   | 'cancellation cancelled'
+  | 'already cancelled'
   | 'unknown error'
   | 'support email'
   | 'payment failed'
@@ -346,6 +347,11 @@ Você pode criar fotos ilimitadas de si mesmo em qualquer cenário que puder ima
     en: 'Cool. Your cancellation request has been cancelled. You can safely continue enjoying FotoLabs. 😮‍💨',
     pt: 'Legal. Seu pedido de cancelamento foi cancelado. Você pode continuar aproveitando o FotoLabs com segurança. 😮‍💨',
     ar: 'رائع. تم إلغاء طلب الإلغاء الخاص بك. يمكنك الاستمرار في الاستمتاع بـ FotoLabs بأمان. 😮‍💨',
+  },
+  'already cancelled': {
+    en: 'Your subscription has already been cancelled.',
+    pt: 'Sua assinatura já foi cancelada.',
+    ar: 'تم إلغاء اشتراكك بالفعل.',
   },
   'unknown error': {
     en: 'Uh-oh. Something went wrong, please try again after some time.',

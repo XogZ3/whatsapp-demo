@@ -106,7 +106,7 @@ async function handleSubscriptionEvent(event: Stripe.Event) {
 
       if (event.type === 'customer.subscription.created') {
         stateJSON.value = 'imagesIncomplete';
-        stateJSON.shortenedStripeLink = '';
+        stateJSON.context.shortenedStripeLink = '';
       } else if (event.type === 'customer.subscription.deleted') {
         stateJSON.value = 'paywall';
       }

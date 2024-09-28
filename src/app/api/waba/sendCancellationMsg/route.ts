@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon';
 import { type NextRequest, NextResponse } from 'next/server';
+import Stripe from 'stripe';
 
 import firebase from '@/modules/firebase';
 import {
@@ -14,7 +15,9 @@ import {
 import { getTranslation } from '@/utils/translations';
 
 const firestore = firebase.getFirestore();
-
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+  apiVersion: '2024-06-20',
+});
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const clientid = searchParams.get('clientid');
@@ -58,6 +61,25 @@ export async function GET(req: NextRequest) {
       );
     }
 
+    let message;
+    let payload: ICreateMessagePayload;
+    const subscriptionDetails =
+      await stripe.subscriptions.retrieve(subscriptionId);
+    const subscriptionStatus = subscriptionDetails.status;
+    if (subscriptionStatus === 'canceled') {
+      message = getTranslation('already cancelled', language);
+      payload = {
+        phoneNumber: clientid,
+        text: true,
+        msgBody: message,
+      };
+      await sendMessageToWhatsapp(payload);
+      return NextResponse.json(
+        { cancellationFrequent: false, cancellationStat: true, error: '' },
+        { status: 200 },
+      );
+    }
+
     let stateJSON;
 
     try {
@@ -81,8 +103,8 @@ export async function GET(req: NextRequest) {
     const membershipEndDateHumanReadable = new Date(
       membershipEndDate,
     ).toLocaleDateString('en-GB');
-    const message = `${getTranslation('confirm cancellation 1', language)} ${membershipEndDateHumanReadable}.\n${getTranslation('confirm cancellation 2', language)}`;
-    const payload: ICreateMessagePayload = {
+    message = `${getTranslation('confirm cancellation 1', language)} ${membershipEndDateHumanReadable}.\n${getTranslation('confirm cancellation 2', language)}`;
+    payload = {
       phoneNumber: clientid,
       quickReply: true,
       msgBody: message,

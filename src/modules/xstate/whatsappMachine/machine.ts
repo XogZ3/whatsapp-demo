@@ -128,7 +128,7 @@ export const machineFactory = (config: IMachineConfig): any => {
         cancelSubscription: {
           on: {
             CANCEL: {
-              actions: ['cancelSubscription', 'sendPromptingInstruction'],
+              actions: ['cancelSubscription'],
               target: 'photoPrompting',
             },
             SAFE: {

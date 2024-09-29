@@ -1,5 +1,6 @@
 /* eslint-disable unused-imports/no-unused-vars */
 
+import { getPromptFromImageURLUsingOpenAI } from '@/modules/openai';
 import {
   fetchWhatsAppImageAndUploadToFirebase,
   type ICreateMessagePayload,
@@ -76,6 +77,21 @@ async function sendUpdatedPhotoCountWithFinishOption(
   await sendMessageToWhatsapp(payload);
 }
 async function sendWaitForUploadToComplete(
+  clientid: string,
+  language: Language,
+) {
+  const message = getTranslation('uploading please wait', language);
+  const payload: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    quickReply: true,
+    button1id: 'finish upload',
+    button1: getTranslation('finish upload', language),
+    msgBody: message,
+  };
+  await sendMessageToWhatsapp(payload);
+}
+
+async function sendErrorMessageForImagePrompt(
   clientid: string,
   language: Language,
 ) {
@@ -173,6 +189,22 @@ export async function replyToUser(messageObject: any) {
           return;
         }
       }
+    }
+    // Handle images in 'photoPrompting' state - derive prompt from image
+    else if (currentState === 'photoPrompting' && messageType === 'image') {
+      const imageID = extractImageID(messageObject);
+      const imageURL = await fetchWhatsAppImageAndUploadToFirebase(
+        imageID,
+        clientid,
+      );
+      const promptResult = await getPromptFromImageURLUsingOpenAI(imageURL);
+      if (!promptResult) {
+        await sendErrorMessageForImagePrompt(clientid, userLanguage);
+        return;
+      }
+      const { promptText, promptType } = promptResult;
+      message = `${promptType} ${promptText}`;
+      console.log('[l] prompt from img: ', message);
     }
     // Accept image for image-to-image generation
     else if (

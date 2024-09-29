@@ -15,6 +15,7 @@ export const states: (keyof typeof State)[] = Object.values(State);
 
 export const imageAcceptingStates: (keyof typeof State)[] = [
   State.imagesIncomplete,
+  State.photoPrompting,
 ];
 
 export const nonImageAcceptingStates = states.filter(

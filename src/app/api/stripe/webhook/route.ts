@@ -60,6 +60,9 @@ async function handleSubscriptionEvent(event: Stripe.Event) {
     membershipStartDate: subscription.current_period_start * 1000,
     membershipEndDate: subscription.current_period_end * 1000,
     paid: subscription.status === 'active',
+    ...(subscription.canceled_at !== undefined && {
+      subscriptionCanceledAt: subscription.canceled_at,
+    }),
   };
 
   let language: Language = 'english';
@@ -129,10 +132,7 @@ async function handleSubscriptionEvent(event: Stripe.Event) {
   });
 
   if (clientid && event.type === 'customer.subscription.created') {
-    await Promise.all([
-      sendPurchaseToFBCoversionAPI(clientid),
-      sendPhotoUploadInstruction(clientid, language),
-    ]);
+    await sendPhotoUploadInstruction(clientid, language);
   }
 
   console.log(

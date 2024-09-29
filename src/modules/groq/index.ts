@@ -1,6 +1,6 @@
 import Groq from 'groq-sdk';
 
-import type { GenderAndAgeType } from '../openai';
+import type { GenderAndAgeSchemaType } from '../openai';
 
 export const getGroqResult = async (
   query: string,
@@ -59,7 +59,7 @@ Respond only with the generated image prompt, without any additional explanation
 // Model currently does not support JSON structured response
 export const getAgeAndGenderFromImageURLUsingGroq = async (
   imageURL: string,
-): Promise<GenderAndAgeType | null> => {
+): Promise<GenderAndAgeSchemaType | null> => {
   const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
   const chatCompletion = await groq.chat.completions.create({
     messages: [

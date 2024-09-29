@@ -7,7 +7,7 @@ import {
   getImprovedPromptFromGroq,
 } from '@/modules/groq';
 import {
-  type GenderAndAgeType,
+  type GenderAndAgeSchemaType,
   getAgeAndGenderFromImageURLUsingOpenAI,
 } from '@/modules/openai';
 import type { ICreateMessagePayload } from '@/modules/whatsapp/whatsapp';
@@ -394,7 +394,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
           throw new Error('Failed to select a random image URL.');
         }
         // Step 1: Try using Groq API
-        let result: GenderAndAgeType | null;
+        let result: GenderAndAgeSchemaType | null;
         result = await getAgeAndGenderFromImageURLUsingGroq(randomImageUrl);
         // Step 2: If Groq API fails, try using OpenAI API
         if (!result) {
@@ -880,19 +880,30 @@ ${shortLink}`;
       const { clientid, language = event?.context?.language } =
         config.userMetaData;
       let message;
-      callCancelSubscription(clientid).then(async (isSubscriptionCancelled) => {
-        if (isSubscriptionCancelled) {
-          message = getTranslation('cancellation success', language);
-        } else {
-          message = getTranslation('cancellation fail', language);
-        }
-        const payload: ICreateMessagePayload = {
-          phoneNumber: clientid,
-          text: true,
-          msgBody: message,
-        };
-        await config.whatsappInstance.send(payload);
-      });
+      let payload: ICreateMessagePayload;
+      callCancelSubscription(clientid)
+        .then(async (isSubscriptionCancelled) => {
+          if (isSubscriptionCancelled) {
+            message = getTranslation('cancellation success', language);
+          } else {
+            message = getTranslation('cancellation fail', language);
+          }
+          payload = {
+            phoneNumber: clientid,
+            text: true,
+            msgBody: message,
+          };
+          await config.whatsappInstance.send(payload);
+        })
+        .then(async () => {
+          message = getTranslation('prompting instruction', language);
+          payload = {
+            phoneNumber: clientid,
+            text: true,
+            msgBody: message,
+          };
+          await config.whatsappInstance.send(payload);
+        });
     },
     sendCancellationCancelled: async (event: any) => {
       const { language = event?.context?.language } = config.userMetaData;

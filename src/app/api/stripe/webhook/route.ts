@@ -8,7 +8,6 @@ import {
   type ICreateMessagePayload,
   sendMessageToWhatsapp,
 } from '@/modules/whatsapp/whatsapp';
-import { sendWhatsappRefreshTemplate } from '@/modules/xstate/whatsappMachine/actionsHelper';
 import { sendPurchaseToFBCoversionAPI } from '@/utils/fconversionHelper';
 import { type UserFieldsFirebase } from '@/utils/ReplyHelper/FirebaseHelpers';
 import { sendMessageToTelegram } from '@/utils/telegram';
@@ -22,11 +21,44 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: '2024-06-20',
 });
 
-async function sendPhotoUploadInstruction(
+async function sendPaySuccessAndPhotoUploadInstructionTemplate(
+  clientid: string,
+) {
+  const payload = {
+    messaging_product: 'whatsapp',
+    recipient_type: 'individual',
+    to: clientid,
+    type: 'template',
+    template: {
+      name: 'fotolabs_payment_success',
+      language: {
+        code: 'en',
+      },
+      components: [
+        {
+          type: 'header',
+          parameters: [
+            {
+              type: 'image',
+              image: {
+                link: 'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fphoto_instruction.png?alt=media&token=5982c2d9-8ccf-47c1-8a03-eef5ab61d280',
+              },
+            },
+          ],
+        },
+      ],
+    },
+  };
+  await sendMessageToWhatsapp(payload);
+}
+
+async function sendPaySuccessAndPhotoUploadInstruction(
   clientid: string,
   language: Language,
 ) {
-  const message = getTranslation('photo upload instruction', language);
+  const message = `${getTranslation('payment confirmation', language)}
+
+${getTranslation('photo upload instruction', language)}`;
   const payload: ICreateMessagePayload = {
     phoneNumber: clientid,
     image: true,
@@ -65,8 +97,6 @@ async function handleSubscriptionEvent(event: Stripe.Event) {
     }),
   };
 
-  let language: Language = 'english';
-
   // Save subscription data to a separate collection
   await firestore.runTransaction(async (transaction) => {
     // Perform all read operations first
@@ -87,7 +117,6 @@ async function handleSubscriptionEvent(event: Stripe.Event) {
         .doc(clientid);
       const clientDocSnapshot = await transaction.get(clientDocRef);
       clientData = clientDocSnapshot.data();
-      language = clientData?.language ?? 'english';
       state = clientData?.state;
     }
 
@@ -130,10 +159,6 @@ async function handleSubscriptionEvent(event: Stripe.Event) {
       transaction.update(clientDocRef, clientUpdates);
     }
   });
-
-  if (clientid && event.type === 'customer.subscription.created') {
-    await sendPhotoUploadInstruction(clientid, language);
-  }
 
   console.log(
     `Subscription ${event.type} processed for subscriptionId: ${subscriptionId}`,
@@ -276,26 +301,16 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
     language,
     whatsappExpiration,
   );
-  const message = `${getTranslation('payment confirmation', language)}`;
-  const payload: ICreateMessagePayload = {
-    phoneNumber: clientid,
-    text: true,
-    msgBody: message,
-  };
 
   try {
     if (status === 'complete') {
       await Promise.all([
         DateTime.now().toMillis() < (whatsappExpiration ?? Infinity)
-          ? sendMessageToWhatsapp(payload)
-          : [
-              sendWhatsappRefreshTemplate(clientid).then(() =>
-                sendMessageToWhatsapp(payload),
-              ),
-            ],
+          ? sendPaySuccessAndPhotoUploadInstruction(clientid, language)
+          : sendPaySuccessAndPhotoUploadInstructionTemplate(clientid),
         sendPurchaseToFBCoversionAPI(clientid),
       ]);
-      await sendPhotoUploadInstruction(clientid, language);
+
       console.log(
         `Checkout session completed for clientid: ${clientid}, subscriptionId: ${subscriptionId}`,
       );

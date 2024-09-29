@@ -1,22 +1,16 @@
 /* eslint-disable unused-imports/no-unused-vars */
 
 import { getPromptFromImageURLUsingOpenAI } from '@/modules/openai';
-import {
-  fetchWhatsAppImageAndUploadToFirebase,
-  type ICreateMessagePayload,
-  sendMessageToWhatsapp,
-} from '@/modules/whatsapp/whatsapp';
+import { fetchWhatsAppImageAndUploadToFirebase } from '@/modules/whatsapp/whatsapp';
 import { whatsappStateTransition } from '@/modules/xstate/whatsappMachine';
 import { nonImageAcceptingStates } from '@/modules/xstate/whatsappMachine/messageHandler';
 import type { IUserMetaData } from '@/modules/xstate/whatsappMachine/types';
 
 import {
-  samplePhotoURLs,
   TRAINING_IMAGES_LOWER_LIMIT,
   TRAINING_IMAGES_UPPER_LIMIT,
 } from '../constants';
 import { getLanguageFromPhoneNumber } from '../helpers';
-import { getTranslation, type Language } from '../translations';
 import {
   addTrainingImageURLandIncreaseCountDecreasePendingUploads,
   getPendingUploadsCount,
@@ -26,85 +20,15 @@ import {
   setDefaultUserFields,
   setUserState,
 } from './FirebaseHelpers';
+import {
+  sendAnalyzingPhoto,
+  sendErrorMessageForImagePrompt,
+  sendSamplePhotos,
+  sendUpdatedPhotoCount,
+  sendUpdatedPhotoCountWithFinishOption,
+  sendWaitForUploadToComplete,
+} from './MessageHelpers';
 import { extractImageID, extractText } from './MessageParsers';
-
-async function sendSamplePhotos(clientid: string) {
-  let payload: ICreateMessagePayload;
-  await Promise.all(
-    samplePhotoURLs.map((URL: string) => {
-      payload = {
-        phoneNumber: clientid,
-        image: true,
-        imageLink: URL,
-      };
-      return sendMessageToWhatsapp(payload);
-    }),
-  );
-}
-
-async function sendUpdatedPhotoCount(
-  clientid: string,
-  language: Language,
-  updatedPhotoCount: number,
-) {
-  const message = `${updatedPhotoCount || '1'} ${getTranslation(
-    'photo received',
-    language,
-  )}`;
-  const payload: ICreateMessagePayload = {
-    phoneNumber: clientid,
-    text: true,
-    msgBody: message,
-  };
-  await sendMessageToWhatsapp(payload);
-}
-async function sendUpdatedPhotoCountWithFinishOption(
-  clientid: string,
-  language: Language,
-  updatedPhotoCount: number,
-) {
-  const message = `${updatedPhotoCount || '1'} ${getTranslation(
-    'photo received',
-    language,
-  )}`;
-  const payload: ICreateMessagePayload = {
-    phoneNumber: clientid,
-    quickReply: true,
-    button1id: 'finish upload',
-    button1: getTranslation('finish upload', language),
-    msgBody: message,
-  };
-  await sendMessageToWhatsapp(payload);
-}
-async function sendWaitForUploadToComplete(
-  clientid: string,
-  language: Language,
-) {
-  const message = getTranslation('uploading please wait', language);
-  const payload: ICreateMessagePayload = {
-    phoneNumber: clientid,
-    quickReply: true,
-    button1id: 'finish upload',
-    button1: getTranslation('finish upload', language),
-    msgBody: message,
-  };
-  await sendMessageToWhatsapp(payload);
-}
-
-async function sendErrorMessageForImagePrompt(
-  clientid: string,
-  language: Language,
-) {
-  const message = getTranslation('uploading please wait', language);
-  const payload: ICreateMessagePayload = {
-    phoneNumber: clientid,
-    quickReply: true,
-    button1id: 'finish upload',
-    button1: getTranslation('finish upload', language),
-    msgBody: message,
-  };
-  await sendMessageToWhatsapp(payload);
-}
 
 // eslint-disable-next-line consistent-return
 export async function replyToUser(messageObject: any) {
@@ -192,6 +116,7 @@ export async function replyToUser(messageObject: any) {
     }
     // Handle images in 'photoPrompting' state - derive prompt from image
     else if (currentState === 'photoPrompting' && messageType === 'image') {
+      await sendAnalyzingPhoto(clientid, userLanguage);
       const imageID = extractImageID(messageObject);
       const imageURL = await fetchWhatsAppImageAndUploadToFirebase(
         imageID,

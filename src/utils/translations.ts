@@ -45,6 +45,7 @@ export type TranslationKeys =
   | 'payment instructions'
   | 'payment confirmation'
   | 'prompting instruction'
+  | 'analyzing photo'
   | 'prompt confirmation'
   | 'new prompt request'
   | 'main menu'
@@ -254,6 +255,11 @@ Quer criar fotos incríveis de IA como essas? Faça um pagamento de ~$29,99~ $19
     en: 'Payment successful. ✅🎉',
     pt: 'Pagamento bem-sucedido. ✅🎉',
     ar: 'تم الدفع بنجاح. ✅🎉',
+  },
+  'analyzing photo': {
+    en: 'Analyzing photo...',
+    pt: 'Analisando a foto...',
+    ar: 'جارٍ تحليل الصورة...',
   },
   'prompting instruction': {
     en: 'Send your prompt',

@@ -1,5 +1,6 @@
 /* eslint-disable no-await-in-loop */
 import { format } from 'date-fns';
+import { DateTime } from 'luxon';
 import type { NextRequest } from 'next/server';
 
 import firebase from '@/modules/firebase';
@@ -33,8 +34,8 @@ async function getAgeGenderForClientidArray(clientidArray: string[]) {
       throw new Error(`Client document not found for ID: ${clientid}`);
     }
 
-    const { age, gender } = clientData.data() || {};
-    return { clientid, age, gender };
+    const { age, gender, whatsappExpiration } = clientData.data() || {};
+    return { clientid, age, gender, whatsappExpiration };
   });
 
   return Promise.all(promises);
@@ -58,6 +59,48 @@ function fillPrompt(prompt: string, age: number, gender: 'male' | 'female') {
     .replace(/PERSON_GENDER_ManWoman/g, genderManWoman)
     .replace(/PERSON_GENDER_Woman/g, genderManWoman)
     .replace(/PERSON_GENDER_Man/g, genderManWoman);
+}
+
+async function sendDailyImageTemplate(
+  clientid: string,
+  imageURL: string,
+  caption: string,
+) {
+  const payload = {
+    messaging_product: 'whatsapp',
+    recipient_type: 'individual',
+    to: clientid,
+    type: 'template',
+    template: {
+      name: 'fotolabs_daily_image',
+      language: {
+        code: 'en',
+      },
+      components: [
+        {
+          type: 'header',
+          parameters: [
+            {
+              type: 'image',
+              image: {
+                link: imageURL,
+              },
+            },
+          ],
+        },
+        {
+          type: 'body',
+          parameters: [
+            {
+              type: 'text',
+              text: caption,
+            },
+          ],
+        },
+      ],
+    },
+  };
+  await sendMessageToWhatsapp(payload);
 }
 
 export async function POST(request: NextRequest) {
@@ -150,8 +193,10 @@ export async function POST(request: NextRequest) {
   const rateLimit = 5000; // 1 second between messages
 
   const sendMessages = async () => {
-    for (const [clientid, urls] of Object.entries(clientGeneratedImageMap)) {
-      for (const url of urls) {
+    for (const { clientid, whatsappExpiration } of clientDataArray) {
+      const now = DateTime.now().toMillis(); // Get the current time in milliseconds
+
+      for (const url of clientGeneratedImageMap[clientid] || []) {
         const payload: ICreateMessagePayload = {
           phoneNumber: clientid,
           image: true,
@@ -160,7 +205,14 @@ export async function POST(request: NextRequest) {
         };
 
         try {
-          await sendMessageToWhatsapp(payload);
+          // Check if the current time is after the whatsappExpiration
+          if (now >= whatsappExpiration) {
+            console.log(`Sending template message to ${clientid}`);
+            await sendDailyImageTemplate(clientid, url, location); // Use sendDailyImageTemplate if expired
+          } else {
+            console.log(`Sending regular message to ${clientid}`);
+            await sendMessageToWhatsapp(payload); // Use sendMessageToWhatsapp if not expired
+          }
           console.log(`Message sent to ${clientid}`);
         } catch (error) {
           console.error(`Error sending message to ${clientid}:`, error);

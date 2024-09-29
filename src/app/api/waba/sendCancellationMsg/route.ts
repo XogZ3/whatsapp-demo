@@ -7,17 +7,89 @@ import {
   type ICreateMessagePayload,
   sendMessageToWhatsapp,
 } from '@/modules/whatsapp/whatsapp';
-import { sendWhatsappRefreshTemplate } from '@/modules/xstate/whatsappMachine/actionsHelper';
 import {
   getUserFields,
   type UserFieldsFirebase,
 } from '@/utils/ReplyHelper/FirebaseHelpers';
-import { getTranslation } from '@/utils/translations';
+import { getTranslation, type Language } from '@/utils/translations';
 
 const firestore = firebase.getFirestore();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: '2024-06-20',
 });
+
+async function sendConfirmCancellationTemplate(
+  clientid: string,
+  membershipEndDateHumanReadable: string,
+) {
+  const payload = {
+    messaging_product: 'whatsapp',
+    recipient_type: 'individual',
+    to: clientid,
+    type: 'template',
+    template: {
+      name: 'fotolabs_cancellation',
+      language: {
+        code: 'en',
+      },
+      components: [
+        {
+          type: 'body',
+          parameters: [
+            {
+              type: 'text',
+              text: membershipEndDateHumanReadable,
+            },
+          ],
+        },
+        {
+          type: 'button',
+          sub_type: 'quick_reply',
+          index: '0',
+          parameters: [
+            {
+              type: 'payload',
+              payload: 'cancel subscription',
+            },
+          ],
+        },
+        {
+          type: 'button',
+          sub_type: 'quick_reply',
+          index: '1',
+          parameters: [
+            {
+              type: 'payload',
+              payload: 'back to safety',
+            },
+          ],
+        },
+      ],
+    },
+  };
+  const result = await sendMessageToWhatsapp(payload);
+  return result;
+}
+
+async function sendConfirmCancellationMessage(
+  clientid: string,
+  language: Language,
+  membershipEndDateHumanReadable: string,
+) {
+  const message = `${getTranslation('confirm cancellation 1', language)} ${membershipEndDateHumanReadable}.\n${getTranslation('confirm cancellation 2', language)}`;
+  const payload = {
+    phoneNumber: clientid,
+    quickReply: true,
+    msgBody: message,
+    button1id: 'cancel subscription',
+    button1: getTranslation('cancel subscription', language),
+    button2id: 'back to safety',
+    button2: getTranslation('back to safety', language),
+  };
+  const result = await sendMessageToWhatsapp(payload);
+  return result;
+}
+
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const clientid = searchParams.get('clientid');
@@ -98,22 +170,24 @@ export async function GET(req: NextRequest) {
       lastCancellationReqTime: DateTime.now().toMillis(),
     };
     await clientDoc.set(updates, { merge: true });
-    if (DateTime.now().toMillis() >= whatsappExpiration)
-      await sendWhatsappRefreshTemplate(clientid);
     const membershipEndDateHumanReadable = new Date(
       membershipEndDate,
     ).toLocaleDateString('en-GB');
-    message = `${getTranslation('confirm cancellation 1', language)} ${membershipEndDateHumanReadable}.\n${getTranslation('confirm cancellation 2', language)}`;
-    payload = {
-      phoneNumber: clientid,
-      quickReply: true,
-      msgBody: message,
-      button1id: 'cancel subscription',
-      button1: getTranslation('cancel subscription', language),
-      button2id: 'back to safety',
-      button2: getTranslation('back to safety', language),
-    };
-    const result = await sendMessageToWhatsapp(payload);
+
+    let result = false;
+    if (DateTime.now().toMillis() >= whatsappExpiration) {
+      result = await sendConfirmCancellationTemplate(
+        clientid,
+        membershipEndDateHumanReadable,
+      );
+    } else {
+      result = await sendConfirmCancellationMessage(
+        clientid,
+        language,
+        membershipEndDateHumanReadable,
+      );
+    }
+
     return NextResponse.json(
       { cancellationFrequent: false, cancellationStat: result, error: '' },
       { status: 200 },

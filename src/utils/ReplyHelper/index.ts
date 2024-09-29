@@ -127,9 +127,7 @@ export async function replyToUser(messageObject: any) {
         await sendErrorMessageForImagePrompt(clientid, userLanguage);
         return;
       }
-      const { promptText, promptType } = promptResult;
-      message = `${promptType} ${promptText}`;
-      console.log('[l] prompt from img: ', message);
+      message = promptResult.promptText;
     }
     // Accept image for image-to-image generation
     else if (

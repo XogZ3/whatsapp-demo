@@ -715,6 +715,7 @@ ${shortLink}`;
       const clientData = await getUserFields(clientid);
 
       async function getMachineAvailability() {
+        console.log('[t] machine availability: ', !clientData.processing);
         return !clientData.processing;
       }
 
@@ -738,6 +739,7 @@ ${shortLink}`;
           if (machineIsAvailable) {
             // Set Machine Busy
             await setProcessingFlag(clientid, true);
+            console.log('[t] set machine unavailable');
 
             const [hasValidMembership, hasCredits] = await Promise.all([
               getMembershipAvailability(clientData),
@@ -880,7 +882,9 @@ ${shortLink}`;
 
     sendPromptedContextPhoto: async (event: any) => {
       const stringifiedPromptJSON = event?.event?.message;
+      console.log('[t] stringifiedPromptJSON: ', stringifiedPromptJSON);
       const parsedJSON = JSON.parse(stringifiedPromptJSON);
+      console.log('[t] parsedJSON: ', JSON.stringify(parsedJSON, null, 2));
       if (!parsedJSON.contextMessageID || !parsedJSON.message) return;
       let message;
 
@@ -889,7 +893,7 @@ ${shortLink}`;
       await config.storeInstance.setContext(
         config.userMetaData.clientid,
         'latestPrompt',
-        message,
+        prompt,
       );
       const seed = await getSeedUsingWhatsappMsgID(contextMessageID);
       const { clientid, language = event?.context?.language } =
@@ -901,6 +905,7 @@ ${shortLink}`;
       const clientData = await getUserFields(clientid);
 
       async function getMachineAvailability() {
+        console.log('[t] ctx machine availability: ', !clientData.processing);
         return !clientData.processing;
       }
 
@@ -924,6 +929,7 @@ ${shortLink}`;
           if (machineIsAvailable) {
             // Set Machine Busy
             await setProcessingFlag(clientid, true);
+            console.log('[t] ctx set machine unavailable');
 
             const [hasValidMembership, hasCredits] = await Promise.all([
               getMembershipAvailability(clientData),

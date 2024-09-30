@@ -19,7 +19,13 @@ export function extractText(messageObject: any) {
 
 export function isContextImageMessage(messageObject: any) {
   const { message } = messageObject;
-  if (message && message.context && message.context.id) return true;
+  if (
+    message &&
+    message.context &&
+    message.context.id &&
+    message.type !== 'interactive'
+  )
+    return true;
   return false;
 }
 

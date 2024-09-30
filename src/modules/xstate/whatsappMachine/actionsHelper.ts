@@ -200,7 +200,9 @@ export async function processAndSendImages(
   seed?: number,
 ) {
   let generatedImageURLs: string[];
+  console.log('[t] received seed: ', seed);
   const useSeed = seed || generateRandomSeed();
+  console.log('[t] useSeed: ', useSeed);
 
   if (
     ['918754535859', '918056977300', '971562457525'].includes(

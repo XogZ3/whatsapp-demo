@@ -809,7 +809,7 @@ export async function getSeedUsingWhatsappMsgID(
 ): Promise<number> {
   const wabaId = process.env.WABA_ID as string;
 
-  const clientRef = firestore
+  const messagesRef = firestore
     .collection('apps')
     .doc(wabaId)
     .collection('clients')
@@ -817,11 +817,17 @@ export async function getSeedUsingWhatsappMsgID(
     .collection('messages');
 
   try {
-    const query = clientRef.where('whatsappMessageID', '==', messageID);
+    console.log(
+      'getSeedUsingWhatsappMsgID - Querying with clientid, messageID: ',
+      clientid,
+      messageID,
+    );
+    const query = messagesRef.where('whatsappMessageID', '==', messageID);
 
     const snapshot = await query.get();
 
     if (snapshot.empty) {
+      console.log('[!] No document found for given messageID');
       return 0; // Return null if no document is found
     }
 
@@ -834,10 +840,7 @@ export async function getSeedUsingWhatsappMsgID(
     // Return the 'seed' field from the document, or null if it doesn't exist
     return data?.seed || 0;
   } catch (error) {
-    console.error(
-      '[!] Error in getSeedUsingWhatsappMsgID: ',
-      JSON.stringify(error, null, 2),
-    );
+    console.error('[!] Error in getSeedUsingWhatsappMsgID:', error);
     return 0;
   }
 }

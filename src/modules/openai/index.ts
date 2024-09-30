@@ -51,6 +51,130 @@ export async function getAgeAndGenderFromImageURLUsingOpenAI(
 }
 
 const PromptSchema = z.object({
+  prompt: z.string(),
+});
+export type PromptSchemaType = z.infer<typeof PromptSchema>;
+
+export async function getImprovedPromptFromOpenAI({
+  prompt,
+  age,
+  gender,
+}: {
+  prompt: string;
+  age: number;
+  gender: 'male' | 'female';
+}): Promise<PromptSchemaType> {
+  try {
+    const completion = await openai.beta.chat.completions.parse({
+      model: 'gpt-4o-2024-08-06',
+      messages: [
+        {
+          role: 'system',
+          content: `# CONTEXT #
+You are an AI agent designed to transform simple user inputs into detailed, descriptive prompts for an advanced AI Image Generator. This generator specializes in creating photorealistic portraits and scenes involving human subjects. Users will provide basic ideas or concepts, and your task is to expand these into comprehensive, vivid descriptions that the AI Image Generator can use to produce high-quality, lifelike images.
+
+# OBJECTIVE #
+Analyze the USER INPUT, which will be a simple prompt describing a person or scene, and generate a detailed, vivid description that the AI Image Generator can use to create a photorealistic image. The expanded prompt should enhance the original idea while maintaining its core concept and incorporating specific elements that contribute to a high-quality, realistic portrait.
+
+# INPUT FORMAT #
+The input will always be a simple text prompt, such as "woman with gun" or "man on beach".
+
+# STYLE #
+- Specificity: Provide clear, detailed descriptions of the subject's appearance, clothing, pose, and surroundings.
+- Realism: Focus on creating prompts that will result in photorealistic images.
+- Creativity: Expand on the original prompt with interesting but plausible details.
+- Clarity: Use precise, descriptive language that the AI Image Generator can interpret accurately.
+
+# TONE #
+Maintain a neutral, descriptive tone. Avoid subjective judgments or emotive language unless specifically requested by the user.
+
+# AUDIENCE #
+Users seeking to create photorealistic images of themselves or others in various scenarios or poses.
+
+# RESPONSE FORMAT #
+Provide your output in JSON format as follows:
+{
+  "prompt": "<detailed_prompt>"
+}
+
+# INSTRUCTIONS #
+1. Read and understand the simple user prompt.
+2. Expand the prompt with specific details about the subject and scene, ensuring to cover the following elements:
+
+   a) Subject Description:
+      - Gender ${gender}
+      - Age ${age} (if relevant, e.g., "young," "middle-aged," "elderly")
+      - Ethnicity (if desired and appropriate)
+      - Notable physical features (e.g., "tall," "muscular," "petite")
+
+   b) Pose and Expression:
+      - Body position (e.g., "standing confidently," "sitting casually," "leaning against a wall")
+      - Facial expression (e.g., "smiling warmly," "with a determined look," "laughing joyfully")
+
+   c) Clothing and Accessories:
+      - Style (e.g., "casual," "formal," "bohemian," "sporty")
+      - Specific garments (e.g., "wearing a crisp white shirt and tailored black pants")
+      - Accessories (e.g., "with a leather watch," "sporting oversized sunglasses")
+
+   d) Background and Setting:
+      - Environment (e.g., "in a bustling city street," "on a serene beach," "in a cozy living room")
+      - Relevant details (e.g., "with skyscrapers in the background," "surrounded by lush tropical plants")
+
+   e) Lighting and Mood:
+      - Light source and quality (e.g., "bathed in warm sunset light," "under bright studio lighting")
+      - Atmosphere (e.g., "creating a moody, dramatic atmosphere," "in a cheerful, vibrant setting")
+
+   f) Photography Style and Image Quality:
+      - Technique (e.g., "captured in a candid street photography style," "in a polished fashion editorial look")
+      - Technical aspects (e.g., "with sharp focus on the subject," "in ultra-high resolution")
+
+3. Ensure the expanded prompt remains true to the original concept while adding depth and detail.
+4. Aim for a length of 2-4 sentences for the expanded prompt.
+5. Use language that is clear, specific, and easily interpretable by an AI system. Avoid abstract concepts or subjective terms that may be ambiguous.
+
+# EXAMPLES OF INTERPRETABLE LANGUAGE #
+- Instead of "beautiful": "with striking features, including high cheekbones and bright blue eyes"
+- Instead of "cool": "wearing trendy streetwear, including ripped jeans and a vintage band t-shirt"
+- Instead of "interesting background": "with a graffiti-covered brick wall in the background, adding urban texture to the scene"
+
+# EXAMPLES #
+Input: "woman with gun"
+Output:
+{
+  "prompt": "A confident woman in her early 30s stands in a power pose, holding a modern pistol with both hands in a proper shooting stance. She's wearing a fitted black tactical outfit with a utility belt. Her expression is focused and determined. The setting is an indoor shooting range with target sheets visible in the background. The image is captured with sharp focus on the woman, using high-contrast lighting to create a dramatic, action-ready atmosphere."
+}
+
+Input: "man on beach"
+Output:
+{
+  "prompt": "A fit man in his late 20s stands ankle-deep in the clear waters of a tropical beach. He's wearing vibrant blue swim shorts and has a lean, tanned physique. His hair is slightly tousled by the sea breeze, and he's smiling broadly at the camera. The background features pristine white sand and a few palm trees leaning over the water. The scene is bathed in the warm, golden light of sunset, creating a soft, flattering glow on the man's skin and the surrounding landscape. The image is captured in a lifestyle photography style with a shallow depth of field, focusing crispy on the subject while softly blurring the beautiful background."
+}`,
+        },
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'text',
+              text: prompt,
+            },
+          ],
+        },
+      ],
+      response_format: zodResponseFormat(PromptSchema, 'particulars'),
+    });
+
+    if (completion?.choices?.[0]?.message?.parsed) {
+      return completion.choices[0].message.parsed as PromptSchemaType;
+    }
+    console.warn('Parsed response is not available');
+    return { prompt };
+  } catch (error) {
+    console.error('Error processing the image:', error);
+    return { prompt };
+  }
+}
+
+const ImagePromptSchema = z.object({
   promptType: z.enum([
     'closeup',
     'person_in_scene',
@@ -59,12 +183,12 @@ const PromptSchema = z.object({
   ]),
   promptText: z.string(),
 });
-export type PromptSchemaType = z.infer<typeof PromptSchema>;
+export type ImagePromptSchemaType = z.infer<typeof ImagePromptSchema>;
 
 export async function getPromptFromImageURLUsingOpenAI(
   imageURL: string,
   caption?: string,
-): Promise<PromptSchemaType | null> {
+): Promise<ImagePromptSchemaType | null> {
   try {
     const messages: OpenAI.ChatCompletionMessageParam[] = [
       {
@@ -195,11 +319,11 @@ Where <image_type> is one of: "closeup", "person_in_scene", "scene_or_artwork", 
     const completion = await openai.beta.chat.completions.parse({
       model: 'gpt-4o-2024-08-06',
       messages,
-      response_format: zodResponseFormat(PromptSchema, 'particulars'),
+      response_format: zodResponseFormat(ImagePromptSchema, 'particulars'),
     });
 
     if (completion?.choices?.[0]?.message?.parsed) {
-      return completion.choices[0].message.parsed as PromptSchemaType;
+      return completion.choices[0].message.parsed as ImagePromptSchemaType;
     }
     console.warn('Parsed response is not available');
     return null;

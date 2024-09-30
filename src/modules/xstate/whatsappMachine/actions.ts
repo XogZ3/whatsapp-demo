@@ -1,13 +1,11 @@
 import { DateTime } from 'luxon';
 import { assign } from 'xstate';
 
-import {
-  getAgeAndGenderFromImageURLUsingGroq,
-  getImprovedPromptFromGroq,
-} from '@/modules/groq';
+import { getAgeAndGenderFromImageURLUsingGroq } from '@/modules/groq';
 import {
   type GenderAndAgeSchemaType,
   getAgeAndGenderFromImageURLUsingOpenAI,
+  getImprovedPromptFromOpenAI,
 } from '@/modules/openai';
 import type { ICreateMessagePayload } from '@/modules/whatsapp/whatsapp';
 import {
@@ -622,11 +620,12 @@ ${shortLink}`;
       // );
       const prompt: string = event?.context?.latestPrompt;
       async function getImprovedPromptSetItInContext() {
-        const improvedPrompt = await getImprovedPromptFromGroq({
+        const openAIPrompt = await getImprovedPromptFromOpenAI({
           prompt,
           age,
           gender,
         });
+        const improvedPrompt = openAIPrompt.prompt;
         // overwrite latestPrompt with improvedPrompt
         await config.storeInstance.setContext(
           clientid,
@@ -668,8 +667,8 @@ ${shortLink}`;
       // );
       const improvedPrompt = event?.context?.latestImprovedPrompt;
       async function getImprovedPromptSetItInContext() {
-        const reImprovedPrompt =
-          await getImprovedPromptFromGroq(improvedPrompt);
+        const openAIPrompt = await getImprovedPromptFromOpenAI(improvedPrompt);
+        const reImprovedPrompt = openAIPrompt.prompt;
         await config.storeInstance.setContext(
           clientid,
           'latestImprovedPrompt',

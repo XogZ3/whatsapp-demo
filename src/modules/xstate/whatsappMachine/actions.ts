@@ -14,7 +14,6 @@ import {
   callTrainingAPI,
   generateAndSaveShortURLMap,
   getPhotoCount,
-  getProcessingFlag,
   getSeedUsingWhatsappMsgID,
   getTrainingImageURLs,
   getUserFields,
@@ -562,20 +561,44 @@ ${shortLink}`;
         config.userMetaData;
       const prompt = event?.event?.message;
 
+      const clientData = await getUserFields(clientid);
+
       async function getMachineAvailability() {
-        const machineIsAvailable =
-          (await getProcessingFlag(clientid)) === false;
-        return machineIsAvailable;
+        console.log(
+          '[t] sendPromptConfirmation machine availability: ',
+          !clientData.processing,
+        );
+        return !clientData.processing;
       }
+
+      let payload: ICreateMessagePayload;
+      let message;
 
       await getMachineAvailability()
         .then(async (machineIsAvailable) => {
-          let payload: ICreateMessagePayload;
+          if (!machineIsAvailable) {
+            message = getTranslation('please wait machine busy', language);
+            payload = {
+              phoneNumber: clientid,
+              text: true,
+              msgBody: message,
+            };
+            await config.whatsappInstance.send(payload);
+            // Stop the chain
+            return Promise.reject(new Error('Machine not available'));
+          }
+          return machineIsAvailable;
+        })
+        .then(async (machineIsAvailable) => {
           if (machineIsAvailable) {
-            console.log('[+] sendPromptConfirmation | prompt: ', prompt);
-            const message = `${getTranslation('prompt confirmation', language)}
+            // Set Machine Busy
+            await setProcessingFlag(clientid, true);
+            console.log(
+              '[t] set machine unavailable at sendPromptConfirmation',
+            );
+
+            message = `${getTranslation('prompt confirmation', language)}
 *${prompt}*`;
-            // TODO: implement language in buttons
             payload = {
               phoneNumber: clientid,
               quickReply: true,
@@ -585,19 +608,7 @@ ${shortLink}`;
               button2: getTranslation('improve prompt', language),
               msgBody: message,
             };
-          } else {
-            const message = getTranslation(
-              'please wait machine busy',
-              language,
-            );
-            // TODO: implement language in buttons
-            payload = {
-              phoneNumber: clientid,
-              text: true,
-              msgBody: message,
-            };
           }
-          await config.whatsappInstance.send(payload);
         })
         .catch((error) => {
           console.error('Error in sendPromptConfirmation:', error);
@@ -891,21 +902,10 @@ ${shortLink}`;
 
       const { contextMessageID } = parsedJSON.message;
       const prompt = parsedJSON.message;
-      try {
-        console.log(
-          '[t] sendPromptedContextPhoto | clientid, key, value ',
-          clientid,
-          'latestPrompt',
-          prompt,
-        );
-        await config.storeInstance.setContext(clientid, 'latestPrompt', prompt);
-      } catch (error) {
-        console.error(
-          '[!] error setting context in sendPromptedContextPhoto',
-          JSON.stringify(error, null, 2),
-        );
-      }
-      const seed = await getSeedUsingWhatsappMsgID(contextMessageID);
+
+      await config.storeInstance.setContext(clientid, 'latestPrompt', prompt);
+
+      const seed = await getSeedUsingWhatsappMsgID(clientid, contextMessageID);
 
       let payload: ICreateMessagePayload;
       const clientData = await getUserFields(clientid);

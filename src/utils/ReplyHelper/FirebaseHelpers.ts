@@ -804,6 +804,7 @@ export async function getEligibleClientidArray() {
 }
 
 export async function getSeedUsingWhatsappMsgID(
+  clientid: string,
   messageID: string,
 ): Promise<number> {
   const wabaId = process.env.WABA_ID as string;
@@ -811,22 +812,32 @@ export async function getSeedUsingWhatsappMsgID(
   const clientRef = firestore
     .collection('apps')
     .doc(wabaId)
-    .collection('clients');
+    .collection('clients')
+    .doc(clientid)
+    .collection('messages');
 
-  const query = clientRef.where('whatsappMessageID', '==', messageID);
+  try {
+    const query = clientRef.where('whatsappMessageID', '==', messageID);
 
-  const snapshot = await query.get();
+    const snapshot = await query.get();
 
-  if (snapshot.empty) {
-    return 0; // Return null if no document is found
+    if (snapshot.empty) {
+      return 0; // Return null if no document is found
+    }
+
+    // Since you expect only one result, get the first document
+    const doc = snapshot.docs[0];
+    const data = doc?.data();
+
+    console.log('[$] seed: ', data?.seed);
+
+    // Return the 'seed' field from the document, or null if it doesn't exist
+    return data?.seed || 0;
+  } catch (error) {
+    console.error(
+      '[!] Error in getSeedUsingWhatsappMsgID: ',
+      JSON.stringify(error, null, 2),
+    );
+    return 0;
   }
-
-  // Since you expect only one result, get the first document
-  const doc = snapshot.docs[0];
-  const data = doc?.data();
-
-  console.log('[$] seed: ', data?.seed);
-
-  // Return the 'seed' field from the document, or null if it doesn't exist
-  return data?.seed || 0;
 }

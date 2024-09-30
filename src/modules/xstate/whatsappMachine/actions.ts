@@ -895,7 +895,7 @@ ${shortLink}`;
       if (!parsedJSON.contextMessageID || !parsedJSON.message) return;
       let message;
 
-      const { contextMessageID } = parsedJSON.message;
+      const { contextMessageID } = parsedJSON;
       const prompt = parsedJSON.message;
 
       await config.storeInstance.setContext(clientid, 'latestPrompt', prompt);

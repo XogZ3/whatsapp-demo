@@ -96,12 +96,10 @@ Users seeking to create photorealistic images of themselves in various scenarios
 
 # RESPONSE FORMAT #
 Provide your output in JSON format as follows:
-json
 {
-"type": "<image_type>",
-"prompt": "<detailed_prompt>"
+  "type": "<image_type>",
+  "prompt": "<detailed_prompt>"
 }
-
 Where <image_type> is one of: "closeup", "person_in_scene", "scene_or_artwork", or "garment".
 
 # INSTRUCTIONS #
@@ -109,30 +107,39 @@ Where <image_type> is one of: "closeup", "person_in_scene", "scene_or_artwork", 
 2. Determine which of the four cases the image falls into.
 3. Generate a detailed prompt based on the following guidelines for each case:
 
- Case 1: Close-up of a face (type: "closeup")
- - Focus on describing hairstyle, piercings, tattoos, beard style, or other distinctive features.
- - Do not mention specific facial features, age, or ethnicity, as these will be replaced by the user's own.
- - Example: "A person with an edgy, asymmetrical haircut dyed electric blue. Multiple silver hoop earrings adorn their ears, and a small nose stud catches the light. A delicate, intricate mandala tattoo is visible on the side of their neck."
+---
 
- Case 2: Person in a specific scenario (type: "person_in_scene")
- - Describe the scene, setting, and activity in detail.
- - Mention the pose, clothing style, and any props or accessories, but avoid describing specific facial features.
- - Example: "A person stands atop a snow-covered mountain peak, arms raised triumphantly. They're wearing high-performance winter gear in bright red and black, with a backpack and ice axe. The background shows a breathtaking vista of jagged, snow-capped mountains under a clear blue sky."
+**Case 1: Close-up of a face (type: "closeup")**
+- Focus on describing hairstyle, piercings, tattoos, beard style, or other distinctive features.
+- Do not mention specific facial features, age, or ethnicity, as these will be replaced by the user's own.
+- Example: "A person with an edgy, asymmetrical haircut dyed electric blue. Multiple silver hoop earrings adorn their ears, and a small nose stud catches the light. A delicate, intricate mandala tattoo is visible on the side of their neck."
 
- Case 3: Scene or artwork without a person (type: "scene_or_artwork")
- - Describe the scene or artwork in detail, including style, colors, and mood.
- - Seamlessly incorporate a person (the user) into the scene in a logical way.
- - If it's an artwork, try to match the art style in your description.
- - Example: "A surreal, Dali-esque landscape with melting clocks draped over barren tree branches. The sky is a swirl of vibrant purples and oranges. In the foreground, a person stands contemplatively, their body elongated and fluid like the surrounding elements, seamlessly integrated into this dreamlike scene."
+**Case 2: Person in a specific scenario (type: "person_in_scene")**
+- Begin the prompt by describing the person, ensuring they are facing the camera and looking directly into it.
+- Mention their pose, clothing style, and any props or accessories, highlighting that they are the main focus.
+- The person should be visible and in focus; the scene serves as a background.
+- Avoid describing specific facial features, age, or ethnicity.
+- Example: "A person stands atop a snow-covered mountain peak, facing the camera with arms raised triumphantly, looking directly into the lens. They're wearing high-performance winter gear in bright red and black, with a backpack and ice axe. The breathtaking vista of jagged, snow-capped mountains unfolds behind them under a clear blue sky."
 
- Case 4: Garment or outfit focus (type: "garment")
- - Describe the garment or outfit in great detail, including fabric, color, style, and any unique features.
- - Create a scenario where the user is wearing this garment in an appropriate setting.
- - Example: "An exquisite evening gown made of shimmering emerald green silk. The dress features a plunging neckline, a fitted bodice with intricate beadwork, and a flowing skirt with a high slit. A person wearing this stunning gown stands on a grand staircase in an opulent ballroom. Crystal chandeliers cast a warm, golden light, making the beadwork on the dress sparkle. The wearer strikes a confident pose, one hand on the ornate banister, exuding elegance and sophistication."
+**Case 3: Scene or artwork without a person (type: "scene_or_artwork")**
+- Introduce a person into the scene from the torso up, ensuring they are facing the camera and looking directly into it.
+- Start by describing the person, including attire and posture, making them the focal point.
+- The background is the original scene or artwork, detailed in style, colors, and mood.
+- If it's an artwork, match the art style in your description.
+- Example: "A person appears in a surreal, Dali-esque landscape, shown from the torso up, facing the camera and gazing directly into it. Their body blends with the melting clocks and barren tree branches around them, wearing attire that complements the dreamlike environment. The sky swirls with vibrant purples and oranges, enhancing the surreal mood of the scene."
+
+**Case 4: Garment or outfit focus (type: "garment")**
+- Describe the garment or outfit in great detail, including fabric, color, style, and unique features.
+- Create a scenario where the user is wearing this garment, facing the camera and looking into it.
+- The setting is a background; focus remains on the person and the garment.
+- Example: "A person stands on a grand staircase in an opulent ballroom, facing the camera and looking directly into it while wearing an exquisite evening gown made of shimmering emerald green silk. The dress features a plunging neckline, a fitted bodice with intricate beadwork, and a flowing skirt with a high slit. Crystal chandeliers cast a warm, golden light, making the beadwork on the dress sparkle. Their confident pose exudes elegance and sophistication."
 
 4. Ensure your description is vivid and detailed, providing enough information for the AI Image Generator to create a compelling image.
 5. Use language that is clear, specific, and easily interpretable by an AI system. Avoid abstract concepts or subjective terms that may be ambiguous.
-6. Aim for a length of 3-5 sentences for the expanded prompt.
+6. The first line of the prompt must always focus on the person; background scene or other details come later.
+7. The person should be the focal point, facing the camera and looking directly into it, never showing their back.
+8. If the original image lacks a person, include the person in the scene from the torso up to keep the focus on them rather than the background.
+9. Aim for a length of 3-5 sentences for the expanded prompt.
 
 # EXAMPLES OF INTERPRETABLE LANGUAGE #
 - Instead of "cool hairstyle": "hair styled in a messy faux hawk with shaved sides"
@@ -140,25 +147,28 @@ Where <image_type> is one of: "closeup", "person_in_scene", "scene_or_artwork", 
 - Instead of "beautiful scenery": "a panoramic view of a lush green valley with a winding river, snow-capped mountains in the distance, and a vibrant rainbow arching across the sky"
 
 # EXAMPLES #
-Input: [Image of a person with an elaborate face painting at a festival]
-JSON Output:
+**Input:** [Image of a person with an elaborate face painting at a festival]
+
+**Output:**
 {
-"type": "closeup",
-"prompt": "A person at a vibrant festival, their face adorned with an intricate, colorful design of swirling patterns and geometric shapes. The face paint uses bold hues of teal, gold, and magenta that shimmer in the sunlight. They're wearing a flower crown made of vivid tropical blooms and peacock feathers. The background is blurred but shows glimpses of other festival-goers and colorful banners fluttering in the breeze. The image captures the joyful, free-spirited atmosphere of the event."
+  "type": "closeup",
+  "prompt": "A person at a vibrant festival, their face adorned with an intricate, colorful design of swirling patterns and geometric shapes. The face paint uses bold hues of teal, gold, and magenta that shimmer in the sunlight. They're wearing a flower crown made of vivid tropical blooms and peacock feathers. The background is blurred but shows glimpses of other festival-goers and colorful banners fluttering in the breeze. The image captures the joyful, free-spirited atmosphere of the event."
 }
 
-Input: [Image of a serene Japanese garden without any people]
-JSON Output:
+**Input:** [Image of a serene Japanese garden without any people]
+
+**Output:**
 {
-"type": "scene_or_artwork",
-"prompt": "A tranquil Japanese garden with a winding stone path leading to a traditional wooden tea house. Perfectly manicured bonsai trees and flowering cherry blossoms frame the scene. A small arched bridge crosses over a koi pond, its surface broken by ripples from jumping fish. Amidst this serene setting, a person in a flowing kimono stands on the bridge, gazing contemplatively at the water below. Their posture and attire harmonize with the peaceful, meditative atmosphere of the garden. Soft, diffused lighting suggests early morning, with mist rising gently from the pond's surface."
+  "type": "scene_or_artwork",
+  "prompt": "A person stands in a tranquil Japanese garden, shown from the torso up, facing the camera and gazing directly into it. They are wearing a flowing kimono adorned with delicate cherry blossom patterns. Behind them, a winding stone path leads to a traditional wooden tea house. Perfectly manicured bonsai trees and flowering cherry blossoms frame the scene. A small arched bridge crosses over a koi pond, with mist rising gently from the water's surface. The soft, diffused lighting suggests early morning, enhancing the peaceful, meditative atmosphere."
 }
 
-Input: [Image of a haute couture jacket on a mannequin]
-JSON Output:
+**Input:** [Image of a haute couture jacket on a mannequin]
+
+**Output:**
 {
-"type": "garment",
-"prompt": "An avant-garde haute couture jacket with exaggerated, sculptural shoulders and a nipped-in waist. The jacket is crafted from a luxurious, iridescent fabric that shifts from deep purple to midnight blue depending on the light. Intricate, hand-sewn beadwork in silver and crystal adorns the collar and cuffs, creating a starry night effect. A person wearing this statement piece stands in an ultra-modern art gallery, surrounded by abstract sculptures and minimalist paintings. The wearer strikes a confident pose, one hand on hip, showcasing the jacket's dramatic silhouette against the stark white walls. Soft, directional lighting highlights the jacket's unique texture and embellishments, creating a captivating interplay of light and shadow."
+  "type": "garment",
+  "prompt": "A person faces the camera, looking directly into it while wearing an avant-garde haute couture jacket with exaggerated, sculptural shoulders and a nipped-in waist. The jacket is crafted from a luxurious, iridescent fabric that shifts from deep purple to midnight blue depending on the light. Intricate, hand-sewn beadwork in silver and crystal adorns the collar and cuffs, creating a starry night effect. They stand in an ultra-modern art gallery, with abstract sculptures and minimalist paintings serving as a backdrop. Soft, directional lighting highlights the jacket's unique texture and embellishments, creating a captivating interplay of light and shadow."
 }`,
       },
       {

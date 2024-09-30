@@ -784,9 +784,7 @@ export async function getEligibleClientidArray() {
 
   const query = clientRef
     .where('subscriptionStatus', '==', 'active')
-    .where('membershipEndDate', '>', now)
-    .where('loraFilename', '!=', null)
-    .where('loraURL', '!=', null);
+    .where('membershipEndDate', '>', now);
 
   const snapshot = await query.get();
 
@@ -795,7 +793,12 @@ export async function getEligibleClientidArray() {
   }
 
   // Extract the client IDs from the snapshot
-  const eligibleClientIds = snapshot.docs.map((doc) => doc.id);
+  const eligibleClientIds = snapshot.docs
+    .filter((doc) => {
+      const data = doc.data();
+      return data.loraFilename && data.loraURL; // Check if both exist and are non-empty
+    })
+    .map((doc) => doc.id);
 
   return eligibleClientIds;
 }

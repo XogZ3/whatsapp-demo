@@ -21,6 +21,7 @@ import { getBaseUrl } from '@/utils/helpers';
 import {
   getPhotoCount,
   getUserFields,
+  setSystemMessage,
   type UserFieldsFirebase,
 } from '@/utils/ReplyHelper/FirebaseHelpers';
 import { updateTrainingStatus } from '@/utils/trainingHelpers';
@@ -179,7 +180,7 @@ async function sendImageMessageWithSeed(
   imageLink: string,
   seed: number,
 ) {
-  const payload = {
+  const data = {
     messaging_product: 'whatsapp',
     recipient_type: 'individual',
     phoneNumber: clientid,
@@ -188,7 +189,9 @@ async function sendImageMessageWithSeed(
       link: imageLink,
     },
   };
-  await sendMessageToWhatsapp(payload, seed);
+  const res = await makeRequestToWhatsapp(data);
+  const whatsappMessageID = res?.messages[0]?.id;
+  if (res) await setSystemMessage(data, whatsappMessageID, seed);
 }
 
 export async function processAndSendImages(

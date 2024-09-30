@@ -771,3 +771,31 @@ export async function generateAndSaveShortURLMap(
     return null;
   }
 }
+
+export async function getEligibleClientidArray() {
+  const wabaId = process.env.WABA_ID as string;
+
+  const now = DateTime.now().toMillis();
+
+  const clientRef = firestore
+    .collection('apps')
+    .doc(wabaId)
+    .collection('clients');
+
+  const query = clientRef
+    .where('subscriptionStatus', '==', 'active')
+    .where('membershipEndDate', '>', now)
+    .where('loraFilename', '!=', null)
+    .where('loraURL', '!=', null);
+
+  const snapshot = await query.get();
+
+  if (snapshot.empty) {
+    return [];
+  }
+
+  // Extract the client IDs from the snapshot
+  const eligibleClientIds = snapshot.docs.map((doc) => doc.id);
+
+  return eligibleClientIds;
+}

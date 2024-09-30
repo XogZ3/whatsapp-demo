@@ -10,6 +10,7 @@ import {
   type ICreateMessagePayload,
   sendMessageToWhatsapp,
 } from '@/modules/whatsapp/whatsapp';
+import { getEligibleClientidArray } from '@/utils/ReplyHelper/FirebaseHelpers';
 
 const firestore = firebase.getFirestore();
 const corsHeaders = {
@@ -117,7 +118,7 @@ export async function POST(request: NextRequest) {
   const formattedDate = format(new Date(requestedAt), 'MMMM d, yyyy');
   console.log(`CRON triggered at ${formattedDate} ${requestedAt}`);
 
-  const clientidArray = ['918754535859', '918056977300']; // FIXME: Replace with actual client IDs as needed
+  const clientidArray = await getEligibleClientidArray();
   let clientDataArray;
 
   try {

@@ -591,10 +591,6 @@ ${shortLink}`;
         })
         .then(async (machineIsAvailable) => {
           if (machineIsAvailable) {
-            console.log(
-              '[t] set machine unavailable at sendPromptConfirmation',
-            );
-
             message = `${getTranslation('prompt confirmation', language)}
 *${prompt}*`;
             payload = {
@@ -606,6 +602,7 @@ ${shortLink}`;
               button2: getTranslation('improve prompt', language),
               msgBody: message,
             };
+            await config.whatsappInstance.send(payload);
           }
         })
         .catch(async (error) => {

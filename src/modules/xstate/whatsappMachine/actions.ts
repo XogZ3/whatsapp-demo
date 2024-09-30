@@ -881,25 +881,31 @@ ${shortLink}`;
     },
 
     sendPromptedContextPhoto: async (event: any) => {
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
+
       const stringifiedPromptJSON = event?.event?.message;
-      console.log('[t] stringifiedPromptJSON: ', stringifiedPromptJSON);
       const parsedJSON = JSON.parse(stringifiedPromptJSON);
-      console.log('[t] parsedJSON: ', JSON.stringify(parsedJSON, null, 2));
       if (!parsedJSON.contextMessageID || !parsedJSON.message) return;
       let message;
 
       const { contextMessageID } = parsedJSON.message;
       const prompt = parsedJSON.message;
-      await config.storeInstance.setContext(
-        config.userMetaData.clientid,
-        'latestPrompt',
-        prompt,
-      );
+      try {
+        console.log(
+          '[t] sendPromptedContextPhoto | clientid, key, value ',
+          clientid,
+          'latestPrompt',
+          prompt,
+        );
+        await config.storeInstance.setContext(clientid, 'latestPrompt', prompt);
+      } catch (error) {
+        console.error(
+          '[!] error setting context in sendPromptedContextPhoto',
+          JSON.stringify(error, null, 2),
+        );
+      }
       const seed = await getSeedUsingWhatsappMsgID(contextMessageID);
-      const { clientid, language = event?.context?.language } =
-        config.userMetaData;
-
-      await config.storeInstance.setContext(clientid, 'latestPrompt', prompt);
 
       let payload: ICreateMessagePayload;
       const clientData = await getUserFields(clientid);

@@ -23,7 +23,7 @@ export function isContextImageMessage(messageObject: any) {
     message &&
     message.context &&
     message.context.id &&
-    message.type !== 'interactive'
+    message.type === 'text'
   )
     return true;
   return false;

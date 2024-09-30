@@ -591,8 +591,6 @@ ${shortLink}`;
         })
         .then(async (machineIsAvailable) => {
           if (machineIsAvailable) {
-            // Set Machine Busy
-            await setProcessingFlag(clientid, true);
             console.log(
               '[t] set machine unavailable at sendPromptConfirmation',
             );
@@ -610,7 +608,7 @@ ${shortLink}`;
             };
           }
         })
-        .catch((error) => {
+        .catch(async (error) => {
           console.error('Error in sendPromptConfirmation:', error);
         });
     },
@@ -904,6 +902,8 @@ ${shortLink}`;
       const prompt = parsedJSON.message;
 
       await config.storeInstance.setContext(clientid, 'latestPrompt', prompt);
+
+      console.log('[t] contextMessageID, prompt: ', contextMessageID, prompt);
 
       const seed = await getSeedUsingWhatsappMsgID(clientid, contextMessageID);
 

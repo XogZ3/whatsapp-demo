@@ -723,7 +723,6 @@ ${shortLink}`;
         .then(async (machineIsAvailable) => {
           if (!machineIsAvailable) {
             message = getTranslation('please wait machine busy', language);
-            // TODO: implement language in buttons
             payload = {
               phoneNumber: clientid,
               text: true,
@@ -737,6 +736,9 @@ ${shortLink}`;
         })
         .then(async (machineIsAvailable) => {
           if (machineIsAvailable) {
+            // Set Machine Busy
+            await setProcessingFlag(clientid, true);
+
             const [hasValidMembership, hasCredits] = await Promise.all([
               getMembershipAvailability(clientData),
               getCreditsAvailability(clientData),
@@ -815,6 +817,7 @@ ${shortLink}`;
                 });
               }
               // Stop the chain
+              await setProcessingFlag(clientid, false);
               return Promise.reject(
                 new Error(
                   `${!hasValidMembership ? 'Membership Expired' : ''} ${!hasCredits ? 'Credits Over' : ''}`,
@@ -829,9 +832,6 @@ ${shortLink}`;
 
           message = getTranslation('generating image', language);
           await sendMessage(config.whatsappInstance, message, clientid);
-
-          // Set Machine Busy
-          await setProcessingFlag(clientid, true);
 
           processAndSendImages(config, prompt)
             .then(async (success) => {
@@ -922,6 +922,9 @@ ${shortLink}`;
         })
         .then(async (machineIsAvailable) => {
           if (machineIsAvailable) {
+            // Set Machine Busy
+            await setProcessingFlag(clientid, true);
+
             const [hasValidMembership, hasCredits] = await Promise.all([
               getMembershipAvailability(clientData),
               getCreditsAvailability(clientData),
@@ -1000,6 +1003,7 @@ ${shortLink}`;
                 });
               }
               // Stop the chain
+              await setProcessingFlag(clientid, false);
               return Promise.reject(
                 new Error(
                   `${!hasValidMembership ? 'Membership Expired' : ''} ${!hasCredits ? 'Credits Over' : ''}`,
@@ -1014,9 +1018,6 @@ ${shortLink}`;
 
           message = getTranslation('generating image', language);
           await sendMessage(config.whatsappInstance, message, clientid);
-
-          // Set Machine Busy
-          await setProcessingFlag(clientid, true);
 
           processAndSendImages(config, prompt, seed)
             .then(async (success) => {

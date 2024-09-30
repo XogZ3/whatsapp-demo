@@ -183,7 +183,7 @@ async function sendImageMessageWithSeed(
   const data = {
     messaging_product: 'whatsapp',
     recipient_type: 'individual',
-    phoneNumber: clientid,
+    to: clientid,
     type: 'image',
     image: {
       link: imageLink,

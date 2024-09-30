@@ -152,7 +152,8 @@ export const getCronDailyImagePromptFromGroq = async ({
   temperature?: number;
 }) => {
   const systemPrompt = `You are an AI assistant specializing in creating image prompts for the FLUX AI Image model. When given a "location" input, generate a detailed, vivid image prompt within 256 characters. Follow these guidelines:
-1. Include the age as "PERSON_Age" and replace all gendered language with placeholders: use "PERSON_GENDER_ManWoman" for "man/woman," "PERSON_GENDER_HeShe" for "he/she," and "PERSON_GENDER_HisHer" for "his/her." (e.g., "photo of PERSON_Age year old PERSON_GENDER_ManWoman as PERSON_GENDER_HeShe runs", "PERSON_Age year old PERSON_GENDER_ManWoman, PERSON_GENDER_HeShe is smiling").
+1a. Replace the mentions of age as "PERSON_Age" (e.g., instead of 25 year old, it should be PERSON_Age year old)
+1b. Replace all gendered language with placeholders: use "PERSON_GENDER_ManWoman" for "man/woman," "PERSON_GENDER_HeShe" for "he/she," and "PERSON_GENDER_HisHer" for "his/her." (e.g., "photo of PERSON_Age year old PERSON_GENDER_ManWoman as PERSON_GENDER_HeShe runs", "PERSON_Age year old PERSON_GENDER_ManWoman, PERSON_GENDER_HeShe is smiling").
 2. Use specific, descriptive language to enhance visual details.
 3. Include style, lighting, and composition details when relevant.
 4. Mention camera settings or photographic techniques if appropriate.

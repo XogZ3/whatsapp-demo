@@ -15,14 +15,17 @@ import {
   addTrainingImageURLandIncreaseCountDecreasePendingUploads,
   getPendingUploadsCount,
   getPhotoCount,
+  getProcessingFlag,
   getUserFields,
   incrementPendingUploads,
   setDefaultUserFields,
+  setProcessingFlag,
   setUserState,
 } from './FirebaseHelpers';
 import {
-  sendAnalyzingPhoto,
+  sendAnalyzingPhotoAndSetProcessingTrue,
   sendErrorMessageForImagePrompt,
+  sendMachineBusy,
   sendSamplePhotos,
   sendUpdatedPhotoCount,
   sendUpdatedPhotoCountWithFinishOption,
@@ -118,6 +121,16 @@ export async function replyToUser(messageObject: any) {
         }
       }
     }
+    // photoPrompting machine availability check
+    else if (
+      currentState === 'photoPrompting' &&
+      (await getProcessingFlag(clientid)) === true
+    ) {
+      // Inform machine busy
+      console.log('[t] machine busy in replyHelper');
+      await sendMachineBusy(clientid, userLanguage);
+      return;
+    }
     // Handle images selected as context
     else if (
       currentState === 'photoPrompting' &&
@@ -134,13 +147,14 @@ export async function replyToUser(messageObject: any) {
     }
     // Handle images in 'photoPrompting' state - derive prompt from image
     else if (currentState === 'photoPrompting' && messageType === 'image') {
-      await sendAnalyzingPhoto(clientid, userLanguage);
+      await sendAnalyzingPhotoAndSetProcessingTrue(clientid, userLanguage);
       const imageID = extractImageID(messageObject);
       const imageURL = await fetchWhatsAppImageAndUploadToFirebase(
         imageID,
         clientid,
       );
       const promptResult = await getPromptFromImageURLUsingOpenAI(imageURL);
+      await setProcessingFlag(clientid, false);
       if (!promptResult) {
         await sendErrorMessageForImagePrompt(clientid, userLanguage);
         return;

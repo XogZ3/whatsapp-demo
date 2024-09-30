@@ -839,7 +839,10 @@ ${shortLink}`;
           console.log('[+] action: send photo for prompt: ', prompt);
 
           message = getTranslation('generating image', language);
-          await sendMessage(config.whatsappInstance, message, clientid);
+          await Promise.all([
+            sendMessage(config.whatsappInstance, message, clientid),
+            setProcessingFlag(clientid, true),
+          ]);
 
           processAndSendImages(config, prompt)
             .then(async (success) => {
@@ -887,8 +890,12 @@ ${shortLink}`;
     },
 
     sendPromptedContextPhoto: async (event: any) => {
-      const { clientid, language = event?.context?.language } =
-        config.userMetaData;
+      const {
+        age = 26,
+        gender = 'male',
+        clientid,
+        language = event?.context?.language,
+      } = config.userMetaData;
 
       const stringifiedPromptJSON = event?.event?.message;
       const parsedJSON = JSON.parse(stringifiedPromptJSON);
@@ -896,7 +903,8 @@ ${shortLink}`;
       let message;
 
       const { contextMessageID } = parsedJSON;
-      const prompt = parsedJSON.message;
+      const genderCommon = gender === 'male' ? 'man' : 'woman';
+      const prompt = `realistc photograph of ${age} year old ${genderCommon} person${clientid} ${parsedJSON.message}`;
 
       await config.storeInstance.setContext(clientid, 'latestPrompt', prompt);
 

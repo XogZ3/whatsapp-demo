@@ -169,11 +169,35 @@ export async function getMembershipAvailability(
   }
 }
 
+function generateRandomSeed(): number {
+  // Generate a random integer between 0 and the maximum safe integer in JavaScript (2^53 - 1)
+  return Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+}
+
+async function sendImageMessageWithSeed(
+  clientid: string,
+  imageLink: string,
+  seed: number,
+) {
+  const payload = {
+    messaging_product: 'whatsapp',
+    recipient_type: 'individual',
+    to: clientid,
+    type: 'image',
+    image: {
+      link: imageLink,
+    },
+  };
+  await sendMessageToWhatsapp(payload, seed);
+}
+
 export async function processAndSendImages(
   config: IMachineConfig,
   prompt: string,
+  seed?: number,
 ) {
   let generatedImageURLs: string[];
+  const useSeed = seed || generateRandomSeed();
 
   if (
     ['918754535859', '918056977300', '971562457525'].includes(
@@ -183,24 +207,24 @@ export async function processAndSendImages(
     generatedImageURLs = await testClothing(
       prompt,
       config.userMetaData.clientid,
+      useSeed,
     );
   } else {
     generatedImageURLs = await generateImagesWithReplicateUploadToFirebase(
       prompt,
       config.userMetaData.clientid,
+      useSeed,
     );
   }
-  let payload: ICreateMessagePayload;
 
   console.log('[+] receveid urls: ', generatedImageURLs);
   if (generatedImageURLs.length > 0) {
     const sendPromises = generatedImageURLs.map(async (url) => {
-      payload = {
-        phoneNumber: config.userMetaData.clientid,
-        image: true,
-        imageLink: url,
-      };
-      await config.whatsappInstance.send(payload);
+      await sendImageMessageWithSeed(
+        config.userMetaData.clientid,
+        url,
+        useSeed,
+      );
     });
     await Promise.all(sendPromises);
 
@@ -208,7 +232,7 @@ export async function processAndSendImages(
     return true; // Indicate success
   }
   const message = getTranslation('unknown error', config.userMetaData.language);
-  payload = {
+  const payload: ICreateMessagePayload = {
     phoneNumber: config.userMetaData.clientid,
     text: true,
     msgBody: message,
@@ -831,4 +855,32 @@ export async function sendWhatsappRefreshTemplate(clientid: string) {
     templateName: 'fotolabs_whatsapp_refresh',
   };
   await sendMessageToWhatsapp(payload);
+}
+
+export function checkSeedInMessage(message: string): boolean {
+  // Regular expression to match 'seed <number>'
+  const seedPattern = /seed\s\d+/;
+
+  // Test if the message contains the pattern
+  return seedPattern.test(message);
+}
+
+export function extractSeedAndPrompt(
+  message: string,
+): { seed: number; prompt: string } | null {
+  // Regular expression to match 'seed <number>' and capture the seed and the prompt
+  const seedPattern = /seed\s(\d+)\s(.+)/;
+
+  // Execute the regex on the message
+  const match = seedPattern.exec(message);
+
+  // Check if the match was successful
+  if (match && match[1] && match[2]) {
+    const seed = parseInt(match[1], 10); // Extracted seed number
+    const prompt = match[2]; // Remaining prompt text
+    return { seed, prompt };
+  }
+
+  // Return null if the pattern was not found
+  return null;
 }

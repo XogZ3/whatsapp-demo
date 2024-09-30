@@ -1,4 +1,3 @@
-import console from 'console';
 import { DateTime } from 'luxon';
 import { assign } from 'xstate';
 
@@ -16,6 +15,7 @@ import {
   generateAndSaveShortURLMap,
   getPhotoCount,
   getProcessingFlag,
+  getSeedUsingWhatsappMsgID,
   getTrainingImageURLs,
   getUserFields,
   incrementCreditsUsedTodayAndSetProcessingFlagFalse,
@@ -44,7 +44,7 @@ import {
 } from './actionsHelper';
 import type { IMachineConfig, IWhatsappInstance } from './types';
 
-async function sendMessage(
+export async function sendMessage(
   whatsappInstance: IWhatsappInstance,
   message: string,
   phonenumber: string,
@@ -567,6 +567,7 @@ ${shortLink}`;
           (await getProcessingFlag(clientid)) === false;
         return machineIsAvailable;
       }
+
       await getMachineAvailability()
         .then(async (machineIsAvailable) => {
           let payload: ICreateMessagePayload;
@@ -833,6 +834,191 @@ ${shortLink}`;
           await setProcessingFlag(clientid, true);
 
           processAndSendImages(config, prompt)
+            .then(async (success) => {
+              console.log('[+] processAndSendImages done');
+              await incrementCreditsUsedTodayAndSetProcessingFlagFalse(
+                clientid,
+              );
+              return success; // Pass success to the next .then()
+            })
+            .then(async (success) => {
+              console.log('[+] Context updated successfully');
+              if (success) {
+                message = getTranslation('new prompt request', language);
+                payload = {
+                  phoneNumber: clientid,
+                  text: true,
+                  msgBody: message,
+                };
+                await config.whatsappInstance.send(payload);
+              }
+            })
+            .catch(async (error) => {
+              await setProcessingFlag(clientid, false);
+              console.error(
+                '[!] Error in processing or setting context:',
+                error,
+              );
+              if (error.message && error.message.includes('NSFW')) {
+                message = getTranslation('nsfw error', language);
+              } else {
+                message = getTranslation('unknown error', language);
+              }
+              payload = {
+                phoneNumber: clientid,
+                text: true,
+                msgBody: message,
+              };
+              await config.whatsappInstance.send(payload);
+            });
+        })
+        .catch(async (error) => {
+          await setProcessingFlag(clientid, false);
+          console.error('[!] Error in machine & credit check:', error.message);
+        });
+    },
+
+    sendPromptedContextPhoto: async (event: any) => {
+      const stringifiedPromptJSON = event?.event?.message;
+      const parsedJSON = JSON.parse(stringifiedPromptJSON);
+      if (!parsedJSON.contextMessageID || !parsedJSON.message) return;
+      let message;
+
+      const { contextMessageID } = parsedJSON.message;
+      const prompt = parsedJSON.message;
+      await config.storeInstance.setContext(
+        config.userMetaData.clientid,
+        'latestPrompt',
+        message,
+      );
+      const seed = await getSeedUsingWhatsappMsgID(contextMessageID);
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
+
+      await config.storeInstance.setContext(clientid, 'latestPrompt', prompt);
+
+      let payload: ICreateMessagePayload;
+      const clientData = await getUserFields(clientid);
+
+      async function getMachineAvailability() {
+        return !clientData.processing;
+      }
+
+      await getMachineAvailability()
+        .then(async (machineIsAvailable) => {
+          if (!machineIsAvailable) {
+            message = getTranslation('please wait machine busy', language);
+            // TODO: implement language in buttons
+            payload = {
+              phoneNumber: clientid,
+              text: true,
+              msgBody: message,
+            };
+            await config.whatsappInstance.send(payload);
+            // Stop the chain
+            return Promise.reject(new Error('Machine not available'));
+          }
+          return machineIsAvailable;
+        })
+        .then(async (machineIsAvailable) => {
+          if (machineIsAvailable) {
+            const [hasValidMembership, hasCredits] = await Promise.all([
+              getMembershipAvailability(clientData),
+              getCreditsAvailability(clientData),
+            ]);
+
+            const canGenerateImages = hasValidMembership && hasCredits;
+
+            if (!canGenerateImages) {
+              if (!hasCredits) {
+                message = getTranslation('reached limit', language);
+                await config.whatsappInstance.send({
+                  phoneNumber: clientid,
+                  text: true,
+                  msgBody: message,
+                });
+              } else if (!hasValidMembership) {
+                // hard transition xstate to paywall
+                message = getTranslation('paywall', language);
+                const stateJSON = JSON.parse(clientData.state);
+                stateJSON.value = 'paywall';
+
+                let shortenedStripeLink = event?.context?.shortenedStripeLink;
+                if (shortenedStripeLink === '' || !shortenedStripeLink) {
+                  createStripeLink(clientid)
+                    .then(async (stripeLink) => {
+                      console.log('Created Stripe link:', stripeLink);
+                      shortenedStripeLink = await generateAndSaveShortURLMap(
+                        stripeLink,
+                        clientid,
+                      );
+                      console.log(
+                        'Generated and saved short URL:',
+                        shortenedStripeLink,
+                      );
+                      return shortenedStripeLink;
+                    })
+                    .then(async (shortLink) => {
+                      await config.storeInstance.setContext(
+                        clientid,
+                        'shortenedStripeLink',
+                        shortLink,
+                      );
+
+                      message = `${getTranslation('new user paywall', language)}
+
+${shortLink}`;
+                      await config.whatsappInstance.send({
+                        phoneNumber: clientid,
+                        text: true,
+                        msgBody: message,
+                      });
+                    })
+                    .catch(async (error) => {
+                      console.error(
+                        'Error in creating/sending shortened Stripe link:',
+                        error,
+                      );
+                      await sendMessageToTelegram(
+                        `Error in sending intro msg: ${JSON.stringify(error, null, 2)}`,
+                      );
+                    });
+                } else {
+                  message = `${getTranslation('new user paywall', language)}\n\n${shortenedStripeLink}`;
+                  await config.whatsappInstance.send({
+                    phoneNumber: clientid,
+                    text: true,
+                    msgBody: message,
+                  });
+                }
+              } else {
+                message = getTranslation('unknown error', language);
+                await config.whatsappInstance.send({
+                  phoneNumber: clientid,
+                  text: true,
+                  msgBody: message,
+                });
+              }
+              // Stop the chain
+              return Promise.reject(
+                new Error(
+                  `${!hasValidMembership ? 'Membership Expired' : ''} ${!hasCredits ? 'Credits Over' : ''}`,
+                ),
+              );
+            }
+          }
+          return machineIsAvailable;
+        })
+        .then(async () => {
+          console.log('[+] action: send photo for prompt: ', prompt);
+
+          message = getTranslation('generating image', language);
+          await sendMessage(config.whatsappInstance, message, clientid);
+
+          // Set Machine Busy
+          await setProcessingFlag(clientid, true);
+
+          processAndSendImages(config, prompt, seed)
             .then(async (success) => {
               console.log('[+] processAndSendImages done');
               await incrementCreditsUsedTodayAndSetProcessingFlagFalse(

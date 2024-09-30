@@ -122,6 +122,9 @@ export const machineFactory = (config: IMachineConfig): any => {
                 'sendImprovedPromptConfirmationAndSetContext',
               ],
             },
+            CONTEXT_PROMPT: {
+              actions: ['assignMessage', 'sendPromptedContextPhoto'],
+            },
             FALLBACK: { actions: ['sendPromptingInstruction'] },
           },
         },

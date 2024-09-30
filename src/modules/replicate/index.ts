@@ -19,6 +19,7 @@ const REALISM_LORA_URL =
 export async function generateImagesWithReplicateUploadToFirebase(
   improvedPromptFromGroq: string,
   clientid: string,
+  seed?: number,
 ): Promise<string[]> {
   try {
     const clientLoraInfo = await getUserLoraDetails(clientid);
@@ -36,6 +37,7 @@ export async function generateImagesWithReplicateUploadToFirebase(
         output_quality: 80,
         num_inference_steps: 28,
         disable_safety_checker: true,
+        ...(seed !== undefined && { seed }),
       },
     });
 
@@ -89,6 +91,7 @@ const NAVYBLUEFLORALSHIRT =
 export async function testClothing(
   improvedPromptFromGroq: string,
   clientid: string,
+  seed?: number,
 ): Promise<string[]> {
   try {
     const clientLoraInfo = await getUserLoraDetails(clientid);
@@ -110,6 +113,7 @@ export async function testClothing(
         output_quality: 80,
         num_inference_steps: 28,
         disable_safety_checker: true,
+        ...(seed !== undefined && { seed }),
       },
     });
 

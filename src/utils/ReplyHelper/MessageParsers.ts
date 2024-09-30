@@ -17,6 +17,12 @@ export function extractText(messageObject: any) {
   return text;
 }
 
+export function isContextImageMessage(messageObject: any) {
+  const { message } = messageObject;
+  if (message && message.context && message.context.id) return true;
+  return false;
+}
+
 export interface MessageObject {
   message: {
     from: string;

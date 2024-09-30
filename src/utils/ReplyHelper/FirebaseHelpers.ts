@@ -802,3 +802,31 @@ export async function getEligibleClientidArray() {
 
   return eligibleClientIds;
 }
+
+export async function getSeedUsingWhatsappMsgID(
+  messageID: string,
+): Promise<number> {
+  const wabaId = process.env.WABA_ID as string;
+
+  const clientRef = firestore
+    .collection('apps')
+    .doc(wabaId)
+    .collection('clients');
+
+  const query = clientRef.where('whatsappMessageID', '==', messageID);
+
+  const snapshot = await query.get();
+
+  if (snapshot.empty) {
+    return 0; // Return null if no document is found
+  }
+
+  // Since you expect only one result, get the first document
+  const doc = snapshot.docs[0];
+  const data = doc?.data();
+
+  console.log('[$] seed: ', data?.seed);
+
+  // Return the 'seed' field from the document, or null if it doesn't exist
+  return data?.seed || 0;
+}

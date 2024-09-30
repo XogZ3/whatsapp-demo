@@ -28,7 +28,11 @@ import {
   sendUpdatedPhotoCountWithFinishOption,
   sendWaitForUploadToComplete,
 } from './MessageHelpers';
-import { extractImageID, extractText } from './MessageParsers';
+import {
+  extractImageID,
+  extractText,
+  isContextImageMessage,
+} from './MessageParsers';
 
 // eslint-disable-next-line consistent-return
 export async function replyToUser(messageObject: any) {
@@ -113,6 +117,20 @@ export async function replyToUser(messageObject: any) {
           return;
         }
       }
+    }
+    // Handle images selected as context
+    else if (
+      currentState === 'photoPrompting' &&
+      isContextImageMessage(messageObject)
+    ) {
+      const contextMessageID = messageObject.message.context.id;
+      const contextMessageJSON = {
+        type: 'context_message',
+        contextMessageID,
+        message: extractText(messageObject),
+      };
+      message = JSON.stringify(contextMessageJSON);
+      console.log('[@] prompted with image as context', message);
     }
     // Handle images in 'photoPrompting' state - derive prompt from image
     else if (currentState === 'photoPrompting' && messageType === 'image') {

@@ -22,6 +22,16 @@ export const nonImageAcceptingStates = states.filter(
   (state) => !imageAcceptingStates.includes(state),
 );
 
+function isStringifiedJSON(str: string) {
+  try {
+    // Try to parse the string
+    JSON.parse(str);
+    return true; // If parsing succeeds, it's valid JSON
+  } catch (e) {
+    return false; // If parsing fails, it's not valid JSON
+  }
+}
+
 export const handleMessage = async (
   actor: AnyActorRef,
   message: string,
@@ -51,6 +61,7 @@ export const handleMessage = async (
       prompt: 'PROMPT',
       'use prompt': 'USE_PROMPT',
       'improve prompt': 'IMPROVE_PROMPT',
+      context_prompt: 'CONTEXT_PROMPT',
       fallback: 'FALLBACK',
       secret: 'SECRET',
     },
@@ -71,8 +82,12 @@ export const handleMessage = async (
       userActionId,
     )
   ) {
-    event = STATE_ACTION_EVENT_MAP[state].prompt;
-    console.log('Prompt: ', message);
+    if (!isStringifiedJSON(message)) {
+      event = STATE_ACTION_EVENT_MAP[state].prompt;
+      console.log('Prompt: ', message);
+    } else if (JSON.parse(message).type === 'context_message') {
+      event = STATE_ACTION_EVENT_MAP[state].context_prompt;
+    }
   } else if (STATE_ACTION_EVENT_MAP[state]) {
     event = STATE_ACTION_EVENT_MAP[state][userActionId] || 'FALLBACK';
   } else {

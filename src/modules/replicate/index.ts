@@ -13,6 +13,8 @@ const replicate = new Replicate({
 
 const MULTI_LORA_TEMP_MODEL =
   'lucataco/flux-dev-multi-lora:a738942df15c8c788b076ddd052256ba7923aade687b12109ccc64b2c3483aa1';
+const SINGLE_LORA =
+  'lucataco/flux-dev-lora:613a21a57e8545532d2f4016a7c3cfa3c7c63fded03001c2e69183d557a929db';
 const REALISM_LORA_URL =
   'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/private%2Fcustom_models%2Fflux_realism_lora.safetensors?alt=media&token=e390b666-4c3a-4726-b94a-41395a9d98aa&filename=realismlora.safetensors';
 
@@ -85,8 +87,8 @@ export async function generateImagesWithReplicateUploadToFirebase(
   }
 }
 
-const NAVYBLUEFLORALSHIRT =
-  'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/private%2Fclothes_lora_models%2Fnavybluefloralshirt.safetensors?alt=media&token=cfa70730-de07-4294-8759-721ae1f118c4&filename=navybluefloralshirt.safetensors';
+// const NAVYBLUEFLORALSHIRT =
+//   'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/private%2Fclothes_lora_models%2Fnavybluefloralshirt.safetensors?alt=media&token=cfa70730-de07-4294-8759-721ae1f118c4&filename=navybluefloralshirt.safetensors';
 
 export async function testClothing(
   improvedPromptFromGroq: string,
@@ -98,14 +100,10 @@ export async function testClothing(
     const lora_url = clientLoraInfo.loraURL;
     const lora_filename = clientLoraInfo.loraFilename;
 
-    const output = await replicate.run(MULTI_LORA_TEMP_MODEL, {
+    const output = await replicate.run(SINGLE_LORA, {
       input: {
         prompt: improvedPromptFromGroq,
-        hf_loras: [
-          `${lora_url}&filename=${lora_filename}`,
-          REALISM_LORA_URL,
-          NAVYBLUEFLORALSHIRT,
-        ],
+        hf_loras: [`${lora_url}&filename=${lora_filename}`],
         num_outputs: 1,
         aspect_ratio: '9:16',
         output_format: 'png',

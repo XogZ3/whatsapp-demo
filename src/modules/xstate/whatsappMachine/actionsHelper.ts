@@ -202,7 +202,7 @@ export async function processAndSendImages(
   let generatedImageURLs: string[];
   const useSeed = seed || generateRandomSeed();
 
-  if (['918754535859'].includes(config.userMetaData.clientid)) {
+  if (['971562457525'].includes(config.userMetaData.clientid)) {
     generatedImageURLs = await testClothing(
       prompt,
       config.userMetaData.clientid,

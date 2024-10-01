@@ -15,7 +15,6 @@ import {
   addTrainingImageURLandIncreaseCountDecreasePendingUploads,
   getPendingUploadsCount,
   getPhotoCount,
-  getProcessingFlag,
   getUserFields,
   incrementPendingUploads,
   setDefaultUserFields,
@@ -124,7 +123,8 @@ export async function replyToUser(messageObject: any) {
     // photoPrompting machine availability check
     else if (
       currentState === 'photoPrompting' &&
-      (await getProcessingFlag(clientid)) === true
+      // (await getProcessingFlag(clientid)) === true &&
+      userDetails.processing === true
     ) {
       // Inform machine busy
       console.log('[t] machine busy in replyHelper');
@@ -153,7 +153,11 @@ export async function replyToUser(messageObject: any) {
         imageID,
         clientid,
       );
-      const promptResult = await getPromptFromImageURLUsingOpenAI(imageURL);
+      const imageCaption = extractText(messageObject);
+      const promptResult = await getPromptFromImageURLUsingOpenAI(
+        imageURL,
+        imageCaption,
+      );
       await setProcessingFlag(clientid, false);
       if (!promptResult) {
         await sendErrorMessageForImagePrompt(clientid, userLanguage);

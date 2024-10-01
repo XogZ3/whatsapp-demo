@@ -7,8 +7,7 @@ export const pages = [
   '',
   'privacy',
   'terms-and-conditions',
-  'sign-in',
-  'dashboard',
+  'sitemap',
   'cancel-subscription',
 ];
 

@@ -8,7 +8,7 @@ export const AppConfig = {
   locales: ['en', 'pt'],
   defaultLocale: 'en',
   localePrefix,
-  url: '',
+  url: process.env.NEXT_PUBLIC_APP_URL || 'https://fotolabs.ai',
   vercelUrl: '',
   phone: '',
   email: process.env.NEXT_PUBLIC_EMAIL,

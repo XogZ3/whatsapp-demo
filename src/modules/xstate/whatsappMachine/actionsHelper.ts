@@ -199,16 +199,11 @@ export async function processAndSendImages(
   prompt: string,
   seed?: number,
 ) {
+  console.log('[c] generate image START: ', DateTime.now().toMillis());
   let generatedImageURLs: string[];
-  console.log('[t] received seed: ', seed);
   const useSeed = seed || generateRandomSeed();
-  console.log('[t] useSeed: ', useSeed);
 
-  if (
-    ['918754535859', '918056977300', '971562457525'].includes(
-      config.userMetaData.clientid,
-    )
-  ) {
+  if (['918056977300'].includes(config.userMetaData.clientid)) {
     generatedImageURLs = await testClothing(
       prompt,
       config.userMetaData.clientid,
@@ -223,6 +218,7 @@ export async function processAndSendImages(
   }
 
   console.log('[+] receveid urls: ', generatedImageURLs);
+  console.log('[c] generate image END: ', DateTime.now().toMillis());
   if (generatedImageURLs.length > 0) {
     const sendPromises = generatedImageURLs.map(async (url) => {
       await sendImageMessageWithSeed(
@@ -232,8 +228,6 @@ export async function processAndSendImages(
       );
     });
     await Promise.all(sendPromises);
-
-    console.log('All images sent successfully.');
     return true; // Indicate success
   }
   const message = getTranslation('unknown error', config.userMetaData.language);

@@ -179,6 +179,7 @@ export async function setDefaultUserFields(clientid: string): Promise<void> {
   // Prepare the updates object
   const updates: Partial<UserFieldsFirebase> = {
     language: userLanguage,
+    processing: false,
   };
 
   // Update the Firestore document with the new default values, merging with existing data

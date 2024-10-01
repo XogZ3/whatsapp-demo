@@ -1,3 +1,5 @@
+import { AppConfig } from '@/utils/appConfig';
+
 import { Container } from '../GeneralContainers';
 
 /* eslint-disable tailwindcss/no-custom-classname */
@@ -456,9 +458,9 @@ const TnC = () => {
                 </ol>
               </li>
               <li className="level-1 ">
-                A complaint can be submitted by contacting us at
-                grievance@fotolabs.in. Please be sure to include responses to
-                items i-viii of Clause (b) above (if the complaint is regarding
+                A complaint can be submitted by contacting us at{' '}
+                {AppConfig.email}. Please be sure to include responses to items
+                i-viii of Clause (b) above (if the complaint is regarding
                 copyright infringement) or i-v of Clause (c) above (if the
                 complaint is regarding the violation of other personal rights).
                 If you are unsure whether there has been an infringement of your
@@ -543,7 +545,7 @@ const TnC = () => {
               </li>
               <li className="level-1 ">
                 You can withdraw consent to the use and/or processing of your
-                personal data by contacting us at care@fotolabs.in and we shall
+                personal data by contacting us at {AppConfig.email} and we shall
                 remove the same shortly.{' '}
               </li>
               <li className="level-1 ">
@@ -963,7 +965,7 @@ const TnC = () => {
                   </li>
                   <li className="level-2">
                     You may disable fotolabs’s access to the same remotely on
-                    the fotolabs Platform or contact us at care@fotolabs.in.
+                    the fotolabs Platform or contact us at {AppConfig.email}.
                   </li>
                 </ol>
               </li>
@@ -985,7 +987,7 @@ const TnC = () => {
                   <li className="level-2">
                     fotolabs shall have the rights in the above clause (b)
                     unless you expressly withdraw the consent you have given us,
-                    by contacting us with such request at care@fotolabs.in.
+                    by contacting us with such request at {AppConfig.email}.
                   </li>
                 </ol>
               </li>
@@ -1083,8 +1085,8 @@ const TnC = () => {
                   </li>
                   <li className="level-2">
                     If you would like us to delete User Provided Data that you
-                    have provided via the Application, please contact us at
-                    care@fotolabs.in and we will respond in a reasonable time.
+                    have provided via the Application, please contact us at{' '}
+                    {AppConfig.email} and we will respond in a reasonable time.
                   </li>
                   <li className="level-2">
                     The User must note that some or all the User Provided Data
@@ -1185,7 +1187,7 @@ const TnC = () => {
                 Application. You may use the standard uninstall processes as may
                 be available as part of your mobile device or via the mobile
                 application marketplace or network. You can also request to
-                opt-out via email, at care@fotolabs.in.
+                opt-out via email, at {AppConfig.email}.
               </li>
               <li className="level-1 ">
                 fotolabs shall not engage in any use of the Application to
@@ -1196,7 +1198,7 @@ const TnC = () => {
                 through Facebook, Community Guidelines and others that are
                 updated periodically, if a parent or guardian becomes aware that
                 his or her child has provided us with information without their
-                consent, he or she should contact us at care@fotolabs.in. We
+                consent, he or she should contact us at {AppConfig.email}. We
                 will delete such information from our files within a reasonable
                 time.
               </li>
@@ -1222,7 +1224,7 @@ const TnC = () => {
                 purposes as set out in this Privacy Policy.
               </li>
               <li className="level-1 ">
-                You may contact us at care@fotolabs.in if you wish to obtain:
+                You may contact us at {AppConfig.email} if you wish to obtain:
                 (a) confirmation on whether your respective Personal Data has
                 been processed or is being processed; (b) brief summary of your
                 respective Personal Data that has been processed or is being
@@ -1299,7 +1301,7 @@ const TnC = () => {
               </li>
               <li className="level-1 ">
                 If you have any questions regarding the rewards programme, write
-                to us at care@fotolabs.in.
+                to us at {AppConfig.email}.
               </li>
             </ol>
           </li>
@@ -1424,51 +1426,19 @@ const TnC = () => {
 
             <ol type="i">
               <li>
-                Cancellation due to reasons not attributable to fotolabs, that
-                is, in the event you provide incorrect phone numbers, delivery
-                address, or that you were unresponsive while either of our team
-                or the rider team tried to reach out or, not reachable or
-                unavailable during the delivery of the services offered to you,
-                shall be non-refundable in nature.
+                Cancellations
+                <br />
+                Cancellations are non-refundable. If you cancel your
+                subscription, it will remain active until the end of the current
+                billing cycle. You will not be charged for subsequent cycles
+                after cancellation.
               </li>
               <li>
-                There may be cases where fotolabs is either unable to accept
-                your order or cancels the order, due to reasons including
-                without limitation, technical errors, unavailability of the
-                item(s) ordered, or any other reason attributable to fotolabs,
-                Restaurant Partner/Store or Delivery Partner. In such cases,
-                fotolabs shall not charge a cancellation charge from you. If the
-                order is canceled after payment has been charged, you are
-                eligible for a refund of the order value or any part thereof,
-                the said amount will be reversed to you.
-              </li>
-              <li>
-                No replacement / refund / or any other resolution will be
-                provided without Restaurant Partner’s/Store(s)’ permission. We
-                will need to verify the details from the store before we proceed
-                with any refund.
-              </li>
-              <li>
-                Any complaint, with respect to the order which shall include
-                instances but not be limited to food spillage, foreign objects
-                in food, delivery of the wrong order or food and beverages or
-                Products, poor quality, You will be required to share the proof
-                of the same before any resolution can be provided. In the
-                absence of the proof, fotolabs will not consider the request as
-                valid request and refund or replacement will not be provided in
-                such cases.
-              </li>
-              <li>
-                You shall not be entitled to a refund in case instructions
-                placed along with the order are not followed in the form and
-                manner You had intended. Instructions are followed by the
-                Restaurant Partner /Store on a best-efforts basis.
-              </li>
-              <li>
-                All refunds shall be processed in the same manner as they are
-                received, unless refunds have been provided to You in the form
-                of credits, refund amount will reflect in your account based on
-                respective banks policies.
+                No refunds
+                <br />
+                Due to the substantial resources involved in creating customized
+                AI models and generating images, we do not offer refunds once
+                the service has been initiated.
               </li>
             </ol>
           </li>

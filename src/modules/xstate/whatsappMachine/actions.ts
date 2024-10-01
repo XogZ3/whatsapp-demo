@@ -620,18 +620,22 @@ ${shortLink}`;
       // );
       const prompt: string = event?.context?.latestPrompt;
       async function getImprovedPromptSetItInContext() {
+        await setProcessingFlag(clientid, true);
         const openAIPrompt = await getImprovedPromptFromOpenAI({
           prompt,
           age,
           gender,
         });
         const improvedPrompt = openAIPrompt.prompt;
+        await Promise.all([
+          setProcessingFlag(clientid, false),
+          config.storeInstance.setContext(
+            clientid,
+            'latestPrompt',
+            improvedPrompt,
+          ),
+        ]);
         // overwrite latestPrompt with improvedPrompt
-        await config.storeInstance.setContext(
-          clientid,
-          'latestPrompt',
-          improvedPrompt,
-        );
         return improvedPrompt;
       }
       getImprovedPromptSetItInContext()

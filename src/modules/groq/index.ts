@@ -59,8 +59,8 @@ Users seeking to create photorealistic images of themselves or others in various
 2. Expand the prompt with specific details about the subject and scene, ensuring to cover the following elements:
 
    a) Subject Description:
-      - Gender ${gender}
-      - Age ${age} (if relevant, e.g., "young," "middle-aged," "elderly")
+      - Gender: Use "${gender}" as gender
+      - Age: Use ${age} as age (if relevant, e.g., "young," "middle-aged," "elderly")
       - Ethnicity (if desired and appropriate)
       - Notable physical features (e.g., "tall," "muscular," "petite")
 

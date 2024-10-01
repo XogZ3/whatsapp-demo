@@ -199,7 +199,6 @@ export async function processAndSendImages(
   prompt: string,
   seed?: number,
 ) {
-  console.log('[c] generate image START: ', DateTime.now().toMillis());
   let generatedImageURLs: string[];
   const useSeed = seed || generateRandomSeed();
 
@@ -216,9 +215,6 @@ export async function processAndSendImages(
       useSeed,
     );
   }
-
-  console.log('[+] receveid urls: ', generatedImageURLs);
-  console.log('[c] generate image END: ', DateTime.now().toMillis());
   if (generatedImageURLs.length > 0) {
     const sendPromises = generatedImageURLs.map(async (url) => {
       await sendImageMessageWithSeed(
@@ -228,7 +224,7 @@ export async function processAndSendImages(
       );
     });
     await Promise.all(sendPromises);
-    return true; // Indicate success
+    return true;
   }
   const message = getTranslation('unknown error', config.userMetaData.language);
   const payload: ICreateMessagePayload = {
@@ -237,7 +233,7 @@ export async function processAndSendImages(
     msgBody: message,
   };
   await config.whatsappInstance.send(payload);
-  return false; // Indicate failure
+  return false;
 }
 
 export async function createStripeLink(clientid: string) {

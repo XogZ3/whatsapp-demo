@@ -277,7 +277,6 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const { clientid } = config.userMetaData;
       const language = event?.event?.message;
       await setUserLanguage(language, clientid);
-      console.log(`[+] firebase: language ${language} updates successfully`);
     },
     sendSelectedLanguage: async (event: any) => {
       const message = getTranslation(
@@ -418,7 +417,6 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const { clientid, language = event?.context?.language } =
         config.userMetaData;
       const message = getTranslation('model already exists', language);
-      // TODO: implement language in buttons
       const payload: ICreateMessagePayload = {
         phoneNumber: clientid,
         text: true,
@@ -430,7 +428,6 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const { clientid, language = event?.context?.language } =
         config.userMetaData;
       const message = getTranslation('generating model', language);
-      // TODO: implement language in buttons
       const payload: ICreateMessagePayload = {
         phoneNumber: clientid,
         text: true,
@@ -442,7 +439,6 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const { clientid, language = event?.context?.language } =
         config.userMetaData;
       const message = getTranslation('please wait generating model', language);
-      // TODO: implement language in buttons
       const payload: ICreateMessagePayload = {
         phoneNumber: clientid,
         text: true,
@@ -588,9 +584,13 @@ ${shortLink}`;
           return machineIsAvailable;
         })
         .then(async (machineIsAvailable) => {
+          // truncating prompt as WhatsApp only allows sending 1024 characters
+          // Using 950 to be safe since we're adding 'prompt confirmation' msg
+          const truncatedPrompt =
+            prompt?.length > 950 ? `${prompt.slice(0, 950)}...` : prompt;
           if (machineIsAvailable) {
             message = `${getTranslation('prompt confirmation', language)}
-*${prompt}*`;
+*${truncatedPrompt}*`;
             payload = {
               phoneNumber: clientid,
               quickReply: true,
@@ -643,7 +643,6 @@ ${shortLink}`;
           // console.log('[+] improved prompt set it context');
           const message = `${getTranslation('prompt confirmation', language)}
   *${improvedPrompt}*`;
-          // TODO: implement language in buttons
           const payload: ICreateMessagePayload = {
             phoneNumber: clientid,
             quickReply: true,
@@ -685,7 +684,6 @@ ${shortLink}`;
           // console.log('[+] improved prompt set it context');
           const message = `${getTranslation('prompt confirmation', language)}
 *${reImprovedPrompt}*`;
-          // TODO: implement language in buttons
           const payload: ICreateMessagePayload = {
             phoneNumber: clientid,
             quickReply: true,
@@ -927,7 +925,6 @@ ${shortLink}`;
         .then(async (machineIsAvailable) => {
           if (!machineIsAvailable) {
             message = getTranslation('please wait machine busy', language);
-            // TODO: implement language in buttons
             payload = {
               phoneNumber: clientid,
               text: true,

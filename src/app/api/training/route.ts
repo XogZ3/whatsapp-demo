@@ -94,7 +94,6 @@ export async function POST(request: Request) {
         .then(async () => {
           const stripeLink = await createStripeLink(clientid);
           await sendNewUserPaywall({ clientid, language, stripeLink });
-          console.log('[+] Paywall msg sent');
         })
         .catch(async (error) => {
           console.error(

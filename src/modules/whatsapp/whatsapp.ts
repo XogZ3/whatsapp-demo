@@ -559,8 +559,6 @@ async function createWAMessagePayload(payload: PropsFormatted) {
 }
 
 export async function sendMessageToWhatsapp(payload: any, seed?: number) {
-  // TODO: can remove after debugging
-  console.log('[0] sending wa msg to user: ', JSON.stringify(payload, null, 2));
   const data = await createWAMessagePayload(payload);
   const res = await makeRequestToWhatsapp(data);
   const whatsappMessageID = res?.messages[0]?.id;
@@ -568,12 +566,5 @@ export async function sendMessageToWhatsapp(payload: any, seed?: number) {
     await setSystemMessage(data, whatsappMessageID, seed);
     return true;
   }
-  // if (res?.data?.messages?.length) {
-  //   // eslint-disable-next-line no-console
-  //   console.log(
-  //     `${data.type} outgoing ${res.status === 200 ? 'success' : 'fail'}`,
-  //   );
-  //   return res && res.status === 200;
-  // }
   return false;
 }

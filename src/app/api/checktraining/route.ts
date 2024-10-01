@@ -22,8 +22,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  // console.log('[O] n8n: checking training job status...');
-
   try {
     const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
     const jobsRef = firestore.collection('training_jobs');

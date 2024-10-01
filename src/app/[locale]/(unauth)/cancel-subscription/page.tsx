@@ -38,7 +38,6 @@ export default function CancelSubscriptionPage() {
 
       const data = await response.json();
       const { cancellationFrequent, cancellationStat } = data;
-      console.log(JSON.stringify(data, null, 2));
       setCancellationStatus(cancellationStat);
       setCancellationTooFrequent(cancellationFrequent);
     } catch (err) {

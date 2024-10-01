@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
         line_items: [
           {
             price:
-              process.env.STRIPE_PRICE_ID || 'price_1Q14rbJHS9DkVfWMTzCYeo34',
+              process.env.STRIPE_PRICE_ID || 'price_1Q59MyJHS9DkVfWMH0t7tgL2',
             quantity: 1,
           },
         ],
@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
         after_completion: {
           type: 'redirect',
           redirect: {
-            url: `${getBaseUrl()}/success/${clientid}`, // TODO: Replace with your success URL
+            url: `${getBaseUrl()}/success/${clientid}`,
           },
         },
       });

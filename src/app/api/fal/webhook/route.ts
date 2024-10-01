@@ -170,7 +170,6 @@ export async function POST(request: NextRequest) {
             msgBody: message,
           };
           await sendMessageToWhatsapp(whatsappPayload);
-          console.log('[+] Prompt msg sent');
         })
         .then(async () => {
           const promoCode = await createReferralPromoCode(clientid);
@@ -181,7 +180,6 @@ export async function POST(request: NextRequest) {
             msgBody: message,
           };
           await sendMessageToWhatsapp(whatsappPayload);
-          console.log('[+] Prompt msg sent');
         })
         .catch(async (error) => {
           console.error(
@@ -198,7 +196,6 @@ export async function POST(request: NextRequest) {
     await sendMessageToTelegram(
       `Status Error in api/fal/webhook: ${request_id}`,
     );
-    console.log(`[+] Training job ${request_id} status: ${status}`);
     return NextResponse.json({ status: 200 });
   } catch (error) {
     console.error('[!] Error in fal webhook: ', JSON.stringify(error, null, 2));

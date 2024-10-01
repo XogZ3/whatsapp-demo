@@ -141,7 +141,6 @@ export async function POST(request: NextRequest) {
   let promptTemplate;
   try {
     promptTemplate = await getCronDailyImagePromptFromGroq({ location });
-    console.log(`[?] today's promptTemplate: `, promptTemplate);
   } catch (error) {
     console.error('Error fetching prompt template:', error);
     return new Response('Failed to fetch prompt template', {
@@ -185,8 +184,6 @@ export async function POST(request: NextRequest) {
     });
   }
 
-  console.log('[+] received URLs: ', clientGeneratedImageMap);
-
   const delay = (ms: number) =>
     new Promise((resolve) => {
       setTimeout(resolve, ms);
@@ -208,13 +205,10 @@ export async function POST(request: NextRequest) {
         try {
           // Check if the current time is after the whatsappExpiration
           if (now >= whatsappExpiration) {
-            console.log(`Sending template message to ${clientid}`);
             await sendDailyImageTemplate(clientid, url, location); // Use sendDailyImageTemplate if expired
           } else {
-            console.log(`Sending regular message to ${clientid}`);
             await sendMessageToWhatsapp(payload); // Use sendMessageToWhatsapp if not expired
           }
-          console.log(`Message sent to ${clientid}`);
         } catch (error) {
           console.error(`Error sending message to ${clientid}:`, error);
         }

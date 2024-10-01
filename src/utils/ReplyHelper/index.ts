@@ -127,7 +127,7 @@ export async function replyToUser(messageObject: any) {
       userDetails.processing === true
     ) {
       // Inform machine busy
-      console.log('[t] machine busy in replyHelper');
+      console.log('[@] machine busy in replyHelper');
       await sendMachineBusy(clientid, userLanguage);
       return;
     }
@@ -179,8 +179,6 @@ export async function replyToUser(messageObject: any) {
       message = 'FALLBACK';
     } else message = extractText(messageObject);
   }
-
-  console.log('[~] sending text to xstate: ', message);
 
   const newState = await whatsappStateTransition(
     { type: 'text', text: message },

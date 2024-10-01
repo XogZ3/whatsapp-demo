@@ -8,7 +8,6 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const wamid = decodeURIComponent(searchParams.get('wamid') || '');
   const clientid = searchParams.get('clientid');
-  console.log('[t] decoded wamid: ', wamid, clientid);
 
   if (!wamid || !clientid) {
     return NextResponse.json({ error: 'Missing parameter' }, { status: 400 });
@@ -26,7 +25,6 @@ export async function GET(request: Request) {
   const snapshot = await query.get();
 
   if (snapshot.empty) {
-    console.log('[!] No document found for given messageID');
     return NextResponse.json({ error: 'document not found' }, { status: 404 });
   }
 
@@ -35,7 +33,6 @@ export async function GET(request: Request) {
   const data = doc?.data();
 
   const seed = data?.seed;
-  console.log('[$] seed: ', seed);
 
   if (!seed) {
     return NextResponse.json({ error: 'seed not found' }, { status: 404 });

@@ -137,7 +137,6 @@ export async function POST(request: NextRequest) {
     await Promise.all(
       clientDataArray.map(async ({ clientid, age, gender }) => {
         prompt = await getCronImagePromptFromGroq({ age, gender, location });
-        console.log(`[?] today's client ${clientid} prompt: `, prompt);
         const imagesForClient =
           await generateImagesWithReplicateUploadToFirebase(prompt, clientid);
         clientGeneratedImageMap[clientid] = imagesForClient;
@@ -150,8 +149,6 @@ export async function POST(request: NextRequest) {
       headers: corsHeaders,
     });
   }
-
-  console.log('[+] received URLs: ', clientGeneratedImageMap);
 
   const delay = (ms: number) =>
     new Promise((resolve) => {
@@ -174,13 +171,10 @@ export async function POST(request: NextRequest) {
         try {
           // Check if the current time is after the whatsappExpiration
           if (now >= whatsappExpiration) {
-            console.log(`Sending template message to ${clientid}`);
             await sendDailyImageTemplate(clientid, url, location); // Use sendDailyImageTemplate if expired
           } else {
-            console.log(`Sending regular message to ${clientid}`);
             await sendMessageToWhatsapp(payload); // Use sendMessageToWhatsapp if not expired
           }
-          console.log(`Message sent to ${clientid}`);
         } catch (error) {
           console.error(`Error sending message to ${clientid}:`, error);
         }
@@ -190,9 +184,6 @@ export async function POST(request: NextRequest) {
       }
     }
   };
-
   await sendMessages();
-
-  console.log('All images sent successfully.');
   return new Response('success', { status: 200, headers: corsHeaders });
 }

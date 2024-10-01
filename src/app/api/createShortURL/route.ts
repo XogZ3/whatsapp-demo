@@ -30,8 +30,6 @@ export async function POST(req: NextRequest) {
     shortCode = nanoid();
     shortURL = `${getBaseUrl()}/buy/${shortCode}`;
 
-    console.log('[x] checking shortCode:', shortCode);
-
     // Check if the shortCode already exists in Firestore
     const urlMapDoc = firestore.collection('short_url_map').doc(shortCode);
     // eslint-disable-next-line no-await-in-loop
@@ -39,8 +37,6 @@ export async function POST(req: NextRequest) {
 
     isUnique = !urlMapData.exists;
   }
-
-  console.log('shortCode:', shortCode);
 
   try {
     const updates = {

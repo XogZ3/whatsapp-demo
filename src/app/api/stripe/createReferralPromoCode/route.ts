@@ -19,8 +19,8 @@ export async function POST(req: NextRequest) {
   try {
     const promotionCode: Stripe.Response<Stripe.PromotionCode> =
       await stripe.promotionCodes.create({
-        coupon: '452bg9UZ',
-        max_redemptions: 3,
+        coupon: process.env.STRIPE_REFERRAL_COUPON_ID || 'XLDcTh7Q',
+        max_redemptions: 1,
         expires_at: Math.floor(DateTime.now().plus({ months: 1 }).toSeconds()),
         metadata: {
           clientid,

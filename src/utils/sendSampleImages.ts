@@ -10,7 +10,6 @@ import { getTranslation, type Language } from './translations';
 
 async function sendErrorMessage(clientid: string, language: Language) {
   const message = getTranslation('unknown error', language);
-  // TODO: implement language in buttons
   const payload: ICreateMessagePayload = {
     phoneNumber: clientid,
     text: true,
@@ -23,7 +22,6 @@ export async function sendPhotoUploadInstruction(
   language: Language,
 ) {
   const message = getTranslation('photo upload instruction', language);
-  // TODO: implement language in buttons
   const payload: ICreateMessagePayload = {
     phoneNumber: clientid,
     text: true,

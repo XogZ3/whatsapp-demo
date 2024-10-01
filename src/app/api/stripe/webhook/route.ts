@@ -296,12 +296,6 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
   //   'MMMM d, yyyy',
   // );
 
-  console.log(
-    `[~] checking if data can be used outside firebase txn: `,
-    language,
-    whatsappExpiration,
-  );
-
   try {
     if (status === 'complete') {
       await Promise.all([
@@ -371,6 +365,7 @@ export async function POST(req: NextRequest) {
       case 'customer.subscription.updated':
       case 'customer.subscription.deleted':
       case 'customer.subscription.paused':
+      case 'customer.subscription.resumed':
         await handleSubscriptionEvent(event);
         return NextResponse.json({ status: 200 });
       case 'invoice.payment_succeeded':

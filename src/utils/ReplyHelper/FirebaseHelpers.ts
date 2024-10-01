@@ -836,8 +836,6 @@ export async function getSeedUsingWhatsappMsgID(
     const doc = snapshot.docs[0];
     const data = doc?.data();
 
-    console.log('[$] seed: ', data?.seed);
-
     // Return the 'seed' field from the document, or null if it doesn't exist
     return data?.seed || 0;
   } catch (error) {

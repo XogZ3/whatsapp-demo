@@ -103,7 +103,7 @@ export async function testClothing(
     const output = await replicate.run(SINGLE_LORA, {
       input: {
         prompt: improvedPromptFromGroq,
-        hf_loras: [`${lora_url}&filename=${lora_filename}`],
+        hf_loras: `${lora_url}&filename=${lora_filename}`,
         num_outputs: 1,
         aspect_ratio: '9:16',
         output_format: 'png',

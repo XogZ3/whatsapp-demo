@@ -15,14 +15,14 @@ export default function HeroSection() {
   return (
     <div className="py-4 sm:py-14">
       <Container className="relative flex flex-col items-center justify-center gap-y-2 text-center leading-8">
-        <div className="flex flex-col gap-y-4 text-5xl tracking-normal sm:text-7xl">
+        <h1 className="flex flex-col gap-y-4 text-5xl font-normal tracking-normal sm:text-7xl">
           <Balancer>
             {t('header_1')} <br />
           </Balancer>
           <span className="font-medium underline decoration-green-500 decoration-4 underline-offset-4">
             {t('header_2')}
           </span>
-        </div>
+        </h1>
 
         <h2 className="!mb-0 py-6 font-normal tracking-normal">
           <Balancer>{t('subheader')}</Balancer>

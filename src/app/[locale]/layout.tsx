@@ -36,7 +36,7 @@ export async function generateMetadata(props: {
       default: t('meta_title', { appName: AppConfig.name }) as string,
       template: `%s - ${t('meta_title', { appName: AppConfig.name }) as string}`,
     },
-    description: t('meta_description'),
+    description: t('meta_description', { appName: AppConfig.name }) as string,
     twitter: {
       card: 'summary_large_image',
     },
@@ -45,7 +45,7 @@ export async function generateMetadata(props: {
         default: t('meta_title', { appName: AppConfig.name }) as string,
         template: `%s - ${t('meta_title', { appName: AppConfig.name }) as string}`,
       },
-      description: t('meta_description'),
+      description: t('meta_description', { appName: AppConfig.name }) as string,
       type: 'website',
       images: [
         {

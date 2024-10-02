@@ -94,11 +94,11 @@ export async function POST(request: NextRequest) {
 
       const generator = new RandomStringGenerator();
       const randomString = generator.generate();
-      const fileName = `person${clientid}_${randomString}.safetensors`;
+      const fileName = `person${clientid}_${randomString}`;
 
       const [fotolabsLoraURL, fotolabsConfigFileURL] = await Promise.all([
-        uploadLoraFileToFirebase(loraURL, fileName),
-        uploadLoraFileToFirebase(configFileUrl, `zconfig_${fileName}`),
+        uploadLoraFileToFirebase(loraURL, `${fileName}.safetensors`),
+        uploadLoraFileToFirebase(configFileUrl, `zconfig_${fileName}.json`),
       ]);
 
       console.log(

@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import {
   getUserLoraDetails,
-  uploadImageFileToFirebase,
+  uploadImageFileToFirebaseWithRetry,
 } from '@/utils/ReplyHelper/FirebaseHelpers';
 
 const replicate = new Replicate({
@@ -60,7 +60,7 @@ export async function generateImagesWithReplicateUploadToFirebase(
           const base64Content = Buffer.from(arrayBuffer).toString('base64');
 
           const filename = `${clientid || 'test'}_${uuidv4()}_${index + 1}.png`;
-          const firebaseUrl = await uploadImageFileToFirebase(
+          const firebaseUrl = await uploadImageFileToFirebaseWithRetry(
             base64Content,
             clientid,
             foldername,
@@ -132,7 +132,7 @@ export async function testClothing(
           const base64Content = Buffer.from(arrayBuffer).toString('base64');
 
           const filename = `${clientid || 'test'}_${uuidv4()}_${index + 1}.png`;
-          const firebaseUrl = await uploadImageFileToFirebase(
+          const firebaseUrl = await uploadImageFileToFirebaseWithRetry(
             base64Content,
             clientid,
             foldername,

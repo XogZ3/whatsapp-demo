@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import {
   setSystemMessage,
-  uploadImageFileToFirebase,
+  uploadImageFileToFirebaseWithRetry,
 } from '@/utils/ReplyHelper/FirebaseHelpers';
 
 export const x = {
@@ -116,7 +116,7 @@ export async function fetchWhatsAppImageAndUploadToFirebase(
     );
 
     // Upload to Firebase and get long expiry URL
-    const longExpiryURL = await uploadImageFileToFirebase(
+    const longExpiryURL = await uploadImageFileToFirebaseWithRetry(
       base64Content,
       clientid,
       foldername,

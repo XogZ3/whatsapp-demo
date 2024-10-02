@@ -495,6 +495,51 @@ export async function uploadImageFileToFirebase(
   return url;
 }
 
+export async function uploadImageFileToFirebaseWithRetry(
+  base64Content: string,
+  clientid: string,
+  foldername: string,
+  filename: string,
+  retries: number = 5,
+): Promise<string> {
+  let attempt = 0;
+  const delay = (ms: number) =>
+    new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
+
+  while (attempt < retries) {
+    try {
+      // Attempt to upload the image
+      // eslint-disable-next-line no-await-in-loop
+      return await uploadImageFileToFirebase(
+        base64Content,
+        clientid,
+        foldername,
+        filename,
+      );
+    } catch (error) {
+      attempt += 1;
+      if (attempt >= retries) {
+        // If the final retry fails, throw the error
+        throw new Error(
+          `Failed to upload image after ${retries} attempts: ${JSON.stringify(error, null, 2)}`,
+        );
+      }
+
+      // Implementing exponential backoff
+      const backoffTime = 2 ** attempt * 1000; // Delay increases exponentially
+      console.log(
+        `Attempt ${attempt} failed, retrying in ${backoffTime / 1000} seconds...`,
+      );
+      // eslint-disable-next-line no-await-in-loop
+      await delay(backoffTime);
+    }
+  }
+
+  throw new Error('Unexpected error: Retries exhausted.');
+}
+
 export async function uploadFileToFirebaseGetPermanentURL(
   base64Content: string,
   clientid: string,

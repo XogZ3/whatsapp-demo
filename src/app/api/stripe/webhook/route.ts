@@ -339,16 +339,28 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
   }
 
   // Update all related invoices with the clientid
+  // Fetch all related invoices with the clientid
   const invoicesSnapshot = await firestore
     .collection('invoices')
     .where('subscriptionId', '==', subscriptionId)
     .get();
 
-  const batch = firestore.batch();
-  invoicesSnapshot.docs.forEach((doc) => {
-    batch.update(doc.ref, { clientid });
-  });
-  await batch.commit();
+  if (invoicesSnapshot.empty) {
+    // No invoices found, send an error message to Telegram
+    await sendMessageToTelegram(
+      `Error: No invoices found for clientid ${clientid} with subscriptionId ${subscriptionId}`,
+    );
+  } else {
+    const batch = firestore.batch();
+    invoicesSnapshot.docs.forEach((doc) => {
+      console.log(
+        `[stripe webhook] client id ${clientid} updated in invoice ${doc.ref}`,
+      );
+      batch.update(doc.ref, { clientid });
+    });
+    await batch.commit();
+  }
+
   return NextResponse.json({ status: 200 });
 }
 

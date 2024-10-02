@@ -142,7 +142,7 @@ export async function POST(request: NextRequest) {
       const updates: Partial<UserFieldsFirebase> = {
         state: JSON.stringify(stateJSON),
         loraURL: fotolabsLoraURL,
-        loraFilename: fileName,
+        loraFilename: `${fileName}.safetensors`,
         processing: false,
         couponUsed,
       };

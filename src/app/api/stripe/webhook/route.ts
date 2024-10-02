@@ -177,8 +177,14 @@ async function handleInvoiceEvent(event: Stripe.Event) {
     amountDue: invoice.amount_due / 100,
     currency: invoice.currency,
     status: event.type === 'invoice.payment_succeeded' ? 'succeeded' : 'failed',
-    date: new Date(invoice.created * 1000).toISOString(),
+    date: invoice.created * 1000,
+    couponUsed: invoice?.discount?.coupon?.name || '',
   };
+
+  console.log(
+    '[stripe webhook] handleInvoiceEvent coupon used?: ',
+    invoice?.discount?.coupon?.name || '',
+  );
 
   // Save invoice data
   await firestore.runTransaction(async (transaction) => {

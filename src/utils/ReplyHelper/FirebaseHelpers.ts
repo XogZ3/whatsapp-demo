@@ -97,6 +97,7 @@ export type UserFieldsFirebase = {
   subscriptionStatus: string;
   whatsappExpiration: number;
   lastCancellationReqTime: number;
+  couponUsed: string;
 };
 
 export async function getUserFields(
@@ -133,6 +134,7 @@ export async function getUserFields(
     subscriptionStatus,
     whatsappExpiration,
     lastCancellationReqTime,
+    couponUsed,
   } = clientData.data() || {};
   const userLanguage = language || getLanguageFromPhoneNumber(clientid);
 
@@ -161,6 +163,7 @@ export async function getUserFields(
     subscriptionStatus,
     whatsappExpiration,
     lastCancellationReqTime,
+    couponUsed,
   };
 }
 

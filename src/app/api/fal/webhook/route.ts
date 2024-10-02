@@ -94,11 +94,11 @@ export async function POST(request: NextRequest) {
 
       const generator = new RandomStringGenerator();
       const randomString = generator.generate();
-      const fileName = `person${clientid}_${randomString}.safetensors`;
+      const fileName = `person${clientid}_${randomString}`;
 
       const [fotolabsLoraURL, fotolabsConfigFileURL] = await Promise.all([
-        uploadLoraFileToFirebase(loraURL, fileName),
-        uploadLoraFileToFirebase(configFileUrl, `zconfig_${fileName}`),
+        uploadLoraFileToFirebase(loraURL, `${fileName}.safetensors`),
+        uploadLoraFileToFirebase(configFileUrl, `zconfig_${fileName}.json`),
       ]);
 
       console.log(
@@ -106,6 +106,17 @@ export async function POST(request: NextRequest) {
       );
 
       const { age, gender, state, language } = await getUserFields(clientid);
+
+      const invoiceQuerySnapshot = await firestore
+        .collection('invoices')
+        .where('clientid', '==', clientid)
+        .orderBy('date', 'desc')
+        .limit(1)
+        .get();
+
+      const invoiceData = invoiceQuerySnapshot.docs[0]?.data() || {};
+      const couponUsed = invoiceData?.couponUsed || '';
+      console.log('[fal webhook] coupon used?: ', couponUsed);
 
       let stateJSON;
 
@@ -122,9 +133,6 @@ export async function POST(request: NextRequest) {
             gender,
           },
           value: 'photoPrompting',
-          children: {},
-          historyValue: {},
-          tags: [],
         };
       }
 
@@ -134,8 +142,9 @@ export async function POST(request: NextRequest) {
       const updates: Partial<UserFieldsFirebase> = {
         state: JSON.stringify(stateJSON),
         loraURL: fotolabsLoraURL,
-        loraFilename: fileName,
+        loraFilename: `${fileName}.safetensors`,
         processing: false,
+        couponUsed,
       };
 
       // batch updates
@@ -146,10 +155,9 @@ export async function POST(request: NextRequest) {
         configFileUrl: fotolabsConfigFileURL,
         completedAt: DateTime.now().toMillis(),
       });
-      const wabaId = process.env.WABA_ID;
       const clientDoc = firestore
         .collection('apps')
-        .doc(wabaId as string)
+        .doc(process.env.WABA_ID!)
         .collection('clients')
         .doc(clientid);
       batch.set(clientDoc, updates, { merge: true });
@@ -172,14 +180,16 @@ export async function POST(request: NextRequest) {
           await sendMessageToWhatsapp(whatsappPayload);
         })
         .then(async () => {
-          const promoCode = await createReferralPromoCode(clientid);
-          const message = `${getTranslation('referral 1', language)} *${promoCode}* ${getTranslation('referral 2', language)}`;
-          const whatsappPayload: ICreateMessagePayload = {
-            phoneNumber: clientid,
-            text: true,
-            msgBody: message,
-          };
-          await sendMessageToWhatsapp(whatsappPayload);
+          if (couponUsed !== 'Referral 1st month free') {
+            const promoCode = await createReferralPromoCode(clientid);
+            const message = `${getTranslation('referral 1', language)} *${promoCode}* ${getTranslation('referral 2', language)}`;
+            const whatsappPayload: ICreateMessagePayload = {
+              phoneNumber: clientid,
+              text: true,
+              msgBody: message,
+            };
+            await sendMessageToWhatsapp(whatsappPayload);
+          }
         })
         .catch(async (error) => {
           console.error(

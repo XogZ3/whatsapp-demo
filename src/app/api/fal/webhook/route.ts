@@ -143,7 +143,7 @@ export async function POST(request: NextRequest) {
         state: JSON.stringify(stateJSON),
         loraURL: fotolabsLoraURL,
         loraFilename: `${fileName}.safetensors`,
-        processing: false,
+        processing: true,
         couponUsed,
       };
 
@@ -199,6 +199,9 @@ export async function POST(request: NextRequest) {
           await sendMessageToTelegram(
             `${clientid}: Error in api/training/route.ts: ${JSON.stringify(error, null, 2)}`,
           );
+        })
+        .finally(async () => {
+          await clientDoc.update({ processing: false });
         });
 
       return NextResponse.json({ status: 200 });

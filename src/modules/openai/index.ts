@@ -52,9 +52,11 @@ export async function getAgeAndGenderFromImageURLUsingOpenAI(
   }
 }
 
-export function getFlaggedCategories(
+export async function getFlaggedCategories(
   response: OpenAI.Moderations.ModerationCreateResponse,
-): string {
+  prompt: string,
+  clientid: string,
+) {
   const result = response?.results?.[0]; // Safely access the first result
 
   if (!result) {
@@ -79,25 +81,22 @@ export function getFlaggedCategories(
 
   // Return a concatenated string of flagged categories and their scores
   if (flaggedCategories.length > 0) {
+    await sendMessageToTelegram(`NSFW detected: ${clientid} ~ ${prompt}
+Flagged categories: ${flaggedCategories.join(', ')}`);
     return `Flagged categories: ${flaggedCategories.join(', ')}`;
   }
   return 'No categories flagged.';
 }
 
-export async function isTextSafe(prompt: string, clientid?: string) {
+export async function isTextSafe(prompt: string, clientid: string) {
+  console.log('[openai] checking for nsfw');
   const moderation = await openai.moderations.create({
     model: 'omni-moderation-latest',
     input: prompt,
   });
-  const nsfwDetails = getFlaggedCategories(moderation);
-  if (
-    !['No categories flagged.', 'No results found'].includes(nsfwDetails) &&
-    clientid
-  ) {
-    await sendMessageToTelegram(`NSFW detected: ${clientid} ~ ${prompt}
-${nsfwDetails}`);
-  }
+  await getFlaggedCategories(moderation, prompt, clientid);
   const isSafe = !moderation.results[0]?.flagged;
+  console.log('[openai] is safe?', isSafe);
   return isSafe;
 }
 

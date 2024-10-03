@@ -69,7 +69,7 @@
 //     });
 //     console.log(JSON.stringify(output, null, 2));
 
-//     const comments = getFlaggedCategories(output);
+//     const comments = await getFlaggedCategories(output, prompt, '918754535859');
 //     console.log(comments);
 
 //     expect(output.results[0]?.flagged).toBe(false);

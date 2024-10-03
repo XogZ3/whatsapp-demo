@@ -2,6 +2,8 @@ import OpenAI from 'openai';
 import { zodResponseFormat } from 'openai/helpers/zod';
 import { z } from 'zod';
 
+import { sendMessageToTelegram } from '@/utils/telegram';
+
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
 });
@@ -48,6 +50,74 @@ export async function getAgeAndGenderFromImageURLUsingOpenAI(
     console.error('Error processing the image:', error);
     return null;
   }
+}
+
+export function getFlaggedCategories(
+  response: OpenAI.Moderations.ModerationCreateResponse,
+): string {
+  const result = response?.results?.[0]; // Safely access the first result
+
+  if (!result) {
+    return 'No results found.';
+  }
+
+  const flaggedCategories: string[] = [];
+
+  // Use Object.entries to loop through categories
+  (
+    Object.entries(result.categories) as [
+      keyof typeof result.category_scores,
+      boolean,
+    ][]
+  ).forEach(([category, isFlagged]) => {
+    if (isFlagged) {
+      // Safely get the score with optional chaining, and provide a default value (0) if undefined
+      const score = result.category_scores?.[category] ?? 0;
+      flaggedCategories.push(`${category} (${score.toFixed(6)})`); // Format score to 6 decimal places
+    }
+  });
+
+  // Return a concatenated string of flagged categories and their scores
+  if (flaggedCategories.length > 0) {
+    return `Flagged categories: ${flaggedCategories.join(', ')}`;
+  }
+  return 'No categories flagged.';
+}
+
+export async function isTextSafe(prompt: string, clientid?: string) {
+  const moderation = await openai.moderations.create({
+    model: 'omni-moderation-latest',
+    input: prompt,
+  });
+  const nsfwDetails = getFlaggedCategories(moderation);
+  if (
+    !['No categories flagged.', 'No results found'].includes(nsfwDetails) &&
+    clientid
+  ) {
+    await sendMessageToTelegram(`NSFW detected: ${clientid} ~ ${prompt}
+${nsfwDetails}`);
+  }
+  const isSafe = !moderation.results[0]?.flagged;
+  return isSafe;
+}
+
+export async function isTextAndImageSafe(prompt: string, imageURL: string) {
+  const moderation: OpenAI.Moderations.ModerationCreateResponse =
+    await openai.moderations.create({
+      model: 'omni-moderation-latest',
+      input: [
+        { type: 'text', text: prompt },
+        {
+          type: 'image_url',
+          image_url: {
+            url: imageURL,
+          },
+        },
+      ],
+    });
+
+  const isSafe = !moderation.results[0]?.flagged;
+  return isSafe;
 }
 
 const PromptSchema = z.object({

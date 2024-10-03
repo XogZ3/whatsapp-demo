@@ -81,22 +81,22 @@ export async function getFlaggedCategories(
 
   // Return a concatenated string of flagged categories and their scores
   if (flaggedCategories.length > 0) {
-    await sendMessageToTelegram(`NSFW detected: ${clientid} ~ ${prompt}
-Flagged categories: ${flaggedCategories.join(', ')}`);
+    const message = `NSFW detected: ${clientid} ~ ${prompt}
+Flagged categories: ${flaggedCategories.join(', ')}`;
+    console.log('[moderator] ', message);
+    await sendMessageToTelegram(message);
     return `Flagged categories: ${flaggedCategories.join(', ')}`;
   }
   return 'No categories flagged.';
 }
 
 export async function isTextSafe(prompt: string, clientid: string) {
-  console.log('[openai] checking for nsfw');
   const moderation = await openai.moderations.create({
     model: 'omni-moderation-latest',
     input: prompt,
   });
   await getFlaggedCategories(moderation, prompt, clientid);
   const isSafe = !moderation.results[0]?.flagged;
-  console.log('[openai] is safe?', isSafe);
   return isSafe;
 }
 

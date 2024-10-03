@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import NotFound from '@/app/[locale]/not-found';
 import { AppConfig } from '@/utils/appConfig';
 
-import LoadingPage from '../../loading';
+import LoadingPage from '../../../loading';
 
 export default function BuyPage({ params }: { params: any }) {
   const [loading, setLoading] = useState(true);

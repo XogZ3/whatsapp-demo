@@ -22,7 +22,6 @@ const createFirebaseApp = (): App => {
         credential: admin.credential.cert(
           serviceAccount as admin.ServiceAccount,
         ),
-        databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
         storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
       });
     } catch (initError) {

@@ -28,7 +28,7 @@ export default bundleAnalyzer(
       remotePatterns: [
         {
           protocol: 'https',
-          hostname: 'storage.videogptai.com',
+          hostname: 'storage.googleapis.com',
           pathname: '**',
         },
         {

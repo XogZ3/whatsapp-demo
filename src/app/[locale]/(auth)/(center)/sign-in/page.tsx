@@ -12,7 +12,6 @@ import {
 import { Spinner } from '@/components/Spinner';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useToast } from '@/components/ui/use-toast';
 import { auth } from '@/modules/firebase/FirebaseConfig';
 import { validateSignInData } from '@/utils/validation';
 
@@ -23,8 +22,6 @@ export default function Component() {
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const { toast } = useToast();
 
   useEffect(() => {
     setErrors({});
@@ -69,23 +66,7 @@ export default function Component() {
           email,
           password,
         );
-        const { user } = userCredential;
-        const userEmail = user.email;
-
-        const tenantEmail = process.env.NEXT_PUBLIC_TENANT;
-
-        if (tenantEmail !== 'admin@svdroptaxi.com') {
-          if (userEmail !== tenantEmail) {
-            // User doesn't belong to this tenant
-            toast({
-              title: 'Error',
-              description: "You don't have access to this application.",
-            });
-            await auth.signOut();
-            setIsSubmitting(false);
-            return;
-          }
-        }
+        setUser(userCredential.user);
 
         setEmail('');
         setPassword('');

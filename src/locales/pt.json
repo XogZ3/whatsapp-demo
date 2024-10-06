@@ -7,13 +7,29 @@
     "meta_description": "Crie imagens impressionantes geradas por IA através do WhatsApp. Faça fotos para perfis de namoro, fotos de viagem, ideias de roupas, fotos profissionais e muito mais. Basta enviar suas fotos e deixar {appName} dar vida à sua visão criativa!"
   },
   "HeroSection": {
-    "header_1": "Gere imagens incríveis de",
-    "header_2": "VOCÊ",
-    "subheader": "O poder das fotos de IA no seu chat do WhatsApp",
+    "header_1": "Crie Fotos de IA Impressionantes com a FotoLabs",
+    "conjunction": "de",
+    "header_2": "Você",
+    "subheader": "Dê Vida às Suas Ideias Usando o WhatsApp",
     "web_cta": "WhatsApp Agora",
     "mobile_cta_google": "Disponível no Playstore",
     "mobile_cta_apple": "Baixe na AppStore",
     "support": "Para qualquer suporte ou ajuda, escreva para nós em"
+  },
+
+  "UsesSection": {
+    "heading_1": "❤️‍🔥 Encontros com AI",
+    "content_1": "Use IA para gerar melhores fotos de encontros para Tinder, Bumble e Hinge. Tenha mais matches e faça seu perfil de encontros se destacar em aplicativos de relacionamento com imagens personalizadas e de alta qualidade. Experimente diferentes poses, roupas e cenários.",
+    "heading_2": "🕵🏽 Fotos profissionais",
+    "content_2": "Obtenha uma aparência profissional com fotos profissionais que você pode usar no LinkedIn. Destaque-se da concorrência, aumente sua visibilidade e atraia mais ofertas de emprego fazendo uma forte primeira impressão.",
+    "heading_3": "👗 Ideias de roupas",
+    "content_3": "Capture diferentes roupas e estilos para ver o que mais combina com você. Use IA para visualizar como várias roupas ficam em você antes de tomar uma decisão. Ideias: moderno, casual, praia, provocante, retrô, tradicional, cyberpunk, motociclista, etc.",
+    "heading_4": "🌎 Viagens",
+    "content_4": "Viaje pelo mundo e capture fotos deslumbrantes de Paris a Tóquio. Mostre suas aventuras globais com imagens vibrantes de cidades icônicas e culturas diversas.",
+    "heading_5": "📸 Instagram",
+    "content_5": "Tire fotos envolventes e visualmente impressionantes que mostrem sua personalidade como um influenciador do Instagram. Aumente sua confiança, curtidas e seguidores com imagens cativantes que refletem seu estilo e carisma únicos.",
+    "heading_6": "👩‍🦱 Penteados",
+    "content_6": "Experimente uma variedade de penteados que expressem sua individualidade. Seja cachos elegantes, tranças lisas ou cortes ousados, mostre seu visual com imagens marcantes."
   },
   "FooterSection": {
     "Title_1": {

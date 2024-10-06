@@ -24,7 +24,6 @@ import {
   setUserState,
 } from '@/utils/ReplyHelper/FirebaseHelpers';
 import { sendMessageToTelegram } from '@/utils/telegram';
-import { processTrainingImages } from '@/utils/trainingHelpers';
 import { getTranslation } from '@/utils/translations';
 
 import {
@@ -362,13 +361,13 @@ export const actionsFactory = (config: IMachineConfig): any => {
         return;
       }
 
-      // face crop images if possible
-      const finalTrainingImageURLs = await processTrainingImages(
-        clientid,
-        trainingImageURLs,
-      );
+      // TODO: face crop images if possible
+      // const finalTrainingImageURLs = await processTrainingImages(
+      //   clientid,
+      //   trainingImageURLs,
+      // );
 
-      await callTrainingAPI(clientid, finalTrainingImageURLs)
+      await callTrainingAPI(clientid, trainingImageURLs)
         .then(async (response) => {
           if (response.jobId)
             console.log(`[+] callTrainingAPI job created: ${response.jobId}`);

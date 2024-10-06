@@ -214,6 +214,8 @@ export async function callTrainingAPI(
     clientid,
   };
 
+  // TODO: Extract face from images
+
   try {
     const response = await fetch(`${getBaseUrl()}/api/fal/starttraining`, {
       method: 'POST',

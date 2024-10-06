@@ -78,6 +78,7 @@ export type UserFieldsFirebase = {
   lastupdatedat: number;
   language: Language;
   trainingImageURLs: any;
+  finalTrainingImageURLs: string[];
   age: number;
   gender: 'male' | 'female';
   loraURL: string;
@@ -116,6 +117,7 @@ export async function getUserFields(
     lastupdatedat,
     language,
     trainingImageURLs,
+    finalTrainingImageURLs,
     age,
     gender,
     loraURL,
@@ -145,6 +147,7 @@ export async function getUserFields(
     lastupdatedat,
     language: userLanguage,
     trainingImageURLs,
+    finalTrainingImageURLs,
     age,
     gender,
     loraURL,
@@ -213,6 +216,8 @@ export async function callTrainingAPI(
     model_name: `person${clientid}`,
     clientid,
   };
+
+  // TODO: Extract face from images
 
   try {
     const response = await fetch(`${getBaseUrl()}/api/fal/starttraining`, {
@@ -310,6 +315,33 @@ export async function addTrainingImageURLandIncreaseCountDecreasePendingUploads(
     console.error('Transaction failed: ', error);
   }
   return { newPhotosUploaded: -1, newPendingUploads: -1 };
+}
+
+export async function addFinalTrainingImageURL(
+  clientid: string,
+  imageURL: string,
+) {
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid);
+
+  try {
+    await firestore.runTransaction(async (transaction) => {
+      const doc = await transaction.get(clientDoc);
+      if (!doc.exists) {
+        throw new Error('Client document does not exist!');
+      }
+
+      transaction.update(clientDoc, {
+        finalTrainingImageURLs: FieldValue.arrayUnion(imageURL),
+      });
+    });
+  } catch (error) {
+    console.error('addFinalTrainingImageURL Transaction failed: ', error);
+  }
 }
 
 export async function getPhotoCount(clientid: string) {

@@ -361,6 +361,12 @@ export const actionsFactory = (config: IMachineConfig): any => {
         return;
       }
 
+      // TODO: face crop images if possible
+      // const finalTrainingImageURLs = await processTrainingImages(
+      //   clientid,
+      //   trainingImageURLs,
+      // );
+
       await callTrainingAPI(clientid, trainingImageURLs)
         .then(async (response) => {
           if (response.jobId)

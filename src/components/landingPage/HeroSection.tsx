@@ -19,10 +19,13 @@ export default function HeroSection() {
           <Balancer>
             {t('header_1')} <br />
           </Balancer>
+        </h1>
+        <p className="gap-x-2 text-5xl sm:text-7xl">
+          {t('conjunction')}{' '}
           <span className="font-medium underline decoration-green-500 decoration-4 underline-offset-4">
             {t('header_2')}
           </span>
-        </h1>
+        </p>
 
         <h2 className="!mb-0 py-6 font-normal tracking-normal">
           <Balancer>{t('subheader')}</Balancer>

@@ -7,13 +7,28 @@
     "meta_description": "Create stunning AI-generated images through WhatsApp. Make dating profile pictures, travel photos, outfit ideas, professional headshots, and more. Simply upload your photos, and let {appName} bring your creative vision to life!"
   },
   "HeroSection": {
-    "header_1": "Generate awesome photos of",
-    "header_2": "YOU",
-    "subheader": "Power of AI images in your WhatsApp Chat",
+    "header_1": "Create Stunning AI Photos with FotoLabs",
+    "conjunction": "of",
+    "header_2": "You",
+    "subheader": "Bring Your Ideas to Life Using WhatsApp",
     "web_cta": "WhatsApp Now",
     "mobile_cta_google": "Get it on Playstore",
     "mobile_cta_apple": "Download on AppStore",
     "support": "For any support or help write to us at"
+  },
+  "UsesSection": {
+    "heading_1": "❤️‍🔥 AI Dating",
+    "content_1": "Use AI to generate better dating photos for Tinder, Bumble and Hinge. Get more matches and make your dating profile stand out on dating apps with personalized, high-quality images. Experiment with different poses, outfits, and settings",
+    "heading_2": "🕵🏽 Professional headshots",
+    "content_2": "Get a professional look with professional headshots you can use on your LinkedIn. Stand out from the competition, increase your visibility, attract more job offers by making a strong first impression",
+    "heading_3": "👗 Outfit ideas",
+    "content_3": "Capture different outfits and styles to see what fits you best. Use AI to visualize how various clothes look on you before making a choice. Ideas: trendy, casual, beach, provocative, retro, traditional, cyberpunk, biker, etc.",
+    "heading_4": "🌎 Travel",
+    "content_4": "Travel the world and capture stunning photos from Paris to Tokyo. Showcase your global adventures with vibrant images from iconic cities and diverse cultures",
+    "heading_5": "📸 Instagram",
+    "content_5": "Take engaging and visually stunning photos that showcase your personality as an Instagram influencer. Boost your confidence, likes and followers with captivating images that reflect your unique style and charisma",
+    "heading_6": "👩‍🦱 Hairstyles",
+    "content_6": "Experiment with a variety of hairstyles that express your individuality. Whether it’s chic curls, sleek braids, or bold fades, show off your look with striking images"
   },
   "FooterSection": {
     "Title_1": {

@@ -3,6 +3,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import * as React from 'react';
 import Balancer from 'react-wrap-balancer';
 
@@ -21,51 +22,6 @@ import woman_travel from '@/public/assets/images/woman_travel.webp';
 
 import { Container } from '../GeneralContainers';
 import { Card, CardContent, CardDescription, CardHeader } from '../ui/card';
-
-const CardData = [
-  {
-    image1: man_dating,
-    image2: woman_dating,
-    heading: '❤️‍🔥 AI Dating',
-    content:
-      'Use AI to generate better dating photos for Tinder, Bumble and Hinge. Get more matches and make your dating profile stand out on dating apps with personalized, high-quality images. Experiment with different poses, outfits, and settings',
-  },
-  {
-    image1: woman_professional,
-    image2: man_professional,
-    heading: '🕵🏽 Professional headshots',
-    content:
-      'Get a professional look with professional headshots you can use on your LinkedIn. Stand out from the competition, increase your visibility, attract more job offers by making a strong first impression',
-  },
-  {
-    image1: man_outfit,
-    image2: woman_outfit,
-    heading: '👗 Outfit ideas',
-    content:
-      'Capture different outfits and styles to see what fits you best. Use AI to visualize how various clothes look on you before making a choice. Ideas: trendy, casual, beach, provocative, retro, traditional, cyberpunk, biker, etc. ',
-  },
-  {
-    image1: woman_travel,
-    image2: man_travel,
-    heading: '🌎 Travel',
-    content:
-      'Travel the world and capture stunning photos from Paris to Tokyo. Showcase your global adventures with vibrant images from iconic cities and diverse cultures',
-  },
-  {
-    image1: man_instagram,
-    image2: woman_instagram,
-    heading: '📸 Instagram',
-    content:
-      'Take engaging and visually stunning photos that showcase your personality as an Instagram influencer. Boost your confidence, likes and followers with captivating images that reflect your unique style and charisma',
-  },
-  {
-    image1: woman_hair,
-    image2: man_hair,
-    heading: '👩‍🦱 Hairstyles',
-    content:
-      'Experiment with a variety of hairstyles that express your individuality. Whether it’s chic curls, sleek braids, or bold fades, show off your look with striking images',
-  },
-];
 
 const UseCaseCard = ({
   image1,
@@ -111,6 +67,46 @@ const UseCaseCard = ({
 };
 
 export default function UsesSection() {
+  const t = useTranslations('UsesSection');
+
+  const CardData = [
+    {
+      image1: man_dating,
+      image2: woman_dating,
+      heading: t('heading_1'),
+      content: t('content_1'),
+    },
+    {
+      image1: woman_professional,
+      image2: man_professional,
+      heading: t('heading_2'),
+      content: t('content_2'),
+    },
+    {
+      image1: man_outfit,
+      image2: woman_outfit,
+      heading: t('heading_3'),
+      content: t('content_3'),
+    },
+    {
+      image1: woman_travel,
+      image2: man_travel,
+      heading: t('heading_4'),
+      content: t('content_4'),
+    },
+    {
+      image1: man_instagram,
+      image2: woman_instagram,
+      heading: t('heading_5'),
+      content: t('content_5'),
+    },
+    {
+      image1: woman_hair,
+      image2: man_hair,
+      heading: t('heading_6'),
+      content: t('content_6'),
+    },
+  ];
   return (
     <div className="py-4 sm:py-14">
       <Container className="relative flex flex-col items-center justify-center gap-y-2 text-center leading-8">

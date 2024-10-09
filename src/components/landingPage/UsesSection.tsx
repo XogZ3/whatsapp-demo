@@ -111,7 +111,7 @@ export default function UsesSection() {
     <div className="py-4 sm:py-14">
       <Container className="relative flex flex-col items-center justify-center gap-y-2 text-center leading-8">
         <h3 className="flex flex-col pb-4 text-4xl font-normal tracking-normal">
-          <Balancer>FotoLabs Uses</Balancer>
+          <Balancer>{t('header')}</Balancer>
         </h3>
         <div className="flex w-full flex-col gap-y-4 text-5xl tracking-normal sm:grid sm:grid-cols-3 sm:gap-x-4 sm:text-7xl">
           {CardData.map((card) => (

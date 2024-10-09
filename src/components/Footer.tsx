@@ -58,12 +58,12 @@ export function Footer() {
           href: '/terms-and-conditions',
           description: `${t('Title_1.Terms.description')}`,
         },
-        {
-          id: 'sitemap',
-          label: `${t('Title_1.Sitemap.label')}`,
-          href: '/sitemap',
-          description: `${t('Title_1.Sitemap.description')}`,
-        },
+        // {
+        //   id: 'sitemap',
+        //   label: `${t('Title_1.Sitemap.label')}`,
+        //   href: '/sitemap',
+        //   description: `${t('Title_1.Sitemap.description')}`,
+        // },
       ],
     },
     {

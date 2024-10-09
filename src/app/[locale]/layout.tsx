@@ -1,6 +1,6 @@
 import '@/styles/global.css';
 
-import { GoogleTagManager } from '@next/third-parties/google';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { notFound } from 'next/navigation';
@@ -98,7 +98,7 @@ export default function RootLayout(props: {
   return (
     <ViewTransitions>
       <html lang={props.params.locale} suppressHydrationWarning>
-        <GoogleTagManager gtmId="GTM-Xxxxx" />
+        <GoogleAnalytics gaId="AW-16638273706" />
         <body className={inter.className}>
           <Providers>
             <NextIntlClientProvider

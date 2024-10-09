@@ -7,7 +7,6 @@ export const pages = [
   '',
   'privacy',
   'terms-and-conditions',
-  'sitemap',
   'cancel-subscription',
 ];
 

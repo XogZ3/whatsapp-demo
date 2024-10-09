@@ -2,6 +2,7 @@
 
 'use client';
 
+import { sendGAEvent } from '@next/third-parties/google';
 import { useTranslations } from 'next-intl';
 import * as React from 'react';
 import Balancer from 'react-wrap-balancer';
@@ -34,6 +35,12 @@ export default function HeroSection() {
           text={t('web_cta')}
           path="https://wa.me/971505072100"
           className="min-w-[185px] text-lg font-semibold"
+          onClick={() =>
+            sendGAEvent('event', 'conversion', {
+              send_to: 'AW-16638273706/MO7nCOGP0dsZEKrR3_09',
+              event_category: 'conversion',
+            })
+          }
         />
       </Container>
     </div>

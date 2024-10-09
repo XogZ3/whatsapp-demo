@@ -1,7 +1,10 @@
 import type { Language } from './translations';
 
 export const getBaseUrl = () => {
-  if (process.env.NEXT_PUBLIC_APP_URL && process.env.PRODUCTION === 'yes') {
+  if (
+    process.env.NEXT_PUBLIC_APP_URL &&
+    process.env.NEXT_PUBLIC_IS_PRODUCTION
+  ) {
     return process.env.NEXT_PUBLIC_APP_URL;
   }
 

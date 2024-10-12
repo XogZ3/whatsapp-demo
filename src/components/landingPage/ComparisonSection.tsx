@@ -83,12 +83,12 @@ export default function ComparisonSection() {
             altText="Midjourney comparison"
             title="Midjourney"
             features={[
-              { text: 'Low resemblance', positive: false },
-              { text: 'Easy to use', positive: true },
-              { text: 'Requires Discord', positive: false },
-              { text: 'Medium photorealism', positive: true },
-              { text: 'High Quality', positive: true },
-              { text: 'Slow generation', positive: false },
+              { text: t('midjourney.low_resemblance'), positive: false },
+              { text: t('midjourney.easy_to_use'), positive: true },
+              { text: t('midjourney.requires_discord'), positive: false },
+              { text: t('midjourney.medium_photorealism'), positive: true },
+              { text: t('midjourney.high_quality'), positive: true },
+              { text: t('midjourney.slow_generation'), positive: false },
             ]}
           />
 
@@ -98,12 +98,15 @@ export default function ComparisonSection() {
             title="FotoLabs.ai"
             isFotoLabsAI
             features={[
-              { text: 'High resemblance', positive: true },
-              { text: 'Super easy to use', positive: true },
-              { text: 'Use directly from WhatsApp', positive: true },
-              { text: 'High photorealism', positive: true },
-              { text: 'High Quality', positive: true },
-              { text: 'Super fast generation', positive: true },
+              { text: t('fotolabsai.high_resemblance'), positive: true },
+              { text: t('fotolabsai.super_easy_to_use'), positive: true },
+              {
+                text: t('fotolabsai.use_directly_from_whatsapp'),
+                positive: true,
+              },
+              { text: t('fotolabsai.high_photorealism'), positive: true },
+              { text: t('fotolabsai.high_quality'), positive: true },
+              { text: t('fotolabsai.super_fast_generation'), positive: true },
             ]}
           />
 
@@ -112,12 +115,15 @@ export default function ComparisonSection() {
             altText="ComfyUI comparison"
             title="ComfyUI"
             features={[
-              { text: 'No resemblance', positive: false },
-              { text: 'Hard to use', positive: false },
-              { text: 'Requires expensive graphic card', positive: false },
-              { text: 'Low photorealism', positive: false },
-              { text: 'High Quality', positive: true },
-              { text: 'Very slow generation', positive: false },
+              { text: t('comfyui.low_resemblance'), positive: false },
+              { text: t('comfyui.hard_to_use'), positive: false },
+              {
+                text: t('comfyui.requires_expensive_graphic_card'),
+                positive: false,
+              },
+              { text: t('comfyui.low_photorealism'), positive: false },
+              { text: t('comfyui.high_quality'), positive: true },
+              { text: t('comfyui.slow_generation'), positive: false },
             ]}
           />
         </div>

@@ -9,18 +9,18 @@ import { useTranslations } from 'next-intl';
 import * as React from 'react';
 import Balancer from 'react-wrap-balancer';
 
-import { Container } from '../GeneralContainers';
+import { Container, Section } from '../GeneralContainers';
 import ButtonFancy from '../ui/button-fancy';
 
 export default function LastSection() {
   const t = useTranslations('LastSection');
 
   return (
-    <div className="flex w-full justify-center bg-black py-4 dark:bg-white sm:py-10">
-      <Container noYPadding>
-        <div className="relative mx-auto flex max-w-6xl flex-col-reverse items-center justify-center rounded-3xl bg-white dark:bg-black sm:h-[600px] sm:flex-row">
+    <Section className="flex w-full justify-center bg-black py-4 dark:bg-white sm:py-10">
+      <Container noYPadding className="w-full">
+        <div className="relative flex min-w-full grow flex-col-reverse items-center justify-center rounded-3xl bg-white dark:bg-black sm:h-[600px] sm:flex-row">
           {/* Content section */}
-          <div className="flex w-full flex-col items-center justify-center px-4 pb-4 sm:w-4/6 sm:items-start sm:justify-start sm:px-8">
+          <div className="flex w-full flex-col items-center justify-center px-4 pb-4 sm:w-2/3 sm:items-start sm:justify-start sm:px-8">
             <h1 className="flex flex-col gap-y-4 text-5xl font-normal tracking-normal sm:text-6xl">
               <Balancer>
                 {t('header_1')} <br />
@@ -68,7 +68,7 @@ export default function LastSection() {
           </div>
 
           {/* Image section */}
-          <div className="relative mb-8 h-[300px] w-full rounded-t-3xl bg-black dark:bg-white sm:mb-0 sm:h-full sm:w-2/6 sm:rounded-r-3xl sm:rounded-t-none">
+          <div className="relative mb-8 h-[300px] w-full rounded-t-3xl bg-black dark:bg-white sm:mb-0 sm:h-full sm:w-1/3 sm:rounded-r-3xl sm:rounded-t-none">
             <Image
               src="/assets/images/woman_1.webp"
               alt="FotoLabs"
@@ -80,6 +80,6 @@ export default function LastSection() {
           </div>
         </div>
       </Container>
-    </div>
+    </Section>
   );
 }

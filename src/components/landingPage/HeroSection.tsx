@@ -130,7 +130,7 @@ export default function HeroSection() {
             >
               <Image
                 src="/assets/images/hero_thai_2.jpg"
-                alt="AI Generated"
+                alt={t('ai_generated')}
                 width={375}
                 height={667}
                 className="object-cover"
@@ -138,7 +138,7 @@ export default function HeroSection() {
               />
             </div>
             <div className="absolute right-0 top-0 rounded-bl-lg rounded-tr-lg bg-green-500 px-2 py-1 text-xs text-black">
-              AI generated photo
+              {t('ai_generated')}
             </div>
           </div>
         </div>

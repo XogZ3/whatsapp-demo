@@ -15,6 +15,7 @@
     "subheader_3": "Take 100% AI photos in any pose, place or action",
     "subheader_4": "Upload selfies and create your own Flux™ AI model",
     "web_cta": "WhatsApp Now",
+    "ai_generated": "AI generated photo",
     "mobile_cta_google": "Get it on Playstore",
     "mobile_cta_apple": "Download on AppStore",
     "support": "For any support or help write to us at"
@@ -40,7 +41,31 @@
   },
   "ComparisonSection": {
     "header": "How does FotoLabs.ai compare to other AI photo generators?",
-    "subheader": "FotoLabs.ai is the best choice for creating high-quality AI images, easy to use from the comfort of WhatsApp."
+    "subheader": "FotoLabs.ai is the best choice for creating high-quality AI images, easy to use from the comfort of WhatsApp.",
+    "midjourney": {
+      "low_resemblance": "Low resemblance",
+      "easy_to_use": "Easy to use",
+      "requires_discord": "Requires Discord",
+      "medium_photorealism": "Medium photorealism",
+      "high_quality": "High Quality",
+      "slow_generation": "Slow generation"
+    },
+    "fotolabsai": {
+      "high_resemblance": "High resemblance",
+      "super_easy_to_use": "Super easy to use",
+      "use_directly_from_whatsapp": "Use directly from WhatsApp",
+      "high_photorealism": "High photorealism",
+      "high_quality": "High Quality",
+      "super_fast_generation": "Super fast generation"
+    },
+    "comfyui": {
+      "low_resemblance": "No resemblance",
+      "hard_to_use": "Hard to use",
+      "requires_expensive_graphic_card": "Requires expensive graphic card",
+      "low_photorealism": "Low photorealism",
+      "high_quality": "High Quality",
+      "slow_generation": "Very slow generation"
+    }
   },
   "UsesSection": {
     "header": "FotoLabs Uses",
@@ -126,7 +151,7 @@
         "answer": "Yes, our payment service is secure. We use Stripe for financial processing, and we do not store any information about your card. Stripe ensures bank-level security standards."
       },
       {
-        "question": "Is my data secure? Do my photos and models remain private?",
+        "question": "Do my photos and models remain private?",
         "answer": "Yes! The models you create and photos you upload and take stay private. Your personal data, images, and AI models are stored securely, and our system is designed to protect your information from unauthorized access."
       },
       {

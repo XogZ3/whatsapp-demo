@@ -7,20 +7,24 @@
     "meta_description": "Crie imagens impressionantes geradas por IA através do WhatsApp. Faça fotos para perfis de namoro, fotos de viagem, ideias de roupas, fotos profissionais e muito mais. Basta enviar suas fotos e deixar {appName} dar vida à sua visão criativa!"
   },
   "HeroSection": {
-    "header_1": "Crie Fotos de IA Impressionantes com a FotoLabs",
-    "conjunction": "de",
-    "header_2": "Você",
-    "subheader": "Dê Vida às Suas Ideias Usando o WhatsApp",
+    "header_1": "Crie fotos com IA",
+    "conjunction": "no",
+    "header_2": "WhatsApp",
+    "subheader": "Gere fotos para suas redes sociais com IA. Economize tempo e dinheiro e faça fotos ilimitadas com IA pelo seu celular",
+    "subheader_2": "Experimente roupas no seu modelo antes de comprar online",
+    "subheader_3": "Tire fotos 100% IA em qualquer pose, lugar ou ação",
+    "subheader_4": "Envie selfies e crie seu próprio modelo de IA Flux™",
     "web_cta": "WhatsApp Agora",
+    "ai_generated": "Foto de IA gerada",
     "mobile_cta_google": "Disponível no Playstore",
     "mobile_cta_apple": "Baixe na AppStore",
     "support": "Para qualquer suporte ou ajuda, escreva para nós em"
   },
   "LastSection": {
-    "header_1": "Comece a criar fotos de IA",
+    "header_1": "Comece a tirar fotos com IA",
     "conjunction": "no",
     "header_2": "WhatsApp Agora",
-    "subheader": "Dê Vida às Suas Ideias Usando o WhatsApp",
+    "subheader": "Gere fotos para suas redes sociais com IA. Economize tempo e dinheiro e faça fotos ilimitadas com IA pelo seu celular",
     "subheader_2": "Experimente roupas no seu modelo antes de comprar online",
     "subheader_3": "Tire fotos 100% IA em qualquer pose, lugar ou ação",
     "subheader_4": "Envie selfies e crie seu próprio modelo de IA Flux™",
@@ -37,7 +41,31 @@
   },
   "ComparisonSection": {
     "header": "Como o FotoLabs.ai se compara a outros geradores de fotos de IA?",
-    "subheader": "FotoLabs.ai é a melhor escolha para criar imagens de IA de alta qualidade, fácil de usar no conforto do WhatsApp."
+    "subheader": "FotoLabs.ai é a melhor escolha para criar imagens de IA de alta qualidade, fácil de usar no conforto do WhatsApp.",
+    "midjourney": {
+      "low_resemblance": "Baixa semelhança",
+      "easy_to_use": "Fácil de usar",
+      "requires_discord": "Requer Discord",
+      "medium_photorealism": "Fotorrealismo médio",
+      "high_quality": "Alta qualidade",
+      "slow_generation": "Geração lenta"
+    },
+    "fotolabsai": {
+      "high_resemblance": "Alta semelhança",
+      "super_easy_to_use": "Super fácil de usar",
+      "use_directly_from_whatsapp": "Use diretamente do WhatsApp",
+      "high_photorealism": "Alto fotorrealismo",
+      "high_quality": "Alta qualidade",
+      "super_fast_generation": "Geração super rápida"
+    },
+    "comfyui": {
+      "low_resemblance": "Sem semelhança",
+      "hard_to_use": "Difícil de usar",
+      "requires_expensive_graphic_card": "Requer placa gráfica cara",
+      "low_photorealism": "Baixo fotorrealismo",
+      "high_quality": "Alta qualidade",
+      "slow_generation": "Geração muito lenta"
+    }
   },
   "UsesSection": {
     "header": "Usos do FotoLabs",
@@ -123,7 +151,7 @@
         "answer": "Sim, nosso serviço de pagamento é seguro. Usamos o Stripe para processamento financeiro e não armazenamos nenhuma informação sobre seu cartão. O Stripe garante padrões de segurança de nível bancário."
       },
       {
-        "question": "Meus dados estão seguros? Minhas fotos e modelos permanecem privados?",
+        "question": "Minhas fotos e modelos permanecem privados?",
         "answer": "Sim! Os modelos que você cria e as fotos que você envia e tira permanecem privados. Seus dados pessoais, imagens e modelos de IA são armazenados com segurança, e nosso sistema é projetado para proteger suas informações contra acesso não autorizado."
       },
       {

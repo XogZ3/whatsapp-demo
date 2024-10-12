@@ -71,7 +71,7 @@
       },
       {
         "question": "How much does FotoLabs.ai cost?",
-        "answer": "For current pricing information, please check our website or send a message to our WhatsApp number. We offer different plans to suit various needs and budgets."
+        "answer": "Currently we have a special offer of $19.99 for 30 days unlimited AI photos, which is discounted from our regular price of $29.99."
       },
       {
         "question": "Is my data secure with FotoLabs.ai?",
@@ -91,7 +91,7 @@
       },
       {
         "question": "Can I cancel my subscription anytime?",
-        "answer": "Yes, you can cancel your subscription at any time. Please contact our support team through WhatsApp for assistance with cancellation."
+        "answer": "Yes, you can cancel your subscription at any time. You can initiate your cancellation request by visiting the link in the footer of our website (https://fotolabs.ai/cancel-subscription)."
       },
       {
         "question": "What type of photos should I upload?",
@@ -100,6 +100,38 @@
       {
         "question": "Can I generate photos of minors or children?",
         "answer": "No, it is strictly prohibited to generate photos of minors or children. Our service is designed for adults (18+) only."
+      },
+      {
+        "question": "Do you have a referral program?",
+        "answer": "Yes! Any customers who pay for FotoLabs.ai will receive a unique promo code in WhatsApp, which they can share with friends or family. When using this promo code during Stripe checkout, the referred user gets their first month completely free. Each code can only be used once."
+      },
+      {
+        "question": "What AI model does FotoLabs.ai use?",
+        "answer": "FotoLabs.ai uses our own AI generation pipeline, which is trained for high photorealism. We continuously work on improving it to provide the best possible results."
+      },
+      {
+        "question": "What will you do with my AI character photos?",
+        "answer": "We only use your photos to create an AI character. Your data privacy and security are our top priorities."
+      },
+      {
+        "question": "Can I use FotoLabs.ai to try on clothes?",
+        "answer": "Yes! You can upload any clothes, and the character will wear them for you. While the character isn't perfect with prints yet, we're working on improving this feature very soon."
+      },
+      {
+        "question": "How much will the photos look like me?",
+        "answer": "The resemblance of the photos to you depends on the quality and variety of the photos you upload. The better and more varied your photos, the more accurately the AI can understand and represent your unique characteristics. We keep improving our models every day."
+      },
+      {
+        "question": "Is the payment service secure?",
+        "answer": "Yes, our payment service is secure. We use Stripe for financial processing, and we do not store any information about your card. Stripe ensures bank-level security standards."
+      },
+      {
+        "question": "Is my data secure? Do my photos and models remain private?",
+        "answer": "Yes! The models you create and photos you upload and take stay private. Your personal data, images, and AI models are stored securely, and our system is designed to protect your information from unauthorized access."
+      },
+      {
+        "question": "Can I get a refund?",
+        "answer": "Unfortunately, we cannot offer refunds as costs incurred for creating AI models and generating AI photos are extremely high. Our upstream providers do not allow us to request refunds for the GPU processing time used to create your AI models and generate your AI photos. This would make it a loss-making endeavor for us. During sign-up, you agree to withhold your right to a refund for this reason. However, you can cancel anytime, and your subscription will end at the end of the current billing period."
       }
     ]
   },

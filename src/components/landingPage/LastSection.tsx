@@ -4,6 +4,7 @@
 
 import { sendGAEvent } from '@next/third-parties/google';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import * as React from 'react';
 import Balancer from 'react-wrap-balancer';
@@ -27,9 +28,13 @@ export default function LastSection() {
             </h1>
             <p className="gap-x-2 text-5xl sm:text-6xl">
               {t('conjunction')}{' '}
-              <span className="font-medium underline decoration-green-500 decoration-4 underline-offset-4">
+              <Link
+                href="https://wa.me/971505072100"
+                target="_blank"
+                className="font-medium underline decoration-green-500 decoration-4 underline-offset-4 transition-all duration-200 ease-in-out hover:text-opacity-80 hover:underline-offset-8"
+              >
                 {t('header_2')}
-              </span>
+              </Link>
             </p>
 
             <h2 className="!mb-0 py-6 font-normal tracking-normal sm:text-xl">
@@ -63,7 +68,7 @@ export default function LastSection() {
           </div>
 
           {/* Image section */}
-          <div className="relative mb-8 h-[300px] w-full rounded-t-3xl sm:mb-0 sm:h-full sm:w-2/6 sm:rounded-r-3xl sm:rounded-t-none">
+          <div className="relative mb-8 h-[300px] w-full rounded-t-3xl bg-black dark:bg-white sm:mb-0 sm:h-full sm:w-2/6 sm:rounded-r-3xl sm:rounded-t-none">
             <Image
               src="/assets/images/woman_1.webp"
               alt="FotoLabs"

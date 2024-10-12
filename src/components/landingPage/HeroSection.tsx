@@ -4,6 +4,7 @@
 
 import { sendGAEvent } from '@next/third-parties/google';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import * as React from 'react';
 import Balancer from 'react-wrap-balancer';
@@ -25,9 +26,13 @@ export default function HeroSection() {
           </h1>
           <p className="gap-x-2 text-center text-5xl sm:text-left sm:text-6xl">
             {t('conjunction')}{' '}
-            <span className="font-medium underline decoration-green-500 decoration-4 underline-offset-4">
+            <Link
+              href="https://wa.me/971505072100"
+              target="_blank"
+              className="font-medium underline decoration-green-500 decoration-4 underline-offset-4 transition-all duration-200 ease-in-out hover:text-opacity-80 hover:underline-offset-8"
+            >
               {t('header_2')}
-            </span>
+            </Link>
           </p>
 
           <h2 className="!mb-0 py-6 text-center font-normal tracking-normal sm:text-left">
@@ -104,11 +109,18 @@ export default function HeroSection() {
           </div>
           <div className="">
             <Image
-              src="/assets/images/arrow.png"
+              src="/assets/images/arrow_black.png"
               alt="Arrow"
-              style={{ rotate: '180deg', transform: 'scaleX(-1)' }}
               width={80}
               height={50}
+              className="block dark:hidden"
+            />
+            <Image
+              src="/assets/images/arrow_white.png"
+              alt="Arrow"
+              width={80}
+              height={50}
+              className="hidden dark:block"
             />
           </div>
           <div className="relative">

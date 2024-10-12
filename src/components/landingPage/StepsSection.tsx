@@ -1,5 +1,3 @@
-/* eslint-disable tailwindcss/no-custom-classname */
-
 'use client';
 
 import Link from 'next/link';
@@ -37,7 +35,7 @@ export default function StepsSection() {
                 {t('step_1_1')}{' '}
                 <Link
                   href="https://wa.me/971505072100"
-                  className="underline decoration-green-500 underline-offset-4 hover:text-green-500"
+                  className="underline decoration-green-500 underline-offset-4 transition-colors duration-200 ease-in-out hover:text-green-500"
                 >
                   {t('step_1_2')}
                 </Link>{' '}

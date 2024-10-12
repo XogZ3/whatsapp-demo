@@ -16,7 +16,7 @@ export default function LastSection() {
   const t = useTranslations('LastSection');
 
   return (
-    <Section className="flex w-full justify-center bg-black py-4 dark:bg-white sm:py-10">
+    <Section className="flex w-full items-center justify-center bg-black py-4 dark:bg-white sm:py-10">
       <Container noYPadding className="w-full">
         <div className="relative flex min-w-full grow flex-col-reverse items-center justify-center rounded-3xl bg-white dark:bg-black sm:h-[600px] sm:flex-row">
           {/* Content section */}
@@ -70,10 +70,10 @@ export default function LastSection() {
           {/* Image section */}
           <div className="relative mb-8 h-[300px] w-full rounded-t-3xl bg-black dark:bg-white sm:mb-0 sm:h-full sm:w-1/3 sm:rounded-r-3xl sm:rounded-t-none">
             <Image
-              src="/assets/images/woman_1.webp"
+              src="/assets/images/man (4).jpg"
               alt="FotoLabs"
               fill
-              style={{ objectPosition: '0% 25%', objectFit: 'cover' }}
+              style={{ objectPosition: '0% 0%', objectFit: 'cover' }}
               sizes="(max-width: 640px) 100vw, 33vw"
               className="rounded-t-3xl sm:rounded-l-none sm:rounded-r-3xl"
             />

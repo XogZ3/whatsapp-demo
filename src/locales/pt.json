@@ -16,7 +16,29 @@
     "mobile_cta_apple": "Baixe na AppStore",
     "support": "Para qualquer suporte ou ajuda, escreva para nós em"
   },
-
+  "LastSection": {
+    "header_1": "Comece a criar fotos de IA",
+    "conjunction": "no",
+    "header_2": "WhatsApp Agora",
+    "subheader": "Dê Vida às Suas Ideias Usando o WhatsApp",
+    "subheader_2": "Experimente roupas no seu modelo antes de comprar online",
+    "subheader_3": "Tire fotos 100% IA em qualquer pose, lugar ou ação",
+    "subheader_4": "Envie selfies e crie seu próprio modelo de IA Flux™",
+    "web_cta": "WhatsApp Agora"
+  },
+  "StepsSection": {
+    "header": "Como funciona",
+    "subheader": "Comece a produzir fotografias de IA de alta qualidade instantaneamente com FotoLabs.ai com personagens consistentes.",
+    "step_1_1": "Envie oi para",
+    "step_1_2": "FotoLabs.ai no WhatsApp",
+    "step_1_3": "e faça um pagamento de",
+    "step_2": "Envie {lowerLimit}-{upperLimit} fotos suas de boa qualidade / selfies e aguarde 3 minutos",
+    "step_3": "Envie prompts criativos para gerar imagens incríveis ilimitadas de você por 30 dias!"
+  },
+  "ComparisonSection": {
+    "header": "Como o FotoLabs.ai se compara a outros geradores de fotos de IA?",
+    "subheader": "FotoLabs.ai é a melhor escolha para criar imagens de IA de alta qualidade, fácil de usar no conforto do WhatsApp."
+  },
   "UsesSection": {
     "header": "Usos do FotoLabs",
     "heading_1": "❤️‍🔥 Encontros com AI",
@@ -31,6 +53,84 @@
     "content_5": "Tire fotos envolventes e visualmente impressionantes que mostrem sua personalidade como um influenciador do Instagram. Aumente sua confiança, curtidas e seguidores com imagens cativantes que refletem seu estilo e carisma únicos.",
     "heading_6": "👩‍🦱 Penteados",
     "content_6": "Experimente uma variedade de penteados que expressem sua individualidade. Seja cachos elegantes, tranças lisas ou cortes ousados, mostre seu visual com imagens marcantes."
+  },
+  "FAQSection": {
+    "header": "Perguntas Frequentes",
+    "subheader": "Aqui estão algumas das perguntas mais frequentes sobre o FotoLabs.ai",
+    "faqs": [
+      {
+        "question": "Como funciona o FotoLabs.ai?",
+        "answer": "O FotoLabs.ai permite que você gere fotos de IA através do WhatsApp. Basta enviar uma mensagem para o nosso número do WhatsApp, fazer um pagamento, enviar 5-15 fotos de boa qualidade suas e começar a criar imagens ilimitadas geradas por IA por 30 dias!"
+      },
+      {
+        "question": "Para que posso usar o FotoLabs.ai?",
+        "answer": "O FotoLabs.ai pode ser usado para diversos fins, incluindo criar melhores fotos para perfis de namoro, fotos profissionais para o LinkedIn, experimentar diferentes roupas, gerar fotos de viagem, criar conteúdo envolvente para o Instagram e experimentar diferentes penteados."
+      },
+      {
+        "question": "Quanto custa o FotoLabs.ai?",
+        "answer": "Atualmente, temos uma oferta especial de $19,99 por 30 dias de fotos de IA ilimitadas, que é um desconto do nosso preço regular de $29,99."
+      },
+      {
+        "question": "Meus dados estão seguros com o FotoLabs.ai?",
+        "answer": "Sim, levamos a privacidade e segurança dos dados muito a sério. Todas as conversas são criptografadas e não armazenamos informações pessoais sem consentimento explícito."
+      },
+      {
+        "question": "Quanto tempo leva para gerar fotos de IA?",
+        "answer": "Após o envio das suas fotos, geralmente leva cerca de 3 minutos para processar. Depois disso, você pode começar a gerar fotos de IA instantaneamente."
+      },
+      {
+        "question": "Posso usar o FotoLabs.ai para experimentar roupas?",
+        "answer": "Sim! Você pode usar o FotoLabs.ai para visualizar como várias roupas ficam em você antes de fazer uma escolha. É ótimo para explorar diferentes estilos e roupas."
+      },
+      {
+        "question": "O FotoLabs.ai está disponível 24 horas por dia, 7 dias por semana?",
+        "answer": "Sim, o FotoLabs.ai está disponível o tempo todo através do WhatsApp, fornecendo assistência sempre que você precisar."
+      },
+      {
+        "question": "Posso cancelar minha assinatura a qualquer momento?",
+        "answer": "Sim, você pode cancelar sua assinatura a qualquer momento. Você pode iniciar seu pedido de cancelamento visitando o link no rodapé do nosso site (https://fotolabs.ai/cancel-subscription)."
+      },
+      {
+        "question": "Que tipo de fotos devo enviar?",
+        "answer": "Recomendamos enviar 5-15 fotos de alta qualidade com boa variedade. Inclua uma mistura de selfies de perto e fotos de corpo inteiro em diferentes cenários, ângulos e expressões."
+      },
+      {
+        "question": "Posso gerar fotos de menores ou crianças?",
+        "answer": "Não, é estritamente proibido gerar fotos de menores ou crianças. Nosso serviço é projetado apenas para adultos (maiores de 18 anos)."
+      },
+      {
+        "question": "Vocês têm um programa de indicação?",
+        "answer": "Sim! Qualquer cliente que pague pelo FotoLabs.ai receberá um código promocional único no WhatsApp, que pode compartilhar com amigos ou familiares. Ao usar este código promocional durante o checkout do Stripe, o usuário indicado recebe seu primeiro mês completamente grátis. Cada código só pode ser usado uma vez."
+      },
+      {
+        "question": "Qual modelo de IA o FotoLabs.ai usa?",
+        "answer": "O FotoLabs.ai usa nosso próprio pipeline de geração de IA, que é treinado para alto fotorrealismo. Trabalhamos continuamente para melhorá-lo e fornecer os melhores resultados possíveis."
+      },
+      {
+        "question": "O que vocês farão com as fotos do meu personagem de IA?",
+        "answer": "Usamos suas fotos apenas para criar um personagem de IA. A privacidade e segurança dos seus dados são nossas principais prioridades."
+      },
+      {
+        "question": "Posso usar o FotoLabs.ai para experimentar roupas?",
+        "answer": "Sim! Você pode enviar qualquer roupa e o personagem a vestirá para você. Embora o personagem ainda não seja perfeito com estampas, estamos trabalhando para melhorar esse recurso em breve."
+      },
+      {
+        "question": "O quanto as fotos se parecerão comigo?",
+        "answer": "A semelhança das fotos com você depende da qualidade e variedade das fotos que você enviar. Quanto melhores e mais variadas forem suas fotos, mais precisamente a IA poderá entender e representar suas características únicas. Continuamos melhorando nossos modelos todos os dias."
+      },
+      {
+        "question": "O serviço de pagamento é seguro?",
+        "answer": "Sim, nosso serviço de pagamento é seguro. Usamos o Stripe para processamento financeiro e não armazenamos nenhuma informação sobre seu cartão. O Stripe garante padrões de segurança de nível bancário."
+      },
+      {
+        "question": "Meus dados estão seguros? Minhas fotos e modelos permanecem privados?",
+        "answer": "Sim! Os modelos que você cria e as fotos que você envia e tira permanecem privados. Seus dados pessoais, imagens e modelos de IA são armazenados com segurança, e nosso sistema é projetado para proteger suas informações contra acesso não autorizado."
+      },
+      {
+        "question": "Posso obter um reembolso?",
+        "answer": "Infelizmente, não podemos oferecer reembolsos, pois os custos incorridos para criar modelos de IA e gerar fotos de IA são extremamente altos. Nossos provedores upstream não nos permitem solicitar reembolsos pelo tempo de processamento da GPU usado para criar seus modelos de IA e gerar suas fotos de IA. Isso tornaria um empreendimento deficitário para nós. Durante o cadastro, você concorda em renunciar ao seu direito a reembolso por esse motivo. No entanto, você pode cancelar a qualquer momento, e sua assinatura terminará no final do período de faturamento atual."
+      }
+    ]
   },
   "FooterSection": {
     "Title_1": {

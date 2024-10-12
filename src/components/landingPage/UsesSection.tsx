@@ -20,7 +20,7 @@ import woman_instagram from '@/public/assets/images/woman_instagram.webp';
 import woman_professional from '@/public/assets/images/woman_professional.webp';
 import woman_travel from '@/public/assets/images/woman_travel.webp';
 
-import { Container } from '../GeneralContainers';
+import { Container, Section } from '../GeneralContainers';
 import { Card, CardContent, CardDescription, CardHeader } from '../ui/card';
 
 const UseCaseCard = ({
@@ -108,12 +108,12 @@ export default function UsesSection() {
     },
   ];
   return (
-    <div className="py-4 sm:py-14">
+    <Section>
       <Container className="relative flex flex-col items-center justify-center gap-y-2 text-center leading-8">
-        <h3 className="flex flex-col pb-4 text-4xl font-normal tracking-normal">
+        <h2 className=" text-3xl font-bold sm:text-4xl xl:text-5xl">
           <Balancer>{t('header')}</Balancer>
-        </h3>
-        <div className="flex w-full flex-col gap-y-4 text-5xl tracking-normal sm:grid sm:grid-cols-3 sm:gap-x-4 sm:text-7xl">
+        </h2>
+        <div className="flex w-full flex-col gap-y-4 text-5xl tracking-normal sm:mt-8 sm:grid sm:grid-cols-3 sm:gap-x-4 sm:text-7xl">
           {CardData.map((card) => (
             <UseCaseCard
               key={card.heading}
@@ -125,6 +125,6 @@ export default function UsesSection() {
           ))}
         </div>
       </Container>
-    </div>
+    </Section>
   );
 }

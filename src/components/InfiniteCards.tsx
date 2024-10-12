@@ -80,7 +80,7 @@ const cards = [
 
 export function SampleImagesCarousel() {
   return (
-    <div className="ml-0 flex min-w-max flex-col items-center justify-center overflow-hidden rounded-md antialiased sm:ml-10">
+    <div className="col-span-10 ml-0 flex min-w-max flex-col items-center justify-center overflow-hidden rounded-md antialiased">
       <InfiniteMovingCards
         cards={cards}
         direction="right"

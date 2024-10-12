@@ -124,13 +124,19 @@ export default function HeroSection() {
             />
           </div>
           <div className="relative">
-            <Image
-              src="/assets/images/woman_cafe.webp"
-              alt="AI Generated"
-              width={250}
-              height={250}
-              className="rounded-lg"
-            />
+            <div
+              className="overflow-hidden rounded-lg"
+              style={{ width: '250px', height: '444px' }}
+            >
+              <Image
+                src="/assets/images/hero_thai_2.jpg"
+                alt="AI Generated"
+                width={375}
+                height={667}
+                className="object-cover"
+                style={{ transform: 'scale(1.5)', transformOrigin: 'center' }}
+              />
+            </div>
             <div className="absolute right-0 top-0 rounded-bl-lg rounded-tr-lg bg-green-500 px-2 py-1 text-xs text-black">
               AI generated photo
             </div>

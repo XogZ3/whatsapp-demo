@@ -47,6 +47,7 @@ export const ParallaxScroll = ({
               className="h-60 sm:h-80"
             >
               <Image
+                style={{ objectPosition: '0% 20%' }}
                 src={el}
                 className="size-full rounded-lg object-cover object-center"
                 height={400}
@@ -64,6 +65,7 @@ export const ParallaxScroll = ({
               className="h-60 sm:h-80"
             >
               <Image
+                style={{ objectPosition: '0% 20%' }}
                 src={el}
                 className="size-full rounded-lg object-cover object-center"
                 height={400}
@@ -81,6 +83,7 @@ export const ParallaxScroll = ({
               className="h-60 sm:h-80"
             >
               <Image
+                style={{ objectPosition: '0% 20%' }}
                 src={el}
                 className="size-full rounded-lg object-cover object-center"
                 height={400}
@@ -98,6 +101,7 @@ export const ParallaxScroll = ({
               className="h-60 sm:h-80"
             >
               <Image
+                style={{ objectPosition: '0% 20%' }}
                 src={el}
                 className="size-full rounded-lg object-cover object-center"
                 height={400}

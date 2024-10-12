@@ -1,46 +1,35 @@
+import { useTranslations } from 'next-intl';
 import React from 'react';
+import Balancer from 'react-wrap-balancer';
+
+import { Container, Section } from '../GeneralContainers';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '../ui/accordion';
 
 const FAQSection: React.FC = () => {
-  const faqItems = [
-    {
-      question: 'What is AI Chat?',
-      answer:
-        'AI Chat is an advanced conversational platform that uses artificial intelligence to engage in human-like dialogue, answer questions, and assist with various tasks.',
-    },
-    {
-      question: 'How does AI Chat work?',
-      answer:
-        'AI Chat uses natural language processing and machine learning algorithms to understand user input, generate relevant responses, and continuously improve its performance based on interactions.',
-    },
-    {
-      question: 'Is my data safe with AI Chat?',
-      answer:
-        'Yes, we take data privacy and security seriously. All conversations are encrypted, and we do not store personal information without explicit consent.',
-    },
-    {
-      question: 'Can AI Chat understand multiple languages?',
-      answer:
-        'Yes, AI Chat supports multiple languages and can detect and respond in the language used by the user.',
-    },
-    {
-      question: 'Is AI Chat available 24/7?',
-      answer:
-        'Yes, AI Chat is available round the clock, providing assistance whenever you need it.',
-    },
-  ];
+  const t = useTranslations('FAQSection');
+  const faqItems = t.raw('faqs') as Array<{ question: string; answer: string }>;
 
   return (
-    <section className="bg-gray-100 px-4 py-12 sm:px-6 lg:px-8">
-      <h2>Frequently Asked Questions</h2>
-      <div className="space-y-4">
-        {faqItems.map((item) => (
-          <div key={item.question}>
-            <h3>{item.question}</h3>
-            <p>{item.answer}</p>
-          </div>
-        ))}
-      </div>
-    </section>
+    <Section>
+      <Container>
+        <h2 className="mb-4 text-center text-3xl font-bold sm:text-4xl xl:text-5xl">
+          <Balancer>{t('header')}</Balancer>
+        </h2>
+        <Accordion type="single" collapsible className="mt-8 w-full">
+          {faqItems.map((item) => (
+            <AccordionItem key={item.question} value={item.question}>
+              <AccordionTrigger>{item.question}</AccordionTrigger>
+              <AccordionContent>{item.answer}</AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </Container>
+    </Section>
   );
 };
 

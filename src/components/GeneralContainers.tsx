@@ -70,7 +70,13 @@ const Section = ({
 }: SectionProps) => {
   return (
     <section
-      className={cn({ '': !noYPadding, 'py-4': noYPadding }, className)}
+      className={cn(
+        {
+          'pt-12 sm:pt-16': !noYPadding,
+          'py-4': noYPadding,
+        },
+        className,
+      )}
       id={id}
     >
       {children}

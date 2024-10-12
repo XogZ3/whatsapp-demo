@@ -41,6 +41,11 @@ export default bundleAnalyzer(
           hostname: 'replicate.delivery',
           pathname: '**',
         },
+        {
+          protocol: 'https',
+          hostname: 'images.unsplash.com',
+          pathname: '**',
+        },
       ],
     },
     webpack: (config) => {

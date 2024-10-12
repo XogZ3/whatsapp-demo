@@ -19,10 +19,9 @@ export function Sidebar({
   return (
     <div className="w-56 min-w-56 shrink-0 flex-col border-r p-4 sm:flex">
       <nav className="flex w-full grow flex-col items-start justify-between">
-        <div className="w-full space-y-2">
+        <div className="max-h-[calc(100vh-2rem)] w-full space-y-2 overflow-y-auto">
           <ul>
             {clientList.map((client: any) => (
-              // Replace <li> with <button> for accessibility and interactivity
               <li
                 key={client.id}
                 className={cn(

@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import React from 'react';
-import Balancer from 'react-wrap-balancer';
 
 import { Container, Section } from '../GeneralContainers';
 
@@ -70,10 +69,10 @@ export default function ComparisonSection() {
       <Container className="">
         <div className="text-center">
           <h2 className=" text-3xl font-bold sm:text-4xl xl:text-5xl">
-            <Balancer>{t('header')}</Balancer>
+            {t('header')}
           </h2>
           <p className=" mx-auto mt-5 max-w-md text-base font-normal">
-            <Balancer>{t('subheader')}</Balancer>
+            {t('subheader')}
           </p>
         </div>
 

@@ -6,7 +6,6 @@ import { AlertOctagonIcon, MessagesSquareIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import Balancer from 'react-wrap-balancer';
 
 import { Container } from '@/components/GeneralContainers';
 import { PhoneInputShadcnUiPhoneInput } from '@/components/phone-input';
@@ -57,7 +56,7 @@ export default function CancelSubscriptionPage() {
           <>
             <div className="flex w-full flex-row items-center justify-between">
               <div className="!mb-1 w-full text-start text-2xl tracking-tight opacity-100 sm:!mb-0 sm:text-4xl">
-                <Balancer>{t('header')}</Balancer>
+                {t('header')}
               </div>
               <div className="flex min-w-fit items-center justify-center whitespace-normal rounded-lg border border-red-500 px-3 py-2 font-semibold tracking-normal text-red-500 sm:px-6 sm:py-4">
                 {t('danger')}
@@ -66,7 +65,7 @@ export default function CancelSubscriptionPage() {
             <hr className="my-2 h-px w-full border-0 bg-black dark:bg-white sm:my-6" />
 
             <h3 className="!mb-0 py-2 text-sm font-normal opacity-100 sm:py-4 sm:text-base">
-              <Balancer>{t('instruction')}</Balancer>
+              {t('instruction')}
             </h3>
 
             <Label htmlFor="mobile">{t('label')}</Label>

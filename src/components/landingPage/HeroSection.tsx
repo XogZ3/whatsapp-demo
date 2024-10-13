@@ -7,7 +7,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import * as React from 'react';
-import Balancer from 'react-wrap-balancer';
 
 import { Container } from '../GeneralContainers';
 import ButtonFancy from '../ui/button-fancy';
@@ -21,9 +20,7 @@ export default function HeroSection() {
         {/* Text Content */}
         <div className="flex w-full flex-col items-center justify-center text-center sm:items-start sm:justify-start sm:text-start">
           <h1 className="flex flex-col gap-y-4 text-center text-5xl font-normal tracking-normal sm:text-left sm:text-6xl">
-            <Balancer>
-              {t('header_1')} <br />
-            </Balancer>
+            {t('header_1')} <br />
           </h1>
           <p className="gap-x-2 text-center text-5xl sm:text-left sm:text-6xl">
             {t('conjunction')}{' '}
@@ -37,7 +34,7 @@ export default function HeroSection() {
           </p>
 
           <h2 className="!mb-0 py-6 text-center font-normal tracking-normal sm:text-left">
-            <Balancer>{t('subheader')}</Balancer>
+            {t('subheader')}
           </h2>
           <ul className="mb-6 space-y-2 text-sm sm:text-base">
             <li className="flex items-center">

@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { AppConfig } from '@/utils/appConfig';
 
 import { Container } from './GeneralContainers';
+import Socials from './Socials';
 
 const LinkSkeleton = ({
   id,
@@ -100,6 +101,9 @@ export function Footer() {
             />
           ))}
         </div>
+
+        {/* SOCIAL SHARE BUTTONS */}
+        <Socials />
         {/* COPYRIGHT */}
         <div className="flex flex-col items-center justify-center pb-2 pt-4 text-center text-sm font-extralight md:text-base">
           <span className="">
@@ -108,6 +112,7 @@ export function Footer() {
           </span>
           <Link
             target="_blank"
+            rel="noopener noreferrer"
             href={process.env.NEXT_PUBLIC_COMPANY_URL as string}
           >
             {t('Copyright.text_3')} {process.env.NEXT_PUBLIC_COMPANY}

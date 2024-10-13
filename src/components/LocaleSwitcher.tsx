@@ -29,7 +29,7 @@ export default function LocaleSwitcher() {
       // onChange={handleChange}
       onValueChange={handleChange}
     >
-      <SelectTrigger className="w-24">
+      <SelectTrigger className="w-24" aria-label="Select a language">
         <SelectValue placeholder="Select a language" />
       </SelectTrigger>
       <SelectContent>

@@ -20,14 +20,15 @@ export default function LastSection() {
         <div className="relative flex min-w-full grow flex-col-reverse items-center justify-center rounded-3xl bg-white dark:bg-black sm:h-[600px] sm:flex-row">
           {/* Content section */}
           <div className="flex w-full flex-col items-center justify-center px-4 pb-4 sm:w-2/3 sm:items-start sm:justify-start sm:px-8">
-            <h1 className="flex flex-col gap-y-4 text-5xl font-normal tracking-normal sm:text-6xl">
+            <h2 className="flex flex-col gap-y-4 text-5xl font-normal tracking-normal sm:text-6xl">
               {t('header_1')} <br />
-            </h1>
+            </h2>
             <p className="gap-x-2 text-5xl sm:text-6xl">
               {t('conjunction')}{' '}
               <Link
                 href="https://wa.me/971505072100"
                 target="_blank"
+                rel="noopener noreferrer"
                 className="font-medium underline decoration-green-500 decoration-4 underline-offset-4 transition-all duration-200 ease-in-out hover:text-opacity-80 hover:underline-offset-8"
               >
                 {t('header_2')}

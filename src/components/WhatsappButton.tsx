@@ -30,6 +30,7 @@ export const WhatsAppButton = ({ className }: { className?: string }) => {
       )}
       href={`https://api.whatsapp.com/send?phone=91${AppConfig.phone}&text=Hi,%20I%27m%20interested%20in%20Your%20Service.%20Please%20contact%20me.`}
       target="_blank"
+      rel="noopener noreferrer"
       aria-label="WhatsApp"
     >
       <Button variant="outline" className="hidden md:flex">

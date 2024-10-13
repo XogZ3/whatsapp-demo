@@ -29,6 +29,7 @@ export async function generateMetadata(props: {
   });
   const ogImageAlt = AppConfig.name;
   const baseUrl = getBaseUrl();
+  const currentPath = props.params.locale === 'en' ? '/' : '/pt';
 
   return {
     metadataBase: new URL(baseUrl),
@@ -55,6 +56,13 @@ export async function generateMetadata(props: {
           alt: ogImageAlt,
         },
       ],
+    },
+    alternates: {
+      canonical: `${baseUrl}${currentPath}`,
+      languages: {
+        en: `${baseUrl}/`,
+        pt: `${baseUrl}/pt`,
+      },
     },
     keywords: [
       'fotolabs',
@@ -95,11 +103,50 @@ export default function RootLayout(props: {
   if (!AppConfig.locales.includes(props.params.locale)) notFound();
   const messages = useMessages();
 
+  const jsonLdData = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: AppConfig.name,
+    image: `${AppConfig.url}/logo.png`,
+    applicationCategory: 'AI Photography Application',
+    operatingSystem: 'Web',
+    offers: {
+      '@type': 'Offer',
+      price: '19.99',
+      priceCurrency: 'USD',
+    },
+    description:
+      'FotoLabs AI is an AI-powered photo creation tool that helps you create stunning images easily inside WhatsApp.',
+    url: AppConfig.url,
+    provider: {
+      '@type': 'Organization',
+      name: AppConfig.name,
+      logo: `${AppConfig.url}/logo.png`,
+    },
+    screenshot: `${AppConfig.url}/screenshot.jpeg`,
+    featureList: [
+      'AI-powered photo creation',
+      'Use inside WhatsApp',
+      'Easy, fast and cheap',
+      'No need to download or install anything',
+      'Unlimited photos',
+      'Customizable',
+      'High quality',
+      'Consistent results',
+      'AI photo of yourself in 30 seconds',
+    ],
+  };
+
   return (
     <ViewTransitions>
       <html lang={props.params.locale} suppressHydrationWarning>
         <GoogleAnalytics gaId="AW-16638273706" />
         <body className={inter.className}>
+          <script
+            type="application/ld+json"
+            // eslint-disable-next-line react/no-danger
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}
+          />
           <Providers>
             <NextIntlClientProvider
               locale={props.params.locale}

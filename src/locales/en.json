@@ -3,8 +3,8 @@
     "phone_number": "{appPhone}"
   },
   "Index": {
-    "meta_title": "{appName} - Generate Amazing AI Images of You in Just a Few Clicks on WhatsApp",
-    "meta_description": "Create stunning AI-generated images through WhatsApp. Make dating profile pictures, travel photos, outfit ideas, professional headshots, and more. Simply upload your photos, and let {appName} bring your creative vision to life!"
+    "meta_title": "{appName} - Create AI Images of You in WhatsApp Now",
+    "meta_description": "Generate stunning AI photos of yourself through WhatsApp. Make profile pictures, travel photos, and more with {appName}."
   },
   "HeroSection": {
     "header_1": "Make AI photos",
@@ -38,6 +38,34 @@
     "step_1_3": "and make a payment of",
     "step_2": "Upload {lowerLimit}-{upperLimit} of your good quality photos / selfies and wait 3 minutes",
     "step_3": "Send creative prompts to generate awesome unlimited images of yourself for 30 days!"
+  },
+  "FeaturesSection": {
+    "header": "Features",
+    "subheader": "Use FotoLabs.ai to generate AI photos of yourself in various scenarios. Here's how:",
+    "feature1": {
+      "title": "Place yourself in any location",
+      "description": "Upload a photo of any place, and see yourself there",
+      "userImageAlt": "Uploaded location image",
+      "aiImageAlt": "AI generated image of you in the location"
+    },
+    "feature2": {
+      "title": "Recreate Instagram posts",
+      "description": "Screenshot an Instagram post, and appear in a similar setting",
+      "userImageAlt": "Uploaded Instagram screenshot",
+      "aiImageAlt": "AI generated image of you in Instagram-style post"
+    },
+    "feature3": {
+      "title": "Try on clothes virtually",
+      "description": "Upload a picture of an outfit, and see how it looks on you",
+      "userImageAlt": "Uploaded clothing image",
+      "aiImageAlt": "AI generated image of you wearing the clothes"
+    },
+    "feature4": {
+      "title": "Experiment with hairstyles",
+      "description": "Choose a hairstyle, and visualize it on yourself",
+      "userImageAlt": "Uploaded hairstyle image",
+      "aiImageAlt": "AI generated image of you with the new hairstyle"
+    }
   },
   "ComparisonSection": {
     "header": "How does FotoLabs.ai compare to other AI photo generators?",
@@ -81,6 +109,17 @@
     "content_5": "Take engaging and visually stunning photos that showcase your personality as an Instagram influencer. Boost your confidence, likes and followers with captivating images that reflect your unique style and charisma",
     "heading_6": "👩‍🦱 Hairstyles",
     "content_6": "Experiment with a variety of hairstyles that express your individuality. Whether it’s chic curls, sleek braids, or bold fades, show off your look with striking images"
+  },
+  "PriceSection": {
+    "header": "Simple, Transparent Pricing",
+    "subheader": "Get started with our straightforward pricing plan. No hidden fees, just great value.",
+    "monthly_plan": "Monthly Plan",
+    "for_individuals_and_small_teams": "Perfect for individuals and small teams",
+    "month": "/month",
+    "unlimited_image_generation": "Unlimited image generation",
+    "whatsapp_customer_support": "WhatsApp customer support",
+    "regular_updates_and_improvements": "Regular updates and improvements",
+    "web_cta": "WhatsApp Now"
   },
   "FAQSection": {
     "header": "Frequently Asked Questions",

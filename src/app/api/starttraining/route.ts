@@ -111,6 +111,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Ensure image_urls has at least 15 URLs
+    if (image_urls.length < 15) {
+      const originalLength = image_urls.length;
+      while (image_urls.length < 15) {
+        const randomIndex = Math.floor(Math.random() * originalLength);
+        image_urls.push(image_urls[randomIndex]);
+      }
+    }
+
     const {
       loraURL,
       loraFilename,

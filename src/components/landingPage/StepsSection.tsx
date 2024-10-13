@@ -9,13 +9,13 @@ import {
   TRAINING_IMAGES_UPPER_LIMIT,
 } from '@/utils/constants';
 
-import { Section } from '../GeneralContainers';
+import { Container, Section } from '../GeneralContainers';
 
 export default function StepsSection() {
   const t = useTranslations('StepsSection');
   return (
     <Section className="px-2 sm:px-8">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <Container className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <h2 className=" text-3xl font-bold sm:text-4xl xl:text-5xl">
             {t('header')}
@@ -35,6 +35,8 @@ export default function StepsSection() {
                 {t('step_1_1')}{' '}
                 <Link
                   href="https://wa.me/971505072100"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="underline decoration-green-500 underline-offset-4 transition-colors duration-200 ease-in-out hover:text-green-500"
                 >
                   {t('step_1_2')}
@@ -303,7 +305,7 @@ export default function StepsSection() {
             </div>
           </div>
         </div>
-      </div>
+      </Container>
     </Section>
   );
 }

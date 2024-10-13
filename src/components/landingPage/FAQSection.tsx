@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import React from 'react';
-import Balancer from 'react-wrap-balancer';
 
 import { Container, Section } from '../GeneralContainers';
 import {
@@ -30,7 +29,7 @@ const FAQSection: React.FC = () => {
         </div>
         <div className="flex w-full flex-col items-center justify-center p-4 sm:w-1/2 sm:p-8">
           <h2 className="mb-4 text-center text-3xl font-bold sm:text-4xl xl:text-5xl">
-            <Balancer>{t('header')}</Balancer>
+            {t('header')}
           </h2>
           <Accordion type="single" collapsible className="mt-8 w-full">
             {faqItems.map((item) => (

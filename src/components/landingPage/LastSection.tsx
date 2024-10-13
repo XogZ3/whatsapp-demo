@@ -7,7 +7,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import * as React from 'react';
-import Balancer from 'react-wrap-balancer';
 
 import { Container, Section } from '../GeneralContainers';
 import ButtonFancy from '../ui/button-fancy';
@@ -22,9 +21,7 @@ export default function LastSection() {
           {/* Content section */}
           <div className="flex w-full flex-col items-center justify-center px-4 pb-4 sm:w-2/3 sm:items-start sm:justify-start sm:px-8">
             <h1 className="flex flex-col gap-y-4 text-5xl font-normal tracking-normal sm:text-6xl">
-              <Balancer>
-                {t('header_1')} <br />
-              </Balancer>
+              {t('header_1')} <br />
             </h1>
             <p className="gap-x-2 text-5xl sm:text-6xl">
               {t('conjunction')}{' '}
@@ -38,7 +35,7 @@ export default function LastSection() {
             </p>
 
             <h2 className="!mb-0 py-6 font-normal tracking-normal sm:text-xl">
-              <Balancer>{t('subheader')}</Balancer>
+              {t('subheader')}
             </h2>
             <ul className="mb-6 space-y-2 text-sm sm:text-base">
               <li className="flex items-center">

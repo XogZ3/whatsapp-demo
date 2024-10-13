@@ -216,6 +216,13 @@
     "header": "404",
     "paragraph": "Esta página não foi encontrada."
   },
+  "SuccessSection": {
+    "header": "Parabéns!",
+    "subheader": "Você Ganhou uma Assinatura de 1 Mês",
+    "subheader_2": "no seu número do WhatsApp:",
+    "button_go_to_whatsapp": "Ir para o WhatsApp",
+    "next_step": "Clique abaixo para continuar gerando imagens incríveis!"
+  },
   "CancelSubscription": {
     "header": "Cancelar Assinatura",
     "danger": "Zona de Perigo!",

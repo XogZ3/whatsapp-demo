@@ -5,7 +5,6 @@
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import * as React from 'react';
-import Balancer from 'react-wrap-balancer';
 
 import man_dating from '@/public/assets/images/man_dating.webp';
 import man_hair from '@/public/assets/images/man_hair.webp';
@@ -111,7 +110,7 @@ export default function UsesSection() {
     <Section>
       <Container className="relative flex flex-col items-center justify-center gap-y-2 text-center leading-8">
         <h2 className=" text-3xl font-bold sm:text-4xl xl:text-5xl">
-          <Balancer>{t('header')}</Balancer>
+          {t('header')}
         </h2>
         <div className="flex w-full flex-col gap-y-4 text-5xl tracking-normal sm:mt-8 sm:grid sm:grid-cols-3 sm:gap-x-4 sm:text-7xl">
           {CardData.map((card) => (

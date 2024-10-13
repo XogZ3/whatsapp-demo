@@ -685,7 +685,7 @@ export async function createZipFromImages(
 
     archive.on('data', (chunk: Buffer) => buffers.push(chunk));
     archive.on('end', () => {
-      resolve(Buffer.concat(buffers));
+      resolve(Buffer.concat(buffers as Uint8Array[]));
     });
     archive.on('error', (err) => {
       console.error('Archive error:', err);

@@ -17,7 +17,7 @@ export default function LastSection() {
   return (
     <Section className="flex w-full items-center justify-center bg-black py-4 dark:bg-white sm:py-10">
       <Container noYPadding className="w-full">
-        <div className="relative flex min-w-full grow flex-col-reverse items-center justify-center rounded-3xl bg-white dark:bg-black sm:h-[600px] sm:flex-row">
+        <div className="relative flex min-w-full grow flex-col-reverse items-center justify-between rounded-3xl bg-white dark:bg-black sm:h-[600px] sm:flex-row">
           {/* Content section */}
           <div className="flex w-full flex-col items-center justify-center px-4 pb-4 sm:w-2/3 sm:items-start sm:justify-start sm:px-8">
             <h2 className="flex flex-col gap-y-4 text-5xl font-normal tracking-normal sm:text-6xl">
@@ -71,7 +71,7 @@ export default function LastSection() {
               src="/assets/images/man (4).jpg"
               alt="FotoLabs"
               fill
-              style={{ objectPosition: '0% 0%', objectFit: 'cover' }}
+              style={{ objectPosition: '0% 20%', objectFit: 'cover' }}
               sizes="(max-width: 640px) 100vw, 33vw"
               className="rounded-t-3xl sm:rounded-l-none sm:rounded-r-3xl"
             />

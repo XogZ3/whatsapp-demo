@@ -9,14 +9,14 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import * as React from 'react';
 
-import { Container } from '../GeneralContainers';
+import { Container, Section } from '../GeneralContainers';
 import ButtonFancy from '../ui/button-fancy';
 
 export default function HeroSection() {
   const t = useTranslations('HeroSection');
 
   return (
-    <div className="py-4 sm:py-10">
+    <Section className="py-4 sm:py-10">
       <Container className="relative flex flex-col items-center justify-center sm:grid sm:grid-cols-2">
         {/* Text Content */}
         <div className="flex w-full flex-col items-center justify-center text-center sm:items-start sm:justify-start sm:text-start">
@@ -132,6 +132,6 @@ export default function HeroSection() {
           </div>
         </div>
       </Container>
-    </div>
+    </Section>
   );
 }

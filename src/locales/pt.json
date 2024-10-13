@@ -3,7 +3,7 @@
     "phone_number": "{appPhone}"
   },
   "Index": {
-    "meta_title": "{appName} - Crie Imagens de IA de Você no WhatsApp",
+    "meta_title": "{appName} - Crie Imagens de IA de Você no WhatsApp Agora",
     "meta_description": "Gere fotos incríveis de IA de você mesmo através do WhatsApp. Faça fotos de perfil, fotos de viagem e muito mais com {appName}."
   },
   "HeroSection": {
@@ -38,6 +38,34 @@
     "step_1_3": "e faça um pagamento de",
     "step_2": "Envie {lowerLimit}-{upperLimit} fotos suas de boa qualidade / selfies e aguarde 3 minutos",
     "step_3": "Envie prompts criativos para gerar imagens incríveis ilimitadas de você por 30 dias!"
+  },
+  "FeaturesSection": {
+    "header": "Recursos",
+    "subheader": "Use o FotoLabs.ai para gerar fotos de IA de você mesmo em vários cenários. Veja como:",
+    "feature1": {
+      "title": "Coloque-se em qualquer lugar",
+      "description": "Envie uma foto de qualquer lugar e veja-se lá",
+      "userImageAlt": "Imagem do local enviada",
+      "aiImageAlt": "Imagem gerada por IA de você no local"
+    },
+    "feature2": {
+      "title": "Recrie posts do Instagram",
+      "description": "Faça uma captura de tela de um post do Instagram e apareça em um cenário semelhante",
+      "userImageAlt": "Captura de tela do Instagram enviada",
+      "aiImageAlt": "Imagem gerada por IA de você em um post estilo Instagram"
+    },
+    "feature3": {
+      "title": "Experimente roupas virtualmente",
+      "description": "Envie uma foto de uma roupa e veja como fica em você",
+      "userImageAlt": "Imagem da roupa enviada",
+      "aiImageAlt": "Imagem gerada por IA de você vestindo a roupa"
+    },
+    "feature4": {
+      "title": "Experimente penteados",
+      "description": "Escolha um penteado e visualize-o em você",
+      "userImageAlt": "Imagem do penteado enviada",
+      "aiImageAlt": "Imagem gerada por IA de você com o novo penteado"
+    }
   },
   "ComparisonSection": {
     "header": "Como o FotoLabs.ai se compara a outros geradores de fotos de IA?",
@@ -81,6 +109,17 @@
     "content_5": "Tire fotos envolventes e visualmente impressionantes que mostrem sua personalidade como um influenciador do Instagram. Aumente sua confiança, curtidas e seguidores com imagens cativantes que refletem seu estilo e carisma únicos.",
     "heading_6": "👩‍🦱 Penteados",
     "content_6": "Experimente uma variedade de penteados que expressem sua individualidade. Seja cachos elegantes, tranças lisas ou cortes ousados, mostre seu visual com imagens marcantes."
+  },
+  "PriceSection": {
+    "header": "Preço Simples e Transparente",
+    "subheader": "Comece com nosso plano de preços direto. Sem taxas ocultas, apenas ótimo valor.",
+    "monthly_plan": "Plano Mensal",
+    "for_individuals_and_small_teams": "Perfeito para indivíduos e pequenas equipes",
+    "month": "/mês",
+    "unlimited_image_generation": "Geração ilimitada de imagens",
+    "whatsapp_customer_support": "Suporte ao cliente via WhatsApp",
+    "regular_updates_and_improvements": "Atualizações e melhorias regulares",
+    "web_cta": "WhatsApp Agora"
   },
   "FAQSection": {
     "header": "Perguntas Frequentes",

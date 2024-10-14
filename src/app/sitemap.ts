@@ -3,12 +3,7 @@ import type { MetadataRoute } from 'next';
 
 import { getBaseUrl } from '@/utils/helpers';
 
-export const pages = [
-  '',
-  'privacy',
-  'terms-and-conditions',
-  'cancel-subscription',
-];
+export const pages = ['', 'cancel-subscription'];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseURL = getBaseUrl();

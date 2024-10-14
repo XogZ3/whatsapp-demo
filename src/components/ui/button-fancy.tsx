@@ -29,7 +29,7 @@ const ButtonFancy: React.FC<ButtonFancyProps> = ({
     <button
       onClick={handleClick}
       className={cn(
-        'group/btn relative flex w-full items-center justify-center rounded-md bg-gradient-to-br from-green-500 to-teal-500 px-4 py-2 font-medium text-white shadow-md shadow-green-500/30 transition duration-300 hover:bg-gradient-to-tl hover:shadow-lg hover:shadow-teal-500/30 dark:from-green-600 dark:to-teal-600 dark:shadow-green-700/30 hover:ring-1 dark:hover:ring-slate-300/90 hover:ring-slate-700/90 hover:ring-offset-2',
+        'group/btn relative text-2xl font-semibold flex w-full items-center justify-center rounded-md bg-gradient-to-br from-red-500 to-amber-800 px-4 py-2 text-white shadow-md shadow-red-500/30 transition duration-300 hover:bg-gradient-to-tl hover:shadow-lg hover:shadow-amber-500/30 dark:from-red-600 dark:to-amber-600 dark:shadow-red-700/30 hover:ring-1 dark:hover:ring-slate-300/90 hover:ring-slate-700/90 hover:ring-offset-2',
         className,
       )}
       type="button"

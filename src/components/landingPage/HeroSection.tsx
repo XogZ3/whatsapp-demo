@@ -29,7 +29,7 @@ export default function HeroSection() {
               href="https://wa.me/971505072100"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium underline decoration-green-500 decoration-4 underline-offset-4 transition-all duration-200 ease-in-out hover:text-opacity-80 hover:underline-offset-8"
+              className="font-medium underline decoration-red-500 decoration-4 underline-offset-4 transition-all duration-200 ease-in-out hover:text-opacity-80 hover:underline-offset-8"
             >
               {t('header_2')}
             </Link>
@@ -38,7 +38,7 @@ export default function HeroSection() {
           <h2 className="!mb-0 py-6 text-center font-normal tracking-normal sm:text-left">
             {t('subheader')}
           </h2>
-          <ul className="mb-6 space-y-2 text-sm sm:text-base">
+          <ul className="mb-6 hidden space-y-2 text-sm sm:block sm:text-base">
             <li className="flex items-center">
               <span className="mr-2">✏️</span>
               {t('subheader_4')}
@@ -55,7 +55,7 @@ export default function HeroSection() {
           <ButtonFancy
             text={t('web_cta')}
             path="https://wa.me/971505072100"
-            className="w-fit min-w-[185px] text-lg font-semibold"
+            className="w-fit min-w-64"
             onClick={() =>
               sendGAEvent('event', 'conversion', {
                 send_to: 'AW-16638273706/MO7nCOGP0dsZEKrR3_09',
@@ -124,7 +124,7 @@ export default function HeroSection() {
                     loading="eager"
                   />
                 </div>
-                <div className="absolute right-0 top-0 rounded-bl-lg rounded-tr-lg bg-green-500 px-2 py-1 text-xs text-black">
+                <div className="absolute right-0 top-0 rounded-bl-lg rounded-tr-lg bg-red-500 px-2 py-1 text-xs tracking-normal text-black">
                   {t('ai_generated')}
                 </div>
               </div>

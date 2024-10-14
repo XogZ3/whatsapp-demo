@@ -29,7 +29,7 @@ export default function LastSection() {
                 href="https://wa.me/971505072100"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-medium underline decoration-green-500 decoration-4 underline-offset-4 transition-all duration-200 ease-in-out hover:text-opacity-80 hover:underline-offset-8"
+                className="font-medium underline decoration-red-500 decoration-4 underline-offset-4 transition-all duration-200 ease-in-out hover:text-opacity-80 hover:underline-offset-8"
               >
                 {t('header_2')}
               </Link>
@@ -55,7 +55,7 @@ export default function LastSection() {
             <ButtonFancy
               text={t('web_cta')}
               path="https://wa.me/971505072100"
-              className="w-fit min-w-[185px] text-lg font-semibold"
+              className="w-fit min-w-64"
               onClick={() =>
                 sendGAEvent('event', 'conversion', {
                   send_to: 'AW-16638273706/MO7nCOGP0dsZEKrR3_09',

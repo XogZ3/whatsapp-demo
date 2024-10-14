@@ -7,28 +7,28 @@
     "meta_description": "Gere fotos incríveis de IA de você mesmo através do WhatsApp. Faça fotos de perfil, fotos de viagem e muito mais com {appName}."
   },
   "HeroSection": {
-    "header_1": "Crie fotos com IA",
+    "header_1": "Faça fotos realistas",
+    "conjunction": "de IA de você no",
+    "header_2": "WhatsApp",
+    "subheader": "Imagine-se em qualquer cenário. Crie fotos ilimitadas de IA pelo seu celular",
+    "subheader_2": "Visualize-se em diferentes roupas antes de comprar online",
+    "subheader_3": "Gere fotos de IA de você mesmo em qualquer pose, lugar ou ação",
+    "subheader_4": "Envie selfies para criar seu modelo de IA personalizado",
+    "web_cta": "Experimente agora",
+    "ai_generated": "Foto gerada por IA",
+    "mobile_cta_google": "Obtenha na Play Store",
+    "mobile_cta_apple": "Baixe na App Store",
+    "support": "Para qualquer suporte ou ajuda, escreva para nós em"
+  },
+  "LastSection": {
+    "header_1": "Comece a tirar fotos com IA",
     "conjunction": "no",
     "header_2": "WhatsApp",
     "subheader": "Gere fotos para suas redes sociais com IA. Economize tempo e dinheiro e faça fotos ilimitadas com IA pelo seu celular",
     "subheader_2": "Experimente roupas no seu modelo antes de comprar online",
     "subheader_3": "Tire fotos 100% IA em qualquer pose, lugar ou ação",
     "subheader_4": "Envie selfies e crie seu próprio modelo de IA Flux™",
-    "web_cta": "WhatsApp Agora",
-    "ai_generated": "Foto de IA gerada",
-    "mobile_cta_google": "Disponível no Playstore",
-    "mobile_cta_apple": "Baixe na AppStore",
-    "support": "Para qualquer suporte ou ajuda, escreva para nós em"
-  },
-  "LastSection": {
-    "header_1": "Comece a tirar fotos com IA",
-    "conjunction": "no",
-    "header_2": "WhatsApp Agora",
-    "subheader": "Gere fotos para suas redes sociais com IA. Economize tempo e dinheiro e faça fotos ilimitadas com IA pelo seu celular",
-    "subheader_2": "Experimente roupas no seu modelo antes de comprar online",
-    "subheader_3": "Tire fotos 100% IA em qualquer pose, lugar ou ação",
-    "subheader_4": "Envie selfies e crie seu próprio modelo de IA Flux™",
-    "web_cta": "WhatsApp Agora"
+    "web_cta": "Experimente agora"
   },
   "StepsSection": {
     "header": "Como funciona",
@@ -119,7 +119,7 @@
     "unlimited_image_generation": "Geração ilimitada de imagens",
     "whatsapp_customer_support": "Suporte ao cliente via WhatsApp",
     "regular_updates_and_improvements": "Atualizações e melhorias regulares",
-    "web_cta": "WhatsApp Agora"
+    "web_cta": "Experimente agora"
   },
   "FAQSection": {
     "header": "Perguntas Frequentes",

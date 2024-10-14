@@ -15,7 +15,7 @@ const FAQSection: React.FC = () => {
   const faqItems = t.raw('faqs') as Array<{ question: string; answer: string }>;
 
   return (
-    <Section>
+    <Section id="faq">
       <Container className="flex flex-col sm:flex-row">
         <div className="relative h-96 w-full sm:h-auto sm:w-1/2">
           <Image

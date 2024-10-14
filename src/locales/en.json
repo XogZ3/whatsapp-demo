@@ -7,14 +7,14 @@
     "meta_description": "Generate stunning AI photos of yourself through WhatsApp. Make profile pictures, travel photos, and more with {appName}."
   },
   "HeroSection": {
-    "header_1": "Make AI photos",
-    "conjunction": "in",
+    "header_1": "Make realistic",
+    "conjunction": "AI photos of you in",
     "header_2": "WhatsApp",
-    "subheader": "Generate photos for your social media with AI. Save time and money and do unlimited AI photos from your phone",
-    "subheader_2": "Try on clothes on your model before online shopping",
-    "subheader_3": "Take 100% AI photos in any pose, place or action",
-    "subheader_4": "Upload selfies and create your own Flux™ AI model",
-    "web_cta": "WhatsApp Now",
+    "subheader": "Imagine yourself in any scene. Create unlimited AI photos from your phone",
+    "subheader_2": "Visualize yourself in different outfits before shopping online",
+    "subheader_3": "Generate AI photos of yourself in any pose, place, or action",
+    "subheader_4": "Upload selfies to create your personalized AI model",
+    "web_cta": "Try it now",
     "ai_generated": "AI generated photo",
     "mobile_cta_google": "Get it on Playstore",
     "mobile_cta_apple": "Download on AppStore",
@@ -23,12 +23,12 @@
   "LastSection": {
     "header_1": "Start taking AI photos",
     "conjunction": "in",
-    "header_2": "WhatsApp Now",
+    "header_2": "WhatsApp",
     "subheader": "Generate photos for your social media with AI. Save time and money and do unlimited AI photos from your phone",
     "subheader_2": "Try on clothes on your model before online shopping",
     "subheader_3": "Take 100% AI photos in any pose, place or action",
     "subheader_4": "Upload selfies and create your own Flux™ AI model",
-    "web_cta": "WhatsApp Now"
+    "web_cta": "Try it now"
   },
   "StepsSection": {
     "header": "How it works",
@@ -119,7 +119,7 @@
     "unlimited_image_generation": "Unlimited image generation",
     "whatsapp_customer_support": "WhatsApp customer support",
     "regular_updates_and_improvements": "Regular updates and improvements",
-    "web_cta": "WhatsApp Now"
+    "web_cta": "Try it now"
   },
   "FAQSection": {
     "header": "Frequently Asked Questions",

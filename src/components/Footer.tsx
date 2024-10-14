@@ -44,6 +44,48 @@ export function Footer() {
 
   const items = [
     {
+      id: 'generate-ai-photos',
+      title: `${t('Title_3.label')}`,
+      links: [
+        {
+          id: 'ai-dating',
+          label: `${t('Title_3.AIDating.label')}`,
+          href: '/ai-dating',
+          description: `${t('Title_3.AIDating.description')}`,
+        },
+        {
+          id: 'professional-headshots',
+          label: `${t('Title_3.ProfessionalHeadshots.label')}`,
+          href: '/professional-headshots',
+          description: `${t('Title_3.ProfessionalHeadshots.description')}`,
+        },
+        {
+          id: 'outfit-ideas',
+          label: `${t('Title_3.OutfitIdeas.label')}`,
+          href: '/outfit-ideas',
+          description: `${t('Title_3.OutfitIdeas.description')}`,
+        },
+        {
+          id: 'travel',
+          label: `${t('Title_3.Travel.label')}`,
+          href: '/travel',
+          description: `${t('Title_3.Travel.description')}`,
+        },
+        {
+          id: 'instagram',
+          label: `${t('Title_3.Instagram.label')}`,
+          href: '/instagram',
+          description: `${t('Title_3.Instagram.description')}`,
+        },
+        {
+          id: 'hairstyles',
+          label: `${t('Title_3.Hairstyles.label')}`,
+          href: '/hairstyles',
+          description: `${t('Title_3.Hairstyles.description')}`,
+        },
+      ],
+    },
+    {
       id: 'company',
       title: `${t('Title_1.label')}`,
       links: [
@@ -59,12 +101,6 @@ export function Footer() {
           href: '/terms-and-conditions',
           description: `${t('Title_1.Terms.description')}`,
         },
-        // {
-        //   id: 'sitemap',
-        //   label: `${t('Title_1.Sitemap.label')}`,
-        //   href: '/sitemap',
-        //   description: `${t('Title_1.Sitemap.description')}`,
-        // },
       ],
     },
     {

@@ -1,4 +1,3 @@
-import BackToTop from '@/components/landingPage/BackToTop';
 import ComparisonSection from '@/components/landingPage/ComparisonSection';
 import FAQSection from '@/components/landingPage/FAQSection';
 import FeaturesSection from '@/components/landingPage/FeaturesSection';
@@ -21,7 +20,6 @@ export default function Index() {
       <PriceSection />
       <FAQSection />
       <LastSection />
-      <BackToTop />
     </>
   );
 }

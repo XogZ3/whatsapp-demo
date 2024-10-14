@@ -7,7 +7,7 @@ import * as React from 'react';
 import { Container, Section } from '../GeneralContainers';
 
 const ArrowImage: React.FC = () => (
-  <div className="relative my-4 size-32 shrink-0 sm:mx-4 sm:my-2 sm:size-20">
+  <div className="relative my-4 size-14 shrink-0 sm:mx-4 sm:my-2 sm:size-20">
     <Image
       src="/assets/images/arrow_black.png"
       alt="Arrow"

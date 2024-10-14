@@ -19,7 +19,7 @@ import ButtonFancy from '../ui/button-fancy';
 export default function PriceSection() {
   const t = useTranslations('PriceSection');
   return (
-    <Section>
+    <Section id="pricing">
       <Container>
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
@@ -61,11 +61,11 @@ export default function PriceSection() {
                 </li>
               </ul>
             </CardContent>
-            <CardFooter>
+            <CardFooter className="w-full">
               <ButtonFancy
                 text={t('web_cta')}
-                path="https://wa.me/971505072100"
-                className="w-full min-w-[185px] text-lg font-semibold"
+                href="https://wa.me/971505072100"
+                className="w-full"
                 onClick={() =>
                   sendGAEvent('event', 'conversion', {
                     send_to: 'AW-16638273706/MO7nCOGP0dsZEKrR3_09',

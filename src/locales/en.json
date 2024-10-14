@@ -1,20 +1,23 @@
 {
   "Header": {
-    "phone_number": "{appPhone}"
+    "phone_number": "{appPhone}",
+    "whatsapp_cta": "Try it now",
+    "pricing": "Pricing",
+    "faq": "FAQ"
   },
   "Index": {
     "meta_title": "{appName} - Create AI Images of You in WhatsApp Now",
     "meta_description": "Generate stunning AI photos of yourself through WhatsApp. Make profile pictures, travel photos, and more with {appName}."
   },
   "HeroSection": {
-    "header_1": "Make AI photos",
-    "conjunction": "in",
+    "header_1": "Make realistic",
+    "conjunction": "AI photos of you in",
     "header_2": "WhatsApp",
-    "subheader": "Generate photos for your social media with AI. Save time and money and do unlimited AI photos from your phone",
-    "subheader_2": "Try on clothes on your model before online shopping",
-    "subheader_3": "Take 100% AI photos in any pose, place or action",
-    "subheader_4": "Upload selfies and create your own Flux™ AI model",
-    "web_cta": "WhatsApp Now",
+    "subheader": "Imagine yourself in any scene. Create unlimited AI photos from your phone",
+    "subheader_2": "Visualize yourself in different outfits before shopping online",
+    "subheader_3": "Generate AI photos of yourself in any pose, place, or action",
+    "subheader_4": "Upload selfies to create your personalized AI model",
+    "web_cta": "Try it now",
     "ai_generated": "AI generated photo",
     "mobile_cta_google": "Get it on Playstore",
     "mobile_cta_apple": "Download on AppStore",
@@ -23,12 +26,12 @@
   "LastSection": {
     "header_1": "Start taking AI photos",
     "conjunction": "in",
-    "header_2": "WhatsApp Now",
-    "subheader": "Generate photos for your social media with AI. Save time and money and do unlimited AI photos from your phone",
-    "subheader_2": "Try on clothes on your model before online shopping",
-    "subheader_3": "Take 100% AI photos in any pose, place or action",
-    "subheader_4": "Upload selfies and create your own Flux™ AI model",
-    "web_cta": "WhatsApp Now"
+    "header_2": "WhatsApp",
+    "subheader": "Imagine yourself in any scene. Create unlimited AI photos from your phone",
+    "subheader_2": "Visualize yourself in different outfits before shopping online",
+    "subheader_3": "Generate AI photos of yourself in any pose, place, or action",
+    "subheader_4": "Upload selfies to create your personalized AI model",
+    "web_cta": "Try it now"
   },
   "StepsSection": {
     "header": "How it works",
@@ -114,12 +117,12 @@
     "header": "Simple, Transparent Pricing",
     "subheader": "Get started with our straightforward pricing plan. No hidden fees, just great value.",
     "monthly_plan": "Monthly Plan",
-    "for_individuals_and_small_teams": "Perfect for individuals and small teams",
+    "for_individuals_and_small_teams": "Perfect for you",
     "month": "/month",
     "unlimited_image_generation": "Unlimited image generation",
     "whatsapp_customer_support": "WhatsApp customer support",
     "regular_updates_and_improvements": "Regular updates and improvements",
-    "web_cta": "WhatsApp Now"
+    "web_cta": "Try it now"
   },
   "FAQSection": {
     "header": "Frequently Asked Questions",
@@ -230,6 +233,33 @@
         "description": "Request refund"
       }
     },
+    "Title_3": {
+      "label": "Generate AI photos",
+      "AIDating": {
+        "label": "AI Dating",
+        "description": "Create stunning AI-generated dating profile photos to boost your online dating success. Stand out on Tinder, Bumble, and Hinge with personalized, high-quality images that showcase your unique style and personality."
+      },
+      "ProfessionalHeadshots": {
+        "label": "Professional Headshots",
+        "description": "Elevate your professional image with AI-generated headshots. Perfect for LinkedIn, resumes, and corporate profiles. Look polished and confident without the studio cost."
+      },
+      "OutfitIdeas": {
+        "label": "Outfit Ideas",
+        "description": "Discover endless outfit possibilities with AI-generated fashion ideas. Visualize different styles on yourself before shopping. Perfect for fashion enthusiasts, online shoppers, and style experimentation."
+      },
+      "Travel": {
+        "label": "Travel",
+        "description": "Create stunning AI-generated travel photos of yourself in exotic locations worldwide. Perfect for travel enthusiasts, influencers, and dreamers. Explore global destinations virtually!"
+      },
+      "Instagram": {
+        "label": "Instagram",
+        "description": "Create scroll-stopping, AI-generated photos for your Instagram feed. Elevate your social media presence with high-quality, personalized images that capture attention and increase engagement."
+      },
+      "Hairstyles": {
+        "label": "Hairstyles",
+        "description": "Explore endless hairstyle possibilities with AI-generated images. Visualize different cuts, colors, and styles on yourself before visiting the salon. Perfect for a confident makeover and style experimentation."
+      }
+    },
     "Copyright": {
       "text_1": "Copyrights",
       "text_2": "All Rights Reserved",
@@ -278,5 +308,65 @@
     "button_return_to_whatsapp": "Return to WhatsApp",
     "confirm_message": "If you have an account with FotoLabs.ai, we will have sent a message on WhatsApp to confirm your request for cancellation. Please confirm inside WhatsApp.",
     "too_frequent": "Please try again after few hours."
+  },
+  "ai-dating": {
+    "meta_title": "AI Dating Profile Photos: Boost Your Online Dating Success | {appName}",
+    "meta_description": "Create stunning AI-generated dating profile photos to boost your online dating success. Stand out on Tinder, Bumble, and Hinge with personalized, high-quality images that showcase your unique style and personality.",
+    "header_1": "Revolutionize Your Dating Profile with AI-Powered Photos",
+    "subheader": "Transform your online dating presence with custom AI-generated images that showcase your best self in various attractive scenarios",
+    "web_cta": "Create Photos",
+    "ai_generated": "AI Enhanced",
+    "last_section_header_1": "Skyrocket Your Dating Success with AI Photography",
+    "last_section_subheader": "Harness AI to create captivating, authentic photos that truly represent you across Tinder, Bumble, Hinge, and other popular dating platforms"
+  },
+  "professional-headshots": {
+    "meta_title": "Professional AI Headshots for Career Success | LinkedIn Profile | {appName}",
+    "meta_description": "Elevate your professional image with AI-generated headshots. Perfect for LinkedIn, resumes, and corporate profiles. Look polished and confident without the studio cost.",
+    "header_1": "Enhance Your Professional Image with AI Headshots",
+    "subheader": "Create stunning, professional-grade headshots for your LinkedIn and career profiles using advanced AI technology",
+    "web_cta": "Generate Headshots",
+    "ai_generated": "AI Crafted",
+    "last_section_header_1": "Boost Your Career with AI-Powered Professional Photos",
+    "last_section_subheader": "Make a lasting impression in the business world with high-quality, AI-generated headshots tailored to your industry and professional brand"
+  },
+  "outfit-ideas": {
+    "meta_title": "AI-Powered Outfit Ideas & Virtual Try-On | Fashion Inspiration | {appName}",
+    "meta_description": "Discover endless outfit possibilities with AI-generated fashion ideas. Visualize different styles on yourself before shopping. Perfect for fashion enthusiasts, online shoppers, and style experimentation.",
+    "header_1": "Explore Endless Fashion Possibilities with AI",
+    "subheader": "Generate personalized outfit ideas and virtually try on different styles with our AI fashion assistant. Experiment with trends, casual looks, and more.",
+    "web_cta": "Try Outfits",
+    "ai_generated": "AI Styled",
+    "last_section_header_1": "Revolutionize Your Wardrobe with AI Fashion Insights",
+    "last_section_subheader": "Unlock your personal style potential with AI-generated outfit combinations and virtual try-ons. Explore trendy, casual, formal, and unique looks tailored to you."
+  },
+  "travel": {
+    "meta_title": "AI Travel Photography: Capture Dream Destinations | Virtual Travel | {appName}",
+    "meta_description": "Create stunning AI-generated travel photos of yourself in exotic locations worldwide. Perfect for travel enthusiasts, influencers, and dreamers. Explore global destinations virtually!",
+    "header_1": "Travel the World with AI-Generated Photos",
+    "subheader": "Experience global destinations through personalized AI images featuring you in breathtaking locations from Paris to Tokyo",
+    "web_cta": "Start AI Travel",
+    "ai_generated": "AI Traveled",
+    "last_section_header_1": "Bring Your Travel Dreams to Life with AI",
+    "last_section_subheader": "Explore and share incredible AI-generated travel experiences featuring you in iconic destinations worldwide. From beaches to landmarks, visualize your global adventures."
+  },
+  "instagram": {
+    "meta_title": "AI-Powered Instagram-Ready Photos | Boost Social Media Presence | {appName}",
+    "meta_description": "Create scroll-stopping, AI-generated photos for your Instagram feed. Elevate your social media presence with high-quality, personalized images that capture attention and increase engagement.",
+    "header_1": "Transform Your Instagram Feed with AI-Generated Content",
+    "subheader": "Stand out on social media with custom, eye-catching AI photos tailored to your unique Instagram aesthetic and boost your follower count",
+    "web_cta": "Create Photos",
+    "ai_generated": "AI Influencer",
+    "last_section_header_1": "Dominate Instagram with AI-Powered Visuals",
+    "last_section_subheader": "Elevate your social media game with stunning, personalized AI-generated content that drives engagement, grows your following, and establishes your influencer status"
+  },
+  "hairstyles": {
+    "meta_title": "AI Hairstyle Visualization: Try Before You Style | Virtual Makeover | {appName}",
+    "meta_description": "Explore endless hairstyle possibilities with AI-generated images. Visualize different cuts, colors, and styles on yourself before visiting the salon. Perfect for a confident makeover and style experimentation.",
+    "header_1": "Discover Your Perfect Hairstyle with AI",
+    "subheader": "Visualize countless hairstyles on yourself using advanced AI technology before making a change. From chic curls to bold fades, find your ideal look.",
+    "web_cta": "Try Hairstyles",
+    "ai_generated": "AI Styled",
+    "last_section_header_1": "Transform Your Look with AI Hairstyle Previews",
+    "last_section_subheader": "Gain confidence in your next hair transformation by exploring AI-generated hairstyles tailored to your features. Experiment with cuts, colors, and styles risk-free."
   }
 }

@@ -29,7 +29,7 @@ export default function LastSection() {
                 href="https://wa.me/971505072100"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-medium underline decoration-green-500 decoration-4 underline-offset-4 transition-all duration-200 ease-in-out hover:text-opacity-80 hover:underline-offset-8"
+                className="font-medium underline decoration-red-500 decoration-4 underline-offset-4 transition-all duration-200 ease-in-out hover:text-opacity-80 hover:underline-offset-8"
               >
                 {t('header_2')}
               </Link>
@@ -54,8 +54,8 @@ export default function LastSection() {
             </ul>
             <ButtonFancy
               text={t('web_cta')}
-              path="https://wa.me/971505072100"
-              className="w-fit min-w-[185px] text-lg font-semibold"
+              href="https://wa.me/971505072100"
+              className="w-fit min-w-64"
               onClick={() =>
                 sendGAEvent('event', 'conversion', {
                   send_to: 'AW-16638273706/MO7nCOGP0dsZEKrR3_09',
@@ -68,11 +68,11 @@ export default function LastSection() {
           {/* Image section */}
           <div className="relative mb-8 h-[300px] w-full rounded-t-3xl bg-black dark:bg-white sm:mb-0 sm:h-full sm:w-1/3 sm:rounded-r-3xl sm:rounded-t-none">
             <Image
-              src="/assets/images/man (4).jpg"
-              alt="FotoLabs"
+              src="/assets/images/woman_cosplay.webp"
+              alt="AI-generated cosplay photo - FotoLabs"
               fill
               style={{ objectPosition: '0% 20%', objectFit: 'cover' }}
-              sizes="(max-width: 640px) 100vw, 33vw"
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
               className="rounded-t-3xl sm:rounded-l-none sm:rounded-r-3xl"
             />
           </div>

@@ -5,8 +5,12 @@ import { getBaseUrl } from '@/utils/helpers';
 
 export const pages = [
   '',
-  'privacy',
-  'terms-and-conditions',
+  'ai-dating',
+  'professional-headshots',
+  'outfit-ideas',
+  'travel',
+  'instagram',
+  'hairstyles',
   'cancel-subscription',
 ];
 

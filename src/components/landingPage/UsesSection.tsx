@@ -3,6 +3,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import * as React from 'react';
 
@@ -27,41 +28,48 @@ const UseCaseCard = ({
   image2,
   heading,
   content,
+  url,
 }: {
   image1: any;
   image2: any;
   heading: string;
   content: string;
+  url: string;
 }) => {
   return (
-    <Card key={heading} className="col-span-1 row-span-1 pb-4">
-      <CardHeader>
-        <div className="relative h-44 w-full overflow-hidden">
-          <div className="relative grid w-full grid-cols-2 grid-rows-1 gap-x-2">
-            <Image
-              src={image1}
-              width={200} // Set width here
-              height={176} // Set height here
-              style={{ objectPosition: '0% 25%', objectFit: 'cover' }}
-              alt="test"
-              placeholder="blur"
-              className="col-span-1 rounded-xl"
-            />
-            <Image
-              src={image2}
-              width={200} // Set width here
-              height={176} // Set height here
-              style={{ objectPosition: '0% 25%', objectFit: 'cover' }}
-              alt="test"
-              placeholder="blur"
-              className="col-span-1 rounded-xl"
-            />
+    <Link href={url} className="block">
+      <Card
+        key={heading}
+        className="col-span-1 row-span-1 h-full pb-4 transition-transform hover:scale-105 hover:border-amber-700"
+      >
+        <CardHeader>
+          <div className="relative h-44 w-full overflow-hidden">
+            <div className="relative grid w-full grid-cols-2 grid-rows-1 gap-x-2">
+              <Image
+                src={image1}
+                width={200} // Set width here
+                height={176} // Set height here
+                style={{ objectPosition: '0% 25%', objectFit: 'cover' }}
+                alt="test"
+                placeholder="blur"
+                className="col-span-1 rounded-xl"
+              />
+              <Image
+                src={image2}
+                width={200} // Set width here
+                height={176} // Set height here
+                style={{ objectPosition: '0% 25%', objectFit: 'cover' }}
+                alt="test"
+                placeholder="blur"
+                className="col-span-1 rounded-xl"
+              />
+            </div>
           </div>
-        </div>
-      </CardHeader>
-      <CardContent className="text-xl">{heading}</CardContent>
-      <CardDescription className="px-6 text-base">{content}</CardDescription>
-    </Card>
+        </CardHeader>
+        <CardContent className="text-xl">{heading}</CardContent>
+        <CardDescription className="px-6 text-base">{content}</CardDescription>
+      </Card>
+    </Link>
   );
 };
 
@@ -74,36 +82,42 @@ export default function UsesSection() {
       image2: woman_dating,
       heading: t('heading_1'),
       content: t('content_1'),
+      url: '/ai-dating',
     },
     {
       image1: woman_professional,
       image2: man_professional,
       heading: t('heading_2'),
       content: t('content_2'),
+      url: '/professional-headshots',
     },
     {
       image1: man_outfit,
       image2: woman_outfit,
       heading: t('heading_3'),
       content: t('content_3'),
+      url: '/outfit-ideas',
     },
     {
       image1: woman_travel,
       image2: man_travel,
       heading: t('heading_4'),
       content: t('content_4'),
+      url: '/travel',
     },
     {
       image1: man_instagram,
       image2: woman_instagram,
       heading: t('heading_5'),
       content: t('content_5'),
+      url: '/instagram',
     },
     {
       image1: woman_hair,
       image2: man_hair,
       heading: t('heading_6'),
       content: t('content_6'),
+      url: '/hairstyles',
     },
   ];
   return (
@@ -120,6 +134,7 @@ export default function UsesSection() {
               image2={card.image2}
               heading={card.heading}
               content={card.content}
+              url={card.url}
             />
           ))}
         </div>

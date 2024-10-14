@@ -10,22 +10,22 @@ export function UseCasePhotosSection({
   useCase: AllowedUseCases;
 }) {
   const images = [
-    `/assets/images/usecases/${useCase}_1.webp`,
-    `/assets/images/usecases/${useCase}_1.jpg`,
-    `/assets/images/usecases/${useCase}_2.webp`,
-    `/assets/images/usecases/${useCase}_2.jpg`,
-    `/assets/images/usecases/${useCase}_3.webp`,
-    `/assets/images/usecases/${useCase}_3.jpg`,
-    `/assets/images/usecases/${useCase}_4.webp`,
-    `/assets/images/usecases/${useCase}_4.jpg`,
     `/assets/images/usecases/${useCase}_5.webp`,
-    `/assets/images/usecases/${useCase}_5.jpg`,
     `/assets/images/usecases/${useCase}_6.webp`,
-    `/assets/images/usecases/${useCase}_6.jpg`,
     `/assets/images/usecases/${useCase}_7.webp`,
-    `/assets/images/usecases/${useCase}_7.jpg`,
     `/assets/images/usecases/${useCase}_8.webp`,
-    `/assets/images/usecases/${useCase}_8.jpg`,
+    `/assets/images/usecases/${useCase}_9.webp`,
+    `/assets/images/usecases/${useCase}_10.webp`,
+    `/assets/images/usecases/${useCase}_11.webp`,
+    `/assets/images/usecases/${useCase}_12.webp`,
+    `/assets/images/usecases/${useCase}_13.webp`,
+    `/assets/images/usecases/${useCase}_14.webp`,
+    `/assets/images/usecases/${useCase}_15.webp`,
+    `/assets/images/usecases/${useCase}_16.webp`,
+    `/assets/images/usecases/${useCase}_17.webp`,
+    `/assets/images/usecases/${useCase}_18.webp`,
+    `/assets/images/usecases/${useCase}_19.webp`,
+    `/assets/images/usecases/${useCase}_20.webp`,
   ];
 
   return <ParallaxScroll images={images} />;

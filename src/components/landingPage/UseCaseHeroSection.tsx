@@ -53,7 +53,7 @@ export default function UseCaseHeroSection({
               {[1, 2, 3, 4].map((num) => (
                 <div key={num} className="relative w-full pb-[100%]">
                   <Image
-                    src={`/assets/images/usecases/${useCase}_${num}.jpg`}
+                    src={`/assets/images/usecases/${useCase}_${num}.webp`}
                     alt={`woman ${num}`}
                     fill
                     sizes="(max-width: 768px) 25vw, 20vw"
@@ -90,7 +90,7 @@ export default function UseCaseHeroSection({
               >
                 <div className="size-full overflow-hidden rounded-lg">
                   <Image
-                    src={`/assets/images/usecases/${useCase}_ai.jpg`}
+                    src={`/assets/images/usecases/${useCase}_ai.webp`}
                     alt={t('ai_generated')}
                     width={375}
                     height={667}
@@ -98,6 +98,7 @@ export default function UseCaseHeroSection({
                     style={{
                       transform: 'scale(1.5)',
                       transformOrigin: 'center',
+                      objectPosition: '0% 0%',
                     }}
                     priority
                     loading="eager"

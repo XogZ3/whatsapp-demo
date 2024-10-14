@@ -35,7 +35,7 @@ export default function SuccessSection({ clientid }: { clientid: string }) {
         </h2>
         <ButtonFancy
           text={t('button_go_to_whatsapp')}
-          path="https://wa.me/971505072100"
+          href="https://wa.me/971505072100"
           className="hero__button min-w-[185px] text-lg font-semibold"
         />
       </Container>

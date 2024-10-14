@@ -61,10 +61,10 @@ export default function PriceSection() {
                 </li>
               </ul>
             </CardContent>
-            <CardFooter>
+            <CardFooter className="w-full">
               <ButtonFancy
                 text={t('web_cta')}
-                path="https://wa.me/971505072100"
+                href="https://wa.me/971505072100"
                 className="w-full"
                 onClick={() =>
                   sendGAEvent('event', 'conversion', {

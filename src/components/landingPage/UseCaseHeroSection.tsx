@@ -5,15 +5,20 @@
 
 import { sendGAEvent } from '@next/third-parties/google';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import * as React from 'react';
+
+import type { AllowedUseCases } from '@/app/[locale]/(unauth)/[usecase]/page';
 
 import { Container, Section } from '../GeneralContainers';
 import ButtonFancy from '../ui/button-fancy';
 
-export default function HeroSection() {
-  const t = useTranslations('HeroSection');
+export default function UseCaseHeroSection({
+  useCase = 'HeroSection',
+}: {
+  useCase: AllowedUseCases;
+}) {
+  const t = useTranslations(useCase as keyof IntlMessages);
 
   return (
     <Section className="py-4 sm:py-10">
@@ -23,35 +28,9 @@ export default function HeroSection() {
           <h1 className="flex flex-col gap-y-4 text-center text-5xl font-normal tracking-normal sm:text-left sm:text-6xl">
             {t('header_1')} <br />
           </h1>
-          <p className="gap-x-2 text-center text-5xl sm:text-left sm:text-6xl">
-            {t('conjunction')}{' '}
-            <Link
-              href="https://wa.me/971505072100"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium underline decoration-red-500 decoration-4 underline-offset-4 transition-all duration-200 ease-in-out hover:text-opacity-80 hover:underline-offset-8"
-            >
-              {t('header_2')}
-            </Link>
-          </p>
-
           <h2 className="!mb-0 py-6 text-center font-normal tracking-normal sm:text-left">
             {t('subheader')}
           </h2>
-          <ul className="mb-6 hidden space-y-2 text-sm sm:block sm:text-base">
-            <li className="flex items-center">
-              <span className="mr-2">✏️</span>
-              {t('subheader_4')}
-            </li>
-            <li className="flex items-center">
-              <span className="mr-2">📸</span>
-              {t('subheader_3')}
-            </li>
-            <li className="flex items-center">
-              <span className="mr-2">🛍️</span>
-              {t('subheader_2')}
-            </li>
-          </ul>
           <ButtonFancy
             text={t('web_cta')}
             href="https://wa.me/971505072100"
@@ -74,7 +53,7 @@ export default function HeroSection() {
               {[1, 2, 3, 4].map((num) => (
                 <div key={num} className="relative w-full pb-[100%]">
                   <Image
-                    src={`/assets/images/og_woman_${num}.webp`}
+                    src={`/assets/images/usecases/${useCase}_${num}.jpg`}
                     alt={`woman ${num}`}
                     fill
                     sizes="(max-width: 768px) 25vw, 20vw"
@@ -111,7 +90,7 @@ export default function HeroSection() {
               >
                 <div className="size-full overflow-hidden rounded-lg">
                   <Image
-                    src="/assets/images/hero_thai_2.jpg"
+                    src={`/assets/images/usecases/${useCase}_ai.jpg`}
                     alt={t('ai_generated')}
                     width={375}
                     height={667}

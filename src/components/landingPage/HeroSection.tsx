@@ -74,7 +74,7 @@ export default function HeroSection() {
               {[1, 2, 3, 4].map((num) => (
                 <div key={num} className="relative w-full pb-[100%]">
                   <Image
-                    src={`/assets/images/og_woman_${num}.webp`}
+                    src={`/assets/images/hero_man_${num}.webp`}
                     alt={`woman ${num}`}
                     fill
                     sizes="(max-width: 768px) 25vw, 20vw"
@@ -105,21 +105,14 @@ export default function HeroSection() {
             </div>
             {/* AI-generated image */}
             <div className="relative flex w-full items-center justify-center sm:w-3/4">
-              <div
-                className="relative"
-                style={{ width: '250px', height: '444px' }}
-              >
+              <div className="relative h-[444px] w-[250px]">
                 <div className="size-full overflow-hidden rounded-lg">
                   <Image
-                    src="/assets/images/hero_thai_2.jpg"
+                    src="/assets/images/hero_man_ai.webp"
                     alt={t('ai_generated')}
-                    width={375}
-                    height={667}
+                    width={250}
+                    height={444}
                     className="object-cover"
-                    style={{
-                      transform: 'scale(1.5)',
-                      transformOrigin: 'center',
-                    }}
                     priority
                     loading="eager"
                   />

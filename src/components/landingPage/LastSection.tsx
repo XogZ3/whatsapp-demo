@@ -68,11 +68,11 @@ export default function LastSection() {
           {/* Image section */}
           <div className="relative mb-8 h-[300px] w-full rounded-t-3xl bg-black dark:bg-white sm:mb-0 sm:h-full sm:w-1/3 sm:rounded-r-3xl sm:rounded-t-none">
             <Image
-              src="/assets/images/man (4).jpg"
-              alt="FotoLabs"
+              src="/assets/images/woman_cosplay.webp"
+              alt="AI-generated cosplay photo - FotoLabs"
               fill
               style={{ objectPosition: '0% 20%', objectFit: 'cover' }}
-              sizes="(max-width: 640px) 100vw, 33vw"
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
               className="rounded-t-3xl sm:rounded-l-none sm:rounded-r-3xl"
             />
           </div>

@@ -84,22 +84,14 @@ export default function UseCaseHeroSection({
             </div>
             {/* AI-generated image */}
             <div className="relative flex w-full items-center justify-center sm:w-3/4">
-              <div
-                className="relative"
-                style={{ width: '250px', height: '444px' }}
-              >
+              <div className="relative h-[444px] w-[250px]">
                 <div className="size-full overflow-hidden rounded-lg">
                   <Image
                     src={`/assets/images/usecases/${useCase}_ai.webp`}
                     alt={t('ai_generated')}
-                    width={375}
-                    height={667}
+                    width={250}
+                    height={444}
                     className="object-cover"
-                    style={{
-                      transform: 'scale(1.5)',
-                      transformOrigin: 'center',
-                      objectPosition: '0% 0%',
-                    }}
                     priority
                     loading="eager"
                   />

@@ -2,6 +2,8 @@
 
 import { HamburgerMenuIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -14,7 +16,8 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
-
+  const pathname = usePathname();
+  const t = useTranslations('Header');
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -35,6 +38,35 @@ export default function Header() {
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.slice(1);
+      if (hash) {
+        setTimeout(() => {
+          const element = document.getElementById(hash);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 0);
+      }
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+
+    // Handle initial load with hash
+    if (window.location.hash) {
+      handleHashChange();
+    }
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+    };
+  }, []);
+
+  const handleLinkClick = () => {
+    setIsMenuOpen(false);
+  };
+
   return (
     <nav
       className="flex h-14 items-center justify-between border-b"
@@ -51,16 +83,18 @@ export default function Header() {
         <div className="flex items-center justify-center gap-2 sm:gap-6">
           <div className="hidden sm:flex sm:items-center sm:gap-6">
             <Link
-              href="#pricing"
+              href={`${pathname}#pricing`}
               className="cursor-pointer hover:underline hover:decoration-red-500 hover:decoration-2 hover:underline-offset-4"
+              onClick={handleLinkClick}
             >
-              Pricing
+              {t('pricing')}
             </Link>
             <Link
-              href="#faq"
+              href={`${pathname}#faq`}
               className="cursor-pointer hover:underline hover:decoration-red-500 hover:decoration-2 hover:underline-offset-4"
+              onClick={handleLinkClick}
             >
-              FAQ
+              {t('faq')}
             </Link>
           </div>
           <div className="flex h-10 items-center justify-center">
@@ -82,21 +116,21 @@ export default function Header() {
       {isMenuOpen && (
         <div
           ref={menuRef}
-          className="absolute inset-x-0 top-14 flex flex-col items-center justify-center border-b bg-white p-4 dark:bg-black sm:hidden"
+          className="absolute inset-x-0 top-14 flex flex-col items-center justify-center border-b bg-white p-4 text-xl dark:bg-black sm:hidden"
         >
           <Link
-            href="#pricing"
+            href={`${pathname}#pricing`}
             className="block py-2 hover:underline hover:decoration-red-500 hover:decoration-2 hover:underline-offset-4"
-            onClick={() => setIsMenuOpen(false)}
+            onClick={handleLinkClick}
           >
-            Pricing
+            {t('pricing')}
           </Link>
           <Link
-            href="#faq"
+            href={`${pathname}#faq`}
             className="block py-2 hover:underline hover:decoration-red-500 hover:decoration-2 hover:underline-offset-4"
-            onClick={() => setIsMenuOpen(false)}
+            onClick={handleLinkClick}
           >
-            FAQ
+            {t('faq')}
           </Link>
         </div>
       )}

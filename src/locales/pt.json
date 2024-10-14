@@ -1,6 +1,9 @@
 {
   "Header": {
-    "phone_number": "{appPhone}"
+    "phone_number": "{appPhone}",
+    "whatsapp_cta": "Experimente agora",
+    "pricing": "Preços",
+    "faq": "Perguntas Frequentes"
   },
   "Index": {
     "meta_title": "{appName} - Crie Imagens de IA de Você no WhatsApp Agora",
@@ -24,10 +27,10 @@
     "header_1": "Comece a tirar fotos com IA",
     "conjunction": "no",
     "header_2": "WhatsApp",
-    "subheader": "Gere fotos para suas redes sociais com IA. Economize tempo e dinheiro e faça fotos ilimitadas com IA pelo seu celular",
-    "subheader_2": "Experimente roupas no seu modelo antes de comprar online",
-    "subheader_3": "Tire fotos 100% IA em qualquer pose, lugar ou ação",
-    "subheader_4": "Envie selfies e crie seu próprio modelo de IA Flux™",
+    "subheader": "Imagine-se em qualquer cenário. Crie fotos ilimitadas de IA pelo seu celular",
+    "subheader_2": "Visualize-se em diferentes roupas antes de comprar online",
+    "subheader_3": "Gere fotos de IA de você mesmo em qualquer pose, lugar ou ação",
+    "subheader_4": "Envie selfies para criar seu modelo de IA personalizado",
     "web_cta": "Experimente agora"
   },
   "StepsSection": {
@@ -114,7 +117,7 @@
     "header": "Preço Simples e Transparente",
     "subheader": "Comece com nosso plano de preços direto. Sem taxas ocultas, apenas ótimo valor.",
     "monthly_plan": "Plano Mensal",
-    "for_individuals_and_small_teams": "Perfeito para indivíduos e pequenas equipes",
+    "for_individuals_and_small_teams": "Perfeito para você",
     "month": "/mês",
     "unlimited_image_generation": "Geração ilimitada de imagens",
     "whatsapp_customer_support": "Suporte ao cliente via WhatsApp",
@@ -230,6 +233,33 @@
         "description": "Solicite reembolso"
       }
     },
+    "Title_3": {
+      "label": "Gerar fotos com IA",
+      "AIDating": {
+        "label": "Namoro com IA",
+        "description": "Crie fotos deslumbrantes geradas por IA para o seu perfil de namoro e aumente seu sucesso nos encontros online. Destaque-se no Tinder, Bumble e Hinge com imagens personalizadas e de alta qualidade que mostram seu estilo único e personalidade."
+      },
+      "ProfessionalHeadshots": {
+        "label": "Fotos Profissionais",
+        "description": "Eleve sua imagem profissional com fotos geradas por IA. Perfeito para LinkedIn, currículos e perfis corporativos. Pareça elegante e confiante sem o custo de um estúdio."
+      },
+      "OutfitIdeas": {
+        "label": "Ideias de Roupas",
+        "description": "Descubra infinitas possibilidades de roupas com ideias de moda geradas por IA. Visualize diferentes estilos em você antes de comprar. Perfeito para entusiastas da moda, compradores online e experimentação de estilos."
+      },
+      "Travel": {
+        "label": "Viagens",
+        "description": "Crie fotos de viagem impressionantes geradas por IA de você mesmo em locais exóticos ao redor do mundo. Perfeito para entusiastas de viagens, influenciadores e sonhadores. Explore destinos globais virtualmente!"
+      },
+      "Instagram": {
+        "label": "Instagram",
+        "description": "Crie fotos geradas por IA que param a rolagem para o seu feed do Instagram. Eleve sua presença nas redes sociais com imagens personalizadas e de alta qualidade que capturam a atenção e aumentam o engajamento."
+      },
+      "Hairstyles": {
+        "label": "Penteados",
+        "description": "Explore infinitas possibilidades de penteados com imagens geradas por IA. Visualize diferentes cortes, cores e estilos em você antes de visitar o salão. Perfeito para uma transformação confiante e experimentação de estilos."
+      }
+    },
     "Copyright": {
       "text_1": "Direitos Autorais",
       "text_2": "Todos os Direitos Reservados",
@@ -278,5 +308,65 @@
     "button_return_to_whatsapp": "Voltar ao WhatsApp",
     "confirm_message": "Se você tem uma conta com a FotoLabs.ai, enviamos uma mensagem no WhatsApp para confirmar seu pedido de cancelamento. Por favor, confirme no WhatsApp.",
     "too_frequent": "Tente novamente após algumas horas."
+  },
+  "ai-dating": {
+    "meta_title": "Fotos de Perfil de Namoro com IA: Impulsione Seu Sucesso no Namoro Online | {appName}",
+    "meta_description": "Crie fotos de perfil de namoro deslumbrantes geradas por IA para impulsionar seu sucesso no namoro online. Destaque-se no Tinder, Bumble e Hinge com imagens personalizadas e de alta qualidade que mostram seu estilo e personalidade únicos.",
+    "header_1": "Revolucione Seu Perfil de Namoro com Fotos Geradas por IA",
+    "subheader": "Transforme sua presença no namoro online com imagens personalizadas geradas por IA que mostram seu melhor eu em vários cenários atraentes",
+    "web_cta": "Criar Fotos",
+    "ai_generated": "Aprimorado por IA",
+    "last_section_header_1": "Impulsione Seu Sucesso no Namoro com Fotografia de IA",
+    "last_section_subheader": "Use a IA para criar fotos cativantes e autênticas que realmente representam você no Tinder, Bumble, Hinge e outras plataformas populares de namoro"
+  },
+  "professional-headshots": {
+    "meta_title": "Fotos Profissionais de IA para Sucesso na Carreira | Perfil do LinkedIn | {appName}",
+    "meta_description": "Eleve sua imagem profissional com fotos geradas por IA. Perfeito para LinkedIn, currículos e perfis corporativos. Pareça polido e confiante sem o custo do estúdio.",
+    "header_1": "Aprimore Sua Imagem Profissional com Fotos de IA",
+    "subheader": "Crie fotos profissionais deslumbrantes para seus perfis do LinkedIn e de carreira usando tecnologia avançada de IA",
+    "web_cta": "Gerar Fotos",
+    "ai_generated": "Criado por IA",
+    "last_section_header_1": "Impulsione Sua Carreira com Fotos Profissionais Geradas por IA",
+    "last_section_subheader": "Cause uma impressão duradoura no mundo dos negócios com fotos de alta qualidade geradas por IA, adaptadas à sua indústria e marca profissional"
+  },
+  "outfit-ideas": {
+    "meta_title": "Ideias de Roupas e Prova Virtual com IA | Inspiração de Moda | {appName}",
+    "meta_description": "Descubra infinitas possibilidades de roupas com ideias de moda geradas por IA. Visualize diferentes estilos em você antes de comprar. Perfeito para entusiastas da moda, compradores online e experimentação de estilos.",
+    "header_1": "Explore Infinitas Possibilidades de Moda com IA",
+    "subheader": "Gere ideias de roupas personalizadas e experimente virtualmente diferentes estilos com nosso assistente de moda de IA. Experimente tendências, looks casuais e muito mais.",
+    "web_cta": "Experimentar Roupas",
+    "ai_generated": "Estilizado por IA",
+    "last_section_header_1": "Revolucione Seu Guarda-roupa com Insights de Moda de IA",
+    "last_section_subheader": "Desbloqueie seu potencial de estilo pessoal com combinações de roupas geradas por IA e provas virtuais. Explore looks modernos, casuais, formais e únicos adaptados a você."
+  },
+  "travel": {
+    "meta_title": "Fotografia de Viagem com IA: Capture Destinos dos Sonhos | Viagem Virtual | {appName}",
+    "meta_description": "Crie fotos de viagem deslumbrantes geradas por IA de você mesmo em locais exóticos em todo o mundo. Perfeito para entusiastas de viagens, influenciadores e sonhadores. Explore destinos globais virtualmente!",
+    "header_1": "Viaje pelo Mundo com Fotos Geradas por IA",
+    "subheader": "Experimente destinos globais através de imagens personalizadas de IA apresentando você em locais deslumbrantes de Paris a Tóquio",
+    "web_cta": "Iniciar Viagem com IA",
+    "ai_generated": "Viajado por IA",
+    "last_section_header_1": "Dê Vida aos Seus Sonhos de Viagem com IA",
+    "last_section_subheader": "Explore e compartilhe incríveis experiências de viagem geradas por IA apresentando você em destinos icônicos em todo o mundo. De praias a pontos turísticos, visualize suas aventuras globais."
+  },
+  "instagram": {
+    "meta_title": "Fotos Prontas para Instagram Geradas por IA | Impulsione Sua Presença nas Redes Sociais | {appName}",
+    "meta_description": "Crie fotos que param o scroll, geradas por IA para seu feed do Instagram. Eleve sua presença nas redes sociais com imagens personalizadas de alta qualidade que capturam a atenção e aumentam o engajamento.",
+    "header_1": "Transforme Seu Feed do Instagram com Conteúdo Gerado por IA",
+    "subheader": "Destaque-se nas redes sociais com fotos de IA personalizadas e chamativas, adaptadas à sua estética única do Instagram e aumente seu número de seguidores",
+    "web_cta": "Criar Fotos",
+    "ai_generated": "Influenciador de IA",
+    "last_section_header_1": "Domine o Instagram com Visuais Gerados por IA",
+    "last_section_subheader": "Eleve seu jogo nas redes sociais com conteúdo deslumbrante e personalizado gerado por IA que impulsiona o engajamento, aumenta seus seguidores e estabelece seu status de influenciador"
+  },
+  "hairstyles": {
+    "meta_title": "Visualização de Penteados com IA: Experimente Antes de Estilizar | Transformação Virtual | {appName}",
+    "meta_description": "Explore infinitas possibilidades de penteados com imagens geradas por IA. Visualize diferentes cortes, cores e estilos em você antes de visitar o salão. Perfeito para uma transformação confiante e experimentação de estilos.",
+    "header_1": "Descubra Seu Penteado Perfeito com IA",
+    "subheader": "Visualize inúmeros penteados em você usando tecnologia avançada de IA antes de fazer uma mudança. De cachos chiques a fades ousados, encontre seu visual ideal.",
+    "web_cta": "Experimentar Penteados",
+    "ai_generated": "Estilizado por IA",
+    "last_section_header_1": "Transforme Seu Visual com Prévias de Penteados de IA",
+    "last_section_subheader": "Ganhe confiança em sua próxima transformação capilar explorando penteados gerados por IA adaptados às suas características. Experimente cortes, cores e estilos sem riscos."
   }
 }

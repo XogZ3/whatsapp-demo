@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 
 import Privacy from '@/components/(Company)/Privacy';
 import { AppConfig } from '@/utils/appConfig';
@@ -26,7 +26,17 @@ export async function generateMetadata(props: {
   };
 }
 
-export default function PrivacyPage() {
+export async function generateStaticParams() {
+  return AppConfig.locales.map((locale) => ({ locale }));
+}
+
+export default function PrivacyPage({
+  params: { locale },
+}: {
+  params: { locale: string };
+}) {
+  unstable_setRequestLocale(locale);
+
   return (
     <div className="">
       <Privacy />

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 
 import ComparisonSection from '@/components/landingPage/ComparisonSection';
 import FAQSection from '@/components/landingPage/FAQSection';
@@ -293,8 +293,18 @@ export async function generateMetadata(props: {
   };
 }
 
-export default function UseCasesPage({ params }: { params: any }) {
-  const useCase = params.usecase;
+export async function generateStaticParams() {
+  return AppConfig.locales.map((locale) => ({ locale }));
+}
+
+export default function UseCasesPage({
+  params: { locale, usecase },
+}: {
+  params: { locale: string; usecase: AllowedUseCases };
+}) {
+  unstable_setRequestLocale(locale);
+
+  const useCase = usecase;
   if (!allowedUseCases.includes(useCase)) {
     redirect('/');
   }

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 
 import ogImage from '@/app/opengraph-image.webp';
 import About from '@/components/(Company)/About';
@@ -78,7 +78,17 @@ export async function generateMetadata(props: {
   };
 }
 
-export default function AboutPage() {
+export async function generateStaticParams() {
+  return AppConfig.locales.map((locale) => ({ locale }));
+}
+
+export default async function AboutPage({
+  params: { locale },
+}: {
+  params: { locale: string };
+}) {
+  unstable_setRequestLocale(locale);
+
   return (
     <div className="">
       <About />

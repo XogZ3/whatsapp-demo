@@ -9,11 +9,26 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import * as React from 'react';
 
+import { Skeleton } from '@/components/ui/skeleton';
+import { cn } from '@/libs/utils';
+
 import { Container, Section } from '../GeneralContainers';
 import ButtonFancy from '../ui/button-fancy';
 
 export default function HeroSection() {
   const t = useTranslations('HeroSection');
+  const [imagesLoaded, setImagesLoaded] = React.useState({
+    hero: false,
+    man1: false,
+    man2: false,
+    man3: false,
+    man4: false,
+    arrow: false,
+  });
+
+  const handleImageLoad = (imageName: string) => {
+    setImagesLoaded((prev) => ({ ...prev, [imageName]: true }));
+  };
 
   return (
     <Section className="py-4 sm:py-10">
@@ -75,6 +90,9 @@ export default function HeroSection() {
             <div className="mb-2 grid h-20 w-full grid-cols-4 gap-2 sm:w-3/4">
               {[1, 2, 3, 4].map((num) => (
                 <div key={num} className="relative w-full pb-[100%]">
+                  {!imagesLoaded[`man${num}` as keyof typeof imagesLoaded] && (
+                    <Skeleton className="absolute inset-0 size-full rounded-lg" />
+                  )}
                   <Image
                     src={`/assets/images/hero_man_${num}.webp`}
                     alt={`Man ${num}`}
@@ -84,45 +102,55 @@ export default function HeroSection() {
                       objectPosition: `0% ${num === 1 ? '5%' : num === 4 ? '10%' : '0%'}`,
                       objectFit: 'cover',
                     }}
-                    className="absolute inset-0 size-full rounded-lg object-cover"
+                    className={cn(
+                      'absolute inset-0 size-full rounded-lg object-cover',
+                      !imagesLoaded[`man${num}` as keyof typeof imagesLoaded] &&
+                        'invisible',
+                    )}
                     quality={75}
+                    onLoad={() => handleImageLoad(`man${num}`)}
+                    loading="eager"
                   />
                 </div>
               ))}
             </div>
             <div className="relative flex h-[50px] w-full items-center justify-center sm:w-3/4">
-              <Image
-                src="/assets/images/arrow_black.png"
-                alt="Arrow"
-                width={80}
-                height={80}
-                sizes="(max-width: 6rem) 6rem, 16rem"
-                className="absolute inset-0 m-auto block dark:hidden"
-                quality={75}
-              />
+              {!imagesLoaded.arrow && <Skeleton className="absolute size-20" />}
               <Image
                 src="/assets/images/arrow_white.png"
                 alt="Arrow"
                 width={80}
                 height={80}
                 sizes="(max-width: 6rem) 6rem, 16rem"
-                className="absolute inset-0 m-auto hidden dark:block"
+                className={cn(
+                  'absolute inset-0 m-auto block',
+                  !imagesLoaded.arrow && 'invisible',
+                )}
                 quality={75}
+                onLoad={() => handleImageLoad('arrow')}
+                loading="eager"
               />
             </div>
             {/* AI-generated image */}
             <div className="relative flex w-full items-center justify-center sm:w-3/4">
               <div className="relative h-[444px] w-[250px]">
                 <div className="size-full overflow-hidden rounded-lg">
+                  {!imagesLoaded.hero && (
+                    <Skeleton className="absolute inset-0 size-full" />
+                  )}
                   <Image
                     src="/assets/images/hero_man_ai.webp"
                     alt={t('ai_generated')}
                     width={250}
                     height={444}
-                    className="object-cover"
+                    className={cn(
+                      'object-cover',
+                      !imagesLoaded.hero && 'invisible',
+                    )}
                     priority
                     loading="eager"
                     sizes="(min-width: 840px) 250px, (min-width: 640px) calc(32.22vw - 14px), 250px"
+                    onLoad={() => handleImageLoad('hero')}
                   />
                 </div>
                 <div className="absolute right-0 top-0 rounded-bl-lg rounded-tr-lg bg-red-500 px-2 py-1 text-xs tracking-normal text-black">

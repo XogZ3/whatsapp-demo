@@ -22,10 +22,6 @@ export function UseCasePhotosSection({
     `/assets/images/usecases/${useCase}_14.webp`,
     `/assets/images/usecases/${useCase}_15.webp`,
     `/assets/images/usecases/${useCase}_16.webp`,
-    `/assets/images/usecases/${useCase}_17.webp`,
-    `/assets/images/usecases/${useCase}_18.webp`,
-    `/assets/images/usecases/${useCase}_19.webp`,
-    `/assets/images/usecases/${useCase}_20.webp`,
   ];
 
   return <ParallaxScroll images={images} />;

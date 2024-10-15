@@ -72,7 +72,7 @@ export default function LastSection() {
               alt="AI-generated cosplay photo - FotoLabs"
               fill
               style={{ objectPosition: '0% 20%', objectFit: 'cover' }}
-              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+              sizes="(min-width: 1220px) 363px, (min-width: 640px) 30.54vw, calc(100vw - 48px)"
               className="rounded-t-3xl sm:rounded-l-none sm:rounded-r-3xl"
             />
           </div>

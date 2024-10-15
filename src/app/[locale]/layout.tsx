@@ -18,7 +18,7 @@ import ogImage from '../opengraph-image.webp';
 import LoadingPage from './loading';
 import { Providers } from './providers';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ['latin'], display: 'swap', preload: true });
 
 export async function generateMetadata(props: {
   params: { locale: string };

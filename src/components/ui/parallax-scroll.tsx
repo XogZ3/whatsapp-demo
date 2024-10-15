@@ -52,12 +52,13 @@ export const ParallaxScroll = ({
                   className="h-60 sm:h-80"
                 >
                   <Image
-                    style={{ objectPosition: '0% 20%' }}
                     src={el}
-                    className="size-full rounded-lg object-cover object-center"
-                    height={400}
-                    width={400}
                     alt="thumbnail"
+                    className="size-full rounded-lg object-cover object-center"
+                    sizes="(min-width: 1400px) 242px, (min-width: 1220px) 25vw, (min-width: 640px) calc(25vw - 24px), calc(50vw - 16px)"
+                    style={{ objectPosition: '0% 20%' }}
+                    fill
+                    quality={75}
                   />
                 </motion.div>
               ))}

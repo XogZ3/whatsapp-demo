@@ -24,12 +24,14 @@ export default function HeroSection() {
             {t('header_1')} <br />
           </h1>
           <p className="gap-x-2 text-center text-5xl sm:text-left sm:text-6xl">
-            {t('conjunction')}{' '}
+            {t('conjunction')} <br />
+          </p>
+          <p className="gap-x-2 text-center text-5xl sm:text-left sm:text-6xl">
             <Link
               href="https://wa.me/971505072100"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium underline decoration-red-500 decoration-4 underline-offset-4 transition-all duration-200 ease-in-out hover:text-opacity-80 hover:underline-offset-8"
+              className="font-medium underline decoration-red-500 decoration-4 underline-offset-4 transition-all duration-200 ease-in-out sm:hover:text-opacity-80 sm:hover:underline-offset-8"
             >
               {t('header_2')}
             </Link>
@@ -75,14 +77,15 @@ export default function HeroSection() {
                 <div key={num} className="relative w-full pb-[100%]">
                   <Image
                     src={`/assets/images/hero_man_${num}.webp`}
-                    alt={`woman ${num}`}
+                    alt={`Man ${num}`}
                     fill
-                    sizes="(max-width: 768px) 25vw, 20vw"
+                    sizes="(min-width: 1220px) 90px, (min-width: 640px) calc(8.57vw - 13px), calc(25vw - 18px)"
                     style={{
                       objectPosition: `0% ${num === 1 ? '5%' : num === 4 ? '10%' : '0%'}`,
                       objectFit: 'cover',
                     }}
                     className="absolute inset-0 size-full rounded-lg object-cover"
+                    quality={75}
                   />
                 </div>
               ))}
@@ -92,15 +95,19 @@ export default function HeroSection() {
                 src="/assets/images/arrow_black.png"
                 alt="Arrow"
                 width={80}
-                height={50}
+                height={80}
+                sizes="(max-width: 6rem) 6rem, 16rem"
                 className="absolute inset-0 m-auto block dark:hidden"
+                quality={75}
               />
               <Image
                 src="/assets/images/arrow_white.png"
                 alt="Arrow"
                 width={80}
-                height={50}
+                height={80}
+                sizes="(max-width: 6rem) 6rem, 16rem"
                 className="absolute inset-0 m-auto hidden dark:block"
+                quality={75}
               />
             </div>
             {/* AI-generated image */}
@@ -115,6 +122,7 @@ export default function HeroSection() {
                     className="object-cover"
                     priority
                     loading="eager"
+                    sizes="(min-width: 840px) 250px, (min-width: 640px) calc(32.22vw - 14px), 250px"
                   />
                 </div>
                 <div className="absolute right-0 top-0 rounded-bl-lg rounded-tr-lg bg-red-500 px-2 py-1 text-xs tracking-normal text-black">

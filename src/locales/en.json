@@ -265,14 +265,312 @@
       "text_3": "Made with ❤️ By"
     }
   },
-  "About": {
-    "meta_title": "About",
-    "meta_description": "About page description",
-    "about_paragraph_1": "FotoLabs AI, your one-stop solution"
-  },
   "Terms": {
     "meta_title": "FotoLabs AI - Terms",
-    "meta_description": "Here are the terms of FotoLabs AI service for your reference."
+    "meta_description": "Here are the terms of FotoLabs AI service for your reference.",
+    "title": "TERMS OF USE",
+    "agreement_intro": "Agreement Between You and Oddbit Technology LLC",
+    "thank_you": "Thank you for visiting www.fotolabs.ai or fotolabs.ai",
+    "ownership": "fotolabs is owned and operated by Oddbit Technology LLC , a company incorporated under the provisions of the Companies Act, 2013.",
+    "terms_govern": "These Terms of Use govern you, the User of fotolabs, and your conduct, regardless of the means of access. You represent and warrant you possess the capacity and legal right to enter into this Agreement and to use this Website in accordance with the terms and conditions herein.",
+    "offline_activities": "You also acknowledge and agree that, unless we specifically provide otherwise, this Agreement only applies to this site and our online activities and does not apply to any of our offline activities.",
+    "consent": "By using the various services available on the fotolabs Platform (\"Services\"), you consent to these terms, fotolabs's Privacy Policy, and any community guidelines and supplemental terms provided to you for the Services that you use (collectively, \"Terms\") and fotolabs's efforts to improve every User's experience on the platform.",
+    "read_carefully": "Please read the Terms carefully, as they form the entire agreement between you and fotolabs.",
+    "usage_of_services": {
+      "title": "Usage of Services",
+      "posting_content": {
+        "title": "Posting content on the Platform:",
+        "login_required": "you shall be required to log on using your registered mobile number/ username/email address/Facebook account and password",
+        "content_ownership": "you may upload/post: (i) content that either was created by you entirely or legally belongs to you, or you have a legally valid license which permits you to upload/post the content; or (ii) your reviews, comments, reactions, etc., to specific content on the Platform (the content/information covered under (i) and (ii) above, the \"Content\"), and if in the event we suffer any loss or damages on account of the Content you have uploaded/posted belonging to another party or such Content violating or infringing the rights of any party, you shall be liable to indemnify us for such loss and damages;",
+        "license_grant": "by uploading/posting any Content, and in consideration of you using the Services, you automatically constitute you granting a royalty-free, perpetual, irrevocable, transferable, worldwide license to fotolabs to (a) use, reproduce, modify, adapt, publish, translate, create derivative works from, distribute, perform, transmit and display such Content (in whole or part) and/or to incorporate it in other works in any form, media, mode of delivery or technology now known or later developed, (b) display online or offline your Content (or part thereof, or any modification, adaptation, translation or derivative works thereof) online and offline and permit others (including without limitation fotolabs's co-brand partners) to do the same, and (c) permit other users to access, reproduce, distribute, publicly display, prepare derivative works of, and publicly perform your content via the Services, as may be permitted by the functionality of those Services (e.g., for users to re-blog, re-post or download your content). Further, the license you have granted to us as aforesaid shall not lapse notwithstanding that we have not used, distributed, displayed, published, or adapted/modified any of the Content for any duration.",
+        "prohibited_content": {
+          "title": "You shall, under no circumstances, upload any Content that:",
+          "items": [
+            "belongs to another person and to which you do not have any right;",
+            "is grossly harmful, harassing, blasphemous, defamatory, obscene, pornographic, paedophilic, libellous, invasive of another's privacy, hateful, or racially, ethnically objectionable, disparaging, relating or encouraging money laundering or gambling, or otherwise unlawful in any manner;",
+            "harm minors in any way;",
+            "infringes any patent, trademark, copyright or other proprietary rights;",
+            "violates any law for the time being in force;",
+            "deceives or misleads the reader/viewer about the origin of any information, or contains any information that is grossly offensive or menacing in nature;",
+            "impersonate another person;",
+            "contain software viruses or any other computer code, files or programmes that is designed to interrupt, destroy or limit the functionality of any computer resource;",
+            "threatens the unity, integrity, defence security or sovereignty of India, friendly relations with foreign states or public order or causes incitement to the commission of any cognizable offence or prevents investigation of any offence or is insulting any other nation."
+          ]
+        },
+        "content_removal": "While fotolabs does not make any editorial determination about the Content to be displayed and made accessible on the Platform, if: (i) we receive any notice or communication that any Content or any part of the Content belongs to a party who has not consented to such content being uploaded and accessible on the Platform or that it is violative of the rights of any person who has not consented to such Content being uploaded and accessible on the Platform; or (ii) it comes to our attention that any of the Content violates these Terms, we shall be entitled to remove such content/block public access to such content either temporarily or permanently, subject to the provisions of the Indian Copyright Act, 1957, and the Information Technology Act, 2000, and as we deem fit or in compliance with the orders or directions of the court (if applicable) and we shall have the right, at our discretion, to remove your account, and in either case you shall have no right to make any claims against us for removing or blocking such Content;",
+        "platform_role": "you understand that we act as a technological platform providing incidental, transient storage of the content uploaded by you for the purpose of electronic transmission to and access by members of the general public as understood under the Indian Copyright Act, 1957 and as an intermediary as understood under the Indian Information Technology Act, 2000.",
+        "login_security": "you shall be solely responsible for safeguarding your login details including username and password and that we shall have no liability whatsoever."
+      },
+      "authority": "Authority. You agree that you are permitted to use the Services under applicable law. If you are accessing an account(s) on behalf of the account owner (e.g., as an administrator, consultant, analyst, etc.), the Terms apply to your activities on behalf of the account owner.",
+      "age_restriction": "Age. If you are under the age of majority as per the laws of your country of residence (\"Minimum Age\") you may not register for an account. fotolabs does not include any age inappropriate. User data is processed by fotolabs, through verification and other internal checks, in a manner that both protects any user information as well as advances the best interests of children. Parents/adult guardians are required to monitor/regulate the content being viewed by their wards who have not attained the Minimum Age. Parental control tools available from third party vendors/service providers might be useful in this regard. It shall also be responsibility of parents/adult guardians to ensure that their wards do not view Content that is not appropriate for them.",
+      "member_conduct": {
+        "title": "Member Conduct. You agree not to use the Services to:",
+        "items": [
+          "obtain or attempt to obtain unauthorized access to the Services or to fotolabs's servers, systems, network, or data;",
+          "make available any Content that is harmful to children, threatening, abusive, harassing, tortious, defamatory, vulgar, obscene, libelous, invasive of another's privacy, hateful, or racially, ethnically, or otherwise objectionable;",
+          "violate any applicable laws or regulations;",
+          "impersonate any person or entity; or forge or manipulate headers or identifiers to disguise the origin of any content transmitted through the Service;",
+          "make available any Content that you do not have the right to make available or that infringes any patent, trademark, trade secret, copyright or other proprietary rights of any person or entity;",
+          "post Content containing advertisements or other commercial solicitations without our prior written permission;",
+          "make available viruses or any other computer code, files, programs or Content designed to interrupt, destroy or limit the functionality of the Services or affect other users; or",
+          "interfere with or disrupt the Services or servers, systems or networks connected to the Services in any way."
+        ]
+      },
+      "use_of_services": "Use of Services. You must follow any guidelines or policies associated with the use of the Services. You must not misuse or interfere with the Services or try to access them using a method other than the interface and the instructions that we provide. You may use the Services only as permitted by law. Unless otherwise expressly stated, you may not access or reuse the Services, or any portion thereof, for any commercial purpose. Without our express written consent, you may not (a) use any automated means to access the Platform or collect any information from the Platform (including without limitation robots, spiders or scripts), or (b) frame the Platform (or any part thereof), place pop-up windows over the Platform (or any part thereof) pages, or otherwise affect the display of part or area of the Platform.",
+      "anti_corruption": "Anti-Corruption Laws. You agree to comply with all applicable anti-corruption laws including laws that prohibit unlawful payments to anyone for a corrupt purpose in relation to these Terms.",
+      "ownership_and_reuse": "Ownership and Reuse. Subject to these Terms, using the Services does not give you ownership of any intellectual or other property rights or interests in the Services or the Content you access. You must not use any branding or logos used in the Services unless fotolabs has given you separate explicit written permission. You may not remove, obscure, or alter any legal notices displayed on the Platform or in relation to any Content. Unless you have explicit written permission, you must not reproduce, modify, rent, lease, sell, trade, distribute, transmit, broadcast, publicly perform, create derivative works based on, or exploit for any commercial purposes, any portion of the Content or use of, or access to, the Services (including Content, advertisements, APIs, and software).",
+      "support": "Support. Unless otherwise expressly stated, fotolabs does not promise to provide you with any support for the Services. If fotolabs does provide you with support, it is at fotolabs's sole discretion and does not mean that we will continue to provide you with support in the future.",
+      "fees": "Fees. fotolabs reserves the right to charge fees for use of or access to the Services (and any associated support), whether currently in existence or not, in fotolabs's sole discretion. If fotolabs decides to charge fees fotolabs's payment terms will apply and fotolabs will provide you with prior notice.",
+      "anti_abuse_policy": "Anti-Abuse Policy. fotolabs prohibits sending unsolicited emails or messages using the Services. You may not in connection with the Services engage in commercial activity on non-commercial properties or apps or high volume activity without fotolabs's prior written consent. You may not engage in conduct or activity that is disruptive to the Services or the experience of other users."
+    },
+    "account_notices": {
+      "title": "Your Account Notices",
+      "account_information": "Account Information. You may need an account to use some Services. You must ensure that your account information (that is, the information you provided when you registered for or subscribed to a Service) remains current, complete, accurate and truthful. All fotolabs accounts are non-transferable, and any rights to them terminate upon the account holder's death. In order to create an account we may collect and keep possession of personal information such as your name, email address/Facebook user name, username, and your password(\"Personal Data\"). By providing us with the same, you acknowledge and accept that we have your consent for the collection and processing of such Personal Data. Our possession and use of Personal Data shall be in accordance with our Privacy Policy and Terms.",
+      "account_access": "Access to Your Account. You are responsible for all activity that happens on or through your account. To protect your account, keep your password confidential. Do not reuse your account password with other services. If you forget your password and otherwise cannot validate your account to fotolabs, you acknowledge and agree that your account may be inaccessible to you and that all data associated with the account may not be retrievable.",
+      "notices": "Notices. fotolabs may provide you with notices, including service announcements and notices regarding changes to these Terms, by, but not limited to, email, regular mail, text message or SMS, MMS, push notification or in-app message, postings on the Services, telephone, or other reasonable means now known or hereafter developed. You consent to receive these notices by any and all of the foregoing means. You may not receive notices if you violate the Terms by accessing the Services in an unauthorized manner, and you will be deemed to have received any and all notices that would have been delivered had you accessed the Services in an authorized manner."
+    },
+    "copyright_infringement": {
+      "title": "Procedure for Copyright or Other Intellectual Property Infringement Claims or Claims of Violation of Other Rights",
+      "respect_ip": "We respect the intellectual property as well as privacy of others, and we expect our users to do the same in respect to their use of and activities on the fotolabs platform. While a substantial amount of content on the fotolabs platform is user generated over which we do not exercise editorial control, we may, in appropriate circumstances and at our sole discretion subject to applicable law, block access to such content or delete such content, or disable, terminate, and/or take other appropriate steps relating to the accounts of users who may be infringers. While we do not make any editorial determination about the user generated content being posted and displayed and made accessible on the fotolabs platform, if: (i) we receive any notice or communication that any content or any part of the content belongs to a party who has not consented to such content being uploaded and accessible on the fotolabs platform or that it is violative of the rights of any person who has not consented to such content being uploaded and accessible on the fotolabs platform; or (ii) it comes to our attention that any of the content violates any of the terms and conditions applicable to the fotolabs platform, we shall be entitled to remove such content/block public access to such content either temporarily or permanently, subject to the provisions of the Indian Copyright Act, 1957, and the Information Technology Act, 2000, and as we deem fit or in compliance with the orders or directions of the court (if applicable) and we shall have the right, at our discretion, to remove the infringer's account, and in either case none of our users, partners, clients or vendors (including you) shall have no right to make any claims against us for removing or blocking such content;",
+      "reporting_copyright_infringement": {
+        "title": "Reporting Claims of Copyright Infringement",
+        "intro": "If you believe that your work (or the work of a third party on whose behalf you are entitled to act) has been copied in a way that constitutes copyright infringement, please file a copyright infringement notice with us. The notice should be in writing and include, in the order set out below, the following:",
+        "items": [
+          "A statement that you have identified material on the Platform that infringes your copyright (or infringes the copyright of a third party on whose behalf you are entitled to act);",
+          "A description of the copyrighted work that you claim has been infringed, which should include the type of work (such as a book or a sound recording) and any relevant further details (such as the title and date of publication, as applicable);",
+          "The country or countries to which your copyright applies;",
+          "A description of the way in which the copyright material has been infringed;",
+          "A description of where the material that you claim is infringing is located on our services (including a screen shot and link to the same);",
+          "Your address, telephone number, and email address so that we may get in contact with you;",
+          "A statement by you that you have a good faith belief that the disputed use of the copyrighted work is not authorized by the copyright owner (or by a third party who is legally entitled to do so on behalf of the copyright owner) and is not otherwise permitted by law;",
+          "A statement by you, made under penalty of perjury, that the notice is accurate and that you are the copyright owner or authorized to act on the copyright owner's behalf."
+        ]
+      },
+      "reporting_other_rights_violation": {
+        "title": "Reporting claims of violation of other personal rights",
+        "intro": "If you believe that any Content on the Platform is violative of your (or that of someone you know and are authorized to act for) privacy or other personal rights please follow the following instructions.",
+        "items": [
+          "A statement that you have identified material on the Platform that infringes your copyright (or infringes the copyright of a third party on whose behalf you are entitled to act);",
+          "A description of the way in which the copyright material has been infringed;",
+          "A description of where the material that you claim is infringing is located on our services (including a screen shot);",
+          "Your address, telephone number, and email address so that we may get in contact with you;",
+          "A statement by you, made under penalty of perjury, that the notice is accurate."
+        ]
+      },
+      "submission_instructions": "A complaint can be submitted by contacting us at {AppConfig.email}. Please be sure to include responses to items i-viii of Clause (b) above (if the complaint is regarding copyright infringement) or i-v of Clause (c) above (if the complaint is regarding the violation of other personal rights). If you are unsure whether there has been an infringement of your copyright or about your rights in the material, we suggest that you seek legal advice before reporting the material to us or sending us a counter-notice. Our response to your notice is regulated by applicable law. There may be negative consequences if you falsely allege copyright infringement or report material to us in bad faith. In addition, we may, in appropriate circumstances and at our discretion, disable, terminate, and/or take other appropriate steps relating to the accounts of users who may be repeat infringers."
+    },
+    "content_and_license": {
+      "title": "Content in the Services and License Grant to fotolabs",
+      "content_responsibility": "Content. Our Services display content that is not fotolabs's. This content is the sole responsibility of the entity or person that makes it available. fotolabs assumes no responsibility for the conduct of third parties, including persons or entities with which you communicate using the Services. Many of the Services enable you to submit content. You – not fotolabs – are entirely responsible for any content that you upload, post, email, transmit, or otherwise make available via the Services. We may remove and refuse to display content that violates the Terms or applicable laws or regulations, but that does not mean that we monitor the Services or review or screen any content. By using or accessing the Services you understand and agree that you may be exposed to offensive, indecent, or objectionable content.",
+      "ip_ownership_and_license": "IP Ownership and License Grant. Except as otherwise provided in the specific guidelines for a Service, when you upload, share with or submit content to the Services you retain ownership of any intellectual property rights that you hold in that content and you automatically grant fotolabs a worldwide, royalty-free, non-exclusive, perpetual, irrevocable, transferable, sublicensable license to (a) use, host, store, reproduce, modify, prepare derivative works (such as translations, adaptations, summaries or other changes), communicate, publish, publicly perform, publicly display, and distribute this content (in whole or in part, and /or incorporate in any other works) in any manner, mode of delivery, technology or media now known or developed in the future; (b) display your Content (or part thereof, or any modification, adaptations, translations or derivative works thereto) online and offline and permit other (including without limitation fotolabs's co-brand partners) and (c) permit other users to access, reproduce, distribute, publicly display, prepare derivative works of, and publicly perform your content via the Services, as may be permitted by the functionality of those Services (e.g., for users to re-blog, re-post or download your content). You must have the necessary rights to grant us the license described in this Section 6(b) for any content that you upload, share with or submit to the Services."
+    },
+    "modifying_terminating_services": {
+      "title": "Modifying and Terminating the Services; Terminating Accounts; Amendment of the Terms of Use",
+      "content": "We are constantly innovating, changing and improving the Services. We may, without notice, add or remove functionalities or features, and we may suspend or stop a Service altogether. You can stop using our Services at any time, although we'll be sorry to see you go. fotolabs may also stop providing Services to you, or add or create new limits to our Services at any time. We believe that you own your data and preserving your access to such data is important. If we discontinue a Service, where reasonably possible, we will give you reasonable advance notice and a chance to get information out of that Service. We may modify these terms or any additional terms that apply to a Service to, for example, reflect changes to the law or changes to our Services. You should look at the terms regularly. We'll post notice of modifications to these terms on this page. We'll post notice of modified additional terms in the applicable Service. Changes will not apply retroactively and will become effective no sooner than fourteen days after they are posted. However, changes addressing new functions for a Service or changes made for legal reasons will be effective immediately. If you do not agree to the modified terms for a Service, you should discontinue your use of that Service."
+    },
+    "force_majeure": {
+      "title": "Force Majeure",
+      "content": "Without prejudice to any other provision herein, fotolabs shall not be liable for any loss, damage or penalty as a result of any delay in or failure to deliver or otherwise perform hereunder due to any cause beyond fotolabs's control, including, without limitation, acts of the User or other Users, embargo or other governmental act, regulation or request affecting the conduct of fotolabs's business, fire, explosion, accident, theft, vandalism, riot, acts of war, strikes or other labour difficulties, lightning, flood, windstorm or other acts of God."
+    },
+    "warranties_and_disclaimers": {
+      "title": "Our Warranties and Disclaimers",
+      "content": [
+        "TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, fotolabs, ITS PARENT COMPANIES, SUBSIDIARIES, AFFILIATES, OFFICERS, DIRECTORS, EMPLOYEES, CONTRACTORS, AGENTS, PARTNERS, LICENSORS AND DISTRIBUTORS (COLLECTIVELY \"fotolabs ENTITIES\") DO NOT MAKE ANY REPRESENTATIONS, PROMISES, OR WARRANTIES, EXPRESS OR IMPLIED, ABOUT THE SERVICES. WE PROVIDE OUR SERVICES \"AS-IS,\" \"WITH ALL FAULTS,\" AND \"AS AVAILABLE.\" YOUR USE OF THE SERVICES, INCLUDING CONTENT WITHIN THE SERVICES, IS AT YOUR OWN RISK AND WE DO NOT REPRESENT, PROMISE, OR WARRANT THAT THE SERVICES WILL BE UNINTERRUPTED, TIMELY, SECURE, OR ERROR-FREE. YOU UNDERSTAND AND AGREE THAT NO DATA TRANSMISSION OVER THE INTERNET OR INFORMATION STORAGE TECHNOLOGY CAN BE GUARANTEED TO BE SECURE, AND fotolabs EXPRESSLY DISCLAIMS ANY WARRANTIES, EXPRESS OR IMPLIED, TO THAT EFFECT. WE MAKE NO COMMITMENTS, PROMISES OR WARRANTIES ABOUT THE CONTENT WITHIN THE SERVICES OR CONTENT LINKED FROM THE SERVICES, THE SUPPORT WE PROVIDE FOR THE SERVICES, THE SPECIFIC FUNCTIONS OF THE SERVICES, THE SECURITY OF THE SERVICES, OR THE SERVICES' RELIABILITY, QUALITY, ACCURACY, AVAILABILITY, OR ABILITY TO MEET YOUR NEEDS, PROVIDE CERTAIN OUTPUTS OR ACHIEVE CERTAIN RESULTS.",
+        "SOME JURISDICTIONS PROVIDE FOR CERTAIN IMPLIED WARRANTIES, SUCH AS THE IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, WE DISCLAIM ANY AND ALL IMPLIED OR EXPRESS PROMISES OR WARRANTIES ABOUT THE SERVICES."
+      ]
+    },
+    "limitation_of_liability": {
+      "title": "Limitation of Liability",
+      "content": [
+        "TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, YOU AGREE AND UNDERSTAND THAT fotolabs ENTITIES WILL NOT BE LIABLE FOR: ANY INDIRECT, SPECIAL, INCIDENTAL, CONSEQUENTIAL, TREBLE OR OTHER MULTIPLES OF DAMAGES, EXEMPLARY OR PUNITIVE DAMAGES ARISING FROM OR IN CONNECTION WITH THESE TERMS OR YOUR USE OF THE SERVICES. fotolabs ENTITIES ARE NOT RESPONSIBLE FOR ANY LOST PROFITS, LOST REVENUES, LOST BUSINESS OPPORTUNITIES, DIMINUTION IN VALUE, INCLUDING ANY ALLEGED LOSS OR DIMINUTION IN VALUE OF PERSONAL INFORMATION, OR ANY OTHER LOSSES (COLLECTIVELY, \"LOSSES\") ARISING FROM OR IN CONNECTION WITH THESE TERMS OR YOUR USE OF OR ACCESS TO THE SERVICES, INCLUDING, BUT NOT LIMITED TO, LOSSES RESULTING FROM OR IN CONNECTION WITH: THE DELETION OF, ALTERATION OF, MIS-DELIVERY OF, OR FAILURE TO STORE DATA MAINTAINED OR TRANSMITTED BY THE SERVICES; THE LIMITING, SUSPENSION OR TERMINATION OF YOUR ACCOUNT; YOUR DOWNLOADING OR SHARING OF INFORMATION, INCLUDING PERSONAL INFORMATION, VIA THE SERVICES; THE UNAUTHORIZED ACCESS TO YOUR ACCOUNT OR ANY DATA MAINTAINED OR TRANSMITTED BY THE SERVICES; LINKS PROVIDED BY THE SERVICES OR THIRD PARTIES TO EXTERNAL SITES OR RESOURCES; YOUR DEALINGS WITH OR PARTICIPATION IN PROMOTIONS OF ADVERTISERS FOUND ON OR THROUGH THE SERVICES; OR ANY GOOD OR SERVICES SOLD BY SUCH ADVERTISERS. fotolabs ENTITIES WILL NOT BE LIABLE FOR PROBLEMS CAUSED BY OTHERS, THE WRONGFUL OR UNLAWFUL ACTIONS OF THIRD PARTIES, OR AN ACT OF GOD. THE LIMITATIONS AND EXCLUSIONS IN THESE TERMS WILL APPLY WHETHER OR NOT fotolabs HAS BEEN ADVISED OF OR SHOULD HAVE BEEN AWARE OF THE POSSIBILITY OF ANY LOSSES ARISING.",
+        "TO THE FULLEST EXTENT PERMITTED BY LAW, fotolabs ENTITIES ARE NOT LIABLE IN CONNECTION WITH ANY DISPUTES THAT ARISE OUT OF OR RELATE TO THESE TERMS OR SERVICES FOR ANY AMOUNT GREATER THAN THE AMOUNT YOU PAID TO US FOR THE SERVICES."
+      ]
+    },
+    "community_standards": {
+      "title": "Community Standards and Guidelines",
+      "content": [
+        "Our primary objective is to empower people to discover and engage with other people, places and communities in their neighbourhood. We believe that You, as a User, play the most important role in helping us do this every day – this is your platform. Every day, people come to fotolabs to share their moments, discover and connect with new friends and earn rewards for spreading more magic, subject to reasonable restrictions.",
+        "fotolabs is about local, social communities. This is the reason we recommend all users to post, share and recommend content specific to places and experiences in their neighbourhood. The follow guidelines will help everyone build a better community around them:",
+        {
+          "items": [
+            "We recommend you to complete your profile – this will help other users discover, and engage with you based on similar interests.",
+            "The User is encouraged to post and share your moments at restaurants, salons, clubs, and other interesting places in your locality, with their stories in caption. Please always add the relevant location in context to the post.",
+            "Putting up posts which capture the essence of the place and their experiences will help your fellow users understand the outlet better.",
+            "The User is also encouraged to ask questions about different places and experiences and get feedback and reviews from co-users on the platform.",
+            "Liking posts randomly (people at their homes, not in proper dresses, hazy pictures, not looking at the camera) is discouraged.",
+            "Comments to a post not pertaining to or related to the post, person, place or their review on the experience are also discouraged. Please try and make the comments interesting so that other users also look up to you and want to stay in touch with you.",
+            "Posting any misleading links in comments, and content that expresses obscenity, vulgarity, hatred, racism, or gratuitous violence is prohibited, and will face disciplinary action, including but not limited to permanent ban."
+          ]
+        },
+        "General Code of Conduct: fotolabs wishes for each User to have a safe and pleasant experience while on our platform. As a user of the fotolabs app you should uphold these following codes of conduct inter alia, subject to periodic review and change by fotolabs, as this is your app and your community:",
+        {
+          "items": [
+            "You will not threaten, stalk, defame, defraud, degrade, victimize or intimidate an individual or group of individuals for any reason.",
+            "You are responsible for any interaction with other users.",
+            "You will not post content that is hateful, threatening, pornographic or that contains nudity or graphic or gratuitous violence.",
+            "You will not post or transmit any content that you do not have the right to post or transmit.",
+            "You will not advertise or perform any commercial solicitation.",
+            "You will not impersonate any person or entity or falsely state or otherwise misrepresent yourself, your age or your affiliation with any person or entity.",
+            "You will not post or transmit any advertising, promotional materials, junk mail, spam, chain letters, pyramid schemes or any other form of solicitation or unauthorized communication.",
+            "You will not post or transmit any material that contains viruses, Trojan horses, worms, time bombs, cancelbots or any other harmful, disruptive or deleterious programs.",
+            "You will not interfere with or disrupt the fotolabs services, servers or networks.",
+            "You will not use any robot, spider, scraper or other automated means to access the fotolabs services.",
+            "You will not collect or harvest any personally identifiable information from the fotolabs services.",
+            "You will not modify, adapt, translate or create derivative works based upon the fotolabs services.",
+            "You will not reverse engineer, decompile or disassemble the fotolabs services.",
+            "You will not encourage, assist or approve of any conduct in violation of these Terms.",
+            "You will not use the fotolabs services for any illegal purpose.",
+            "You will not use the fotolabs services in any manner that could damage, disable, overburden or impair the fotolabs services.",
+            "You will not use the fotolabs services to violate the legal rights of others.",
+            "You will not use the fotolabs services to infringe the intellectual property rights of others.",
+            "You will not use the fotolabs services to violate the privacy or publicity rights of others.",
+            "You will not use the fotolabs services to violate any applicable laws or regulations."
+          ]
+        },
+        "fotolabs reserves the right to investigate and take appropriate legal action against anyone who, in fotolabs's sole discretion, violates this provision, including without limitation, removing the offending content from the fotolabs services, suspending or terminating the account of such violators and reporting you to the law enforcement authorities.",
+        "You understand that all information, data, text, software, music, sound, photographs, graphics, video, messages, tags and/or other materials (\"Content\"), whether publicly posted or privately transmitted, are the sole responsibility of the person from whom such Content originated. This means that you, and not fotolabs, are entirely responsible for all Content that you upload, post, email, transmit or otherwise make available via the fotolabs services. fotolabs does not control the Content posted via the fotolabs services and, as such, does not guarantee the accuracy, integrity or quality of such Content. You understand that by using the fotolabs services, you may be exposed to Content that is offensive, indecent or objectionable. Under no circumstances will fotolabs be liable in any way for any Content, including, but not limited to, any errors or omissions in any Content, or any loss or damage of any kind incurred as a result of the use of any Content posted, emailed, transmitted or otherwise made available via the fotolabs services.",
+        "You agree to not use the fotolabs services to:",
+        {
+          "items": [
+            "upload, post, email, transmit or otherwise make available any Content that is unlawful, harmful, threatening, abusive, harassing, tortious, defamatory, vulgar, obscene, libelous, invasive of another's privacy, hateful, or racially, ethnically or otherwise objectionable;",
+            "harm minors in any way;",
+            "impersonate any person or entity, including, but not limited to, a fotolabs official, forum leader, guide or host, or falsely state or otherwise misrepresent your affiliation with a person or entity;",
+            "forge headers or otherwise manipulate identifiers in order to disguise the origin of any Content transmitted through the fotolabs services;",
+            "upload, post, email, transmit or otherwise make available any Content that you do not have a right to make available under any law or under contractual or fiduciary relationships (such as inside information, proprietary and confidential information learned or disclosed as part of employment relationships or under nondisclosure agreements);",
+            "upload, post, email, transmit or otherwise make available any Content that infringes any patent, trademark, trade secret, copyright or other proprietary rights (\"Rights\") of any party;",
+            "upload, post, email, transmit or otherwise make available any unsolicited or unauthorized advertising, promotional materials, \"junk mail,\" \"spam,\" \"chain letters,\" \"pyramid schemes,\" or any other form of solicitation, except in those areas (such as shopping rooms) that are designated for such purpose;",
+            "upload, post, email, transmit or otherwise make available any material that contains software viruses or any other computer code, files or programs designed to interrupt, destroy or limit the functionality of any computer software or hardware or telecommunications equipment;",
+            "disrupt the normal flow of dialogue, cause a screen to \"scroll\" faster than other users of the fotolabs services are able to type, or otherwise act in a manner that negatively affects other users' ability to engage in real time exchanges;",
+            "interfere with or disrupt the fotolabs services or servers or networks connected to the fotolabs services, or disobey any requirements, procedures, policies or regulations of networks connected to the fotolabs services;",
+            "intentionally or unintentionally violate any applicable local, state, national or international law, including, but not limited to, regulations promulgated by the U.S. Securities and Exchange Commission, any rules of any national or other securities exchange, including, without limitation, the New York Stock Exchange, the American Stock Exchange or the NASDAQ, and any regulations having the force of law;",
+            "provide material support or resources (or to conceal or disguise the nature, location, source, or ownership of material support or resources) to any organization(s) designated by the United States government as a foreign terrorist organization pursuant to section 219 of the Immigration and Nationality Act;",
+            "\"stalk\" or otherwise harass another; and/or",
+            "collect or store personal data about other users in connection with the prohibited conduct and activities set forth in paragraphs a through m above."
+          ]
+        },
+        "You acknowledge that fotolabs may or may not pre-screen Content, but that fotolabs and its designees shall have the right (but not the obligation) in their sole discretion to pre-screen, refuse, or remove any Content that is available via the fotolabs services. Without limiting the foregoing, fotolabs and its designees shall have the right to remove any Content that violates the TOS or is otherwise objectionable. You agree that you must evaluate, and bear all risks associated with, the use of any Content, including any reliance on the accuracy, completeness, or usefulness of such Content. In this regard, you acknowledge that you may not rely on any Content created by fotolabs or submitted to fotolabs, including without limitation information in fotolabs Message Boards and in all other parts of the fotolabs services.",
+        "You acknowledge, consent and agree that fotolabs may access, preserve and disclose your account information and Content if required to do so by law or in a good faith belief that such access preservation or disclosure is reasonably necessary to: (a) comply with legal process; (b) enforce the TOS; (c) respond to claims that any Content violates the rights of third parties; (d) respond to your requests for customer service; or (e) protect the rights, property or personal safety of fotolabs, its users and the public."
+      ]
+    },
+    "privacy": {
+      "title": "Privacy",
+      "content": "You understand that the technical processing and transmission of the fotolabs services, including your Content, may involve (a) transmissions over various networks; and (b) changes to conform and adapt to technical requirements of connecting networks or devices. Please refer to our Privacy Policy for more information."
+    },
+    "indemnity": {
+      "title": "Indemnity",
+      "content": "You agree to indemnify and hold fotolabs and its subsidiaries, affiliates, officers, agents, employees, partners and licensors harmless from any claim or demand, including reasonable attorneys' fees, made by any third party due to or arising out of Content you submit, post, transmit or otherwise make available through the fotolabs services, your use of the fotolabs services, your connection to the fotolabs services, your violation of the TOS, or your violation of any rights of another."
+    },
+    "no_resale_of_service": {
+      "title": "No Resale of Service",
+      "content": "You agree not to reproduce, duplicate, copy, sell, trade, resell or exploit for any commercial purposes, any portion of the fotolabs services (including your fotolabs ID), use of the fotolabs services, or access to the fotolabs services."
+    },
+    "general_practices_regarding_use_and_storage": {
+      "title": "General Practices Regarding Use and Storage",
+      "content": "You acknowledge that fotolabs may establish general practices and limits concerning use of the fotolabs services, including without limitation the maximum number of days that email messages, message board postings or other uploaded Content will be retained by the fotolabs services, the maximum number of email messages that may be sent from or received by an account on the fotolabs services, the maximum size of any email message that may be sent from or received by an account on the fotolabs services, the maximum disk space that will be allotted on fotolabs's servers on your behalf, and the maximum number of times (and the maximum duration for which) you may access the fotolabs services in a given period of time. You agree that fotolabs has no responsibility or liability for the deletion or failure to store any messages and other communications or other Content maintained or transmitted by the fotolabs services. You acknowledge that fotolabs reserves the right to log off accounts that are inactive for an extended period of time. You further acknowledge that fotolabs reserves the right to modify these general practices and limits from time to time."
+    },
+    "modifications_to_service": {
+      "title": "Modifications to Service",
+      "content": "fotolabs reserves the right at any time and from time to time to modify or discontinue, temporarily or permanently, the fotolabs services (or any part thereof) with or without notice. You agree that fotolabs shall not be liable to you or to any third party for any modification, suspension or discontinuance of the fotolabs services."
+    },
+    "termination": {
+      "title": "Termination",
+      "content": "You agree that fotolabs may, under certain circumstances and without prior notice, immediately terminate your fotolabs account, any associated email address, and access to the fotolabs services. Cause for such termination shall include, but not be limited to, (a) breaches or violations of the TOS or other incorporated agreements or guidelines, (b) requests by law enforcement or other government agencies, (c) a request by you (self-initiated account deletions), (d) discontinuance or material modification to the fotolabs services (or any part thereof), (e) unexpected technical or security issues or problems, (f) extended periods of inactivity, (g) engagement by you in fraudulent or illegal activities, and/or (h) nonpayment of any fees owed by you in connection with the fotolabs services. Termination of your fotolabs account includes (a) removal of access to all offerings within the fotolabs services, (b) deletion of your password and all related information, files and content associated with or inside your account (or any part thereof), and (c) barring of further use of the fotolabs services. Further, you agree that all terminations for cause shall be made in fotolabs's sole discretion and that fotolabs shall not be liable to you or any third party for any termination of your account, any associated email address, or access to the fotolabs services."
+    },
+    "dealings_with_advertisers": {
+      "title": "Dealings with Advertisers",
+      "content": "Your correspondence or business dealings with, or participation in promotions of, advertisers found on or through the fotolabs services, including payment and delivery of related goods or services, and any other terms, conditions, warranties or representations associated with such dealings, are solely between you and such advertiser. You agree that fotolabs shall not be responsible or liable for any loss or damage of any sort incurred as the result of any such dealings or as the result of the presence of such advertisers on the fotolabs services."
+    },
+    "links": {
+      "title": "Links",
+      "content": "The fotolabs services may provide, or third parties may provide, links to other World Wide Web sites or resources. Because fotolabs has no control over such sites and resources, you acknowledge and agree that fotolabs is not responsible for the availability of such external sites or resources, and does not endorse and is not responsible or liable for any Content, advertising, products or other materials on or available from such sites or resources. You further acknowledge and agree that fotolabs shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with use of or reliance on any such Content, goods or services available on or through any such site or resource."
+    },
+    "fotolabs_proprietary_rights": {
+      "title": "fotolabs's Proprietary Rights",
+      "content": "You acknowledge and agree that the fotolabs services and any necessary software used in connection with the fotolabs services (\"Software\") contain proprietary and confidential information that is protected by applicable intellectual property and other laws. You further acknowledge and agree that Content contained in sponsor advertisements or information presented to you through the fotolabs services or by advertisers is protected by copyrights, trademarks, service marks, patents or other proprietary rights and laws. Except as expressly authorized by fotolabs or advertisers, you agree not to modify, rent, lease, loan, sell, distribute or create derivative works based on the fotolabs services or the Software, in whole or in part."
+    },
+    "disclaimer_of_warranties": {
+      "title": "Disclaimer of Warranties",
+      "content": "YOU EXPRESSLY UNDERSTAND AND AGREE THAT:",
+      "items": [
+        "YOUR USE OF THE fotolabs SERVICES IS AT YOUR SOLE RISK. THE fotolabs SERVICES ARE PROVIDED ON AN \"AS IS\" AND \"AS AVAILABLE\" BASIS. fotolabs AND ITS SUBSIDIARIES, AFFILIATES, OFFICERS, EMPLOYEES, AGENTS, PARTNERS AND LICENSORS EXPRESSLY DISCLAIM ALL WARRANTIES OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.",
+        "fotolabs AND ITS SUBSIDIARIES, AFFILIATES, OFFICERS, EMPLOYEES, AGENTS, PARTNERS AND LICENSORS MAKE NO WARRANTY THAT (i) THE fotolabs SERVICES WILL MEET YOUR REQUIREMENTS; (ii) THE fotolabs SERVICES WILL BE UNINTERRUPTED, TIMELY, SECURE OR ERROR-FREE; (iii) THE RESULTS THAT MAY BE OBTAINED FROM THE USE OF THE fotolabs SERVICES WILL BE ACCURATE OR RELIABLE; (iv) THE QUALITY OF ANY PRODUCTS, SERVICES, INFORMATION OR OTHER MATERIAL PURCHASED OR OBTAINED BY YOU THROUGH THE fotolabs SERVICES WILL MEET YOUR EXPECTATIONS; AND (v) ANY ERRORS IN THE SOFTWARE WILL BE CORRECTED.",
+        "ANY MATERIAL DOWNLOADED OR OTHERWISE OBTAINED THROUGH THE USE OF THE fotolabs SERVICES IS ACCESSED AT YOUR OWN DISCRETION AND RISK, AND YOU WILL BE SOLELY RESPONSIBLE FOR ANY DAMAGE TO YOUR COMPUTER SYSTEM OR LOSS OF DATA THAT RESULTS FROM THE DOWNLOAD OF ANY SUCH MATERIAL.",
+        "NO ADVICE OR INFORMATION, WHETHER ORAL OR WRITTEN, OBTAINED BY YOU FROM fotolabs OR THROUGH OR FROM THE fotolabs SERVICES SHALL CREATE ANY WARRANTY NOT EXPRESSLY STATED IN THE TOS."
+      ]
+    },
+    "exclusions_and_limitations": {
+      "title": "Exclusions and Limitations",
+      "content": "SOME JURISDICTIONS DO NOT ALLOW THE EXCLUSION OF CERTAIN WARRANTIES OR THE LIMITATION OR EXCLUSION OF LIABILITY FOR INCIDENTAL OR CONSEQUENTIAL DAMAGES. ACCORDINGLY, SOME OF THE ABOVE LIMITATIONS OF SECTIONS 19 AND 20 MAY NOT APPLY TO YOU."
+    },
+    "special_admonition_for_services_relating_to_financial_matters": {
+      "title": "Special Admonition for Services Relating to Financial Matters",
+      "content": "If you intend to create or join any service, receive or request any news, messages, alerts or other information from the fotolabs services concerning companies, stock quotes, investments or securities, please read the above Sections 19 and 20 again. They go doubly for you. In addition, for this type of information particularly, the phrase \"Let the investor beware\" is apt. The fotolabs services is provided for informational purposes only, and no Content included in the fotolabs services is intended for trading or investing purposes. fotolabs and its licensors shall not be responsible or liable for the accuracy, usefulness or availability of any information transmitted or made available via the fotolabs services, and shall not be responsible or liable for any trading or investment decisions based on such information."
+    },
+    "no_third_party_beneficiaries": {
+      "title": "No Third-Party Beneficiaries",
+      "content": "You agree that, except as otherwise expressly provided in this TOS, there shall be no third-party beneficiaries to this agreement."
+    },
+    "notice": {
+      "title": "Notice",
+      "content": "fotolabs may provide you with notices, including those regarding changes to the TOS, by email, regular mail or postings on the fotolabs services."
+    },
+    "trademark_information": {
+      "title": "Trademark Information",
+      "content": "The fotolabs, fotolabs logo, trademarks and service marks and other fotolabs logos and product and service names are trademarks of fotolabs (the \"fotolabs Marks\"). Without fotolabs's prior permission, you agree not to display or use in any manner the fotolabs Marks."
+    },
+    "notice_and_procedure_for_making_claims_of_copyright_infringement": {
+      "title": "Notice and Procedure for Making Claims of Copyright Infringement",
+      "content": "fotolabs respects the intellectual property of others, and we ask our users to do the same. fotolabs may, in appropriate circumstances and at its discretion, disable and/or terminate the accounts of users who may be repeat infringers. If you believe that your work has been copied in a way that constitutes copyright infringement, or that your intellectual property rights have been otherwise violated, please provide fotolabs's Copyright Agent the following information:",
+      "items": [
+        "an electronic or physical signature of the person authorized to act on behalf of the owner of the copyright or other intellectual property interest;",
+        "a description of the copyrighted work or other intellectual property that you claim has been infringed;",
+        "a description of where the material that you claim is infringing is located on the site;",
+        "your address, telephone number, and email address;",
+        "a statement by you that you have a good faith belief that the disputed use is not authorized by the copyright owner, its agent, or the law;",
+        "a statement by you, made under penalty of perjury, that the above information in your notice is accurate and that you are the copyright or intellectual property owner or authorized to act on the copyright or intellectual property owner's behalf."
+      ],
+      "contact": "fotolabs's Agent for Notice of claims of copyright or other intellectual property infringement can be reached as follows:",
+      "address": {
+        "line1": "By mail:",
+        "line2": "Copyright Agent",
+        "line3": "c/o fotolabs Inc.",
+        "line4": "701 First Avenue",
+        "line5": "Sunnyvale, CA 94089",
+        "line6": "By phone: (408) 349-5080",
+        "line7": "By fax: (408) 349-7821",
+        "line8": "By email: copyright@fotolabs.com"
+      }
+    },
+    "general_information": {
+      "title": "General Information",
+      "entire_agreement": {
+        "title": "Entire Agreement",
+        "content": "The TOS constitutes the entire agreement between you and fotolabs and governs your use of the fotolabs services, superseding any prior agreements between you and fotolabs with respect to the fotolabs services. You also may be subject to additional terms and conditions that may apply when you use or purchase certain other fotolabs services, affiliate services, third-party content or third-party software."
+      },
+      "choice_of_law_and_forum": {
+        "title": "Choice of Law and Forum",
+        "content": "The TOS and the relationship between you and fotolabs shall be governed by the laws of the State of California without regard to its conflict of law provisions. You and fotolabs agree to submit to the personal and exclusive jurisdiction of the courts located within the county of Santa Clara, California."
+      },
+      "waiver_and_severability_of_terms": {
+        "title": "Waiver and Severability of Terms",
+        "content": "The failure of fotolabs to exercise or enforce any right or provision of the TOS shall not constitute a waiver of such right or provision. If any provision of the TOS is found by a court of competent jurisdiction to be invalid, the parties nevertheless agree that the court should endeavor to give effect to the parties' intentions as reflected in the provision, and the other provisions of the TOS remain in full force and effect."
+      },
+      "no_right_of_survivorship_and_non_transferability": {
+        "title": "No Right of Survivorship and Non-Transferability",
+        "content": "You agree that your fotolabs account is non-transferable and any rights to your fotolabs ID or contents within your account terminate upon your death. Upon receipt of a copy of a death certificate, your account may be terminated and all contents therein permanently deleted."
+      },
+      "statute_of_limitations": {
+        "title": "Statute of Limitations",
+        "content": "You agree that regardless of any statute or law to the contrary, any claim or cause of action arising out of or related to use of the fotolabs services or the TOS must be filed within one (1) year after such claim or cause of action arose or be forever barred."
+      },
+      "section_titles": {
+        "title": "The section titles in the TOS are for convenience only and have no legal or contractual effect."
+      }
+    },
+    "violations": {
+      "title": "Violations",
+      "content": "Please report any violations of the TOS to our Customer Service group."
+    }
   },
   "Privacy": {
     "meta_title": "FotoLabs AI - Privacy Policy",

@@ -10,15 +10,17 @@ const ArrowImage: React.FC = () => (
       src="/assets/images/arrow_black.png"
       alt="Arrow"
       fill
-      sizes="(min-width: 768px) 5vw, 25vw"
+      sizes="(max-width: 6rem) 6rem, 16rem"
       className="-rotate-45 object-contain dark:hidden"
+      quality={75}
     />
     <Image
       src="/assets/images/arrow_white.png"
       alt="Arrow"
       fill
-      sizes="(min-width: 768px) 5vw, 25vw"
+      sizes="(max-width: 6rem) 6rem, 16rem"
       className="hidden -rotate-45 object-contain dark:block"
+      quality={75}
     />
   </div>
 );
@@ -27,13 +29,14 @@ const ImageContainer: React.FC<{ src: string; alt: string }> = ({
   src,
   alt,
 }) => (
-  <div className="relative aspect-[9/16] w-full max-w-[225px]">
+  <div className="relative aspect-[9/16] w-full max-w-[14.0625rem]">
     <Image
       src={src}
       alt={alt}
       fill
-      sizes="(min-width: 768px) 30vw, 80vw"
+      sizes="(min-width: 60rem) 14.0625rem, (min-width: 40rem) calc(29.67vw - 3.375rem), (min-width: 36rem) 14.0625rem, calc(48.85vw - 3.0625rem)"
       className="object-cover"
+      quality={75}
     />
   </div>
 );

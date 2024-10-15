@@ -22,6 +22,7 @@ const FAQSection: React.FC = () => {
             src="/assets/images/faq_hero.png"
             alt="faq"
             fill
+            sizes="(min-width: 1220px) 34rem, (min-width: 640px) 45.71vw, calc(100vw - 3rem)"
             style={{ objectFit: 'cover', objectPosition: '50% 0%' }}
             className="object-center"
             loading="lazy"

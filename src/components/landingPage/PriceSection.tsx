@@ -44,7 +44,7 @@ export default function PriceSection() {
                 <span className="text-3xl font-bold">
                   <s>$29.99</s> $19.99
                 </span>
-                <span className="text-sm font-medium ">{t('month')}</span>
+                <span className="text-sm font-medium ">/{t('month')}</span>
               </div>
               <ul className="grid gap-2 py-4">
                 <li className="flex items-center gap-2">

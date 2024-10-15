@@ -14,6 +14,10 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Container, Section } from '../GeneralContainers';
 import ButtonFancy from '../ui/button-fancy';
 
+// Add this constant at the top of your file, after the imports
+const darkBlurData =
+  'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNTAiIGhlaWdodD0iNDQ0Ij48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMjAyMDIwIi8+PC9zdmc+';
+
 export default function HeroSection() {
   const t = useTranslations('HeroSection');
   const [heroImageLoaded, setHeroImageLoaded] = React.useState(false);
@@ -119,6 +123,8 @@ export default function HeroSection() {
                     className="object-cover"
                     priority
                     loading="eager"
+                    placeholder="blur"
+                    blurDataURL={darkBlurData}
                     sizes="(min-width: 840px) 250px, (min-width: 640px) calc(32.22vw - 14px), 250px"
                     onLoad={() => setHeroImageLoaded(true)}
                   />

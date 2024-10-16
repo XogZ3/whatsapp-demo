@@ -25,26 +25,21 @@ export default function HeroSection() {
       <Container className="relative flex flex-col items-center justify-center sm:grid sm:grid-cols-2">
         {/* Text Content */}
         <div className="flex w-full flex-col items-center justify-center text-center sm:items-start sm:justify-start sm:text-start">
-          <h1 className="flex flex-col gap-y-4 text-center text-5xl font-normal tracking-normal sm:text-left sm:text-6xl">
-            {t('header_1')} <br />
-          </h1>
-          <h2 className="gap-x-2 text-center text-5xl sm:text-left sm:text-6xl">
-            {t('conjunction')} <br />
-          </h2>
-          <h2 className="gap-x-2 text-center text-5xl sm:text-left sm:text-6xl">
+          <h1 className="flex flex-col text-center text-5xl font-normal tracking-normal sm:text-left sm:text-6xl">
+            <span>{t('header_1')}</span>
             <Link
               href="https://wa.me/971505072100"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium underline decoration-red-500 decoration-4 underline-offset-4 transition-all duration-200 ease-in-out sm:hover:text-opacity-80 sm:hover:underline-offset-8"
+              className="py-0 font-medium underline decoration-red-500 decoration-4 underline-offset-4 transition-all duration-200 ease-in-out sm:hover:text-opacity-80 sm:hover:underline-offset-8"
             >
               {t('header_2')}
             </Link>
-          </h2>
+          </h1>
 
-          <h3 className="!mb-0 py-6 text-center font-normal tracking-normal sm:text-left">
+          <h2 className="!mb-0 py-6 text-center font-normal tracking-normal sm:text-left">
             {t('subheader')}
-          </h3>
+          </h2>
           <ul className="mb-6 hidden space-y-2 text-sm sm:block sm:text-base">
             <li className="flex items-center">
               <span className="mr-2">✏️</span>
@@ -74,9 +69,9 @@ export default function HeroSection() {
         {/* Image Content */}
         <div className="flex w-full justify-end">
           <div className="mt-10 flex w-full flex-col items-end sm:mt-0 sm:w-[calc(100%-2rem)]">
-            <h3 className="mb-4 flex w-full items-center justify-center text-center text-3xl font-semibold sm:hidden">
+            <h2 className="mb-4 flex w-full items-center justify-center text-center text-3xl font-semibold sm:hidden">
               {t('mobile_subheader')}
-            </h3>
+            </h2>
             <div className="mb-2 grid h-20 w-full grid-cols-4 gap-2 sm:w-3/4">
               {[1, 2, 3, 4].map((num) => (
                 <div key={num} className="relative w-full pb-[100%]">

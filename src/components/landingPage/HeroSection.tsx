@@ -9,8 +9,6 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import * as React from 'react';
 
-import { Skeleton } from '@/components/ui/skeleton';
-
 import { Container, Section } from '../GeneralContainers';
 import ButtonFancy from '../ui/button-fancy';
 
@@ -20,7 +18,6 @@ const darkBlurData =
 
 export default function HeroSection() {
   const t = useTranslations('HeroSection');
-  const [heroImageLoaded, setHeroImageLoaded] = React.useState(false);
 
   return (
     <Section className="py-4 sm:py-10">
@@ -112,9 +109,6 @@ export default function HeroSection() {
             <div className="relative flex w-full items-center justify-center sm:w-3/4">
               <div className="relative h-[444px] w-[250px]">
                 <div className="size-full overflow-hidden rounded-lg">
-                  {!heroImageLoaded && (
-                    <Skeleton className="absolute inset-0 size-full" />
-                  )}
                   <Image
                     src="/assets/images/hero_man_ai.webp"
                     alt={t('ai_generated')}
@@ -125,8 +119,8 @@ export default function HeroSection() {
                     loading="eager"
                     placeholder="blur"
                     blurDataURL={darkBlurData}
+                    decoding="sync"
                     sizes="(min-width: 840px) 250px, (min-width: 640px) calc(32.22vw - 14px), 250px"
-                    onLoad={() => setHeroImageLoaded(true)}
                   />
                 </div>
                 <div className="absolute right-0 top-0 rounded-bl-lg rounded-tr-lg bg-red-500 px-2 py-1 text-xs tracking-normal text-black">

@@ -1,6 +1,7 @@
 import { Footer } from '@/components/Footer';
 import Header from '@/components/Header';
 import BackToTop from '@/components/landingPage/BackToTop';
+import TryNowButton from '@/components/landingPage/TryNowButton';
 
 export default function WebsiteLayout(props: { children: React.ReactNode }) {
   return (
@@ -8,6 +9,7 @@ export default function WebsiteLayout(props: { children: React.ReactNode }) {
       <Header />
       <div className="h-full grow">{props.children}</div>
       <BackToTop />
+      <TryNowButton />
       <Footer />
     </div>
   );

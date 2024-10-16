@@ -13,9 +13,8 @@ import * as React from 'react';
 import { Container, Section } from '../GeneralContainers';
 import ButtonFancy from '../ui/button-fancy';
 
-// Add this constant at the top of your file, after the imports
-// const darkBlurData =
-//   'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNTAiIGhlaWdodD0iNDQ0Ij48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMjAyMDIwIi8+PC9zdmc+';
+const darkBlurData =
+  'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNTAiIGhlaWdodD0iNDQ0Ij48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMjAyMDIwIi8+PC9zdmc+';
 
 export default function HeroSection() {
   const t = useTranslations('HeroSection');
@@ -119,7 +118,7 @@ export default function HeroSection() {
                     srcSet="/_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=16&q=75 16w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=32&q=75 32w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=48&q=75 48w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=64&q=75 64w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=96&q=75 96w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=128&q=75 128w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=256&q=75 256w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=384&q=75 384w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=640&q=75 640w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=750&q=75 750w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=828&q=75 828w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=1080&q=75 1080w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=1200&q=75 1200w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=1920&q=75 1920w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=2048&q=75 2048w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=3840&q=75 3840w"
                   />
                 </div>
-                {/* <div className="size-full overflow-hidden rounded-lg">
+                <div className="size-full overflow-hidden rounded-lg">
                   <Image
                     src="/assets/images/hero_man_ai.webp"
                     alt={t('ai_generated')}
@@ -129,9 +128,10 @@ export default function HeroSection() {
                     placeholder="blur"
                     blurDataURL={darkBlurData}
                     decoding="sync"
+                    priority
                     sizes="(min-width: 840px) 250px, (min-width: 640px) calc(32.22vw - 14px), 250px"
                   />
-                </div> */}
+                </div>
                 <div className="absolute right-0 top-0 rounded-bl-lg rounded-tr-lg bg-red-500 px-2 py-1 text-xs tracking-normal text-black">
                   {t('ai_generated')}
                 </div>

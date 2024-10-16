@@ -86,6 +86,7 @@ export default function HeroSection() {
                     }}
                     className="absolute inset-0 size-full rounded-lg object-cover"
                     quality={75}
+                    draggable={false}
                   />
                 </div>
               ))}
@@ -99,6 +100,7 @@ export default function HeroSection() {
                 sizes="(max-width: 6rem) 6rem, 16rem"
                 className="absolute inset-0 m-auto block"
                 quality={75}
+                draggable={false}
               />
             </div>
             {/* AI-generated image */}
@@ -112,6 +114,7 @@ export default function HeroSection() {
                     height={444}
                     className="object-cover"
                     decoding="sync"
+                    draggable={false}
                     sizes="(min-width: 840px) 250px, (min-width: 640px) calc(32.22vw - 14px), 250px"
                     srcSet="/_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=16&q=75 16w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=32&q=75 32w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=48&q=75 48w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=64&q=75 64w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=96&q=75 96w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=128&q=75 128w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=256&q=75 256w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=384&q=75 384w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=640&q=75 640w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=750&q=75 750w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=828&q=75 828w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=1080&q=75 1080w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=1200&q=75 1200w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=1920&q=75 1920w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=2048&q=75 2048w, /_next/image?url=%2Fassets%2Fimages%2Fhero_man_ai.webp&w=3840&q=75 3840w"
                   />

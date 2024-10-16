@@ -62,24 +62,19 @@ export default function UseCaseHeroSection({
                       objectFit: 'cover',
                     }}
                     className="absolute inset-0 size-full rounded-lg object-cover"
+                    draggable={false}
                   />
                 </div>
               ))}
             </div>
             <div className="relative flex h-[50px] w-full items-center justify-center sm:w-3/4">
               <Image
-                src="/assets/images/arrow_black.png"
-                alt="Arrow"
-                width={80}
-                height={50}
-                className="absolute inset-0 m-auto block dark:hidden"
-              />
-              <Image
                 src="/assets/images/arrow_white.png"
                 alt="Arrow"
                 width={80}
                 height={50}
-                className="absolute inset-0 m-auto hidden dark:block"
+                className="absolute inset-0 m-auto block"
+                draggable={false}
               />
             </div>
             {/* AI-generated image */}
@@ -94,6 +89,7 @@ export default function UseCaseHeroSection({
                     className="object-cover"
                     priority
                     loading="eager"
+                    draggable={false}
                   />
                 </div>
                 <div className="absolute right-0 top-0 rounded-bl-lg rounded-tr-lg bg-red-500 px-2 py-1 text-xs tracking-normal text-black">

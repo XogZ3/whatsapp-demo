@@ -51,6 +51,7 @@ const UseCaseCard = ({
                 alt="test"
                 placeholder="blur"
                 className="col-span-1 rounded-xl"
+                draggable={false}
               />
               <Image
                 src={image2}
@@ -60,6 +61,7 @@ const UseCaseCard = ({
                 alt="test"
                 placeholder="blur"
                 className="col-span-1 rounded-xl"
+                draggable={false}
               />
             </div>
           </div>

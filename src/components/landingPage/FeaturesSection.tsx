@@ -7,20 +7,13 @@ import { Container, Section } from '../GeneralContainers';
 const ArrowImage: React.FC = () => (
   <div className="relative my-4 size-14 shrink-0 sm:mx-4 sm:my-2 sm:size-20">
     <Image
-      src="/assets/images/arrow_black.png"
-      alt="Arrow"
-      fill
-      sizes="(max-width: 6rem) 6rem, 16rem"
-      className="-rotate-45 object-contain dark:hidden"
-      quality={75}
-    />
-    <Image
       src="/assets/images/arrow_white.png"
       alt="Arrow"
       fill
       sizes="(max-width: 6rem) 6rem, 16rem"
-      className="hidden -rotate-45 object-contain dark:block"
+      className="block -rotate-45 object-contain"
       quality={75}
+      draggable={false}
     />
   </div>
 );
@@ -37,6 +30,7 @@ const ImageContainer: React.FC<{ src: string; alt: string }> = ({
       sizes="(min-width: 60rem) 14.0625rem, (min-width: 40rem) calc(29.67vw - 3.375rem), (min-width: 36rem) 14.0625rem, calc(48.85vw - 3.0625rem)"
       className="object-cover"
       quality={75}
+      draggable={false}
     />
   </div>
 );

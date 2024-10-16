@@ -43,6 +43,7 @@ export const BentoGridItem = ({
               sizes="(max-width: 768px) 100vw, 700px)"
               className="object-contain"
               style={{ objectFit: 'cover', objectPosition: 'top' }}
+              draggable={false}
             />
           )}
         </div>

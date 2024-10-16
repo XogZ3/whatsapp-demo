@@ -59,6 +59,7 @@ export const ParallaxScroll = ({
                     style={{ objectPosition: '0% 20%' }}
                     fill
                     quality={75}
+                    draggable={false}
                   />
                 </motion.div>
               ))}

@@ -101,6 +101,7 @@ export const InfiniteMovingCards = ({
                 className="rounded-2xl"
                 alt="fotolabs.ai"
                 placeholder="blur"
+                draggable={false}
               />
             </div>
           </li>

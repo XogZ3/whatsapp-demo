@@ -6,7 +6,6 @@ import {
   type GenderAndAgeSchemaType,
   getAgeAndGenderFromImageURLUsingOpenAI,
   getImprovedPromptFromOpenAI,
-  isTextSafe,
 } from '@/modules/openai';
 import type { ICreateMessagePayload } from '@/modules/whatsapp/whatsapp';
 import {
@@ -566,17 +565,17 @@ ${shortLink}`;
       let message;
 
       // Run prompt through openai moderation
-      const isPromptSafe = await isTextSafe(prompt, clientid);
-      if (!isPromptSafe) {
-        message = getTranslation('nsfw error', language);
-        payload = {
-          phoneNumber: clientid,
-          text: true,
-          msgBody: message,
-        };
-        await config.whatsappInstance.send(payload);
-        return;
-      }
+      // const isPromptSafe = await isTextSafe(prompt, clientid);
+      // if (!isPromptSafe) {
+      //   message = getTranslation('nsfw error', language);
+      //   payload = {
+      //     phoneNumber: clientid,
+      //     text: true,
+      //     msgBody: message,
+      //   };
+      //   await config.whatsappInstance.send(payload);
+      //   return;
+      // }
 
       const clientData = await getUserFields(clientid);
 

@@ -26,6 +26,7 @@ const FAQSection: React.FC = () => {
             style={{ objectFit: 'cover', objectPosition: '50% 0%' }}
             className="object-center"
             loading="lazy"
+            draggable={false}
           />
         </div>
         <div className="flex w-full flex-col items-center justify-center p-4 sm:w-1/2 sm:p-8">

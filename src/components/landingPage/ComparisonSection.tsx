@@ -39,6 +39,7 @@ function ComparisonCard({
           }}
           fill
           className="rounded-t-xl"
+          draggable={false}
         />
       </div>
       <div className="p-4">
@@ -51,6 +52,7 @@ function ComparisonCard({
             height={24}
             className="ml-2"
             style={{ width: 'auto', height: 'auto' }}
+            draggable={false}
           />
         </h3>
         <ul>

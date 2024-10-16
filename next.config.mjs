@@ -48,16 +48,51 @@ export default bundleAnalyzer(
         },
       ],
     },
-    webpack: (config) => {
-      // config.externals is needed to resolve the following errors:
-      // Module not found: Can't resolve 'bufferutil'
-      // Module not found: Can't resolve 'utf-8-validate'
-      config.externals.push({
-        bufferutil: 'bufferutil',
-        'utf-8-validate': 'utf-8-validate',
-      });
+    webpack: (config, { isServer, dev }) => {
+      // Create a new config object
+      const newConfig = { ...config };
 
-      return config;
+      // Add externals to resolve errors
+      newConfig.externals = [
+        ...(newConfig.externals || []),
+        {
+          bufferutil: 'bufferutil',
+          'utf-8-validate': 'utf-8-validate',
+        },
+      ];
+
+      // Add this section for better code splitting
+      if (!isServer && !dev) {
+        newConfig.optimization = {
+          ...(newConfig.optimization || {}),
+          splitChunks: {
+            chunks: 'all',
+            minSize: 20000,
+            maxSize: 244000,
+            minChunks: 1,
+            maxAsyncRequests: 30,
+            maxInitialRequests: 30,
+            cacheGroups: {
+              defaultVendors: {
+                test: /[\\/]node_modules[\\/]/,
+                priority: -10,
+                reuseExistingChunk: true,
+              },
+              default: {
+                minChunks: 2,
+                priority: -20,
+                reuseExistingChunk: true,
+              },
+            },
+          },
+        };
+      }
+
+      return newConfig;
+    },
+    experimental: {
+      optimizeCss: true,
+      optimizePackageImports: ['@next/third-parties/google'],
     },
   }),
 );

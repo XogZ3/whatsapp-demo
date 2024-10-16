@@ -31,7 +31,12 @@ function ComparisonCard({
         <Image
           src={imageSrc}
           alt={altText}
-          style={{ objectPosition: 'cover', objectFit: 'cover' }}
+          style={{
+            objectPosition: 'cover',
+            objectFit: 'cover',
+            height: '100%',
+            width: '100%',
+          }}
           fill
           className="rounded-t-xl"
         />
@@ -45,6 +50,7 @@ function ComparisonCard({
             width={24}
             height={24}
             className="ml-2"
+            style={{ width: 'auto', height: 'auto' }}
           />
         </h3>
         <ul>

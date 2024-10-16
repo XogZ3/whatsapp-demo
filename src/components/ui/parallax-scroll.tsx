@@ -49,7 +49,7 @@ export const ParallaxScroll = ({
                     y: columnIndex % 2 === 0 ? translateFirst : translateSecond,
                   }}
                   key={`grid-${columnIndex}${idx}`}
-                  className="h-60 sm:h-80"
+                  className="relative h-60 sm:h-80"
                 >
                   <Image
                     src={el}

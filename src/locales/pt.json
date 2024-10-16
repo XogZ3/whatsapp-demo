@@ -179,10 +179,6 @@
         "answer": "Usamos suas fotos apenas para criar um personagem de IA. A privacidade e segurança dos seus dados são nossas principais prioridades."
       },
       {
-        "question": "Posso usar o FotoLabs.ai para experimentar roupas?",
-        "answer": "Sim! Você pode enviar qualquer roupa e o personagem a vestirá para você. Embora o personagem ainda não seja perfeito com estampas, estamos trabalhando para melhorar esse recurso em breve."
-      },
-      {
         "question": "O quanto as fotos se parecerão comigo?",
         "answer": "A semelhança das fotos com você depende da qualidade e variedade das fotos que você enviar. Quanto melhores e mais variadas forem suas fotos, mais precisamente a IA poderá entender e representar suas características únicas. Continuamos melhorando nossos modelos todos os dias."
       },
@@ -517,6 +513,7 @@
     "meta_description": "Crie fotos de perfil de namoro deslumbrantes geradas por IA para impulsionar seu sucesso no namoro online. Destaque-se no Tinder, Bumble e Hinge com imagens personalizadas e de alta qualidade que mostram seu estilo e personalidade únicos.",
     "header_1": "Revolucione Seu Perfil de Namoro com Fotos Geradas por IA",
     "subheader": "Transforme sua presença no namoro online com imagens personalizadas geradas por IA que mostram seu melhor eu em vários cenários atraentes",
+    "mobile_subheader": "Envie selfies & comece",
     "web_cta": "Criar Fotos",
     "ai_generated": "Gerado por IA",
     "last_section_header_1": "Impulsione Seu Sucesso no Namoro com Fotografia de IA",
@@ -525,8 +522,9 @@
   "professional-headshots": {
     "meta_title": "Fotos Profissionais de IA para Sucesso na Carreira | Perfil do LinkedIn | FotoLabs AI",
     "meta_description": "Eleve sua imagem profissional com fotos geradas por IA. Perfeito para LinkedIn, currículos e perfis corporativos. Pareça polido e confiante sem o custo do estúdio.",
-    "header_1": "Aprimore Sua Imagem Profissional com Fotos de IA",
-    "subheader": "Crie fotos profissionais deslumbrantes para seus perfis do LinkedIn e de carreira usando tecnologia avançada de IA",
+    "header_1": "Aprimore Sua Foto de Perfil Profissional com IA",
+    "subheader": "Crie fotos de rosto profissionais deslumbrantes para seus perfis do LinkedIn e de carreira usando tecnologia avançada de IA",
+    "mobile_subheader": "Envie selfies & comece",
     "web_cta": "Gerar Fotos",
     "ai_generated": "Gerado por IA",
     "last_section_header_1": "Impulsione Sua Carreira com Fotos Profissionais Geradas por IA",
@@ -537,6 +535,7 @@
     "meta_description": "Descubra infinitas possibilidades de roupas com ideias de moda geradas por IA. Visualize diferentes estilos em você antes de comprar. Perfeito para entusiastas da moda, compradores online e experimentação de estilos.",
     "header_1": "Explore Infinitas Possibilidades de Moda com IA",
     "subheader": "Gere ideias de roupas personalizadas e experimente virtualmente diferentes estilos com nosso assistente de moda de IA. Experimente tendências, looks casuais e muito mais.",
+    "mobile_subheader": "Envie selfies & comece",
     "web_cta": "Experimentar Roupas",
     "ai_generated": "Gerado por IA",
     "last_section_header_1": "Revolucione Seu Guarda-roupa com Insights de Moda de IA",
@@ -547,6 +546,7 @@
     "meta_description": "Crie fotos de viagem deslumbrantes geradas por IA de você mesmo em locais exóticos em todo o mundo. Perfeito para entusiastas de viagens, influenciadores e sonhadores. Explore destinos globais virtualmente!",
     "header_1": "Viaje pelo Mundo com Fotos Geradas por IA",
     "subheader": "Experimente destinos globais através de imagens personalizadas de IA apresentando você em locais deslumbrantes de Paris a Tóquio",
+    "mobile_subheader": "Envie selfies & comece",
     "web_cta": "Iniciar Viagem com IA",
     "ai_generated": "Gerado por IA",
     "last_section_header_1": "Dê Vida aos Seus Sonhos de Viagem com IA",
@@ -557,6 +557,7 @@
     "meta_description": "Crie fotos que param o scroll, geradas por IA para seu feed do Instagram. Eleve sua presença nas redes sociais com imagens personalizadas de alta qualidade que capturam a atenção e aumentam o engajamento.",
     "header_1": "Transforme Seu Feed do Instagram com Conteúdo Gerado por IA",
     "subheader": "Destaque-se nas redes sociais com fotos de IA personalizadas e chamativas, adaptadas à sua estética única do Instagram e aumente seu número de seguidores",
+    "mobile_subheader": "Envie selfies & comece",
     "web_cta": "Criar Fotos",
     "ai_generated": "Gerado por IA",
     "last_section_header_1": "Domine o Instagram com Visuais Gerados por IA",
@@ -567,6 +568,7 @@
     "meta_description": "Explore infinitas possibilidades de penteados com imagens geradas por IA. Visualize diferentes cortes, cores e estilos em você antes de visitar o salão. Perfeito para uma transformação confiante e experimentação de estilos.",
     "header_1": "Descubra Seu Penteado Perfeito com IA",
     "subheader": "Visualize inúmeros penteados em você usando tecnologia avançada de IA antes de fazer uma mudança. De cachos chiques a fades ousados, encontre seu visual ideal.",
+    "mobile_subheader": "Envie selfies & comece",
     "web_cta": "Experimentar Penteados",
     "ai_generated": "Gerado por IA",
     "last_section_header_1": "Transforme Seu Visual com Prévias de Penteados de IA",

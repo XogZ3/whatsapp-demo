@@ -179,10 +179,6 @@
         "answer": "We only use your photos to create an AI character. Your data privacy and security are our top priorities."
       },
       {
-        "question": "Can I use FotoLabs.ai to try on clothes?",
-        "answer": "Yes! You can upload any clothes, and the character will wear them for you. While the character isn't perfect with prints yet, we're working on improving this feature very soon."
-      },
-      {
         "question": "How much will the photos look like me?",
         "answer": "The resemblance of the photos to you depends on the quality and variety of the photos you upload. The better and more varied your photos, the more accurately the AI can understand and represent your unique characteristics. We keep improving our models every day."
       },
@@ -815,6 +811,7 @@
     "meta_description": "Create stunning AI-generated dating profile photos to boost your online dating success. Stand out on Tinder, Bumble, and Hinge with personalized, high-quality images that showcase your unique style and personality.",
     "header_1": "Revolutionize Your Dating Profile with AI-Powered Photos",
     "subheader": "Transform your online dating presence with custom AI-generated images that showcase your best self in various attractive scenarios",
+    "mobile_subheader": "Upload selfies & start",
     "web_cta": "Create Photos",
     "ai_generated": "AI generated",
     "last_section_header_1": "Skyrocket Your Dating Success with AI Photography",
@@ -825,6 +822,7 @@
     "meta_description": "Elevate your professional image with AI-generated headshots. Perfect for LinkedIn, resumes, and corporate profiles. Look polished and confident without the studio cost.",
     "header_1": "Enhance Your Professional Image with AI Headshots",
     "subheader": "Create stunning, professional-grade headshots for your LinkedIn and career profiles using advanced AI technology",
+    "mobile_subheader": "Upload selfies & start",
     "web_cta": "Generate Headshots",
     "ai_generated": "AI generated",
     "last_section_header_1": "Boost Your Career with AI-Powered Professional Photos",
@@ -835,6 +833,7 @@
     "meta_description": "Discover endless outfit possibilities with AI-generated fashion ideas. Visualize different styles on yourself before shopping. Perfect for fashion enthusiasts, online shoppers, and style experimentation.",
     "header_1": "Explore Endless Fashion Possibilities with AI",
     "subheader": "Generate personalized outfit ideas and virtually try on different styles with our AI fashion assistant. Experiment with trends, casual looks, and more.",
+    "mobile_subheader": "Upload selfies & start",
     "web_cta": "Try Outfits",
     "ai_generated": "AI generated",
     "last_section_header_1": "Revolutionize Your Wardrobe with AI Fashion Insights",
@@ -845,6 +844,7 @@
     "meta_description": "Create stunning AI-generated travel photos of yourself in exotic locations worldwide. Perfect for travel enthusiasts, influencers, and dreamers. Explore global destinations virtually!",
     "header_1": "Travel the World with AI-Generated Photos",
     "subheader": "Experience global destinations through personalized AI images featuring you in breathtaking locations from Paris to Tokyo",
+    "mobile_subheader": "Upload selfies & start",
     "web_cta": "Start AI Travel",
     "ai_generated": "AI generated",
     "last_section_header_1": "Bring Your Travel Dreams to Life with AI",
@@ -855,6 +855,7 @@
     "meta_description": "Create scroll-stopping, AI-generated photos for your Instagram feed. Elevate your social media presence with high-quality, personalized images that capture attention and increase engagement.",
     "header_1": "Transform Your Instagram Feed with AI-Generated Content",
     "subheader": "Stand out on social media with custom, eye-catching AI photos tailored to your unique Instagram aesthetic and boost your follower count",
+    "mobile_subheader": "Upload selfies & start",
     "web_cta": "Create Photos",
     "ai_generated": "AI generated",
     "last_section_header_1": "Dominate Instagram with AI-Powered Visuals",
@@ -865,6 +866,7 @@
     "meta_description": "Explore endless hairstyle possibilities with AI-generated images. Visualize different cuts, colors, and styles on yourself before visiting the salon. Perfect for a confident makeover and style experimentation.",
     "header_1": "Discover Your Perfect Hairstyle with AI",
     "subheader": "Visualize countless hairstyles on yourself using advanced AI technology before making a change. From chic curls to bold fades, find your ideal look.",
+    "mobile_subheader": "Upload selfies & start",
     "web_cta": "Try Hairstyles",
     "ai_generated": "AI generated",
     "last_section_header_1": "Transform Your Look with AI Hairstyle Previews",

@@ -46,9 +46,9 @@ export default function UseCaseHeroSection({
         {/* Image Content */}
         <div className="flex w-full justify-end">
           <div className="mt-10 flex w-full flex-col items-end sm:mt-0 sm:w-[calc(100%-2rem)]">
-            <div className="mb-4 flex w-full items-center justify-center text-center text-3xl font-semibold sm:hidden">
-              Upload selfies and take AI photos
-            </div>
+            <h3 className="mb-4 flex w-full items-center justify-center text-center text-3xl font-semibold sm:hidden">
+              {t('mobile_subheader')}
+            </h3>
             <div className="mb-2 grid h-20 w-full grid-cols-4 gap-2 sm:w-3/4">
               {[1, 2, 3, 4].map((num) => (
                 <div key={num} className="relative w-full pb-[100%]">

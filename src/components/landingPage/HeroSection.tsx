@@ -38,10 +38,10 @@ export default function HeroSection() {
           <h1 className="flex flex-col gap-y-4 text-center text-5xl font-normal tracking-normal sm:text-left sm:text-6xl">
             {t('header_1')} <br />
           </h1>
-          <p className="gap-x-2 text-center text-5xl sm:text-left sm:text-6xl">
+          <h2 className="gap-x-2 text-center text-5xl sm:text-left sm:text-6xl">
             {t('conjunction')} <br />
-          </p>
-          <p className="gap-x-2 text-center text-5xl sm:text-left sm:text-6xl">
+          </h2>
+          <h2 className="gap-x-2 text-center text-5xl sm:text-left sm:text-6xl">
             <Link
               href="https://wa.me/971505072100"
               target="_blank"
@@ -50,11 +50,11 @@ export default function HeroSection() {
             >
               {t('header_2')}
             </Link>
-          </p>
-
-          <h2 className="!mb-0 py-6 text-center font-normal tracking-normal sm:text-left">
-            {t('subheader')}
           </h2>
+
+          <h3 className="!mb-0 py-6 text-center font-normal tracking-normal sm:text-left">
+            {t('subheader')}
+          </h3>
           <ul className="mb-6 hidden space-y-2 text-sm sm:block sm:text-base">
             <li className="flex items-center">
               <span className="mr-2">✏️</span>
@@ -84,9 +84,9 @@ export default function HeroSection() {
         {/* Image Content */}
         <div className="flex w-full justify-end">
           <div className="mt-10 flex w-full flex-col items-end sm:mt-0 sm:w-[calc(100%-2rem)]">
-            <div className="mb-4 flex w-full items-center justify-center text-center text-3xl font-semibold sm:hidden">
+            <h3 className="mb-4 flex w-full items-center justify-center text-center text-3xl font-semibold sm:hidden">
               {t('mobile_subheader')}
-            </div>
+            </h3>
             <div className="mb-2 grid h-20 w-full grid-cols-4 gap-2 sm:w-3/4">
               {[1, 2, 3, 4].map((num) => (
                 <div key={num} className="relative w-full pb-[100%]">

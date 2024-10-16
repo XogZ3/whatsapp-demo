@@ -1,6 +1,6 @@
 'use client';
 
-import type { AllowedUseCases } from '@/app/[locale]/(unauth)/[usecase]/page';
+import type { AllowedUseCases } from '@/app/[locale]/(unauth)/uses/[usecase]/page';
 
 import { ParallaxScroll } from '../ui/parallax-scroll';
 

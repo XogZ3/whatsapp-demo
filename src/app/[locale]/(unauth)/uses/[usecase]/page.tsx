@@ -14,11 +14,9 @@ import UsesSection from '@/components/landingPage/UsesSection';
 import { AppConfig } from '@/utils/appConfig';
 import { getBaseUrl } from '@/utils/helpers';
 
-import ogImage from '../../../opengraph-image.webp';
+import ogImage from '../../../../opengraph-image.webp';
 
 const allowedUseCases = [
-  'HeroSection',
-  'LastSection',
   'ai-dating',
   'professional-headshots',
   'outfit-ideas',
@@ -29,8 +27,6 @@ const allowedUseCases = [
 
 export type AllowedUseCases = keyof Pick<
   IntlMessages,
-  | 'HeroSection'
-  | 'LastSection'
   | 'ai-dating'
   | 'professional-headshots'
   | 'outfit-ideas'
@@ -294,7 +290,12 @@ export async function generateMetadata(props: {
 }
 
 export async function generateStaticParams() {
-  return AppConfig.locales.map((locale) => ({ locale }));
+  return AppConfig.locales.flatMap((locale) =>
+    allowedUseCases.map((usecase) => ({
+      locale,
+      usecase,
+    })),
+  );
 }
 
 export default function UseCasesPage({

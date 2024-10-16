@@ -8,13 +8,13 @@ import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import * as React from 'react';
 
-import type { AllowedUseCases } from '@/app/[locale]/(unauth)/[usecase]/page';
+import type { AllowedUseCases } from '@/app/[locale]/(unauth)/uses/[usecase]/page';
 
 import { Container, Section } from '../GeneralContainers';
 import ButtonFancy from '../ui/button-fancy';
 
 export default function UseCaseHeroSection({
-  useCase = 'HeroSection',
+  useCase,
 }: {
   useCase: AllowedUseCases;
 }) {

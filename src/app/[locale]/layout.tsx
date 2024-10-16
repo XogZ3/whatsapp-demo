@@ -160,7 +160,6 @@ export default function RootLayout(props: {
   return (
     <ViewTransitions>
       <html lang={props.params.locale} suppressHydrationWarning>
-        <GoogleAnalytics gaId="AW-16638273706" />
         <Head>
           <link
             rel="preload"
@@ -186,6 +185,7 @@ export default function RootLayout(props: {
             </NextIntlClientProvider>
           </Providers>
         </body>
+        <GoogleAnalytics gaId="AW-16638273706" />
       </html>
     </ViewTransitions>
   );

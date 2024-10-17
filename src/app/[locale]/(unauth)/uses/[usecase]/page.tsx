@@ -224,6 +224,22 @@ export async function generateMetadata(props: {
           'recomendações personalizadas de penteados',
         ],
       },
+      'linkedin-ai-photo': {
+        en: [
+          'ai linkedin profile photos',
+          'linkedin ai photos',
+          'linkedin profile pictures',
+          'linkedin professional photos',
+          'linkedin ai profile photos',
+        ],
+        pt: [
+          'fotos de perfil do linkedin com ia',
+          'fotos de linkedin com ia',
+          'fotos de perfil do linkedin',
+          'fotos profissionais do linkedin',
+          'fotos de perfil do linkedin com ia',
+        ],
+      },
     };
     const selectedBaseKeywords =
       baseKeywords[locale as keyof typeof baseKeywords] || baseKeywords.en;

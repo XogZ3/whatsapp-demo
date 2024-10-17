@@ -255,6 +255,10 @@
       "Hairstyles": {
         "label": "Hairstyles",
         "description": "Explore endless hairstyle possibilities with AI-generated images. Visualize different cuts, colors, and styles on yourself before visiting the salon. Perfect for a confident makeover and style experimentation."
+      },
+      "LinkedinAiPhoto": {
+        "label": "Linkedin Ai Photo",
+        "description": "Create stunning AI-generated LinkedIn profile photos for your professional profile. Elevate your LinkedIn presence with high-quality, personalized images that showcase your unique style and personality."
       }
     },
     "Copyright": {
@@ -874,5 +878,16 @@
     "ai_generated": "AI generated",
     "last_section_header_1": "Transform Your Look with AI Hairstyle Previews",
     "last_section_subheader": "Gain confidence in your next hair transformation by exploring AI-generated hairstyles tailored to your features. Experiment with cuts, colors, and styles risk-free."
+  },
+  "linkedin-ai-photo": {
+    "meta_title": "AI-Powered LinkedIn Profile Photos | Elevate Your Professional Image | FotoLabs AI",
+    "meta_description": "Create stunning AI-generated LinkedIn profile photos for your professional profile. Elevate your LinkedIn presence with high-quality, personalized images that showcase your unique style and personality.",
+    "header_1": "Transform Your LinkedIn Profile with AI",
+    "subheader": "Stand out on LinkedIn with custom, eye-catching AI photos tailored to your unique LinkedIn aesthetic and boost your follower count",
+    "mobile_subheader": "Upload selfies & start",
+    "web_cta": "Generate Headshots",
+    "ai_generated": "AI generated",
+    "last_section_header_1": "Elevate Your LinkedIn Presence with AI-Powered Photos",
+    "last_section_subheader": "Make a lasting impression in the business world with high-quality, AI-generated headshots tailored to your industry and professional brand"
   }
 }

@@ -255,6 +255,10 @@
       "Hairstyles": {
         "label": "Penteados",
         "description": "Explore infinitas possibilidades de penteados com imagens geradas por IA. Visualize diferentes cortes, cores e estilos em você antes de visitar o salão. Perfeito para uma transformação confiante e experimentação de estilos."
+      },
+      "LinkedinAiPhoto": {
+        "label": "Linkedin Ai Photo",
+        "description": "Create stunning AI-generated LinkedIn profile photos for your professional profile. Elevate your LinkedIn presence with high-quality, personalized images that showcase your unique style and personality."
       }
     },
     "Copyright": {
@@ -576,5 +580,16 @@
     "ai_generated": "Gerado por IA",
     "last_section_header_1": "Transforme Seu Visual com Prévias de Penteados de IA",
     "last_section_subheader": "Ganhe confiança em sua próxima transformação capilar explorando penteados gerados por IA adaptados às suas características. Experimente cortes, cores e estilos sem riscos."
+  },
+  "linkedin-ai-photo": {
+    "meta_title": "Fotos de Perfil do LinkedIn Geradas por IA | Eleve Sua Imagem Profissional | FotoLabs AI",
+    "meta_description": "Crie fotos de perfil deslumbrantes geradas por IA para o seu perfil profissional no LinkedIn. Eleve sua presença no LinkedIn com imagens personalizadas de alta qualidade que mostram seu estilo único e personalidade.",
+    "header_1": "Transforme Seu Perfil do LinkedIn com IA",
+    "subheader": "Destaque-se no LinkedIn com fotos de IA personalizadas e chamativas, adaptadas à sua estética única do LinkedIn e aumente seu número de seguidores",
+    "mobile_subheader": "Envie selfies e comece",
+    "web_cta": "Gerar Fotos de Perfil",
+    "ai_generated": "Gerado por IA",
+    "last_section_header_1": "Eleve Sua Presença no LinkedIn com Fotos Geradas por IA",
+    "last_section_subheader": "Cause uma impressão duradoura no mundo dos negócios com fotos de perfil de alta qualidade geradas por IA, adaptadas à sua indústria e marca profissional"
   }
 }

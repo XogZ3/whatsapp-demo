@@ -83,6 +83,12 @@ export function Footer() {
           href: '/uses/hairstyles',
           description: `${t('Title_3.Hairstyles.description')}`,
         },
+        {
+          id: 'linkedin-ai-photo',
+          label: `${t('Title_3.LinkedinAiPhoto.label')}`,
+          href: '/uses/linkedin-ai-photo',
+          description: `${t('Title_3.LinkedinAiPhoto.description')}`,
+        },
       ],
     },
     {

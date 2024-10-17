@@ -13,3 +13,22 @@ export const AppConfig = {
   phone: '',
   email: process.env.NEXT_PUBLIC_EMAIL,
 };
+
+export const allowedUseCases = [
+  'ai-dating',
+  'professional-headshots',
+  'outfit-ideas',
+  'travel',
+  'instagram',
+  'hairstyles',
+];
+
+export type AllowedUseCases = keyof Pick<
+  IntlMessages,
+  | 'ai-dating'
+  | 'professional-headshots'
+  | 'outfit-ideas'
+  | 'travel'
+  | 'instagram'
+  | 'hairstyles'
+>;

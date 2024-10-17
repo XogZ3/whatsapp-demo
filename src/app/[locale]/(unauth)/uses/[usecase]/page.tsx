@@ -11,29 +11,14 @@ import UseCaseHeroSection from '@/components/landingPage/UseCaseHeroSection';
 import UseCaseLastSection from '@/components/landingPage/UseCaseLastSection';
 import { UseCasePhotosSection } from '@/components/landingPage/UseCasePhotosSection';
 import UsesSection from '@/components/landingPage/UsesSection';
-import { AppConfig } from '@/utils/appConfig';
+import {
+  type AllowedUseCases,
+  allowedUseCases,
+  AppConfig,
+} from '@/utils/appConfig';
 import { getBaseUrl } from '@/utils/helpers';
 
 import ogImage from '../../../../opengraph-image.webp';
-
-const allowedUseCases = [
-  'ai-dating',
-  'professional-headshots',
-  'outfit-ideas',
-  'travel',
-  'instagram',
-  'hairstyles',
-];
-
-export type AllowedUseCases = keyof Pick<
-  IntlMessages,
-  | 'ai-dating'
-  | 'professional-headshots'
-  | 'outfit-ideas'
-  | 'travel'
-  | 'instagram'
-  | 'hairstyles'
->;
 
 export async function generateMetadata(props: {
   params: { locale: string; usecase: AllowedUseCases };

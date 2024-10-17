@@ -58,7 +58,6 @@ export const ParallaxScroll = ({
                     sizes="(min-width: 1400px) 242px, (min-width: 1220px) 25vw, (min-width: 640px) calc(25vw - 24px), calc(50vw - 16px)"
                     style={{ objectPosition: '0% 20%' }}
                     fill
-                    quality={75}
                     draggable={false}
                   />
                 </motion.div>

@@ -1,7 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 // eslint-disable-next-line import/extensions
 import { fileURLToPath } from 'node:url';
-
 import withBundleAnalyzer from '@next/bundle-analyzer';
 import withNextIntl from 'next-intl/plugin';
 import createJiti from 'jiti';
@@ -14,6 +13,15 @@ const withNextIntlConfig = withNextIntl('./src/libs/i18n.ts');
 const bundleAnalyzer = withBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 });
+
+const allowedUseCases = [
+  'ai-dating',
+  'professional-headshots',
+  'outfit-ideas',
+  'travel',
+  'instagram',
+  'hairstyles',
+];
 
 /** @type {import('next').NextConfig} */
 export default bundleAnalyzer(
@@ -93,6 +101,22 @@ export default bundleAnalyzer(
     experimental: {
       optimizeCss: true,
       optimizePackageImports: ['@next/third-parties/google'],
+    },
+    async redirects() {
+      return [
+        ...allowedUseCases.flatMap((useCase) => [
+          {
+            source: `/${useCase}`,
+            destination: `/uses/${useCase}`,
+            permanent: true,
+          },
+          {
+            source: `/pt/${useCase}`,
+            destination: `/pt/uses/${useCase}`,
+            permanent: true,
+          },
+        ]),
+      ];
     },
   }),
 );

@@ -29,7 +29,6 @@ const ImageContainer: React.FC<{ src: string; alt: string }> = ({
       fill
       sizes="(min-width: 60rem) 14.0625rem, (min-width: 40rem) calc(29.67vw - 3.375rem), (min-width: 36rem) 14.0625rem, calc(48.85vw - 3.0625rem)"
       className="object-cover"
-      quality={75}
       draggable={false}
     />
   </div>

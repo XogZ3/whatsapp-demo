@@ -31,8 +31,8 @@ export async function generateMetadata(props: {
   const baseUrl = getBaseUrl();
   const currentPath =
     props.params.locale === 'en'
-      ? `/${props.params.usecase}`
-      : `/${props.params.locale}/${props.params.usecase}`;
+      ? `/uses/${props.params.usecase}`
+      : `/${props.params.locale}/uses/${props.params.usecase}`;
 
   const getKeywords = (useCase: AllowedUseCases, locale: string) => {
     const baseKeywords = {
@@ -231,6 +231,9 @@ export async function generateMetadata(props: {
           'linkedin profile pictures',
           'linkedin professional photos',
           'linkedin ai profile photos',
+          'create linkedin profile pictures with ai',
+          'ai headshots',
+          'professional headshots with ai',
         ],
         pt: [
           'fotos de perfil do linkedin com ia',
@@ -238,6 +241,8 @@ export async function generateMetadata(props: {
           'fotos de perfil do linkedin',
           'fotos profissionais do linkedin',
           'fotos de perfil do linkedin com ia',
+          'fotos de cabeçalho com ia',
+          'fotos profissionais com ia',
         ],
       },
     };
@@ -264,10 +269,7 @@ export async function generateMetadata(props: {
       card: 'summary_large_image',
     },
     openGraph: {
-      title: {
-        default: t('meta_title', { appName: AppConfig.name }) as string,
-        template: `%s - ${t('meta_title', { appName: AppConfig.name }) as string}`,
-      },
+      title: t('meta_title', { appName: AppConfig.name }) as string,
       description: t('meta_description', { appName: AppConfig.name }) as string,
       type: 'website',
       images: [
@@ -282,8 +284,8 @@ export async function generateMetadata(props: {
     alternates: {
       canonical: `${baseUrl}${currentPath}`,
       languages: {
-        en: `${baseUrl}/${props.params.usecase}`,
-        pt: `${baseUrl}/pt/${props.params.usecase}`,
+        en: `${baseUrl}/uses/${props.params.usecase}`,
+        pt: `${baseUrl}/pt/uses/${props.params.usecase}`,
       },
     },
     keywords: getKeywords(props.params.usecase, props.params.locale),

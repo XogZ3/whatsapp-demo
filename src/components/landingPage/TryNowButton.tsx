@@ -49,34 +49,60 @@ const TryNowButton = () => {
         repeatType: 'reverse',
       }}
     >
-      <motion.div
-        animate={{
-          backgroundColor: [
-            '#f59e0b',
-            '#ef4444',
-            '#f59e0b',
-            '#ec4899',
-            '#14b8a6',
-            '#0ea5e9',
-          ],
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          repeatType: 'reverse',
-        }}
-        className="rounded-md"
-      >
-        <Link
-          href="https://wa.me/971505072100"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-center  px-4 py-2 text-xl font-semibold text-white shadow-md shadow-red-500/30 transition duration-300 hover:bg-gradient-to-tl hover:shadow-lg hover:shadow-amber-500/30 hover:ring-1 hover:ring-slate-700/90 hover:ring-offset-2 dark:from-red-600 dark:to-amber-600 dark:shadow-red-700/30 dark:hover:ring-slate-300/90"
-          onClick={onClick}
+      <div className="relative">
+        {/* Larger morphing gradient shadow */}
+        <motion.div
+          className="absolute inset-0 -z-10 rounded-md opacity-75 blur-xl"
+          style={{
+            top: '-7px',
+            left: '-7px',
+            right: '-7px',
+            bottom: '-7px',
+          }}
+          animate={{
+            background: [
+              'linear-gradient(45deg, #f59e0b, #ef4444)',
+              'linear-gradient(45deg, #ef4444, #ec4899)',
+              'linear-gradient(45deg, #ec4899, #14b8a6)',
+              'linear-gradient(45deg, #14b8a6, #0ea5e9)',
+              'linear-gradient(45deg, #0ea5e9, #f59e0b)',
+            ],
+          }}
+          transition={{
+            duration: 5,
+            repeat: Infinity,
+            repeatType: 'reverse',
+          }}
+        />
+        <motion.div
+          animate={{
+            backgroundColor: [
+              '#f59e0b',
+              '#ef4444',
+              '#f59e0b',
+              '#ec4899',
+              '#14b8a6',
+              '#0ea5e9',
+            ],
+          }}
+          transition={{
+            duration: 3,
+            repeat: Infinity,
+            repeatType: 'reverse',
+          }}
+          className="relative overflow-hidden rounded-md"
         >
-          {t('cta')}
-        </Link>
-      </motion.div>
+          <Link
+            href="https://wa.me/971505072100"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center px-4 py-2 text-xl font-semibold text-white transition duration-300 hover:bg-gradient-to-tl hover:ring-1 hover:ring-slate-700/90 hover:ring-offset-2 dark:from-red-600 dark:to-amber-600 dark:hover:ring-slate-300/90"
+            onClick={onClick}
+          >
+            {t('cta')}
+          </Link>
+        </motion.div>
+      </div>
     </motion.div>
   );
 };

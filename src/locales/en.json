@@ -112,7 +112,7 @@
     "heading_5": "📸 Instagram",
     "content_5": "Take engaging and visually stunning photos that showcase your personality as an Instagram influencer. Boost your confidence, likes and followers with captivating images that reflect your unique style and charisma",
     "heading_6": "👩‍🦱 Hairstyles",
-    "content_6": "Experiment with a variety of hairstyles that express your individuality. Whether it’s chic curls, sleek braids, or bold fades, show off your look with striking images"
+    "content_6": "Experiment with a variety of hairstyles that express your individuality. Whether it's chic curls, sleek braids, or bold fades, show off your look with striking images"
   },
   "PriceSection": {
     "header": "Simple, Transparent Pricing",
@@ -784,14 +784,16 @@
     }
   },
   "NotFound": {
-    "meta_title": "Not Found",
-    "meta_description": "This page could not be found.",
+    "meta_title": "404 - Page Not Found | FotoLabs AI",
+    "meta_description": "Oops! The page you're looking for couldn't be found. Return to FotoLabs AI to continue creating amazing AI-generated photos.",
     "header": "404",
-    "paragraph": "This page could not be found."
+    "paragraph": "Page Not Found",
+    "message": "Oops! It seems you've wandered into uncharted territory. Don't worry, even AI can get lost sometimes. Let's get you back on track to creating amazing AI-generated photos!",
+    "button": "Return to Home"
   },
   "SuccessSection": {
     "header": "Congratulations!",
-    "subheader": "You’ve Got a 1-Month Membership",
+    "subheader": "You've Got a 1-Month Membership",
     "subheader_2": "on your whatsapp number:",
     "button_go_to_whatsapp": "Go To WhatsApp",
     "next_step": "Click below to continue generating awesome images!"

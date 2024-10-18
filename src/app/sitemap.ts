@@ -12,7 +12,8 @@ export const pages = [
   'uses/travel',
   'uses/instagram',
   'uses/hairstyles',
-  'uses/cancel-subscription',
+  'uses/linkedin-ai-photo',
+  'cancel-subscription',
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

@@ -486,10 +486,12 @@
     }
   },
   "NotFound": {
-    "meta_title": "Não Encontrado",
-    "meta_description": "Esta página não foi encontrada.",
+    "meta_title": "404 - Página Não Encontrada | FotoLabs AI",
+    "meta_description": "Ops! A página que você está procurando não pôde ser encontrada. Volte para o FotoLabs AI para continuar criando fotos incríveis geradas por IA.",
     "header": "404",
-    "paragraph": "Esta página não foi encontrada."
+    "paragraph": "Página Não Encontrada",
+    "message": "Ops! Parece que você se aventurou em território desconhecido. Não se preocupe, até mesmo a IA pode se perder às vezes. Vamos colocá-lo de volta no caminho para criar fotos incríveis geradas por IA!",
+    "button": "Voltar para a Página Inicial"
   },
   "SuccessSection": {
     "header": "Parabéns!",

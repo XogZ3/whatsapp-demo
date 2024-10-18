@@ -14,6 +14,7 @@ const bundleAnalyzer = withBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 });
 
+// TODO: FIXME: Update when adding new use cases
 const allowedUseCases = [
   'ai-dating',
   'professional-headshots',
@@ -21,6 +22,7 @@ const allowedUseCases = [
   'travel',
   'instagram',
   'hairstyles',
+  'linkedin-ai-photo',
 ];
 
 /** @type {import('next').NextConfig} */

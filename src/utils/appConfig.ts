@@ -22,6 +22,7 @@ export const allowedUseCases = [
   'instagram',
   'hairstyles',
   'linkedin-ai-photo',
+  'ai-headshot',
 ];
 
 export type AllowedUseCases = keyof Pick<
@@ -33,4 +34,5 @@ export type AllowedUseCases = keyof Pick<
   | 'instagram'
   | 'hairstyles'
   | 'linkedin-ai-photo'
+  | 'ai-headshot'
 >;

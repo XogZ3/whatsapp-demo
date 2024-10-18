@@ -245,6 +245,32 @@ export async function generateMetadata(props: {
           'fotos profissionais com ia',
         ],
       },
+      'ai-headshot': {
+        en: [
+          'ai headshots',
+          'linkedin ai photos',
+          'corporate ai portraits',
+          'business profile pictures',
+          'ai cv photos',
+          'professional ai selfies',
+          'career-boosting ai photos',
+          'executive headshots with ai',
+          'ai-generated professional images',
+          'digital professional portraits',
+        ],
+        pt: [
+          'fotos de cabeçalho com ia',
+          'fotos de linkedin com ia',
+          'retratos corporativos de ia',
+          'fotos de perfil profissional',
+          'fotos de currículo com ia',
+          'selfies profissionais de ia',
+          'fotos de ia para impulsionar a carreira',
+          'retratos executivos com ia',
+          'imagens profissionais geradas por ia',
+          'retratos profissionais digitais',
+        ],
+      },
     };
     const selectedBaseKeywords =
       baseKeywords[locale as keyof typeof baseKeywords] || baseKeywords.en;

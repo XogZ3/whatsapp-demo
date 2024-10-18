@@ -23,6 +23,7 @@ const allowedUseCases = [
   'instagram',
   'hairstyles',
   'linkedin-ai-photo',
+  'ai-headshot',
 ];
 
 /** @type {import('next').NextConfig} */

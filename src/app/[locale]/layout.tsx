@@ -190,6 +190,7 @@ export default function RootLayout(props: {
           </Providers>
         </body>
         <GoogleAnalytics gaId="AW-16638273706" />
+        <GoogleAnalytics gaId="G-93TWXZ6P8F" />
       </html>
     </ViewTransitions>
   );

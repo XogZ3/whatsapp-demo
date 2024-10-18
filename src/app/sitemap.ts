@@ -13,6 +13,7 @@ export const pages = [
   'uses/instagram',
   'uses/hairstyles',
   'uses/linkedin-ai-photo',
+  'uses/ai-headshot',
   'cancel-subscription',
 ];
 

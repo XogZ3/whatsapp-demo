@@ -263,6 +263,10 @@
       "AiHeadshot": {
         "label": "AI Headshot",
         "description": "Create stunning AI-generated professional headshots for your various needs. Elevate your professional image with high-quality, personalized photos that showcase your unique style and personality."
+      },
+      "ImagineMe": {
+        "label": "Imagine Me",
+        "description": "Create stunning AI-generated photos of yourself in various scenarios. Perfect for travel enthusiasts, influencers, and dreamers. Explore global destinations virtually!"
       }
     },
     "Copyright": {
@@ -897,25 +901,36 @@
     "last_section_subheader": "Make a lasting impression in the business world with high-quality, AI-generated headshots tailored to your industry and professional brand"
   },
   "imagine-me": {
-    "meta_title": "AI-Powered Imagine Me Photos | Create Personalized Images",
-    "meta_description": "Create stunning AI-generated images of yourself in various scenarios. Perfect for personalized photos, self-expression, and unique content creation.",
-    "header_1": "Imagine and Create with AI",
-    "subheader": "Generate personalized images of yourself in various scenarios using advanced AI technology",
-    "mobile_subheader": "Upload selfies & start",
-    "web_cta": "Create Photos",
+    "meta_title": "AI-Powered Imagine Me Photos | Create Personalized Images with FotoLabs AI",
+    "meta_description": "Experience the next level of AI-generated images with FotoLabs AI. Create stunning, photorealistic 'Imagine Me' photos for various scenarios. Surpassing WhatsApp's feature in quality and versatility.",
+    "header_1": "in Any Scene with Unlimited AI Photo Generation",
+    "subheader": "Generate unlimited, high-quality AI photos of yourself in any scene or scenario",
+    "mobile_subheader": "Upload selfies & start imagining",
+    "web_cta": "Start Creating",
     "ai_generated": "AI generated",
-    "last_section_header_1": "Unlock Your Imagination with AI",
-    "last_section_subheader": "Create personalized images of yourself in various scenarios with our AI-powered image generator"
+    "last_section_header_1": "Unleash Your Imagination with AI",
+    "last_section_subheader": "Create personalized, photorealistic images of yourself in countless scenarios with our advanced AI-powered image generator",
+    "comparison_table": {
+      "feature": "Feature",
+      "whatsapp": "WhatsApp",
+      "fotolabs": "FotoLabs",
+      "high_quality": "High Quality",
+      "photorealistic": "Photorealistic",
+      "accurate_to_you": "Accurate to You",
+      "unlimited_scenarios": "Unlimited Scenarios",
+      "use_in_whatsapp": "Use in WhatsApp"
+    },
+    "imagine_me": "Imagine Me"
   },
   "ai-headshot": {
-    "meta_title": "AI-Powered Headshots for LinkedIn | Elevate Your Professional Image",
-    "meta_description": "Create stunning AI-generated headshots for your LinkedIn profile. Elevate your LinkedIn presence with high-quality, personalized images that showcase your unique style and personality.",
-    "header_1": "Transform Your LinkedIn Profile with AI",
-    "subheader": "Stand out on LinkedIn with custom, eye-catching AI photos tailored to your unique LinkedIn aesthetic and boost your follower count",
+    "meta_title": "AI-Powered Professional Headshots | Elevate Your Image",
+    "meta_description": "Create stunning AI-generated headshots for your professional profiles. Enhance your online presence with high-quality, personalized images that showcase your unique style and personality.",
+    "header_1": "Transform Your Professional Image with AI",
+    "subheader": "Stand out in your industry with custom, eye-catching AI photos tailored to your unique professional aesthetic",
     "mobile_subheader": "Upload selfies & start",
     "web_cta": "Generate Headshots",
     "ai_generated": "AI generated",
-    "last_section_header_1": "Elevate Your LinkedIn Presence with AI-Powered Headshots",
-    "last_section_subheader": "Make a lasting impression in the business world with high-quality, AI-generated headshots tailored to your industry and professional brand"
+    "last_section_header_1": "Elevate Your Professional Presence with AI-Powered Headshots",
+    "last_section_subheader": "Make a lasting impression in your career with high-quality, AI-generated headshots tailored to your industry and personal brand"
   }
 }

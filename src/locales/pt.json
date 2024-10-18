@@ -263,6 +263,10 @@
       "AiHeadshot": {
         "label": "AI Headshot",
         "description": "Crie fotos de perfil deslumbrantes geradas por IA para o seu perfil profissional no LinkedIn. Eleve sua presença no LinkedIn com imagens personalizadas de alta qualidade que mostram seu estilo único e personalidade."
+      },
+      "ImagineMe": {
+        "label": "Imagine-me",
+        "description": "Crie fotos de IA impressionantes geradas por IA para o seu perfil profissional no LinkedIn. Eleve sua presença no LinkedIn com imagens personalizadas de alta qualidade que mostram seu estilo único e personalidade."
       }
     },
     "Copyright": {
@@ -599,25 +603,36 @@
     "last_section_subheader": "Cause uma impressão duradoura no mundo dos negócios com fotos de perfil de alta qualidade geradas por IA, adaptadas à sua indústria e marca profissional"
   },
   "imagine-me": {
-    "meta_title": "Fotos de IA Imagine Me | Crie Imagens Personalizadas",
-    "meta_description": "Crie imagens deslumbrantes geradas por IA de si mesmo em vários cenários. Perfeito para fotos pessoais, expressão pessoal e criação de conteúdo único.",
-    "header_1": "Imagine e Crie com IA",
-    "subheader": "Gere imagens personalizadas de si mesmo em vários cenários usando tecnologia de IA avançada",
-    "mobile_subheader": "Envie selfies & comece",
-    "web_cta": "Criar Fotos",
+    "meta_title": "Fotos 'Imagine-me' Geradas por IA | Crie Imagens Personalizadas com FotoLabs AI",
+    "meta_description": "Experimente o próximo nível de imagens geradas por IA com FotoLabs AI. Crie fotos 'Imagine-me' impressionantes e fotorrealistas para vários cenários. Superando o recurso do WhatsApp em qualidade e versatilidade.",
+    "header_1": "em Qualquer Cena com Geração Ilimitada de Fotos por IA",
+    "subheader": "Gere fotos ilimitadas e de alta qualidade de você mesmo em qualquer cena ou cenário usando IA",
+    "mobile_subheader": "Envie selfies e comece a imaginar",
+    "web_cta": "Comece a Criar",
     "ai_generated": "Gerado por IA",
-    "last_section_header_1": "Desbloqueie Sua Imaginação com IA",
-    "last_section_subheader": "Crie imagens personalizadas de si mesmo em vários cenários com nosso gerador de imagens de IA"
+    "last_section_header_1": "Liberte Sua Imaginação com IA",
+    "last_section_subheader": "Crie imagens personalizadas e fotorrealistas de você mesmo em inúmeros cenários com nosso avançado gerador de imagens alimentado por IA",
+    "comparison_table": {
+      "feature": "Recurso",
+      "whatsapp": "WhatsApp",
+      "fotolabs": "FotoLabs",
+      "high_quality": "Alta Qualidade",
+      "photorealistic": "Fotorrealista",
+      "accurate_to_you": "Preciso para Você",
+      "unlimited_scenarios": "Cenários Ilimitados",
+      "use_in_whatsapp": "Uso no WhatsApp"
+    },
+    "imagine_me": "Imagine-me"
   },
   "ai-headshot": {
-    "meta_title": "Fotos de IA para LinkedIn | Eleve Sua Imagem Profissional",
-    "meta_description": "Crie fotos de rosto profissionais deslumbrantes para o seu perfil do LinkedIn. Eleve sua presença no LinkedIn com imagens personalizadas de alta qualidade que mostram seu estilo e personalidade únicos.",
-    "header_1": "Transforme Seu Perfil do LinkedIn com IA",
-    "subheader": "Destaque-se no LinkedIn com fotos de IA personalizadas e chamativas, adaptadas à sua estética única do LinkedIn e aumente seu número de seguidores",
-    "mobile_subheader": "Envie selfies & comece",
+    "meta_title": "Fotos Profissionais Geradas por IA | Eleve Sua Imagem",
+    "meta_description": "Crie incríveis fotos de perfil geradas por IA para seus perfis profissionais. Aprimore sua presença online com imagens personalizadas de alta qualidade que destacam seu estilo único e personalidade.",
+    "header_1": "Transforme Sua Imagem Profissional com IA",
+    "subheader": "Destaque-se em sua indústria com fotos de IA personalizadas e atraentes, adaptadas à sua estética profissional única",
+    "mobile_subheader": "Envie selfies e comece",
     "web_cta": "Gerar Fotos de Perfil",
     "ai_generated": "Gerado por IA",
-    "last_section_header_1": "Eleve Sua Presença no LinkedIn com Fotos Geradas por IA",
-    "last_section_subheader": "Cause uma impressão duradoura no mundo dos negócios com fotos de rosto de alta qualidade geradas por IA, adaptadas à sua indústria e marca profissional"
+    "last_section_header_1": "Eleve Sua Presença Profissional com Fotos de Perfil Geradas por IA",
+    "last_section_subheader": "Cause uma impressão duradoura em sua carreira com fotos de perfil de alta qualidade geradas por IA, adaptadas à sua indústria e marca pessoal"
   }
 }

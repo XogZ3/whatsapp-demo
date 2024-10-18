@@ -95,6 +95,12 @@ export function Footer() {
           href: '/uses/ai-headshot',
           description: `${t('Title_3.AiHeadshot.description')}`,
         },
+        {
+          id: 'imagine-me',
+          label: `${t('Title_3.ImagineMe.label')}`,
+          href: '/uses/imagine-me',
+          description: `${t('Title_3.ImagineMe.description')}`,
+        },
       ],
     },
     {

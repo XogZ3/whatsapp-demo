@@ -14,6 +14,7 @@ export const pages = [
   'uses/hairstyles',
   'uses/linkedin-ai-photo',
   'uses/ai-headshot',
+  'uses/imagine-me',
   'cancel-subscription',
 ];
 

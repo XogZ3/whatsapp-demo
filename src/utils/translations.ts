@@ -336,7 +336,7 @@ Você pode criar fotos ilimitadas de si mesmo em qualquer cenário que puder ima
   },
   'back to safety': {
     en: 'Back to Safety',
-    pt: 'Voltar para Segurança',
+    pt: 'Voltar seguro',
     ar: 'العودة إلى الأمان',
   },
   'cancellation success': {

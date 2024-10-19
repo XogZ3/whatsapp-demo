@@ -141,6 +141,13 @@ export const machineFactory = (config: IMachineConfig): any => {
               ],
               target: 'photoPrompting',
             },
+            FALLBACK: {
+              actions: [
+                'sendCancellationCancelled',
+                'sendPromptingInstruction',
+              ],
+              target: 'photoPrompting',
+            },
           },
         },
       },

@@ -42,7 +42,6 @@ async function sendConfirmCancellationTemplate(
     templateName,
     templateLanguageCode: finalLanguageCode || 'en',
     variables: true,
-    quickReply: true,
     variable1: membershipEndDateHumanReadable,
   };
   const result = await sendMessageToWhatsapp(payload);

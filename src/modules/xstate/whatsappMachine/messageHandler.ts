@@ -69,7 +69,7 @@ export const handleMessage = async (
       'cancel subscription': 'CANCEL',
       'back to safety': 'SAFE',
       'Cancelar assinatura': 'CANCEL',
-      'Voltar para a segurança': 'SAFE',
+      'Voltar seguro': 'SAFE',
     },
   };
 

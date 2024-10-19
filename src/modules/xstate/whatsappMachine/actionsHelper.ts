@@ -180,18 +180,12 @@ async function sendImageMessageWithSeed(
   imageLink: string,
   seed: number,
 ) {
-  const data = {
-    messaging_product: 'whatsapp',
-    recipient_type: 'individual',
-    to: clientid,
-    type: 'image',
-    image: {
-      link: imageLink,
-    },
+  const data: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    image: true,
+    imageLink,
   };
-  const res = await makeRequestToWhatsapp(data);
-  const whatsappMessageID = res?.messages[0]?.id;
-  if (res) await setSystemMessage(data, whatsappMessageID, seed);
+  await sendMessageToWhatsapp(data, seed);
 }
 
 export async function processAndSendImages(
@@ -713,7 +707,9 @@ export async function sendIntroTemplateMessage(
       ],
     },
   };
-  await makeRequestToWhatsapp(payload);
+  const res = await makeRequestToWhatsapp(payload);
+  const whatsappMessageID = res?.messages[0]?.id;
+  if (res) await setSystemMessage(payload, whatsappMessageID);
 }
 
 export async function sendContactInfoMessage(clientid: string) {
@@ -751,7 +747,9 @@ export async function sendContactInfoMessage(clientid: string) {
       },
     ],
   };
-  await makeRequestToWhatsapp(payload);
+  const res = await makeRequestToWhatsapp(payload);
+  const whatsappMessageID = res?.messages[0]?.id;
+  if (res) await setSystemMessage(payload, whatsappMessageID);
 }
 
 export async function sendIntroQuickReplyMessage(
@@ -796,7 +794,9 @@ export async function sendIntroQuickReplyMessage(
       },
     },
   };
-  await makeRequestToWhatsapp(payload);
+  const res = await makeRequestToWhatsapp(payload);
+  const whatsappMessageID = res?.messages[0]?.id;
+  if (res) await setSystemMessage(payload, whatsappMessageID);
 }
 
 async function getSubscriptionId(clientid: any) {

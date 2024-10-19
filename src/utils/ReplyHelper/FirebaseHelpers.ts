@@ -317,6 +317,45 @@ export async function addTrainingImageURLandIncreaseCountDecreasePendingUploads(
   return { newPhotosUploaded: -1, newPendingUploads: -1 };
 }
 
+export async function updateImageIntoImageMessageFromUser(
+  whatsappMessageID: string,
+  imageURL: string,
+) {
+  const wabaId = process.env.WABA_ID;
+  const messagesCollection = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('messages');
+
+  try {
+    await firestore.runTransaction(async (transaction) => {
+      const messageQuery = messagesCollection.where(
+        'whatsappMessageID',
+        '==',
+        whatsappMessageID,
+      );
+      const messageSnapshot = await transaction.get(messageQuery);
+
+      if (messageSnapshot.empty) {
+        throw new Error('Message not found');
+      }
+      const messageDoc = messageSnapshot.docs[0];
+      if (messageDoc) {
+        transaction.update(messageDoc.ref, {
+          type: 'image',
+          image: { link: imageURL },
+        });
+      } else {
+        throw new Error('Message document not found');
+      }
+    });
+
+    console.log('Image message updated successfully');
+  } catch (error) {
+    console.error('Failed to update image message:', error);
+  }
+}
+
 export async function addFinalTrainingImageURL(
   clientid: string,
   imageURL: string,

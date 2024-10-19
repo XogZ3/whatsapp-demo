@@ -20,6 +20,7 @@ import {
   setDefaultUserFields,
   setProcessingFlag,
   setUserState,
+  updateImageIntoImageMessageFromUser,
 } from './FirebaseHelpers';
 import {
   sendAnalyzingPhotoAndSetProcessingTrue,
@@ -42,7 +43,7 @@ export async function replyToUser(messageObject: any) {
   console.log('[~] extracted received text: ', message);
 
   const messageType = messageObject.message.type;
-  const { clientid } = messageObject;
+  const { clientid, whatsappMessageID } = messageObject;
 
   const userDetails = await getUserFields(clientid);
   const { age = 26, gender = 'male', state, name, language } = userDetails;
@@ -74,6 +75,7 @@ export async function replyToUser(messageObject: any) {
             clientid,
             imageURL,
           );
+        await updateImageIntoImageMessageFromUser(whatsappMessageID, imageURL);
         const updatedPhotoCount = photoUpdates.newPhotosUploaded;
         const updatedPendingUploads = photoUpdates.newPendingUploads;
         console.log(
@@ -153,6 +155,7 @@ export async function replyToUser(messageObject: any) {
         imageID,
         clientid,
       );
+      await updateImageIntoImageMessageFromUser(whatsappMessageID, imageURL);
       const imageCaption = extractText(messageObject);
       const promptResult = await getPromptFromImageURLUsingOpenAI(
         imageURL,

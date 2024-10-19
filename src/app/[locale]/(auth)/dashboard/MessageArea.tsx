@@ -51,7 +51,8 @@ const MessageArea: React.FC<MessageAreaProps> = ({
       {sortedMessages.map((message) => {
         const { id, contact, timestamp, type } = message;
         const isSystemMessage = message.recipient_type === 'individual';
-        const isInteractiveMessage = message?.message?.type === 'interactive';
+        const isInteractiveMessage =
+          message?.interactive || message?.message?.interactive;
 
         return (
           <div
@@ -94,7 +95,7 @@ const MessageArea: React.FC<MessageAreaProps> = ({
                   <p>{message.message?.text?.body}</p>
                 )}
 
-              {message.message &&
+              {/* {message.message &&
                 message.message.type === 'image' &&
                 message.message?.image?.id && (
                   <ul>
@@ -102,7 +103,7 @@ const MessageArea: React.FC<MessageAreaProps> = ({
                     <li>mime_type: {message.message?.image?.mime_type}</li>
                     <li>sha256: {message.message?.image?.sha256}</li>
                   </ul>
-                )}
+                )} */}
 
               {type === 'image' && message.image?.link && (
                 <>
@@ -114,6 +115,10 @@ const MessageArea: React.FC<MessageAreaProps> = ({
                   />
                   {message.image?.caption && <p>{message.image?.caption}</p>}
                 </>
+              )}
+
+              {isInteractiveMessage && (
+                <p className="mb-2">{message.interactive.body.text}</p>
               )}
             </div>
           </div>

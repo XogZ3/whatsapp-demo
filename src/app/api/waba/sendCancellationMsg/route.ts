@@ -11,7 +11,11 @@ import {
   getUserFields,
   type UserFieldsFirebase,
 } from '@/utils/ReplyHelper/FirebaseHelpers';
-import { getTranslation, type Language } from '@/utils/translations';
+import {
+  getLanguageCode,
+  getTranslation,
+  type Language,
+} from '@/utils/translations';
 
 const firestore = firebase.getFirestore();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
@@ -20,52 +24,26 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
 
 async function sendConfirmCancellationTemplate(
   clientid: string,
+  language: Language,
   membershipEndDateHumanReadable: string,
 ) {
-  const payload = {
-    messaging_product: 'whatsapp',
-    recipient_type: 'individual',
-    to: clientid,
-    type: 'template',
-    template: {
-      name: 'fotolabs_cancellation',
-      language: {
-        code: 'en',
-      },
-      components: [
-        {
-          type: 'body',
-          parameters: [
-            {
-              type: 'text',
-              text: membershipEndDateHumanReadable,
-            },
-          ],
-        },
-        {
-          type: 'button',
-          sub_type: 'quick_reply',
-          index: '0',
-          parameters: [
-            {
-              type: 'payload',
-              payload: 'cancel subscription',
-            },
-          ],
-        },
-        {
-          type: 'button',
-          sub_type: 'quick_reply',
-          index: '1',
-          parameters: [
-            {
-              type: 'payload',
-              payload: 'back to safety',
-            },
-          ],
-        },
-      ],
-    },
+  const languageCode = getLanguageCode(language);
+  let finalLanguageCode: any;
+  if (languageCode === 'pt') finalLanguageCode = 'pt_BR';
+  else finalLanguageCode = languageCode;
+
+  let templateName: string;
+  if (languageCode === 'pt') templateName = 'fotolabs_cancellation_pt';
+  else templateName = 'fotolabs_cancellation';
+
+  const payload: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    template: true,
+    templateName,
+    templateLanguageCode: finalLanguageCode || 'en',
+    variables: true,
+    quickReply: true,
+    variable1: membershipEndDateHumanReadable,
   };
   const result = await sendMessageToWhatsapp(payload);
   return result;
@@ -98,40 +76,47 @@ export async function GET(req: NextRequest) {
 
   try {
     const wabaId = process.env.WABA_ID;
+
     const clientDoc = firestore
       .collection('apps')
       .doc(wabaId as string)
       .collection('clients')
       .doc(clientid!);
 
+    const userFields = await getUserFields(clientid);
+
+    // Destructure with default values to prevent undefined errors
     const {
-      language,
+      language = 'english',
       membershipEndDate,
       state,
       subscriptionId,
       whatsappExpiration,
-      lastCancellationReqTime = 0,
-    } = await getUserFields(clientid!);
+      lastCancellationReqTime,
+    } = userFields || {};
 
     if (!subscriptionId)
       return NextResponse.json(
-        { error: 'subscriptions not found' },
+        { error: 'subscription not found' },
         { status: 404 },
       );
 
     const currentTime = DateTime.now(); // Current time as a DateTime object
-    const lastCancellation = DateTime.fromMillis(lastCancellationReqTime); // Convert previous time from milliseconds to DateTime
 
-    // Calculate the time difference in hours
-    const timeDiffInHours = currentTime.diff(lastCancellation, 'hours').hours;
+    // Check if lastCancellationReqTime exists
+    if (lastCancellationReqTime) {
+      const lastCancellation = DateTime.fromMillis(lastCancellationReqTime);
+      const timeDiffInHours = currentTime.diff(lastCancellation, 'hours').hours;
 
-    // Check if the difference is less than 6 hours
-    if (timeDiffInHours < 6) {
-      return NextResponse.json(
-        { cancellationFrequent: true, cancellationStat: false, error: '' },
-        { status: 200 },
-      );
+      if (timeDiffInHours < 6) {
+        return NextResponse.json(
+          { cancellationFrequent: true, cancellationStat: false, error: '' },
+          { status: 200 },
+        );
+      }
     }
+
+    // If lastCancellationReqTime doesn't exist or the time difference is >= 6 hours, continue with the cancellation process
 
     let message;
     let payload: ICreateMessagePayload;
@@ -157,7 +142,6 @@ export async function GET(req: NextRequest) {
     try {
       stateJSON = state ? JSON.parse(state) : {}; // Handle null or undefined state
     } catch (error) {
-      console.error('Error parsing state:', error);
       stateJSON = {}; // Fallback to empty state if parsing fails
     }
 
@@ -178,6 +162,7 @@ export async function GET(req: NextRequest) {
     if (DateTime.now().toMillis() >= whatsappExpiration) {
       result = await sendConfirmCancellationTemplate(
         clientid,
+        language,
         membershipEndDateHumanReadable,
       );
     } else {
@@ -193,6 +178,7 @@ export async function GET(req: NextRequest) {
       { status: 200 },
     );
   } catch (error) {
+    console.error('Error in GET function:', error);
     return NextResponse.json(
       {
         cancellationFrequent: false,

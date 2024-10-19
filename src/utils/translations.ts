@@ -399,7 +399,7 @@ Experimente o FotoLabs AI para criar fotos incríveis de IA suas no WhatsApp. Us
   },
 };
 
-function getLanguageCode(language: string | undefined): LanguageCode {
+export function getLanguageCode(language: string | undefined): LanguageCode {
   const languageMap: { [key: string]: LanguageCode } = {
     english: 'en',
     portuguese: 'pt',

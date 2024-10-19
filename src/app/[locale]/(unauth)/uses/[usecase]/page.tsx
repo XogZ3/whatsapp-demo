@@ -7,6 +7,7 @@ import FAQSection from '@/components/landingPage/FAQSection';
 import FeaturesSection from '@/components/landingPage/FeaturesSection';
 import PriceSection from '@/components/landingPage/PriceSection';
 import StepsSection from '@/components/landingPage/StepsSection';
+import TestimonialSection from '@/components/landingPage/TestimonialSection';
 import UseCaseHeroSection from '@/components/landingPage/UseCaseHeroSection';
 import UseCaseLastSection from '@/components/landingPage/UseCaseLastSection';
 import { UseCasePhotosSection } from '@/components/landingPage/UseCasePhotosSection';
@@ -343,6 +344,7 @@ export default function UseCasesPage({
       <UseCaseHeroSection useCase={useCase} />
       <UseCasePhotosSection useCase={useCase} />
       <StepsSection />
+      <TestimonialSection />
       <FeaturesSection />
       <ComparisonSection />
       <UsesSection />

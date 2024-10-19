@@ -34,6 +34,22 @@
     "subheader_4": "Envie selfies para criar seu modelo de IA personalizado",
     "web_cta": "Experimente agora"
   },
+  "TestimonialSection": {
+    "header": "O que nossos clientes dizem",
+    "verified_purchase": "✅ Compra Verificada",
+    "testimonial_1": {
+      "name": "Maria",
+      "content": "Altamente recomendado! Recebi muitos elogios pelas minhas fotos, especialmente as fotos profissionais e de viagem."
+    },
+    "testimonial_2": {
+      "name": "Carlos",
+      "content": "Ferramenta de IA incrível para geração de imagens! Consegui criar muitas fotos verdadeiramente incríveis em diferentes locais e com diferentes roupas! Todos os meus amigos ficaram surpresos e adoraram minhas fotos!"
+    },
+    "testimonial_3": {
+      "name": "Samuel",
+      "content": "Muito divertido! Eu uso para criar fotos de viagem para o meu Instagram. Posso criar muitas fotos em diferentes locais e roupas. Estou muito satisfeito com os resultados!"
+    }
+  },
   "StepsSection": {
     "header": "Como funciona",
     "subheader": "Comece a produzir fotografias de IA de alta qualidade instantaneamente com FotoLabs.ai com personagens consistentes.",

@@ -34,6 +34,22 @@
     "subheader_4": "Upload selfies to create your personalized AI model",
     "web_cta": "Try it now"
   },
+  "TestimonialSection": {
+    "header": "What our customers say",
+    "verified_purchase": "✅ Verified Purchase",
+    "testimonial_1": {
+      "name": "Maria",
+      "content": "Highly recommended! Got a lot of compliments on my pictures, especially professional headshots and travel pictures."
+    },
+    "testimonial_2": {
+      "name": "Carlos",
+      "content": "Cool AI tool for image generation! I could create a lot of truly amazing pictures in different locations with different outfits! All my friends were surprised and loved my pictures!"
+    },
+    "testimonial_3": {
+      "name": "Samuel",
+      "content": "Very fun! I use it to create travel pictures for my Instagram. I can create a lot of pictures in different locations and outfits. I'm very satisfied with the results!"
+    }
+  },
   "StepsSection": {
     "header": "How it works",
     "subheader": "Start producing high quality AI photographs instantly with FotoLabs.ai with consistent characters.",

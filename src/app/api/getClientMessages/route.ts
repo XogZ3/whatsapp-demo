@@ -28,7 +28,13 @@ export async function GET(request: Request) {
       .collection('clients')
       .doc(clientid)
       .collection('messages')
-      .where('type', 'in', ['message', 'text', 'image', 'template'])
+      .where('type', 'in', [
+        'message',
+        'text',
+        'image',
+        'template',
+        'interactive',
+      ])
       .where('timestamp', '>', 0)
       .orderBy('timestamp', 'desc')
       .limit(limit);

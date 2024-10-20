@@ -75,7 +75,11 @@ export async function replyToUser(messageObject: any) {
             clientid,
             imageURL,
           );
-        await updateImageIntoImageMessageFromUser(whatsappMessageID, imageURL);
+        await updateImageIntoImageMessageFromUser(
+          clientid,
+          whatsappMessageID,
+          imageURL,
+        );
         const updatedPhotoCount = photoUpdates.newPhotosUploaded;
         const updatedPendingUploads = photoUpdates.newPendingUploads;
         console.log(
@@ -155,7 +159,11 @@ export async function replyToUser(messageObject: any) {
         imageID,
         clientid,
       );
-      await updateImageIntoImageMessageFromUser(whatsappMessageID, imageURL);
+      await updateImageIntoImageMessageFromUser(
+        clientid,
+        whatsappMessageID,
+        imageURL,
+      );
       const imageCaption = extractText(messageObject);
       const promptResult = await getPromptFromImageURLUsingOpenAI(
         imageURL,
@@ -178,6 +186,16 @@ export async function replyToUser(messageObject: any) {
     }
     // Reject images in all other cases
     else if (messageType === 'image') {
+      const imageID = extractImageID(messageObject);
+      const imageURL = await fetchWhatsAppImageAndUploadToFirebase(
+        imageID,
+        clientid,
+      );
+      await updateImageIntoImageMessageFromUser(
+        clientid,
+        whatsappMessageID,
+        imageURL,
+      );
       // do nothing ?
       message = 'FALLBACK';
     } else message = extractText(messageObject);

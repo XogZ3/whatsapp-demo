@@ -318,6 +318,7 @@ export async function addTrainingImageURLandIncreaseCountDecreasePendingUploads(
 }
 
 export async function updateImageIntoImageMessageFromUser(
+  clientid: string,
   whatsappMessageID: string,
   imageURL: string,
 ) {
@@ -325,6 +326,8 @@ export async function updateImageIntoImageMessageFromUser(
   const messagesCollection = firestore
     .collection('apps')
     .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid)
     .collection('messages');
 
   try {

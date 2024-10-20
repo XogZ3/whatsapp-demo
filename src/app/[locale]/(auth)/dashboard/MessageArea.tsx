@@ -11,6 +11,19 @@ interface MessageAreaProps {
   loadingLastMessageId: string | null;
 }
 
+// Add these interfaces
+interface MessageComponent {
+  type: string;
+  parameters?: Array<{ text?: string }>;
+}
+
+interface InteractiveButton {
+  reply: {
+    id: string;
+    title: string;
+  };
+}
+
 const MessageArea: React.FC<MessageAreaProps> = ({
   messages,
   onLoadMore,
@@ -51,20 +64,13 @@ const MessageArea: React.FC<MessageAreaProps> = ({
       {sortedMessages.map((message) => {
         const { id, contact, timestamp, type } = message;
         const isSystemMessage = message.recipient_type === 'individual';
-        const isInteractiveMessage =
-          message?.interactive || message?.message?.interactive;
 
         return (
           <div
             key={id}
             className={`mb-4 flex flex-col ${isSystemMessage ? '' : 'items-end'}`}
           >
-            <div
-              className={cn(
-                'flex items-start',
-                isInteractiveMessage && 'hidden',
-              )}
-            >
+            <div className={cn('flex items-start')}>
               {/* Display sender name */}
               {isSystemMessage ? (
                 <div className="mr-2 text-left font-bold">FotoLabs AI</div>
@@ -95,15 +101,8 @@ const MessageArea: React.FC<MessageAreaProps> = ({
                   <p>{message.message?.text?.body}</p>
                 )}
 
-              {/* {message.message &&
-                message.message.type === 'image' &&
-                message.message?.image?.id && (
-                  <ul>
-                    <li>id: {message.message?.image?.id}</li>
-                    <li>mime_type: {message.message?.image?.mime_type}</li>
-                    <li>sha256: {message.message?.image?.sha256}</li>
-                  </ul>
-                )} */}
+              {/* Add this new condition to handle the case you described */}
+              {type === 'text' && message.body && <p>{message.body}</p>}
 
               {type === 'image' && message.image?.link && (
                 <>
@@ -117,9 +116,47 @@ const MessageArea: React.FC<MessageAreaProps> = ({
                 </>
               )}
 
-              {isInteractiveMessage && (
+              {/* Update the interactive message handling */}
+              {type === 'interactive' && message.interactive?.body?.text && (
                 <p className="mb-2">{message.interactive.body.text}</p>
               )}
+
+              {/* Add a fallback for other interactive message structures */}
+              {type === 'interactive' &&
+                message.components &&
+                message.components.map((component: MessageComponent) =>
+                  component.type === 'header' &&
+                  component.parameters &&
+                  component.parameters[0]?.text ? (
+                    <p
+                      key={`header-${id}-${component.parameters[0].text}`}
+                      className="mb-2 font-bold"
+                    >
+                      {component.parameters[0].text}
+                    </p>
+                  ) : null,
+                )}
+              {type === 'interactive' &&
+                message.interactive?.action?.buttons && (
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {message.interactive.action.buttons.map(
+                      (button: InteractiveButton) => (
+                        <div
+                          key={`button-${id}-${button.reply.id}`}
+                          className="mb-2 mr-2 w-fit rounded bg-blue-500 px-2 py-1 text-white"
+                        >
+                          {button.reply.title}
+                        </div>
+                      ),
+                    )}
+                  </div>
+                )}
+
+              {type === 'message' &&
+                message.message?.type === 'interactive' &&
+                message.message.interactive?.type === 'button_reply' && (
+                  <p>{message.message.interactive.button_reply.title}</p>
+                )}
             </div>
           </div>
         );

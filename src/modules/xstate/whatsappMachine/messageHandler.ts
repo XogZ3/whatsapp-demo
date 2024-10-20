@@ -40,7 +40,7 @@ export const handleMessage = async (
 ) => {
   const STATE_ACTION_EVENT_MAP: any = {
     [State.onBoarding]: {
-      'upload photos': 'UPLOAD_PHOTOS',
+      upload: 'UPLOAD',
       pricing: 'PRICING',
       language: 'LANGUAGE',
       english: 'ENGLISH',
@@ -50,13 +50,15 @@ export const handleMessage = async (
     },
     [State.imagesIncomplete]: {
       'photo received': 'PHOTO_RECEIVED',
-      'generate model': 'GENERATE_MODEL',
+      paywall: 'PAYWALL',
       fallback: 'FALLBACK',
     },
     [State.generatingModel]: {
       retry: 'RETRY',
     },
-    [State.paywall]: {},
+    [State.paywall]: {
+      fallback: 'FALLBACK',
+    },
     [State.photoPrompting]: {
       prompt: 'PROMPT',
       'use prompt': 'USE_PROMPT',

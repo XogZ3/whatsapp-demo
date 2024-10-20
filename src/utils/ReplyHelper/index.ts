@@ -108,7 +108,7 @@ export async function replyToUser(messageObject: any) {
           updatedPhotoCount >= TRAINING_IMAGES_UPPER_LIMIT &&
           updatedPendingUploads === 0
         )
-          message = 'Generate Model';
+          message = 'paywall';
       }
     }
     // Handle NON-Images in 'imagesIncomplete' state - Cancel or Fallback
@@ -117,8 +117,7 @@ export async function replyToUser(messageObject: any) {
       const currentPendingUploadsCount = await getPendingUploadsCount(clientid);
       if (currentPhotoCount >= TRAINING_IMAGES_LOWER_LIMIT) {
         if (currentPendingUploadsCount === 0) {
-          // just generate model if have 5 images ffs
-          message = 'Generate Model';
+          message = 'paywall';
         } else {
           // photo upload incomplete, ask user to wait and then click "finish upload"
           await sendWaitForUploadToComplete(clientid, userLanguage);

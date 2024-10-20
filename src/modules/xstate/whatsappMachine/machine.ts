@@ -1,6 +1,6 @@
 // machine.ts
 
-import { assign, createMachine, not } from 'xstate';
+import { assign, createMachine } from 'xstate';
 
 import { actionsFactory } from './actions';
 import { guardsFactory } from './guards';
@@ -25,17 +25,13 @@ export const machineFactory = (config: IMachineConfig): any => {
       on: {
         UNKNOWN_ISSUE: {
           target: '.onBoarding',
-          actions: 'sendIntroOptionsMessage',
+          actions: 'sendIntroMessage',
         },
       },
       states: {
         onBoarding: {
           entry: ['assignDefaultValues'],
           on: {
-            // UPLOAD_PHOTOS: {
-            //   actions: 'assignMessage',
-            //   target: 'imagesIncomplete',
-            // },
             LANGUAGE: { actions: ['sendSelectLanguage', 'assignMessage'] },
             ENGLISH: {
               actions: [
@@ -43,7 +39,7 @@ export const machineFactory = (config: IMachineConfig): any => {
                 'assignLanguage',
                 'setLanguageInFirebase',
                 'sendSelectedLanguage',
-                'sendIntroOptionsMessage',
+                'sendIntroMessage',
               ],
             },
             PORTUGUESE: {
@@ -52,7 +48,7 @@ export const machineFactory = (config: IMachineConfig): any => {
                 'assignLanguage',
                 'setLanguageInFirebase',
                 'sendSelectedLanguage',
-                'sendIntroOptionsMessage',
+                'sendIntroMessage',
               ],
             },
             ARABIC: {
@@ -61,47 +57,37 @@ export const machineFactory = (config: IMachineConfig): any => {
                 'assignLanguage',
                 'setLanguageInFirebase',
                 'sendSelectedLanguage',
-                'sendIntroOptionsMessage',
+                'sendIntroMessage',
               ],
             },
             PRICING: { actions: ['assignMessage', 'sendPricing'] },
             TUTORIAL: { actions: ['assignMessage', 'sendTutorial'] },
+            UPLOAD: { actions: ['assignMessage'], target: 'imagesIncomplete' },
             FALLBACK: {
               actions: ['sendIntroOptionsMessageBasedOnPhoneNumber'],
             },
           },
         },
         imagesIncomplete: {
-          // entry: ['sendPhotoUploadInstruction'],
+          entry: ['sendPhotoUploadInstruction'],
           on: {
             PHOTO_RECEIVED: {
               actions: [assign({ message: () => 'photo received' })],
             },
-            GENERATE_MODEL: [
-              {
-                guard: not('modelAlreadyGenerated'),
-                target: 'generatingModel',
-                actions: ['callStartTrainingAPI', 'saveAgeAndGender'],
-              },
-              {
-                actions: ['notifyModelExists'],
-                target: 'photoPrompting',
-              },
-            ],
+            PAYWALL: { target: 'paywall' },
             FALLBACK: { actions: 'sendPendingPhotos' },
-          },
-        },
-        generatingModel: {
-          entry: ['sendGeneratingModel'],
-          on: {
-            RETRY: { actions: ['callStartTrainingAPI', 'setRetriedFlagTrue'] },
-            FALLBACK: { actions: 'handleModelGenerationStatus' },
           },
         },
         paywall: {
           entry: ['sendPaywall'],
           on: {
             FALLBACK: { actions: 'sendPaywall' },
+          },
+        },
+        generatingModel: {
+          on: {
+            RETRY: { actions: ['callStartTrainingAPI', 'setRetriedFlagTrue'] },
+            FALLBACK: { actions: 'handleModelGenerationStatus' },
           },
         },
         photoPrompting: {

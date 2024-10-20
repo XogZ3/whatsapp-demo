@@ -6,7 +6,14 @@ import { Readable } from 'stream';
 
 import firebase from '@/modules/firebase';
 import { getStorageInstance } from '@/modules/firebase/firebase';
-import { generateImageCaptionUsingGroq } from '@/modules/groq';
+import {
+  generateImageCaptionUsingGroq,
+  getAgeAndGenderFromImageURLUsingGroq,
+} from '@/modules/groq';
+import {
+  type GenderAndAgeSchemaType,
+  getAgeAndGenderFromImageURLUsingOpenAI,
+} from '@/modules/openai';
 
 import { getBaseUrl, getLanguageFromPhoneNumber } from '../helpers';
 import { type Language } from '../translations';
@@ -333,7 +340,7 @@ export async function updateImageIntoImageMessageFromUser(
   try {
     await firestore.runTransaction(async (transaction) => {
       const messageQuery = messagesCollection.where(
-        'whatsappMessageID',
+        'message.id',
         '==',
         whatsappMessageID,
       );
@@ -963,5 +970,66 @@ export async function getSeedUsingWhatsappMsgID(
   } catch (error) {
     console.error('[!] Error in getSeedUsingWhatsappMsgID:', error);
     return 0;
+  }
+}
+
+export async function saveAgeAndGender(clientid: string) {
+  try {
+    const imageUrls = await getTrainingImageURLs(clientid);
+    if (imageUrls.length === 0) {
+      throw new Error('No training image URLs available.');
+    }
+    const randomImageUrl =
+      imageUrls[Math.floor(Math.random() * imageUrls.length)];
+
+    if (!randomImageUrl) {
+      throw new Error('Failed to select a random image URL.');
+    }
+
+    let result: GenderAndAgeSchemaType | null = null;
+    // Try Groq API first, then fallback to OpenAI if necessary
+    result =
+      (await getAgeAndGenderFromImageURLUsingGroq(randomImageUrl)) ||
+      (await getAgeAndGenderFromImageURLUsingOpenAI(randomImageUrl));
+
+    if (!result) {
+      console.warn('Failed to get age and gender from the image.');
+      return;
+    }
+
+    const { age, gender } = result;
+    await setUserAgeAndGender(clientid, age, gender);
+
+    const clientDocRef = firestore
+      .collection('apps')
+      .doc(process.env.WABA_ID as string)
+      .collection('clients')
+      .doc(clientid);
+
+    const clientDocSnapshot = await clientDocRef.get();
+
+    if (!clientDocSnapshot.exists) {
+      console.error('Client does not exist');
+      return;
+    }
+
+    const state =
+      clientDocSnapshot.get('state') || JSON.stringify({ context: {} });
+    const stateObj = JSON.parse(state);
+
+    if (!stateObj.context) {
+      stateObj.context = {};
+    }
+
+    stateObj.context.age = age;
+    stateObj.context.gender = gender;
+
+    await clientDocRef.update({
+      state: JSON.stringify(stateObj),
+    });
+
+    console.log('Age and gender saved successfully.');
+  } catch (error) {
+    console.error('Error in saveAgeAndGender:', error);
   }
 }

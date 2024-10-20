@@ -36,6 +36,7 @@ import {
   notifyPendingPhotos,
   processAndSendImages,
   sendContactInfoMessage,
+  sendIntroOptionsQuickReplyMessage,
   sendIntroQuickReplyMessage,
   setUserStateAndInform,
 } from './actionsHelper';
@@ -86,6 +87,69 @@ export const actionsFactory = (config: IMachineConfig): any => {
     //     ),
     //   );
     // },
+    sendIntroMessageBasedOnPhoneNumber: async () => {
+      const subscriptionExists = await checkExistingSubscription(config);
+      if (subscriptionExists) return;
+      try {
+        console.log(
+          '[~] attempting to sendIntroOptionsMessageBasedOnPhoneNumber',
+        );
+        // use language based on phone number
+        const { clientid, language } = config.userMetaData;
+
+        const languageButtonTextLocale = getTranslation('language', language);
+        const finalLanguageButtonText = `Language${languageButtonTextLocale !== 'Language' ? ` | ${languageButtonTextLocale}` : ''}`;
+
+        const message = `${getTranslation('intro message img', language)}`;
+
+        await sendIntroQuickReplyMessage(
+          clientid,
+          message,
+          getTranslation('upload photos', language),
+          finalLanguageButtonText,
+          getTranslation('tutorial', language),
+        );
+      } catch (err) {
+        console.error(
+          'Error in sendIntroOptionsMessageBasedOnPhoneNumber:',
+          err,
+        );
+        await sendMessageToTelegram(
+          `Error in sendIntroOptionsMessageBasedOnPhoneNumber: ${JSON.stringify(err, null, 2)}`,
+        );
+      }
+    },
+    sendIntroMessage: async (event: any) => {
+      const subscriptionExists = await checkExistingSubscription(config);
+      if (subscriptionExists) return;
+
+      try {
+        const { clientid } = config.userMetaData;
+        const language = event?.context?.language;
+
+        const languageButtonTextLocale = getTranslation('language', language);
+        const finalLanguageButtonText = `Language${languageButtonTextLocale !== 'Language' ? ` | ${languageButtonTextLocale}` : ''}`;
+
+        const message = `${getTranslation('intro message img', language)}`;
+
+        await sendIntroQuickReplyMessage(
+          clientid,
+          message,
+          getTranslation('upload photos', language),
+          finalLanguageButtonText,
+          getTranslation('tutorial', language),
+        );
+      } catch (err) {
+        console.error(
+          'Error in sendIntroOptionsMessageBasedOnPhoneNumber:',
+          err,
+        );
+        await sendMessageToTelegram(
+          `Error in sendIntroOptionsMessageBasedOnPhoneNumber: ${JSON.stringify(err, null, 2)}`,
+        );
+      }
+    },
+    // New flow: Take images first
     sendIntroOptionsMessageBasedOnPhoneNumber: async (event: any) => {
       const subscriptionExists = await checkExistingSubscription(config);
       if (subscriptionExists) return;
@@ -125,7 +189,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
 
               message = `${getTranslation('intro message', language)}\n\n${shortLink}`;
 
-              await sendIntroQuickReplyMessage(
+              await sendIntroOptionsQuickReplyMessage(
                 clientid,
                 message,
                 finalLanguageButtonText,
@@ -143,7 +207,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
             });
         } else {
           message = `${getTranslation('intro message', language)}\n\n${shortenedStripeLink}`;
-          await sendIntroQuickReplyMessage(
+          await sendIntroOptionsQuickReplyMessage(
             clientid,
             message,
             finalLanguageButtonText,
@@ -203,7 +267,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
 
               message = `${getTranslation('intro message', language)}\n\n${shortLink}`;
 
-              await sendIntroQuickReplyMessage(
+              await sendIntroOptionsQuickReplyMessage(
                 clientid,
                 message,
                 finalLanguageButtonText,
@@ -221,7 +285,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
             });
         } else {
           message = `${getTranslation('intro message', language)}\n\n${shortenedStripeLink}`;
-          await sendIntroQuickReplyMessage(
+          await sendIntroOptionsQuickReplyMessage(
             clientid,
             message,
             finalLanguageButtonText,

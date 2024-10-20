@@ -1,20 +1,55 @@
-export function extractText(messageObject: any) {
-  let text = '';
-  const { message } = messageObject;
-  if (message) {
-    if (message.text && message.text.body) {
-      text = message.text.body;
-    } else if (message.interactive && message.interactive.button_reply) {
-      text = message.interactive.button_reply.id;
-    } else if (message.interactive && message.interactive.list_reply) {
-      text = message.interactive.list_reply.id;
-    } else if (message.type === 'button' && message.button) {
-      text = message.button.payload;
-    } else if (message.type === 'image' && message.image.caption) {
-      text = message.image.caption;
-    }
+function removeEnclosingQuotes(text: string): string {
+  if (text.length >= 2 && text.startsWith('"') && text.endsWith('"')) {
+    return text.slice(1, -1);
   }
   return text;
+}
+
+export function extractText(messageObject: any): string {
+  if (!messageObject || typeof messageObject !== 'object') {
+    return '';
+  }
+
+  const { message } = messageObject;
+
+  if (!message) {
+    return '';
+  }
+
+  let extractedText = '';
+
+  // Handle text messages
+  if (message.text && typeof message.text.body === 'string') {
+    extractedText = message.text.body;
+  }
+  // Handle interactive messages
+  else if (message.interactive) {
+    if (
+      message.interactive.button_reply &&
+      message.interactive.button_reply.id
+    ) {
+      extractedText = message.interactive.button_reply.id;
+    } else if (
+      message.interactive.list_reply &&
+      message.interactive.list_reply.id
+    ) {
+      extractedText = message.interactive.list_reply.id;
+    }
+  }
+  // Handle button messages
+  else if (
+    message.type === 'button' &&
+    message.button &&
+    message.button.payload
+  ) {
+    extractedText = message.button.payload;
+  }
+  // Handle image messages with captions
+  else if (message.type === 'image' && message.image && message.image.caption) {
+    extractedText = message.image.caption;
+  }
+
+  return removeEnclosingQuotes(extractedText.trim());
 }
 
 export function isContextImageMessage(messageObject: any) {

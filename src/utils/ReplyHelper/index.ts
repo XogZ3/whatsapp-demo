@@ -59,7 +59,9 @@ export async function replyToUser(messageObject: any) {
     const uploadedPhotosCount = await getPhotoCount(clientid);
     // Handle receiving images
     // Accept images in imagesIncomplete state
-    if (currentState === 'imagesIncomplete' && messageType === 'image') {
+    if (currentState === 'onBoarding' && messageType === 'image') {
+      message = 'UPLOAD';
+    } else if (currentState === 'imagesIncomplete' && messageType === 'image') {
       if (
         !uploadedPhotosCount || // Handles undefined or null
         uploadedPhotosCount < TRAINING_IMAGES_UPPER_LIMIT

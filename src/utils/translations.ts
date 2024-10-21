@@ -221,11 +221,11 @@ Quer criar fotos incríveis de IA como essas? Faça um pagamento de ~$29,99~ $19
   },
   'intro message img': {
     en: `👋 Welcome to FotoLabs.ai! Want to create cool AI photos like these?
-Send ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} photos of yourself to create your personalized model.`,
+Click 'Upload Photos' button to get started.`,
     pt: `👋 Bem-vindo ao FotoLabs.ai! Quer criar fotos incríveis de IA como essas?
-Envie ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} fotos suas para criar seu modelo personalizado.`,
+Clique no botão 'Enviar Fotos' para começar.`,
     ar: `👋 مرحبًا بك في FotoLabs.ai! هل تريد إنشاء صور رائعة بالذكاء الاصطناعي مثل هذه؟
-أرسل ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} صورة لنفسك لإنشاء نموذجك المخصص.`,
+انقر على زر 'تحميل الصور' للبدء.`,
   },
   'tutorial message': {
     en: `📸 How to Use FotoLabs.ai\n\nUpload Photos: Send ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} photos of yourself to create your personalized model.\nMake Payment: Create unlimited photos of your AI self in any scenario you can imagine for just ~$29.99~ $19.99/month.\nGet Samples: Once your model is ready, you'll receive a few sample images.\nGenerate Images: Start generating images by sending prompts like "handsome man as a superhero" or "gorgeous woman in Paris."\nIt's that easy! Ready to explore? 😊`,

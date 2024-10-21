@@ -111,7 +111,10 @@ export async function POST(request: NextRequest) {
   const snapshot = await query.get();
 
   if (snapshot.empty) {
-    return [];
+    return new Response(JSON.stringify({ success: true, updatedClients: 0 }), {
+      status: 200,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
   }
 
   const clientidArray = snapshot.docs.map((doc) => doc.id);

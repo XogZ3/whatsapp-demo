@@ -199,6 +199,10 @@ export async function setDefaultUserFields(clientid: string): Promise<void> {
   const updates: Partial<UserFieldsFirebase> = {
     language: userLanguage,
     processing: false,
+    paid: false,
+    discountSent: false,
+    loraURL: '',
+    loraFilename: '',
   };
 
   // Update the Firestore document with the new default values, merging with existing data

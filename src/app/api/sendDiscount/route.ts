@@ -43,20 +43,30 @@ async function sendDiscountMessages(clientidArray: string[]) {
 
   await Promise.all(
     clientDataArray.map(async ({ clientid, language = 'english' }) => {
-      const languageCode = language === 'portuguese' ? 'pt_BR' : 'en';
-      let templateName: string;
+      try {
+        const languageCode = language === 'portuguese' ? 'pt_BR' : 'en';
+        let templateName: string;
 
-      if (languageCode === 'pt_BR')
-        templateName = 'fotolabs_retireve_newusers_pt';
-      else templateName = 'fotolabs_retireve_newusers_en';
+        if (languageCode === 'pt_BR')
+          templateName = 'fotolabs_retireve_newusers_pt';
+        else templateName = 'fotolabs_retireve_newusers_en';
 
-      const paymentConfirmationPayload: ICreateMessagePayload = {
-        phoneNumber: clientid,
-        template: true,
-        templateName,
-        templateLanguageCode: languageCode,
-      };
-      await sendMessageToWhatsapp(paymentConfirmationPayload);
+        const paymentConfirmationPayload: ICreateMessagePayload = {
+          phoneNumber: clientid,
+          template: true,
+          templateName,
+          templateLanguageCode: languageCode,
+        };
+
+        console.log(
+          'Sending message with payload:',
+          JSON.stringify(paymentConfirmationPayload),
+        );
+        await sendMessageToWhatsapp(paymentConfirmationPayload);
+        console.log(`Message sent successfully to ${clientid}`);
+      } catch (error) {
+        console.error(`Error sending message to ${clientid}:`, error);
+      }
     }),
   );
 }
@@ -104,31 +114,40 @@ export async function POST(request: NextRequest) {
     .doc(wabaId)
     .collection('clients');
 
-  const query = clientRef.where('paid', '!=', true);
-
-  const snapshot = await query.get();
+  const snapshot = await clientRef.get();
   console.log(`Number of documents found: ${snapshot.size}`);
+  const missingPaidFieldDocs = snapshot.docs.filter(
+    (doc) => !Object.prototype.hasOwnProperty.call(doc.data(), 'paid'),
+  );
+  console.log(
+    `Number of documents without 'paid' field: ${missingPaidFieldDocs.length}`,
+  );
 
-  if (snapshot.empty) {
-    console.log('No matching documents found');
-    return new Response(JSON.stringify({ success: true, updatedClients: 0 }), {
-      status: 200,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
-  }
+  const paidFalseDocs = snapshot.docs.filter(
+    (doc) => doc.data().paid === false,
+  );
+  console.log(
+    `Number of documents with 'paid' field set to false: ${paidFalseDocs.length}`,
+  );
 
-  const clientidArray = snapshot.docs.map((doc) => doc.id);
-  await sendDiscountMessages(clientidArray);
+  // Fix: Combine the two arrays and extract clientids
+  const eligibleClientidArray = [...missingPaidFieldDocs, ...paidFalseDocs].map(
+    (doc) => doc.id,
+  );
+  await sendDiscountMessages(eligibleClientidArray);
 
   const batch = firestore.batch();
-  clientidArray.forEach((clientid) => {
+  eligibleClientidArray.forEach((clientid) => {
     const clientDocRef = clientRef.doc(clientid);
     batch.update(clientDocRef, { discountSent: true });
   });
   await batch.commit();
 
   return new Response(
-    JSON.stringify({ success: true, updatedClients: clientidArray.length }),
+    JSON.stringify({
+      success: true,
+      updatedClients: eligibleClientidArray.length,
+    }),
     {
       status: 200,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },

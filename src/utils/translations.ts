@@ -308,12 +308,18 @@ Envie ${TRAINING_IMAGES_LOWER_LIMIT}-${TRAINING_IMAGES_UPPER_LIMIT} fotos suas p
     ar: 'يتم تحميل بعض الصور، يرجى الانتظار.\n\nانقر على زر "إكمال التحميل" بعد تحميل جميع الصور.',
   },
   'new user paywall': {
-    en: `We apologise to inform, we failed to generate model for free. Due to high demand, we've had to pause our free model generation. However, we'd love for you to experience the full potential of FotoLabs AI.
-By becoming a paid user, you can continue creating your personalized AI model. We appreciate your understanding and support!`,
-    pt: `Sentimos muito informar, não conseguimos gerar o modelo gratuitamente. Devido à alta demanda, tivemos que pausar a geração de modelo gratuito. No entanto, adoramos que você experimente o máximo potencial de FotoLabs AI.
-Ao se tornar um usuário pago, você pode continuar criando seu modelo de IA personalizado. Agradecemos seu entendimento e apoio!`,
-    ar: `نحن نعتذر عن الإبلاغ عن أننا فشلنا في إنشاء نموذج مجاني. بسبب الطلب العالي، كان علينا أن نؤقت إنشاء نموذج مجاني. ومع ذلك، لقد أحبنا أن تستكشف إمكاناتنا بالكامل.
-بالتحويل إلى مستخدم مدفوع، يمكنك الاستمرار في إنشاء نموذج الذكاء الاصطناعي المخصص الخاص بك. نحن نشكر لكم فهمكم ودعمكم!`,
+    en: `We apologize to inform that we failed to generate your model for free. 😔 Due to high demand, we've had to pause our free model generation.
+
+However, by becoming a *paid user*, you can continue creating your personalized AI model.
+We appreciate your understanding and support! 🙏💖`,
+    pt: `Sentimos muito informar que não conseguimos gerar o seu modelo gratuitamente. 😔 Devido à alta demanda, tivemos que pausar a geração de modelo gratuito.
+
+No entanto, ao se tornar um usuário *pago*, você pode continuar criando seu modelo de IA personalizado.
+Agradecemos seu entendimento e apoio! 🙏💖`,
+    ar: `نحن نعتذر عن الإبلاغ عن أننا فشلنا في إنشاء نموذجك مجانيًا. 😔 بسبب الطلب العالي، كان علينا أن نؤقت إنشاء نموذج مجاني.
+
+ومع ذلك، بالتحويل إلى مستخدم مدفوع، يمكنك الاستمرار في إنشاء نموذج الذكاء الاصطناعي المخصص الخاص بك.
+نحن نشكر لكم فهمكم ودعمكم! 🙏💖`,
   },
   'discount message 1': {
     en: 'Hey! 🎉 You have been selected for a special discount. Use code',

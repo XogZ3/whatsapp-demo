@@ -41,6 +41,8 @@ export const handleMessage = async (
   const STATE_ACTION_EVENT_MAP: any = {
     [State.onBoarding]: {
       upload: 'UPLOAD',
+      'upload photos': 'UPLOAD',
+      'Carregar fotos': 'UPLOAD',
       pricing: 'PRICING',
       language: 'LANGUAGE',
       english: 'ENGLISH',

@@ -42,6 +42,13 @@ async function sendGeneratingModelMessage(
   clientid: string,
   language: Language,
 ) {
+  const paymentConfirmationPayload: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    text: true,
+    msgBody: getTranslation('payment confirmation', language),
+  };
+  await sendMessageToWhatsapp(paymentConfirmationPayload);
+
   const payload: ICreateMessagePayload = {
     phoneNumber: clientid,
     text: true,
@@ -56,6 +63,19 @@ async function sendGeneratingModelTemplate(
 ) {
   const languageCode = language === 'portuguese' ? 'pt_BR' : 'en';
   let templateName: string;
+
+  if (languageCode === 'pt_BR')
+    templateName = 'fotolabs_payment_confirmation_pt';
+  else templateName = 'fotolabs_payment_confirmation_en';
+
+  const paymentConfirmationPayload: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    template: true,
+    templateName,
+    templateLanguageCode: languageCode,
+  };
+  await sendMessageToWhatsapp(paymentConfirmationPayload);
+
   if (languageCode === 'pt_BR') templateName = 'fotolabs_generating_model_pt';
   else templateName = 'fotolabs_generating_model_en';
 

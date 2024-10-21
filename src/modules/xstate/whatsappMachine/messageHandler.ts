@@ -42,7 +42,7 @@ export const handleMessage = async (
     [State.onBoarding]: {
       upload: 'UPLOAD',
       'upload photos': 'UPLOAD',
-      'Carregar fotos': 'UPLOAD',
+      'carregar fotos': 'UPLOAD',
       pricing: 'PRICING',
       language: 'LANGUAGE',
       english: 'ENGLISH',

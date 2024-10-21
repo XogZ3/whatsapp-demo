@@ -564,9 +564,13 @@ export const actionsFactory = (config: IMachineConfig): any => {
               shortLink,
             );
 
-            message = `${getTranslation('new user paywall', language)}
-
-${shortLink}`;
+            message = getTranslation('new user paywall', language);
+            await config.whatsappInstance.send({
+              phoneNumber: clientid,
+              text: true,
+              msgBody: message,
+            });
+            message = `${getTranslation('paywall', language)}\n\n${shortLink}`;
             await config.whatsappInstance.send({
               phoneNumber: clientid,
               text: true,
@@ -583,7 +587,13 @@ ${shortLink}`;
             );
           });
       } else {
-        message = `${getTranslation('new user paywall', language)}\n\n${shortenedStripeLink}`;
+        message = getTranslation('new user paywall', language);
+        await config.whatsappInstance.send({
+          phoneNumber: clientid,
+          text: true,
+          msgBody: message,
+        });
+        message = `${getTranslation('paywall', language)}\n\n${shortenedStripeLink}`;
         await config.whatsappInstance.send({
           phoneNumber: clientid,
           text: true,
@@ -879,9 +889,13 @@ ${shortLink}`;
                         shortLink,
                       );
 
-                      message = `${getTranslation('new user paywall', language)}
-
-${shortLink}`;
+                      message = getTranslation('new user paywall', language);
+                      await config.whatsappInstance.send({
+                        phoneNumber: clientid,
+                        text: true,
+                        msgBody: message,
+                      });
+                      message = `${getTranslation('paywall', language)}\n\n${shortLink}`;
                       await config.whatsappInstance.send({
                         phoneNumber: clientid,
                         text: true,
@@ -898,7 +912,13 @@ ${shortLink}`;
                       );
                     });
                 } else {
-                  message = `${getTranslation('new user paywall', language)}\n\n${shortenedStripeLink}`;
+                  message = getTranslation('new user paywall', language);
+                  await config.whatsappInstance.send({
+                    phoneNumber: clientid,
+                    text: true,
+                    msgBody: message,
+                  });
+                  message = `${getTranslation('paywall', language)}\n\n${shortenedStripeLink}`;
                   await config.whatsappInstance.send({
                     phoneNumber: clientid,
                     text: true,
@@ -1073,9 +1093,13 @@ ${shortLink}`;
                         shortLink,
                       );
 
-                      message = `${getTranslation('new user paywall', language)}
-
-${shortLink}`;
+                      message = getTranslation('new user paywall', language);
+                      await config.whatsappInstance.send({
+                        phoneNumber: clientid,
+                        text: true,
+                        msgBody: message,
+                      });
+                      message = `${getTranslation('paywall', language)}\n\n${shortLink}`;
                       await config.whatsappInstance.send({
                         phoneNumber: clientid,
                         text: true,
@@ -1092,7 +1116,13 @@ ${shortLink}`;
                       );
                     });
                 } else {
-                  message = `${getTranslation('new user paywall', language)}\n\n${shortenedStripeLink}`;
+                  message = getTranslation('new user paywall', language);
+                  await config.whatsappInstance.send({
+                    phoneNumber: clientid,
+                    text: true,
+                    msgBody: message,
+                  });
+                  message = `${getTranslation('paywall', language)}\n\n${shortenedStripeLink}`;
                   await config.whatsappInstance.send({
                     phoneNumber: clientid,
                     text: true,

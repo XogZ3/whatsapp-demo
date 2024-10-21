@@ -332,9 +332,9 @@ Agradecemos seu entendimento e apoio! 🙏💖`,
     ar: 'للحصول على 50% من الخطة الشهرية الخاصة بك! 🚨 استخدم هذا الرمز خلال 12 ساعة للحصول على FotoLabs AI بسعر $9.99 فقط.',
   },
   paywall: {
-    en: 'Your free trial/membership has expired. Please purchase a membership to continue using FotoLabs AI.',
-    pt: 'Seu teste gratuito/assinatura expirou. Por favor, compre uma assinatura para continuar usando o FotoLabs AI.',
-    ar: 'انتهت صلاحية النسخة التجريبية المجانية/العضوية الخاصة بك. يرجى شراء عضوية لمواصلة استخدام FotoLabs AI.',
+    en: 'Please pay using the link below to continue using FotoLabs AI.',
+    pt: 'Por favor, pague usando o link abaixo para continuar usando o FotoLabs AI.',
+    ar: 'يرجى الدفع باستخدام الرابط أدناه لمواصلة استخدام FotoLabs AI.',
   },
   'active membership': {
     en: 'You already have an existing membership. Send your prompt now. :)',

@@ -79,7 +79,7 @@ export const machineFactory = (config: IMachineConfig): any => {
           },
         },
         paywall: {
-          entry: ['sendPaywall'],
+          entry: ['sendPaywall', 'setPaywallSentTimestamp'],
           on: {
             FALLBACK: { actions: 'sendPaywall' },
           },

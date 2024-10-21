@@ -56,6 +56,8 @@ export type TranslationKeys =
   | 'get membership'
   | 'payment confirmed'
   | 'paywall'
+  | 'discount message 1'
+  | 'discount message 2'
   | 'active membership'
   | 'reached limit'
   | 'confirm cancellation 1'
@@ -312,6 +314,16 @@ We'll create your personalized AI model, allowing unlimited, high-quality images
 Vamos criar seu modelo de IA personalizado, permitindo imagens ilimitadas, de alta qualidade, de si mesmo em qualquer cenário.`,
     ar: `شكرًا لمشاركة صورك! لتحرير إمكانات FotoLabs AI بالكامل، قم بالدفع بقيمة $19.99/شهر ~$29.99~.
 سنقوم بإنشاء نموذج الذكاء الاصطناعي المخصص لك، مما يسمح بصور غير محدودة، ذات جودة عالية، لنفسك في أي سيناريو يمكنك تخيله.`,
+  },
+  'discount message 1': {
+    en: 'Hey! 🎉 You have been selected for a special discount. Use code',
+    pt: 'Ei! 🎉 Você foi selecionado para um desconto especial. Use o código',
+    ar: 'مرحبًا! 🎉 لقد تم اختيارك لخطة مخفضة. استخدم الرمز',
+  },
+  'discount message 2': {
+    en: 'to get 50% off your first month! 🚨 Use this code within 1 hour to get FotoLabs AI for only $9.99.',
+    pt: 'para obter 50% de desconto na sua primeira mensalidade! 🚨 Use este código dentro de 1 hora para obter FotoLabs AI por apenas $9.99.',
+    ar: 'للحصول على 50% من الخطة الشهرية الخاصة بك! 🚨 استخدم هذا الرمز خلال 1 ساعة للحصول على FotoLabs AI بسعر $9.99 فقط.',
   },
   paywall: {
     en: 'Your free trial/membership has expired. Please purchase a membership to continue using FotoLabs AI.',

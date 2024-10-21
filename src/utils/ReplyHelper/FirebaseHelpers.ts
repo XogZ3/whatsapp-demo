@@ -106,6 +106,8 @@ export type UserFieldsFirebase = {
   whatsappExpiration: number;
   lastCancellationReqTime: number;
   couponUsed: string;
+  paywallSentTimestamp: number;
+  discountSent: boolean;
 };
 
 export async function getUserFields(
@@ -144,6 +146,8 @@ export async function getUserFields(
     whatsappExpiration,
     lastCancellationReqTime,
     couponUsed,
+    paywallSentTimestamp,
+    discountSent,
   } = clientData.data() || {};
   const userLanguage = language || getLanguageFromPhoneNumber(clientid);
 
@@ -174,6 +178,8 @@ export async function getUserFields(
     whatsappExpiration,
     lastCancellationReqTime,
     couponUsed,
+    paywallSentTimestamp,
+    discountSent,
   };
 }
 
@@ -212,6 +218,19 @@ export async function setUserAgeAndGender(
     .doc(clientid);
   const updates: Partial<UserFieldsFirebase> = { age, gender };
   await clientDoc.set(updates, { merge: true });
+}
+
+export async function setPaywallSentTimestamp(clientid: string) {
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid);
+  await clientDoc.update({
+    paywallSentTimestamp: DateTime.now().toMillis(),
+    discountSent: false,
+  });
 }
 
 export async function callTrainingAPI(

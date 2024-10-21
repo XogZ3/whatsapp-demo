@@ -16,6 +16,7 @@ import {
   getTrainingImageURLs,
   getUserFields,
   incrementCreditsUsedTodayAndSetProcessingFlagFalse,
+  setPaywallSentTimestamp,
   setProcessingFlag,
   setRetriedFlag,
   setUserAgeAndGender,
@@ -589,6 +590,10 @@ ${shortLink}`;
           msgBody: message,
         });
       }
+    },
+    setPaywallSentTimestamp: async () => {
+      const { clientid } = config.userMetaData;
+      await setPaywallSentTimestamp(clientid);
     },
     sendPromptingInstruction: async (event: any) => {
       const { clientid, language = event?.context?.language } =

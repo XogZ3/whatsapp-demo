@@ -2,6 +2,7 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { notFound } from 'next/navigation';
+import Script from 'next/script';
 import { NextIntlClientProvider, useMessages } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
 import { ViewTransitions } from 'next-view-transitions';
@@ -188,9 +189,19 @@ export default function RootLayout(props: {
               <Toaster />
             </NextIntlClientProvider>
           </Providers>
+          <Script id="clarity-script" strategy="afterInteractive">
+            {`
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "${process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID}");
+          `}
+          </Script>
         </body>
-        <GoogleAnalytics gaId="AW-16638273706" />
-        <GoogleAnalytics gaId="G-93TWXZ6P8F" />
+        <GoogleAnalytics
+          gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID as string}
+        />
       </html>
     </ViewTransitions>
   );

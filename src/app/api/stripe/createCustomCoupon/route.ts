@@ -20,18 +20,20 @@ export async function POST(req: NextRequest) {
 
   try {
     const couponCode = `FOTO${randomAlphabet(2)}${clientid.slice(-4)}`;
-    const coupon: Stripe.Response<Stripe.Coupon> = await stripe.coupons.create({
-      duration: 'once',
-      name: couponCode,
-      percent_off: 50,
-      max_redemptions: 1,
-      redeem_by: Math.floor(DateTime.now().plus({ hours: 1 }).toSeconds()),
-      metadata: {
-        clientid,
-      },
-    });
-
-    return NextResponse.json({ coupon: coupon.id }, { status: 200 });
+    const promotionCode: Stripe.Response<Stripe.PromotionCode> =
+      await stripe.promotionCodes.create({
+        coupon: process.env.STRIPE_HOUR_RETENTION_COUPON_ID || 'C1XAw9nS',
+        code: couponCode,
+        max_redemptions: 1,
+        expires_at: Math.floor(DateTime.now().plus({ hours: 1 }).toSeconds()),
+        metadata: {
+          clientid,
+        },
+        restrictions: {
+          first_time_transaction: true,
+        },
+      });
+    return NextResponse.json({ coupon: promotionCode.code }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error }, { status: 400 });
   }

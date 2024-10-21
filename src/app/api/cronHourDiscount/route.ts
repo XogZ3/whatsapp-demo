@@ -109,7 +109,7 @@ export async function POST(request: NextRequest) {
   console.log(`One hour ago timestamp: ${oneHourAgo}`);
 
   const query = clientRef
-    .where('paywallSentTimestamp', '>', oneHourAgo)
+    .where('paywallSentTimestamp', '<', oneHourAgo)
     .where('discountSent', '==', false);
 
   const snapshot = await query.get();

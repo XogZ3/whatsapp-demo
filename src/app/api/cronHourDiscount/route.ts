@@ -98,26 +98,38 @@ export async function POST(request: NextRequest) {
   const wabaId = process.env.WABA_ID as string;
 
   const now = DateTime.now().toMillis();
+  console.log(`Current timestamp: ${now}`);
 
   const clientRef = firestore
     .collection('apps')
     .doc(wabaId)
     .collection('clients');
 
+  const oneHourAgo = now - 3600000;
+  console.log(`One hour ago timestamp: ${oneHourAgo}`);
+
   const query = clientRef
-    .where('paywallSentTimestamp', '>', now - 3600000)
+    .where('paywallSentTimestamp', '>', oneHourAgo)
     .where('discountSent', '==', false);
 
   const snapshot = await query.get();
+  console.log(`Number of documents found: ${snapshot.size}`);
 
   if (snapshot.empty) {
+    console.log('No matching documents found');
     return new Response(JSON.stringify({ success: true, updatedClients: 0 }), {
       status: 200,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }
 
-  const clientidArray = snapshot.docs.map((doc) => doc.id);
+  const clientidArray = snapshot.docs.map((doc) => {
+    console.log(
+      `Client ID: ${doc.id}, paywallSentTimestamp: ${doc.data().paywallSentTimestamp}, discountSent: ${doc.data().discountSent}`,
+    );
+    return doc.id;
+  });
+
   await sendDiscountMessages(clientidArray);
 
   const batch = firestore.batch();

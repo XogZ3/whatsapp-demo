@@ -244,9 +244,11 @@ export async function callTrainingAPI(
   };
 
   // TODO: Extract face from images
-
+  const baseURL = getBaseUrl();
+  const trainingAPIEndpoint =
+    baseURL === 'https://fotolabs.ai' ? 'starttraining' : 'testtraining';
   try {
-    const response = await fetch(`${getBaseUrl()}/api/fal/starttraining`, {
+    const response = await fetch(`${baseURL}/api/fal/${trainingAPIEndpoint}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

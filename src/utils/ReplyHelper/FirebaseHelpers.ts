@@ -973,6 +973,70 @@ export async function getSeedUsingWhatsappMsgID(
   }
 }
 
+export async function setStateKeyValue(
+  clientid: string,
+  key: string,
+  value: any,
+) {
+  const clientDocRef = firestore
+    .collection('apps')
+    .doc(process.env.WABA_ID as string)
+    .collection('clients')
+    .doc(clientid);
+
+  const clientDocSnapshot = await clientDocRef.get();
+
+  if (!clientDocSnapshot.exists) {
+    console.error('Client does not exist');
+    return;
+  }
+
+  const state =
+    clientDocSnapshot.get('state') || JSON.stringify({ context: {} });
+  const stateObj = JSON.parse(state);
+
+  if (!stateObj.context) {
+    stateObj.context = {};
+  }
+  console.log('Setting state key:', key, 'with value:', value);
+
+  stateObj.context[key] = value;
+
+  await clientDocRef.update({
+    state: JSON.stringify(stateObj),
+  });
+}
+
+export async function setStatePhotoPrompting(clientid: string) {
+  const clientDocRef = firestore
+    .collection('apps')
+    .doc(process.env.WABA_ID as string)
+    .collection('clients')
+    .doc(clientid);
+
+  const clientDocSnapshot = await clientDocRef.get();
+
+  if (!clientDocSnapshot.exists) {
+    console.error('Client does not exist');
+    return;
+  }
+
+  const state =
+    clientDocSnapshot.get('state') || JSON.stringify({ context: {} });
+  const stateObj = JSON.parse(state);
+
+  if (!stateObj.context) {
+    stateObj.context = {};
+  }
+
+  stateObj.value = 'photoPrompting';
+  stateObj.context.modelGenerated = true;
+
+  await clientDocRef.update({
+    state: JSON.stringify(stateObj),
+  });
+}
+
 export async function saveAgeAndGender(clientid: string) {
   try {
     const imageUrls = await getTrainingImageURLs(clientid);

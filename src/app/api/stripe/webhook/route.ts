@@ -13,6 +13,7 @@ import {
   callTrainingAPI,
   getUserFields,
   saveAgeAndGender,
+  setStatePhotoPrompting,
   type UserFieldsFirebase,
 } from '@/utils/ReplyHelper/FirebaseHelpers';
 import { sendMessageToTelegram } from '@/utils/telegram';
@@ -37,20 +38,6 @@ async function sendModelExistsMessage(clientid: string, language: Language) {
   await sendMessageToWhatsapp(payload);
 }
 
-async function sendModelExistsTemplateMessage(
-  clientid: string,
-  language: Language,
-) {
-  const languageCode = language === 'portuguese' ? 'pt' : 'en';
-  const payload: ICreateMessagePayload = {
-    phoneNumber: clientid,
-    template: true,
-    templateName: 'fotolabs_model_exists',
-    templateLanguageCode: languageCode,
-  };
-  await sendMessageToWhatsapp(payload);
-}
-
 async function sendGeneratingModelMessage(
   clientid: string,
   language: Language,
@@ -67,11 +54,15 @@ async function sendGeneratingModelTemplate(
   clientid: string,
   language: Language,
 ) {
-  const languageCode = language === 'portuguese' ? 'pt' : 'en';
+  const languageCode = language === 'portuguese' ? 'pt_BR' : 'en';
+  let templateName: string;
+  if (languageCode === 'pt_BR') templateName = 'fotolabs_generating_model_pt';
+  else templateName = 'fotolabs_generating_model_en';
+
   const payload: ICreateMessagePayload = {
     phoneNumber: clientid,
     template: true,
-    templateName: 'fotolabs_generating_model',
+    templateName,
     templateLanguageCode: languageCode,
   };
   await sendMessageToWhatsapp(payload);
@@ -90,11 +81,10 @@ async function startGeneratingModel(
       DateTime.now().toMillis() > (whatsappExpiration ?? Infinity);
 
     if (loraURL && loraFilename) {
-      if (isWhatsappExpired) {
-        await sendModelExistsTemplateMessage(clientid, language);
-      } else {
-        await sendModelExistsMessage(clientid, language);
-      }
+      await setStatePhotoPrompting(clientid);
+
+      await sendModelExistsMessage(clientid, language);
+
       return;
     }
 

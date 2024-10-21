@@ -16,6 +16,7 @@ import {
   getTrainingImageURLs,
   getUserFields,
   incrementCreditsUsedTodayAndSetProcessingFlagFalse,
+  setPaywallSentTimestamp,
   setProcessingFlag,
   setRetriedFlag,
   setUserAgeAndGender,
@@ -36,6 +37,7 @@ import {
   notifyPendingPhotos,
   processAndSendImages,
   sendContactInfoMessage,
+  sendIntroOptionsQuickReplyMessage,
   sendIntroQuickReplyMessage,
   setUserStateAndInform,
 } from './actionsHelper';
@@ -86,6 +88,69 @@ export const actionsFactory = (config: IMachineConfig): any => {
     //     ),
     //   );
     // },
+    sendIntroMessageBasedOnPhoneNumber: async () => {
+      const subscriptionExists = await checkExistingSubscription(config);
+      if (subscriptionExists) return;
+      try {
+        console.log(
+          '[~] attempting to sendIntroOptionsMessageBasedOnPhoneNumber',
+        );
+        // use language based on phone number
+        const { clientid, language } = config.userMetaData;
+
+        const languageButtonTextLocale = getTranslation('language', language);
+        const finalLanguageButtonText = `Language${languageButtonTextLocale !== 'Language' ? ` | ${languageButtonTextLocale}` : ''}`;
+
+        const message = `${getTranslation('intro message img', language)}`;
+
+        await sendIntroQuickReplyMessage(
+          clientid,
+          message,
+          getTranslation('upload photos', language),
+          finalLanguageButtonText,
+          getTranslation('tutorial', language),
+        );
+      } catch (err) {
+        console.error(
+          'Error in sendIntroOptionsMessageBasedOnPhoneNumber:',
+          err,
+        );
+        await sendMessageToTelegram(
+          `Error in sendIntroOptionsMessageBasedOnPhoneNumber: ${JSON.stringify(err, null, 2)}`,
+        );
+      }
+    },
+    sendIntroMessage: async (event: any) => {
+      const subscriptionExists = await checkExistingSubscription(config);
+      if (subscriptionExists) return;
+
+      try {
+        const { clientid } = config.userMetaData;
+        const language = event?.context?.language;
+
+        const languageButtonTextLocale = getTranslation('language', language);
+        const finalLanguageButtonText = `Language${languageButtonTextLocale !== 'Language' ? ` | ${languageButtonTextLocale}` : ''}`;
+
+        const message = `${getTranslation('intro message img', language)}`;
+
+        await sendIntroQuickReplyMessage(
+          clientid,
+          message,
+          getTranslation('upload photos', language),
+          finalLanguageButtonText,
+          getTranslation('tutorial', language),
+        );
+      } catch (err) {
+        console.error(
+          'Error in sendIntroOptionsMessageBasedOnPhoneNumber:',
+          err,
+        );
+        await sendMessageToTelegram(
+          `Error in sendIntroOptionsMessageBasedOnPhoneNumber: ${JSON.stringify(err, null, 2)}`,
+        );
+      }
+    },
+    // New flow: Take images first
     sendIntroOptionsMessageBasedOnPhoneNumber: async (event: any) => {
       const subscriptionExists = await checkExistingSubscription(config);
       if (subscriptionExists) return;
@@ -125,7 +190,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
 
               message = `${getTranslation('intro message', language)}\n\n${shortLink}`;
 
-              await sendIntroQuickReplyMessage(
+              await sendIntroOptionsQuickReplyMessage(
                 clientid,
                 message,
                 finalLanguageButtonText,
@@ -143,7 +208,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
             });
         } else {
           message = `${getTranslation('intro message', language)}\n\n${shortenedStripeLink}`;
-          await sendIntroQuickReplyMessage(
+          await sendIntroOptionsQuickReplyMessage(
             clientid,
             message,
             finalLanguageButtonText,
@@ -203,7 +268,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
 
               message = `${getTranslation('intro message', language)}\n\n${shortLink}`;
 
-              await sendIntroQuickReplyMessage(
+              await sendIntroOptionsQuickReplyMessage(
                 clientid,
                 message,
                 finalLanguageButtonText,
@@ -221,7 +286,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
             });
         } else {
           message = `${getTranslation('intro message', language)}\n\n${shortenedStripeLink}`;
-          await sendIntroQuickReplyMessage(
+          await sendIntroOptionsQuickReplyMessage(
             clientid,
             message,
             finalLanguageButtonText,
@@ -323,11 +388,14 @@ export const actionsFactory = (config: IMachineConfig): any => {
     sendPhotoUploadInstruction: async (event: any) => {
       const { clientid, language = event?.context?.language } =
         config.userMetaData;
+      const photoInstructionImageLink =
+        'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fphoto_instruction.png?alt=media&token=5982c2d9-8ccf-47c1-8a03-eef5ab61d280';
       const message = getTranslation('photo upload instruction', language);
       const payload: ICreateMessagePayload = {
         phoneNumber: clientid,
-        text: true,
-        msgBody: message,
+        image: true,
+        imageLink: photoInstructionImageLink,
+        imageCaption: message,
       };
       await config.whatsappInstance.send(payload);
     },
@@ -499,9 +567,13 @@ export const actionsFactory = (config: IMachineConfig): any => {
               shortLink,
             );
 
-            message = `${getTranslation('new user paywall', language)}
-
-${shortLink}`;
+            message = getTranslation('new user paywall', language);
+            await config.whatsappInstance.send({
+              phoneNumber: clientid,
+              text: true,
+              msgBody: message,
+            });
+            message = `${getTranslation('paywall', language)}\n\n${shortLink}`;
             await config.whatsappInstance.send({
               phoneNumber: clientid,
               text: true,
@@ -518,13 +590,23 @@ ${shortLink}`;
             );
           });
       } else {
-        message = `${getTranslation('new user paywall', language)}\n\n${shortenedStripeLink}`;
+        message = getTranslation('new user paywall', language);
+        await config.whatsappInstance.send({
+          phoneNumber: clientid,
+          text: true,
+          msgBody: message,
+        });
+        message = `${getTranslation('paywall', language)}\n\n${shortenedStripeLink}`;
         await config.whatsappInstance.send({
           phoneNumber: clientid,
           text: true,
           msgBody: message,
         });
       }
+    },
+    setPaywallSentTimestamp: async () => {
+      const { clientid } = config.userMetaData;
+      await setPaywallSentTimestamp(clientid);
     },
     sendPromptingInstruction: async (event: any) => {
       const { clientid, language = event?.context?.language } =
@@ -810,9 +892,13 @@ ${shortLink}`;
                         shortLink,
                       );
 
-                      message = `${getTranslation('new user paywall', language)}
-
-${shortLink}`;
+                      message = getTranslation('new user paywall', language);
+                      await config.whatsappInstance.send({
+                        phoneNumber: clientid,
+                        text: true,
+                        msgBody: message,
+                      });
+                      message = `${getTranslation('paywall', language)}\n\n${shortLink}`;
                       await config.whatsappInstance.send({
                         phoneNumber: clientid,
                         text: true,
@@ -829,7 +915,13 @@ ${shortLink}`;
                       );
                     });
                 } else {
-                  message = `${getTranslation('new user paywall', language)}\n\n${shortenedStripeLink}`;
+                  message = getTranslation('new user paywall', language);
+                  await config.whatsappInstance.send({
+                    phoneNumber: clientid,
+                    text: true,
+                    msgBody: message,
+                  });
+                  message = `${getTranslation('paywall', language)}\n\n${shortenedStripeLink}`;
                   await config.whatsappInstance.send({
                     phoneNumber: clientid,
                     text: true,
@@ -1004,9 +1096,13 @@ ${shortLink}`;
                         shortLink,
                       );
 
-                      message = `${getTranslation('new user paywall', language)}
-
-${shortLink}`;
+                      message = getTranslation('new user paywall', language);
+                      await config.whatsappInstance.send({
+                        phoneNumber: clientid,
+                        text: true,
+                        msgBody: message,
+                      });
+                      message = `${getTranslation('paywall', language)}\n\n${shortLink}`;
                       await config.whatsappInstance.send({
                         phoneNumber: clientid,
                         text: true,
@@ -1023,7 +1119,13 @@ ${shortLink}`;
                       );
                     });
                 } else {
-                  message = `${getTranslation('new user paywall', language)}\n\n${shortenedStripeLink}`;
+                  message = getTranslation('new user paywall', language);
+                  await config.whatsappInstance.send({
+                    phoneNumber: clientid,
+                    text: true,
+                    msgBody: message,
+                  });
+                  message = `${getTranslation('paywall', language)}\n\n${shortenedStripeLink}`;
                   await config.whatsappInstance.send({
                     phoneNumber: clientid,
                     text: true,

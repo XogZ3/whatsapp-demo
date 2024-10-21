@@ -9,7 +9,13 @@ import {
   sendMessageToWhatsapp,
 } from '@/modules/whatsapp/whatsapp';
 import { sendPurchaseToFBCoversionAPI } from '@/utils/fconversionHelper';
-import { type UserFieldsFirebase } from '@/utils/ReplyHelper/FirebaseHelpers';
+import {
+  callTrainingAPI,
+  getUserFields,
+  saveAgeAndGender,
+  setStatePhotoPrompting,
+  type UserFieldsFirebase,
+} from '@/utils/ReplyHelper/FirebaseHelpers';
 import { sendMessageToTelegram } from '@/utils/telegram';
 import { getTranslation, type Language } from '@/utils/translations';
 
@@ -21,52 +27,112 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: '2024-06-20',
 });
 
-async function sendPaySuccessAndPhotoUploadInstructionTemplate(
+async function sendModelExistsMessage(clientid: string, language: Language) {
+  const message = getTranslation('model already exists', language);
+  const payload: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    text: true,
+    msgBody: message,
+  };
+
+  await sendMessageToWhatsapp(payload);
+}
+
+async function sendGeneratingModelMessage(
   clientid: string,
+  language: Language,
 ) {
-  const payload = {
-    messaging_product: 'whatsapp',
-    recipient_type: 'individual',
-    to: clientid,
-    type: 'template',
-    template: {
-      name: 'fotolabs_payment_success',
-      language: {
-        code: 'en',
-      },
-      components: [
-        {
-          type: 'header',
-          parameters: [
-            {
-              type: 'image',
-              image: {
-                link: 'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fphoto_instruction.png?alt=media&token=5982c2d9-8ccf-47c1-8a03-eef5ab61d280',
-              },
-            },
-          ],
-        },
-      ],
-    },
+  const paymentConfirmationPayload: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    text: true,
+    msgBody: getTranslation('payment confirmation', language),
+  };
+  await sendMessageToWhatsapp(paymentConfirmationPayload);
+
+  const payload: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    text: true,
+    msgBody: getTranslation('generating model', language),
   };
   await sendMessageToWhatsapp(payload);
 }
 
-async function sendPaySuccessAndPhotoUploadInstruction(
+async function sendGeneratingModelTemplate(
   clientid: string,
   language: Language,
 ) {
-  const message = `${getTranslation('payment confirmation', language)}
+  const languageCode = language === 'portuguese' ? 'pt_BR' : 'en';
+  let templateName: string;
 
-${getTranslation('photo upload instruction', language)}`;
+  if (languageCode === 'pt_BR')
+    templateName = 'fotolabs_payment_confirmation_pt';
+  else templateName = 'fotolabs_payment_confirmation_en';
+
+  const paymentConfirmationPayload: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    template: true,
+    templateName,
+    templateLanguageCode: languageCode,
+  };
+  await sendMessageToWhatsapp(paymentConfirmationPayload);
+
+  if (languageCode === 'pt_BR') templateName = 'fotolabs_generating_model_pt';
+  else templateName = 'fotolabs_generating_model_en';
+
   const payload: ICreateMessagePayload = {
     phoneNumber: clientid,
-    image: true,
-    imageLink:
-      'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fphoto_instruction.png?alt=media&token=5982c2d9-8ccf-47c1-8a03-eef5ab61d280',
-    imageCaption: message,
+    template: true,
+    templateName,
+    templateLanguageCode: languageCode,
   };
   await sendMessageToWhatsapp(payload);
+}
+
+async function startGeneratingModel(
+  clientid: string,
+  language: Language,
+): Promise<void> {
+  try {
+    const userFields = await getUserFields(clientid);
+    const { loraURL, loraFilename, trainingImageURLs, whatsappExpiration } =
+      userFields;
+
+    const isWhatsappExpired =
+      DateTime.now().toMillis() > (whatsappExpiration ?? Infinity);
+
+    if (loraURL && loraFilename) {
+      await setStatePhotoPrompting(clientid);
+
+      await sendModelExistsMessage(clientid, language);
+
+      return;
+    }
+
+    if (isWhatsappExpired) {
+      await sendGeneratingModelTemplate(clientid, language);
+    } else {
+      await sendGeneratingModelMessage(clientid, language);
+    }
+
+    const response = await callTrainingAPI(clientid, trainingImageURLs);
+    if (response.jobId) {
+      console.log(`[+] callTrainingAPI job created: ${response.jobId}`);
+    }
+
+    await saveAgeAndGender(clientid);
+  } catch (error) {
+    if (error instanceof Error && 'status' in error && error.status === 409) {
+      console.log(
+        '[~] Known error in callStartTrainingAPI action:',
+        error.message,
+      );
+    } else {
+      console.error('[!] Error in startGeneratingModel:', error);
+    }
+    await sendMessageToTelegram(
+      `error ${JSON.stringify(error, null, 2)} in startGeneratingModel for clientid ${clientid}`,
+    );
+  }
 }
 
 async function handleSubscriptionEvent(event: Stripe.Event) {
@@ -137,7 +203,7 @@ async function handleSubscriptionEvent(event: Stripe.Event) {
       }
 
       if (event.type === 'customer.subscription.created') {
-        stateJSON.value = 'imagesIncomplete';
+        stateJSON.value = 'generatingModel';
         stateJSON.context.shortenedStripeLink = '';
       } else if (event.type === 'customer.subscription.deleted') {
         stateJSON.value = 'paywall';
@@ -245,7 +311,6 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
   language = clientData?.language || 'english';
   const state = clientData?.state;
   const lastStripeEventId = clientData?.lastStripeEventId;
-  const whatsappExpiration = clientData?.whatsappExpiration;
 
   // Check if the event ID has already been processed
   if (lastStripeEventId === id) {
@@ -278,7 +343,7 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
       stateJSON = {};
     }
 
-    stateJSON.value = 'imagesIncomplete';
+    stateJSON.value = 'generatingModel';
 
     const updates: Partial<UserFieldsFirebase> = {
       customerId,
@@ -305,9 +370,7 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
   try {
     if (status === 'complete') {
       await Promise.all([
-        DateTime.now().toMillis() < (whatsappExpiration ?? Infinity)
-          ? sendPaySuccessAndPhotoUploadInstruction(clientid, language)
-          : sendPaySuccessAndPhotoUploadInstructionTemplate(clientid),
+        startGeneratingModel(clientid, language),
         sendPurchaseToFBCoversionAPI(clientid),
       ]);
 

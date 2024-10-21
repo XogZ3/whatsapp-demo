@@ -136,7 +136,7 @@ export async function POST(request: NextRequest) {
   }
 
   const formattedDate = format(new Date(requestedAt), 'MMMM d, yyyy');
-  console.log(`CRON triggered at ${formattedDate} ${requestedAt}`);
+  console.log(`[s] dailyCRON triggered at ${formattedDate} ${requestedAt}`);
 
   let promptTemplate;
   try {

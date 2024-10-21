@@ -20,6 +20,7 @@ import {
   setDefaultUserFields,
   setProcessingFlag,
   setUserState,
+  updateImageIntoImageMessageFromUser,
 } from './FirebaseHelpers';
 import {
   sendAnalyzingPhotoAndSetProcessingTrue,
@@ -42,7 +43,7 @@ export async function replyToUser(messageObject: any) {
   console.log('[~] extracted received text: ', message);
 
   const messageType = messageObject.message.type;
-  const { clientid } = messageObject;
+  const { clientid, whatsappMessageID } = messageObject;
 
   const userDetails = await getUserFields(clientid);
   const { age = 26, gender = 'male', state, name, language } = userDetails;
@@ -58,7 +59,9 @@ export async function replyToUser(messageObject: any) {
     const uploadedPhotosCount = await getPhotoCount(clientid);
     // Handle receiving images
     // Accept images in imagesIncomplete state
-    if (currentState === 'imagesIncomplete' && messageType === 'image') {
+    if (currentState === 'onBoarding' && messageType === 'image') {
+      message = 'UPLOAD';
+    } else if (currentState === 'imagesIncomplete' && messageType === 'image') {
       if (
         !uploadedPhotosCount || // Handles undefined or null
         uploadedPhotosCount < TRAINING_IMAGES_UPPER_LIMIT
@@ -74,6 +77,11 @@ export async function replyToUser(messageObject: any) {
             clientid,
             imageURL,
           );
+        await updateImageIntoImageMessageFromUser(
+          clientid,
+          whatsappMessageID,
+          imageURL,
+        );
         const updatedPhotoCount = photoUpdates.newPhotosUploaded;
         const updatedPendingUploads = photoUpdates.newPendingUploads;
         console.log(
@@ -102,7 +110,7 @@ export async function replyToUser(messageObject: any) {
           updatedPhotoCount >= TRAINING_IMAGES_UPPER_LIMIT &&
           updatedPendingUploads === 0
         )
-          message = 'Generate Model';
+          message = 'paywall';
       }
     }
     // Handle NON-Images in 'imagesIncomplete' state - Cancel or Fallback
@@ -111,8 +119,7 @@ export async function replyToUser(messageObject: any) {
       const currentPendingUploadsCount = await getPendingUploadsCount(clientid);
       if (currentPhotoCount >= TRAINING_IMAGES_LOWER_LIMIT) {
         if (currentPendingUploadsCount === 0) {
-          // just generate model if have 5 images ffs
-          message = 'Generate Model';
+          message = 'paywall';
         } else {
           // photo upload incomplete, ask user to wait and then click "finish upload"
           await sendWaitForUploadToComplete(clientid, userLanguage);
@@ -153,6 +160,11 @@ export async function replyToUser(messageObject: any) {
         imageID,
         clientid,
       );
+      await updateImageIntoImageMessageFromUser(
+        clientid,
+        whatsappMessageID,
+        imageURL,
+      );
       const imageCaption = extractText(messageObject);
       const promptResult = await getPromptFromImageURLUsingOpenAI(
         imageURL,
@@ -175,6 +187,16 @@ export async function replyToUser(messageObject: any) {
     }
     // Reject images in all other cases
     else if (messageType === 'image') {
+      const imageID = extractImageID(messageObject);
+      const imageURL = await fetchWhatsAppImageAndUploadToFirebase(
+        imageID,
+        clientid,
+      );
+      await updateImageIntoImageMessageFromUser(
+        clientid,
+        whatsappMessageID,
+        imageURL,
+      );
       // do nothing ?
       message = 'FALLBACK';
     } else message = extractText(messageObject);

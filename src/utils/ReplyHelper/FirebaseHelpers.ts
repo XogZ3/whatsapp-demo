@@ -6,7 +6,14 @@ import { Readable } from 'stream';
 
 import firebase from '@/modules/firebase';
 import { getStorageInstance } from '@/modules/firebase/firebase';
-import { generateImageCaptionUsingGroq } from '@/modules/groq';
+import {
+  generateImageCaptionUsingGroq,
+  getAgeAndGenderFromImageURLUsingGroq,
+} from '@/modules/groq';
+import {
+  type GenderAndAgeSchemaType,
+  getAgeAndGenderFromImageURLUsingOpenAI,
+} from '@/modules/openai';
 
 import { getBaseUrl, getLanguageFromPhoneNumber } from '../helpers';
 import { type Language } from '../translations';
@@ -99,6 +106,8 @@ export type UserFieldsFirebase = {
   whatsappExpiration: number;
   lastCancellationReqTime: number;
   couponUsed: string;
+  paywallSentTimestamp: number;
+  discountSent: boolean;
 };
 
 export async function getUserFields(
@@ -137,6 +146,8 @@ export async function getUserFields(
     whatsappExpiration,
     lastCancellationReqTime,
     couponUsed,
+    paywallSentTimestamp,
+    discountSent,
   } = clientData.data() || {};
   const userLanguage = language || getLanguageFromPhoneNumber(clientid);
 
@@ -167,6 +178,8 @@ export async function getUserFields(
     whatsappExpiration,
     lastCancellationReqTime,
     couponUsed,
+    paywallSentTimestamp,
+    discountSent,
   };
 }
 
@@ -207,6 +220,19 @@ export async function setUserAgeAndGender(
   await clientDoc.set(updates, { merge: true });
 }
 
+export async function setPaywallSentTimestamp(clientid: string) {
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid);
+  await clientDoc.update({
+    paywallSentTimestamp: DateTime.now().toMillis(),
+    discountSent: false,
+  });
+}
+
 export async function callTrainingAPI(
   clientid: string,
   imageURLs: string[],
@@ -218,9 +244,11 @@ export async function callTrainingAPI(
   };
 
   // TODO: Extract face from images
-
+  const baseURL = getBaseUrl();
+  const trainingAPIEndpoint =
+    baseURL === 'https://fotolabs.ai' ? 'starttraining' : 'testtraining';
   try {
-    const response = await fetch(`${getBaseUrl()}/api/fal/starttraining`, {
+    const response = await fetch(`${baseURL}/api/fal/${trainingAPIEndpoint}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -315,6 +343,48 @@ export async function addTrainingImageURLandIncreaseCountDecreasePendingUploads(
     console.error('Transaction failed: ', error);
   }
   return { newPhotosUploaded: -1, newPendingUploads: -1 };
+}
+
+export async function updateImageIntoImageMessageFromUser(
+  clientid: string,
+  whatsappMessageID: string,
+  imageURL: string,
+) {
+  const wabaId = process.env.WABA_ID;
+  const messagesCollection = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid)
+    .collection('messages');
+
+  try {
+    await firestore.runTransaction(async (transaction) => {
+      const messageQuery = messagesCollection.where(
+        'message.id',
+        '==',
+        whatsappMessageID,
+      );
+      const messageSnapshot = await transaction.get(messageQuery);
+
+      if (messageSnapshot.empty) {
+        throw new Error('Message not found');
+      }
+      const messageDoc = messageSnapshot.docs[0];
+      if (messageDoc) {
+        transaction.update(messageDoc.ref, {
+          type: 'image',
+          image: { link: imageURL },
+        });
+      } else {
+        throw new Error('Message document not found');
+      }
+    });
+
+    console.log('Image message updated successfully');
+  } catch (error) {
+    console.error('Failed to update image message:', error);
+  }
 }
 
 export async function addFinalTrainingImageURL(
@@ -921,5 +991,130 @@ export async function getSeedUsingWhatsappMsgID(
   } catch (error) {
     console.error('[!] Error in getSeedUsingWhatsappMsgID:', error);
     return 0;
+  }
+}
+
+export async function setStateKeyValue(
+  clientid: string,
+  key: string,
+  value: any,
+) {
+  const clientDocRef = firestore
+    .collection('apps')
+    .doc(process.env.WABA_ID as string)
+    .collection('clients')
+    .doc(clientid);
+
+  const clientDocSnapshot = await clientDocRef.get();
+
+  if (!clientDocSnapshot.exists) {
+    console.error('Client does not exist');
+    return;
+  }
+
+  const state =
+    clientDocSnapshot.get('state') || JSON.stringify({ context: {} });
+  const stateObj = JSON.parse(state);
+
+  if (!stateObj.context) {
+    stateObj.context = {};
+  }
+  console.log('Setting state key:', key, 'with value:', value);
+
+  stateObj.context[key] = value;
+
+  await clientDocRef.update({
+    state: JSON.stringify(stateObj),
+  });
+}
+
+export async function setStatePhotoPrompting(clientid: string) {
+  const clientDocRef = firestore
+    .collection('apps')
+    .doc(process.env.WABA_ID as string)
+    .collection('clients')
+    .doc(clientid);
+
+  const clientDocSnapshot = await clientDocRef.get();
+
+  if (!clientDocSnapshot.exists) {
+    console.error('Client does not exist');
+    return;
+  }
+
+  const state =
+    clientDocSnapshot.get('state') || JSON.stringify({ context: {} });
+  const stateObj = JSON.parse(state);
+
+  if (!stateObj.context) {
+    stateObj.context = {};
+  }
+
+  stateObj.value = 'photoPrompting';
+  stateObj.context.modelGenerated = true;
+
+  await clientDocRef.update({
+    state: JSON.stringify(stateObj),
+  });
+}
+
+export async function saveAgeAndGender(clientid: string) {
+  try {
+    const imageUrls = await getTrainingImageURLs(clientid);
+    if (imageUrls.length === 0) {
+      throw new Error('No training image URLs available.');
+    }
+    const randomImageUrl =
+      imageUrls[Math.floor(Math.random() * imageUrls.length)];
+
+    if (!randomImageUrl) {
+      throw new Error('Failed to select a random image URL.');
+    }
+
+    let result: GenderAndAgeSchemaType | null = null;
+    // Try Groq API first, then fallback to OpenAI if necessary
+    result =
+      (await getAgeAndGenderFromImageURLUsingGroq(randomImageUrl)) ||
+      (await getAgeAndGenderFromImageURLUsingOpenAI(randomImageUrl));
+
+    if (!result) {
+      console.warn('Failed to get age and gender from the image.');
+      return;
+    }
+
+    const { age, gender } = result;
+    await setUserAgeAndGender(clientid, age, gender);
+
+    const clientDocRef = firestore
+      .collection('apps')
+      .doc(process.env.WABA_ID as string)
+      .collection('clients')
+      .doc(clientid);
+
+    const clientDocSnapshot = await clientDocRef.get();
+
+    if (!clientDocSnapshot.exists) {
+      console.error('Client does not exist');
+      return;
+    }
+
+    const state =
+      clientDocSnapshot.get('state') || JSON.stringify({ context: {} });
+    const stateObj = JSON.parse(state);
+
+    if (!stateObj.context) {
+      stateObj.context = {};
+    }
+
+    stateObj.context.age = age;
+    stateObj.context.gender = gender;
+
+    await clientDocRef.update({
+      state: JSON.stringify(stateObj),
+    });
+
+    console.log('Age and gender saved successfully.');
+  } catch (error) {
+    console.error('Error in saveAgeAndGender:', error);
   }
 }

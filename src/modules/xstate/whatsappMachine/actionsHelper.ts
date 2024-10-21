@@ -180,18 +180,12 @@ async function sendImageMessageWithSeed(
   imageLink: string,
   seed: number,
 ) {
-  const data = {
-    messaging_product: 'whatsapp',
-    recipient_type: 'individual',
-    to: clientid,
-    type: 'image',
-    image: {
-      link: imageLink,
-    },
+  const data: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    image: true,
+    imageLink,
   };
-  const res = await makeRequestToWhatsapp(data);
-  const whatsappMessageID = res?.messages[0]?.id;
-  if (res) await setSystemMessage(data, whatsappMessageID, seed);
+  await sendMessageToWhatsapp(data, seed);
 }
 
 export async function processAndSendImages(
@@ -713,7 +707,9 @@ export async function sendIntroTemplateMessage(
       ],
     },
   };
-  await makeRequestToWhatsapp(payload);
+  const res = await makeRequestToWhatsapp(payload);
+  const whatsappMessageID = res?.messages[0]?.id;
+  if (res) await setSystemMessage(payload, whatsappMessageID);
 }
 
 export async function sendContactInfoMessage(clientid: string) {
@@ -751,10 +747,12 @@ export async function sendContactInfoMessage(clientid: string) {
       },
     ],
   };
-  await makeRequestToWhatsapp(payload);
+  const res = await makeRequestToWhatsapp(payload);
+  const whatsappMessageID = res?.messages[0]?.id;
+  if (res) await setSystemMessage(payload, whatsappMessageID);
 }
 
-export async function sendIntroQuickReplyMessage(
+export async function sendIntroOptionsQuickReplyMessage(
   clientid: string,
   message: string,
   languageButtonText: string,
@@ -796,7 +794,64 @@ export async function sendIntroQuickReplyMessage(
       },
     },
   };
-  await makeRequestToWhatsapp(payload);
+  const res = await makeRequestToWhatsapp(payload);
+  const whatsappMessageID = res?.messages[0]?.id;
+  if (res) await setSystemMessage(payload, whatsappMessageID);
+}
+
+export async function sendIntroQuickReplyMessage(
+  clientid: string,
+  message: string,
+  uploadPhotosButtonText: string,
+  languageButtonText: string,
+  tutorialButtonText: string,
+) {
+  const payload = {
+    messaging_product: 'whatsapp',
+    recipient_type: 'individual',
+    to: clientid,
+    type: 'interactive',
+    interactive: {
+      type: 'button',
+      header: {
+        type: 'image',
+        image: {
+          link: 'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fopengraph-image.png?alt=media&token=ed50e70e-540d-4f0a-a7f5-0c7c4fbbf2f5',
+        },
+      },
+      body: {
+        text: message,
+      },
+      action: {
+        buttons: [
+          {
+            type: 'reply',
+            reply: {
+              id: 'upload',
+              title: uploadPhotosButtonText,
+            },
+          },
+          {
+            type: 'reply',
+            reply: {
+              id: 'language',
+              title: languageButtonText,
+            },
+          },
+          {
+            type: 'reply',
+            reply: {
+              id: 'tutorial',
+              title: tutorialButtonText,
+            },
+          },
+        ],
+      },
+    },
+  };
+  const res = await makeRequestToWhatsapp(payload);
+  const whatsappMessageID = res?.messages[0]?.id;
+  if (res) await setSystemMessage(payload, whatsappMessageID);
 }
 
 async function getSubscriptionId(clientid: any) {

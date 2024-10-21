@@ -388,11 +388,14 @@ export const actionsFactory = (config: IMachineConfig): any => {
     sendPhotoUploadInstruction: async (event: any) => {
       const { clientid, language = event?.context?.language } =
         config.userMetaData;
+      const photoInstructionImageLink =
+        'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fphoto_instruction.png?alt=media&token=5982c2d9-8ccf-47c1-8a03-eef5ab61d280';
       const message = getTranslation('photo upload instruction', language);
       const payload: ICreateMessagePayload = {
         phoneNumber: clientid,
-        text: true,
-        msgBody: message,
+        image: true,
+        imageLink: photoInstructionImageLink,
+        imageCaption: message,
       };
       await config.whatsappInstance.send(payload);
     },

@@ -238,9 +238,9 @@ Clique no botão 'Enviar Fotos' para começar.`,
     ar: 'جارٍ إنشاء الصورة، يرجى الانتظار لمدة 30 ثانية...',
   },
   'please wait generating model': {
-    en: 'Please wait while we are generating a customized model for you.',
-    pt: 'Por favor, aguarde enquanto geramos um modelo personalizado para você.',
-    ar: 'يرجى الانتظار بينما نقوم بإنشاء نموذج مخصص لك.',
+    en: `🧠✨ Please wait while we are generating a customized model for you. Relax, it won't be long! 😊`,
+    pt: `🧠✨ Por favor, aguarde enquanto geramos um modelo personalizado para você. Relaxe, não vai demorar! 😊`,
+    ar: `🧠✨ يرجى الانتظار بينما نقوم بإنشاء نموذج مخصص لك. استرخِ، لن يستغرق الأمر وقتًا طويلاً! 😊`,
   },
   'model generation failed': {
     en: `Oops. Your AI model generation has failed. Please click the button below to try again.`,
@@ -253,9 +253,9 @@ Clique no botão 'Enviar Fotos' para começar.`,
     ar: 'نموذج الذكاء الاصطناعي المخصص لك موجود بالفعل. أرسل موجهك الآن!',
   },
   'model generated': {
-    en: `Your model has been successfully generated! :D\nSend your prompt now.`,
-    pt: `Seu modelo foi gerado com sucesso! :D\nEnvie seu prompt agora.`,
-    ar: `تم إنشاء نموذجك بنجاح! :D\nأرسل موجهك الآن.`,
+    en: `🎉 Your model has been successfully generated! \nSend your prompt now. 😊`,
+    pt: `🎉 Seu modelo foi gerado com sucesso! \nEnvie seu prompt agora. 😊`,
+    ar: `🎉 تم إنشاء نموذجك بنجاح! \nأرسل موجهك الآن. 😊`,
   },
   'payment instructions': {
     en: 'Please complete payment using this link.',
@@ -283,9 +283,9 @@ Clique no botão 'Enviar Fotos' para começar.`,
     ar: `هل تريد إنشاء صورة مع الطلب التالي؟`,
   },
   'please wait machine busy': {
-    en: 'Please wait while FotoLabs AI is working...',
-    pt: 'Por favor, aguarde enquanto o FotoLabs AI está processando...',
-    ar: 'يرجى الانتظار بينما يعمل FotoLabs AI...',
+    en: `🤖💭 Please wait while FotoLabs AI is working... Relax, we'll be ready soon! ☕️`,
+    pt: `🤖💭 Por favor, aguarde enquanto o FotoLabs AI está processando... Relaxe, estaremos prontos em breve! ☕️`,
+    ar: `🤖💭 يرجى الانتظار بينما يعمل FotoLabs AI... استرخِ، سنكون جاهزين قريبًا! ☕️`,
   },
   'new prompt request': {
     en: 'Alright, send a new prompt. :)',
@@ -414,9 +414,9 @@ Experimente o FotoLabs AI para criar fotos incríveis de IA suas no WhatsApp. Us
   },
 
   'referral 2': {
-    en: `for your *first month FREE*! Just send message to contact info below.`,
-    pt: `para o seu *primeiro mês GRATUITO*! Basta enviar uma mensagem para as informações de contato abaixo.`,
-    ar: `للحصول على *الشهر الأول مجانًا*! فقط أرسل رسالة إلى معلومات الاتصال أدناه.`,
+    en: `for your *first month FREE*! Just send message to https://wa.me/971505072100`,
+    pt: `para o seu *primeiro mês GRATUITO*! Basta enviar uma mensagem para https://wa.me/971505072100`,
+    ar: `للحصول على *الشهر الأول مجانًا*! فقط أرسل رسالة إلى https://wa.me/971505072100`,
   },
 
   'nsfw error': {

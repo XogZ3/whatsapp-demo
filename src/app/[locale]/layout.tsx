@@ -189,8 +189,9 @@ export default function RootLayout(props: {
             </NextIntlClientProvider>
           </Providers>
         </body>
-        <GoogleAnalytics gaId="AW-16638273706" />
-        <GoogleAnalytics gaId="G-93TWXZ6P8F" />
+        <GoogleAnalytics
+          gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID as string}
+        />
       </html>
     </ViewTransitions>
   );

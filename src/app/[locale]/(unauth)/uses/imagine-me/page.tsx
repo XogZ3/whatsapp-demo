@@ -24,7 +24,6 @@ export async function generateMetadata(props: {
   });
   const ogImageAlt = AppConfig.name;
   const baseUrl = getBaseUrl();
-  const currentPath = props.params.locale === 'en' ? '/' : '/pt';
 
   return {
     metadataBase: new URL(baseUrl),
@@ -53,7 +52,7 @@ export async function generateMetadata(props: {
       ],
     },
     alternates: {
-      canonical: `${baseUrl}${currentPath}`,
+      canonical: `${baseUrl}/uses/imagine-me`,
       languages: {
         pt: `${baseUrl}/pt/uses/imagine-me`,
       },

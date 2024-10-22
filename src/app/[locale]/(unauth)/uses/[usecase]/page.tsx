@@ -30,10 +30,6 @@ export async function generateMetadata(props: {
   });
   const ogImageAlt = AppConfig.name;
   const baseUrl = getBaseUrl();
-  const currentPath =
-    props.params.locale === 'en'
-      ? `/uses/${props.params.usecase}`
-      : `/${props.params.locale}/uses/${props.params.usecase}`;
 
   const getKeywords = (useCase: AllowedUseCases, locale: string) => {
     const baseKeywords = {
@@ -309,7 +305,7 @@ export async function generateMetadata(props: {
       ],
     },
     alternates: {
-      canonical: `${baseUrl}${currentPath}`,
+      canonical: `${baseUrl}/uses/${props.params.usecase}`,
       languages: {
         pt: `${baseUrl}/pt/uses/${props.params.usecase}`,
       },

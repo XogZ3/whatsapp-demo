@@ -5,10 +5,7 @@ import Stripe from 'stripe';
 
 import firebase from '@/modules/firebase';
 import { sendPurchaseToFBCoversionAPI } from '@/utils/fconversionHelper';
-import {
-  setUserStateValue,
-  type UserFieldsFirebase,
-} from '@/utils/ReplyHelper/FirebaseHelpers';
+import { type UserFieldsFirebase } from '@/utils/ReplyHelper/FirebaseHelpers';
 import { sendUploadedImagesConfirmationUsingTrainingImageURLs } from '@/utils/ReplyHelper/MessageHelpers';
 import { sendMessageToTelegram } from '@/utils/telegram';
 import { type Language } from '@/utils/translations';
@@ -23,7 +20,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
 
 async function handleSuccessfulPurchase(clientid: string, language: Language) {
   await Promise.all([
-    setUserStateValue('imagesConfirmation', clientid),
     sendUploadedImagesConfirmationUsingTrainingImageURLs(clientid, language),
     sendPurchaseToFBCoversionAPI(clientid),
   ]);

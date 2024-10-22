@@ -6,7 +6,11 @@ import {
 import { samplePhotoURLs } from '../constants';
 import { sendMessageToTelegram } from '../telegram';
 import { getTranslation, type Language } from '../translations';
-import { getUserFields, setProcessingFlag } from './FirebaseHelpers';
+import {
+  getUserFields,
+  setProcessingFlag,
+  setUserStateValue,
+} from './FirebaseHelpers';
 
 export async function sendSamplePhotos(clientid: string) {
   let payload: ICreateMessagePayload;
@@ -140,6 +144,7 @@ export async function sendUploadedImagesConfirmationUsingTrainingImageURLs(
     let message: string;
 
     if (trainingImageURLs.length > 0) {
+      await setUserStateValue('imagesConfirmation', clientid);
       message = `${getTranslation('uploaded images confirmation 1', language)} ${trainingImageURLs.length} ${getTranslation('uploaded images confirmation 2', language)}`;
       payload = {
         phoneNumber: clientid,
@@ -156,6 +161,7 @@ export async function sendUploadedImagesConfirmationUsingTrainingImageURLs(
       await sendMessageToWhatsapp(payload);
     } else {
       console.log('No training images found, sending photo upload instruction');
+      await setUserStateValue('imagesIncompletePaid', clientid);
       await sendPhotoUploadInstruction(clientid, language);
     }
   } catch (error) {

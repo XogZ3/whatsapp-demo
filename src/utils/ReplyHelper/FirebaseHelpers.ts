@@ -1179,6 +1179,7 @@ export async function deleteTrainingImageURLs(clientid: string) {
     .doc(clientid);
 
   await clientDocRef.update({
+    photosUploaded: 0,
     trainingImageURLs: [],
   });
 }

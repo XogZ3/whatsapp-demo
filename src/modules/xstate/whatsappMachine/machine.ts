@@ -74,7 +74,10 @@ export const machineFactory = (config: IMachineConfig): any => {
             PHOTO_RECEIVED: {
               actions: [assign({ message: () => 'photo received' })],
             },
-            MAIN_MENU: { target: 'onBoarding' },
+            MAIN_MENU: {
+              actions: ['sendIntroMessage'],
+              target: 'onBoarding',
+            },
             PAYWALL: { target: 'paywall' },
             FALLBACK: { actions: 'sendPendingPhotos' },
           },

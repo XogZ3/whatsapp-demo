@@ -43,7 +43,8 @@ export async function replyToUser(messageObject: any) {
   console.log('[~] extracted received text: ', message);
 
   const messageType = messageObject.message.type;
-  const { clientid, whatsappMessageID } = messageObject;
+  const whatsappMessageID = messageObject.message.id;
+  const { clientid } = messageObject;
 
   const userDetails = await getUserFields(clientid);
   const { age = 26, gender = 'male', state, name, language } = userDetails;
@@ -113,6 +114,20 @@ export async function replyToUser(messageObject: any) {
           message = 'paywall';
       }
     }
+    // Handle NON-Images in 'imagesIncomplete' state - Cancel or Fallback
+    else if (currentState === 'imagesIncomplete' && messageType !== 'image') {
+      const currentPhotoCount = await getPhotoCount(clientid);
+      const currentPendingUploadsCount = await getPendingUploadsCount(clientid);
+      if (currentPhotoCount >= TRAINING_IMAGES_LOWER_LIMIT) {
+        if (currentPendingUploadsCount === 0) {
+          message = 'paywall';
+        } else {
+          // photo upload incomplete, ask user to wait and then click "finish upload"
+          await sendWaitForUploadToComplete(clientid, userLanguage);
+          return;
+        }
+      }
+    }
     // Handle images confirmation, for paid users, if they deleted all images and want to upload again
     else if (
       currentState === 'imagesIncompletePaid' &&
@@ -169,13 +184,16 @@ export async function replyToUser(messageObject: any) {
           message = 'generate model';
       }
     }
-    // Handle NON-Images in 'imagesIncomplete' state - Cancel or Fallback
-    else if (currentState === 'imagesIncomplete' && messageType !== 'image') {
+    // Handle NON-Images in 'imagesIncompletePaid' state - Cancel or Fallback
+    else if (
+      currentState === 'imagesIncompletePaid' &&
+      messageType !== 'image'
+    ) {
       const currentPhotoCount = await getPhotoCount(clientid);
       const currentPendingUploadsCount = await getPendingUploadsCount(clientid);
       if (currentPhotoCount >= TRAINING_IMAGES_LOWER_LIMIT) {
         if (currentPendingUploadsCount === 0) {
-          message = 'paywall';
+          message = 'generate model';
         } else {
           // photo upload incomplete, ask user to wait and then click "finish upload"
           await sendWaitForUploadToComplete(clientid, userLanguage);
@@ -215,6 +233,7 @@ export async function replyToUser(messageObject: any) {
       const imageURL = await fetchWhatsAppImageAndUploadToFirebase(
         imageID,
         clientid,
+        true, // imagePrompt flag, so it uploads to prompt_images folder
       );
       await updateImageIntoImageMessageFromUser(
         clientid,

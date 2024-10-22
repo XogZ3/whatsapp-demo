@@ -119,6 +119,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (image_urls.length === 0) {
+      return NextResponse.json(
+        { error: 'No images provided' },
+        { status: 400 },
+      );
+    }
+
     // Ensure image_urls has at least 15 URLs
     if (image_urls.length < 15) {
       const originalLength = image_urls.length;

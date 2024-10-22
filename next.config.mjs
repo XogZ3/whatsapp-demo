@@ -63,5 +63,22 @@ export default bundleAnalyzer(
       optimizeCss: true,
       optimizePackageImports: ['@next/third-parties/google'],
     },
+    async redirects() {
+      return [
+        ...allowedUseCases.flatMap((useCase) => [
+          {
+            source: `/${useCase}`,
+            destination: `/uses/${useCase}`,
+            permanent: true,
+          },
+          {
+            source: `/pt/${useCase}`,
+            destination: `/pt/uses/${useCase}`,
+            permanent: true,
+          },
+        ]),
+      ];
+    },
+
   }),
 );

@@ -102,14 +102,13 @@ export const machineFactory = (config: IMachineConfig): any => {
               },
             ],
             DELETE: {
-              actions: ['deleteImages'],
+              actions: ['deleteImages', 'sendPhotoUploadInstruction'],
               target: 'imagesIncompletePaid',
             },
             FALLBACK: { actions: 'sendUploadedImagesConfirmation' },
           },
         },
         imagesIncompletePaid: {
-          entry: ['sendPhotoUploadInstruction'],
           on: {
             PHOTO_RECEIVED: {
               actions: [assign({ message: () => 'photo received' })],
@@ -129,6 +128,7 @@ export const machineFactory = (config: IMachineConfig): any => {
           },
         },
         generatingModel: {
+          entry: ['sendGeneratingModel'],
           on: {
             RETRY: { actions: ['callStartTrainingAPI', 'setRetriedFlagTrue'] },
             FALLBACK: { actions: 'handleModelGenerationStatus' },

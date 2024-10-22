@@ -7,6 +7,8 @@ export const State = Object.freeze({
   imagesIncomplete: 'imagesIncomplete',
   generatingModel: 'generatingModel',
   paywall: 'paywall',
+  imagesConfirmation: 'imagesConfirmation',
+  imagesIncompletePaid: 'imagesIncompletePaid',
   photoPrompting: 'photoPrompting',
   cancelSubscription: 'cancelSubscription',
 });
@@ -53,12 +55,23 @@ export const handleMessage = async (
     [State.imagesIncomplete]: {
       'photo received': 'PHOTO_RECEIVED',
       paywall: 'PAYWALL',
+      'main menu': 'MAIN_MENU',
       fallback: 'FALLBACK',
     },
     [State.generatingModel]: {
       retry: 'RETRY',
     },
     [State.paywall]: {
+      fallback: 'FALLBACK',
+    },
+    [State.imagesConfirmation]: {
+      confirm: 'CONFIRM',
+      delete: 'DELETE',
+      fallback: 'FALLBACK',
+    },
+    [State.imagesIncompletePaid]: {
+      'photo received': 'PHOTO_RECEIVED',
+      'generate model': 'GENERATE_MODEL',
       fallback: 'FALLBACK',
     },
     [State.photoPrompting]: {

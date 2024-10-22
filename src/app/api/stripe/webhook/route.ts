@@ -4,20 +4,11 @@ import { type NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
 import firebase from '@/modules/firebase';
-import {
-  type ICreateMessagePayload,
-  sendMessageToWhatsapp,
-} from '@/modules/whatsapp/whatsapp';
 import { sendPurchaseToFBCoversionAPI } from '@/utils/fconversionHelper';
-import {
-  callTrainingAPI,
-  getUserFields,
-  saveAgeAndGender,
-  setStatePhotoPrompting,
-  type UserFieldsFirebase,
-} from '@/utils/ReplyHelper/FirebaseHelpers';
+import { type UserFieldsFirebase } from '@/utils/ReplyHelper/FirebaseHelpers';
+import { sendUploadedImagesConfirmationUsingTrainingImageURLs } from '@/utils/ReplyHelper/MessageHelpers';
 import { sendMessageToTelegram } from '@/utils/telegram';
-import { getTranslation, type Language } from '@/utils/translations';
+import { type Language } from '@/utils/translations';
 
 // import type { StripeEvent } from './types';
 const firestore = firebase.getFirestore();
@@ -27,112 +18,11 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: '2024-06-20',
 });
 
-async function sendModelExistsMessage(clientid: string, language: Language) {
-  const message = getTranslation('model already exists', language);
-  const payload: ICreateMessagePayload = {
-    phoneNumber: clientid,
-    text: true,
-    msgBody: message,
-  };
-
-  await sendMessageToWhatsapp(payload);
-}
-
-async function sendGeneratingModelMessage(
-  clientid: string,
-  language: Language,
-) {
-  const paymentConfirmationPayload: ICreateMessagePayload = {
-    phoneNumber: clientid,
-    text: true,
-    msgBody: getTranslation('payment confirmation', language),
-  };
-  await sendMessageToWhatsapp(paymentConfirmationPayload);
-
-  const payload: ICreateMessagePayload = {
-    phoneNumber: clientid,
-    text: true,
-    msgBody: getTranslation('generating model', language),
-  };
-  await sendMessageToWhatsapp(payload);
-}
-
-async function sendGeneratingModelTemplate(
-  clientid: string,
-  language: Language,
-) {
-  const languageCode = language === 'portuguese' ? 'pt_BR' : 'en';
-  let templateName: string;
-
-  if (languageCode === 'pt_BR')
-    templateName = 'fotolabs_payment_confirmation_pt';
-  else templateName = 'fotolabs_payment_confirmation_en';
-
-  const paymentConfirmationPayload: ICreateMessagePayload = {
-    phoneNumber: clientid,
-    template: true,
-    templateName,
-    templateLanguageCode: languageCode,
-  };
-  await sendMessageToWhatsapp(paymentConfirmationPayload);
-
-  if (languageCode === 'pt_BR') templateName = 'fotolabs_generating_model_pt';
-  else templateName = 'fotolabs_generating_model_en';
-
-  const payload: ICreateMessagePayload = {
-    phoneNumber: clientid,
-    template: true,
-    templateName,
-    templateLanguageCode: languageCode,
-  };
-  await sendMessageToWhatsapp(payload);
-}
-
-async function startGeneratingModel(
-  clientid: string,
-  language: Language,
-): Promise<void> {
-  try {
-    const userFields = await getUserFields(clientid);
-    const { loraURL, loraFilename, trainingImageURLs, whatsappExpiration } =
-      userFields;
-
-    const isWhatsappExpired =
-      DateTime.now().toMillis() > (whatsappExpiration ?? Infinity);
-
-    if (loraURL && loraFilename) {
-      await setStatePhotoPrompting(clientid);
-
-      await sendModelExistsMessage(clientid, language);
-
-      return;
-    }
-
-    if (isWhatsappExpired) {
-      await sendGeneratingModelTemplate(clientid, language);
-    } else {
-      await sendGeneratingModelMessage(clientid, language);
-    }
-
-    const response = await callTrainingAPI(clientid, trainingImageURLs);
-    if (response.jobId) {
-      console.log(`[+] callTrainingAPI job created: ${response.jobId}`);
-    }
-
-    await saveAgeAndGender(clientid);
-  } catch (error) {
-    if (error instanceof Error && 'status' in error && error.status === 409) {
-      console.log(
-        '[~] Known error in callStartTrainingAPI action:',
-        error.message,
-      );
-    } else {
-      console.error('[!] Error in startGeneratingModel:', error);
-    }
-    await sendMessageToTelegram(
-      `error ${JSON.stringify(error, null, 2)} in startGeneratingModel for clientid ${clientid}`,
-    );
-  }
+async function handleSuccessfulPurchase(clientid: string, language: Language) {
+  await Promise.all([
+    sendUploadedImagesConfirmationUsingTrainingImageURLs(clientid, language),
+    sendPurchaseToFBCoversionAPI(clientid),
+  ]);
 }
 
 async function handleSubscriptionEvent(event: Stripe.Event) {
@@ -369,11 +259,7 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
 
   try {
     if (status === 'complete') {
-      await Promise.all([
-        startGeneratingModel(clientid, language),
-        sendPurchaseToFBCoversionAPI(clientid),
-      ]);
-
+      await handleSuccessfulPurchase(clientid, language);
       console.log(
         `Checkout session completed for clientid: ${clientid}, subscriptionId: ${subscriptionId}`,
       );

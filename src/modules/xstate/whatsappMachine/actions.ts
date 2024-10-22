@@ -10,6 +10,7 @@ import {
 import type { ICreateMessagePayload } from '@/modules/whatsapp/whatsapp';
 import {
   callTrainingAPI,
+  deleteTrainingImageURLs,
   generateAndSaveShortURLMap,
   getPhotoCount,
   getSeedUsingWhatsappMsgID,
@@ -23,6 +24,7 @@ import {
   setUserLanguage,
   setUserState,
 } from '@/utils/ReplyHelper/FirebaseHelpers';
+import { sendUploadedImagesConfirmationUsingTrainingImageURLs } from '@/utils/ReplyHelper/MessageHelpers';
 import { sendMessageToTelegram } from '@/utils/telegram';
 import { getTranslation } from '@/utils/translations';
 
@@ -39,6 +41,7 @@ import {
   sendContactInfoMessage,
   sendIntroOptionsQuickReplyMessage,
   sendIntroQuickReplyMessage,
+  sendPhotoUploadInstructionWithMainMenuButton,
   setUserStateAndInform,
 } from './actionsHelper';
 import type { IMachineConfig, IWhatsappInstance } from './types';
@@ -385,6 +388,11 @@ export const actionsFactory = (config: IMachineConfig): any => {
       };
       await config.whatsappInstance.send(payload);
     },
+    sendPhotoUploadInstructionWithMenuButton: async (event: any) => {
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
+      await sendPhotoUploadInstructionWithMainMenuButton(clientid, language);
+    },
     sendPhotoUploadInstruction: async (event: any) => {
       const { clientid, language = event?.context?.language } =
         config.userMetaData;
@@ -482,6 +490,11 @@ export const actionsFactory = (config: IMachineConfig): any => {
           console.log('Age and gender saved successfully.');
         } else {
           console.warn('Failed to get age and gender from the image.');
+          await Promise.all([
+            setUserAgeAndGender(clientid, 30, 'male'),
+            config.storeInstance.setContext(clientid, 'age', 30),
+            config.storeInstance.setContext(clientid, 'gender', 'male'),
+          ]);
         }
       } catch (error) {
         console.error('Error in saveAgeAndGenderUsingOpenAI:', error);
@@ -607,6 +620,18 @@ export const actionsFactory = (config: IMachineConfig): any => {
     setPaywallSentTimestamp: async () => {
       const { clientid } = config.userMetaData;
       await setPaywallSentTimestamp(clientid);
+    },
+    sendUploadedImagesConfirmation: async (event: any) => {
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
+      await sendUploadedImagesConfirmationUsingTrainingImageURLs(
+        clientid,
+        language,
+      );
+    },
+    deleteImages: async () => {
+      const { clientid } = config.userMetaData;
+      await deleteTrainingImageURLs(clientid);
     },
     sendPromptingInstruction: async (event: any) => {
       const { clientid, language = event?.context?.language } =

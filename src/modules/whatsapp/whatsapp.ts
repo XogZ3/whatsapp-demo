@@ -87,6 +87,7 @@ export async function getImageURLFromWhatsapp(
 export async function fetchWhatsAppImageAndUploadToFirebase(
   imageID: string,
   clientid: string,
+  imagePrompt?: boolean,
 ): Promise<string> {
   try {
     const whatsappData: WhatsAppGetMediaResponse =
@@ -107,8 +108,10 @@ export async function fetchWhatsAppImageAndUploadToFirebase(
     });
 
     const fileType = whatsappData.mime_type === 'image/jpeg' ? 'jpeg' : 'png';
-    const foldername = 'training_images';
-    const filename = `photograph_of_person${clientid}_${uuidv4()}.${fileType}`;
+    const foldername = imagePrompt ? 'prompt_images' : 'training_images';
+    const filename = imagePrompt
+      ? `${uuidv4()}.${fileType}`
+      : `photograph_of_person${clientid}_${uuidv4()}.${fileType}`;
 
     // Convert arraybuffer to base64
     const base64Content = Buffer.from(response.data, 'binary').toString(

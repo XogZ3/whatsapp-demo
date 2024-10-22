@@ -43,7 +43,8 @@ export async function replyToUser(messageObject: any) {
   console.log('[~] extracted received text: ', message);
 
   const messageType = messageObject.message.type;
-  const { clientid, whatsappMessageID } = messageObject;
+  const whatsappMessageID = messageObject.message.id;
+  const { clientid } = messageObject;
 
   const userDetails = await getUserFields(clientid);
   const { age = 26, gender = 'male', state, name, language } = userDetails;
@@ -127,6 +128,79 @@ export async function replyToUser(messageObject: any) {
         }
       }
     }
+    // Handle images confirmation, for paid users, if they deleted all images and want to upload again
+    else if (
+      currentState === 'imagesIncompletePaid' &&
+      messageType === 'image'
+    ) {
+      if (
+        !uploadedPhotosCount || // Handles undefined or null
+        uploadedPhotosCount < TRAINING_IMAGES_UPPER_LIMIT
+      ) {
+        await incrementPendingUploads(clientid);
+        const imageID = extractImageID(messageObject);
+        const imageURL = await fetchWhatsAppImageAndUploadToFirebase(
+          imageID,
+          clientid,
+        );
+        const photoUpdates =
+          await addTrainingImageURLandIncreaseCountDecreasePendingUploads(
+            clientid,
+            imageURL,
+          );
+        await updateImageIntoImageMessageFromUser(
+          clientid,
+          whatsappMessageID,
+          imageURL,
+        );
+        const updatedPhotoCount = photoUpdates.newPhotosUploaded;
+        const updatedPendingUploads = photoUpdates.newPendingUploads;
+        console.log(
+          '[+] # of photos uploaded to firebase: ',
+          updatedPhotoCount,
+        );
+
+        // send photo count to user and give option to finish upload
+        if (updatedPhotoCount >= TRAINING_IMAGES_LOWER_LIMIT) {
+          await sendUpdatedPhotoCountWithFinishOption(
+            clientid,
+            userLanguage,
+            updatedPhotoCount,
+          );
+        } else {
+          // send photo count to user
+          await sendUpdatedPhotoCount(
+            clientid,
+            userLanguage,
+            updatedPhotoCount,
+          );
+        }
+
+        message = 'Photo Received';
+        if (
+          updatedPhotoCount >= TRAINING_IMAGES_UPPER_LIMIT &&
+          updatedPendingUploads === 0
+        )
+          message = 'generate model';
+      }
+    }
+    // Handle NON-Images in 'imagesIncompletePaid' state - Cancel or Fallback
+    else if (
+      currentState === 'imagesIncompletePaid' &&
+      messageType !== 'image'
+    ) {
+      const currentPhotoCount = await getPhotoCount(clientid);
+      const currentPendingUploadsCount = await getPendingUploadsCount(clientid);
+      if (currentPhotoCount >= TRAINING_IMAGES_LOWER_LIMIT) {
+        if (currentPendingUploadsCount === 0) {
+          message = 'generate model';
+        } else {
+          // photo upload incomplete, ask user to wait and then click "finish upload"
+          await sendWaitForUploadToComplete(clientid, userLanguage);
+          return;
+        }
+      }
+    }
     // photoPrompting machine availability check
     else if (
       currentState === 'photoPrompting' &&
@@ -159,6 +233,7 @@ export async function replyToUser(messageObject: any) {
       const imageURL = await fetchWhatsAppImageAndUploadToFirebase(
         imageID,
         clientid,
+        true, // imagePrompt flag, so it uploads to prompt_images folder
       );
       await updateImageIntoImageMessageFromUser(
         clientid,

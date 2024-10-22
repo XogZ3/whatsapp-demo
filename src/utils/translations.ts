@@ -52,6 +52,10 @@ export type TranslationKeys =
   | 'main menu'
   | 'photo received'
   | 'finish upload'
+  | 'uploaded images confirmation 1'
+  | 'uploaded images confirmation 2'
+  | 'confirm'
+  | 'delete'
   | 'model generated'
   | 'get membership'
   | 'payment confirmed'
@@ -301,6 +305,26 @@ Clique no botão 'Enviar Fotos' para começar.`,
     en: 'Finish Upload',
     pt: 'Concluir Upload',
     ar: 'إنهاء الرفع',
+  },
+  'uploaded images confirmation 1': {
+    en: `You have uploaded`,
+    pt: `Você enviou`,
+    ar: `لقد قمت بإرفاق`,
+  },
+  'uploaded images confirmation 2': {
+    en: `images.\nSelect "Confirm" to use them to create your AI model.\nSelect "Delete" to delete all the uploaded images, and then upload new / different set of images.`,
+    pt: `imagens.\nSelecione "Confirmar" para usá-las para criar seu modelo de IA.\nSelecione "Excluir" para excluir todas as imagens enviadas e, em seguida, envie um novo conjunto de imagens.`,
+    ar: `صور.\nحدد "تأكيد" لاستخدامها لإنشاء نموذج الذكاء الاصطناعي الخاص بك.\nحدد "حذف" لإزالة جميع الصور التي تم رفعها، ثم قم برفع مجموعة صور جديدة / مختلفة.`,
+  },
+  confirm: {
+    en: 'Confirm',
+    pt: 'Confirmar',
+    ar: 'تأكيد',
+  },
+  delete: {
+    en: 'Delete',
+    pt: 'Excluir',
+    ar: 'حذف',
   },
   'uploading please wait': {
     en: 'Some images are still being uploaded, please wait.\n\nClick "finish upload" button after all the images have been uploaded.',

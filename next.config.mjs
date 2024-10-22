@@ -59,67 +59,9 @@ export default bundleAnalyzer(
         },
       ],
     },
-    webpack: (config, { isServer, dev }) => {
-      // Create a new config object
-      const newConfig = { ...config };
-
-      // Add externals to resolve errors
-      newConfig.externals = [
-        ...(newConfig.externals || []),
-        {
-          bufferutil: 'bufferutil',
-          'utf-8-validate': 'utf-8-validate',
-        },
-      ];
-
-      // Add this section for better code splitting
-      if (!isServer && !dev) {
-        newConfig.optimization = {
-          ...(newConfig.optimization || {}),
-          splitChunks: {
-            chunks: 'all',
-            minSize: 20000,
-            maxSize: 244000,
-            minChunks: 1,
-            maxAsyncRequests: 30,
-            maxInitialRequests: 30,
-            cacheGroups: {
-              defaultVendors: {
-                test: /[\\/]node_modules[\\/]/,
-                priority: -10,
-                reuseExistingChunk: true,
-              },
-              default: {
-                minChunks: 2,
-                priority: -20,
-                reuseExistingChunk: true,
-              },
-            },
-          },
-        };
-      }
-
-      return newConfig;
-    },
     experimental: {
       optimizeCss: true,
       optimizePackageImports: ['@next/third-parties/google'],
-    },
-    async redirects() {
-      return [
-        ...allowedUseCases.flatMap((useCase) => [
-          {
-            source: `/${useCase}`,
-            destination: `/uses/${useCase}`,
-            permanent: true,
-          },
-          {
-            source: `/pt/${useCase}`,
-            destination: `/pt/uses/${useCase}`,
-            permanent: true,
-          },
-        ]),
-      ];
     },
   }),
 );

@@ -21,7 +21,8 @@ export const pages = [
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseURL = getBaseUrl();
 
-  const sitemapEntries: MetadataRoute.Sitemap = AppConfig.locales.flatMap(
+  // Generate localized entries
+  const localizedEntries: MetadataRoute.Sitemap = AppConfig.locales.flatMap(
     (locale) => {
       const localePrefix =
         locale === AppConfig.defaultLocale ? '' : `/${locale}`;
@@ -29,10 +30,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         url: `${baseURL}${localePrefix}${page ? `/${page}` : ''}`,
         lastModified: new Date(),
         changeFrequency: 'daily',
-        priority: 0.8,
+        priority: page === '' ? 1.0 : 0.8,
       }));
     },
   );
 
-  return sitemapEntries;
+  // Generate canonical entries (only for non-default locales)
+  const canonicalEntries: MetadataRoute.Sitemap = pages.map((page) => ({
+    url: `${baseURL}${page ? `/${page}` : ''}`,
+    lastModified: new Date(),
+    changeFrequency: 'daily' as const,
+    priority: page === '' ? 1.0 : 0.8,
+  }));
+
+  // Combine entries, removing duplicates
+  const combinedEntries = [...localizedEntries, ...canonicalEntries];
+  const uniqueEntries = Array.from(
+    new Map(combinedEntries.map((entry) => [entry.url, entry])).values(),
+  );
+
+  return uniqueEntries;
 }

@@ -78,7 +78,6 @@ export async function generateMetadata(props: {
     alternates: {
       canonical: `${baseUrl}${currentPath}`,
       languages: {
-        en: `${baseUrl}/`,
         pt: `${baseUrl}/pt`,
       },
     },
@@ -110,6 +109,10 @@ export async function generateMetadata(props: {
       'photo labs ai',
       'photo labs ia',
     ],
+    robots: {
+      index: true,
+      follow: true,
+    },
   };
 }
 

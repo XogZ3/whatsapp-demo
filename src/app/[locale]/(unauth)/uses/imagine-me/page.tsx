@@ -55,7 +55,6 @@ export async function generateMetadata(props: {
     alternates: {
       canonical: `${baseUrl}${currentPath}`,
       languages: {
-        en: `${baseUrl}/uses/imagine-me`,
         pt: `${baseUrl}/pt/uses/imagine-me`,
       },
     },

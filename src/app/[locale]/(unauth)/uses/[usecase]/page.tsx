@@ -311,9 +311,12 @@ export async function generateMetadata(props: {
     alternates: {
       canonical: `${baseUrl}${currentPath}`,
       languages: {
-        en: `${baseUrl}/uses/${props.params.usecase}`,
         pt: `${baseUrl}/pt/uses/${props.params.usecase}`,
       },
+    },
+    robots: {
+      index: true,
+      follow: true,
     },
     keywords: getKeywords(props.params.usecase, props.params.locale),
   };

@@ -113,6 +113,62 @@ export async function replyToUser(messageObject: any) {
           message = 'paywall';
       }
     }
+    // Handle images confirmation, for paid users, if they deleted all images and want to upload again
+    else if (
+      currentState === 'imagesIncompletePaid' &&
+      messageType === 'image'
+    ) {
+      if (
+        !uploadedPhotosCount || // Handles undefined or null
+        uploadedPhotosCount < TRAINING_IMAGES_UPPER_LIMIT
+      ) {
+        await incrementPendingUploads(clientid);
+        const imageID = extractImageID(messageObject);
+        const imageURL = await fetchWhatsAppImageAndUploadToFirebase(
+          imageID,
+          clientid,
+        );
+        const photoUpdates =
+          await addTrainingImageURLandIncreaseCountDecreasePendingUploads(
+            clientid,
+            imageURL,
+          );
+        await updateImageIntoImageMessageFromUser(
+          clientid,
+          whatsappMessageID,
+          imageURL,
+        );
+        const updatedPhotoCount = photoUpdates.newPhotosUploaded;
+        const updatedPendingUploads = photoUpdates.newPendingUploads;
+        console.log(
+          '[+] # of photos uploaded to firebase: ',
+          updatedPhotoCount,
+        );
+
+        // send photo count to user and give option to finish upload
+        if (updatedPhotoCount >= TRAINING_IMAGES_LOWER_LIMIT) {
+          await sendUpdatedPhotoCountWithFinishOption(
+            clientid,
+            userLanguage,
+            updatedPhotoCount,
+          );
+        } else {
+          // send photo count to user
+          await sendUpdatedPhotoCount(
+            clientid,
+            userLanguage,
+            updatedPhotoCount,
+          );
+        }
+
+        message = 'Photo Received';
+        if (
+          updatedPhotoCount >= TRAINING_IMAGES_UPPER_LIMIT &&
+          updatedPendingUploads === 0
+        )
+          message = 'generate model';
+      }
+    }
     // Handle NON-Images in 'imagesIncomplete' state - Cancel or Fallback
     else if (currentState === 'imagesIncomplete' && messageType !== 'image') {
       const currentPhotoCount = await getPhotoCount(clientid);

@@ -854,6 +854,47 @@ export async function sendIntroQuickReplyMessage(
   if (res) await setSystemMessage(payload, whatsappMessageID);
 }
 
+export async function sendPhotoUploadInstructionWithMainMenuButton(
+  clientid: string,
+  language: Language,
+) {
+  const photoInstructionImageLink =
+    'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fphoto_instruction.png?alt=media&token=5982c2d9-8ccf-47c1-8a03-eef5ab61d280';
+  const message = getTranslation('photo upload instruction', language);
+  const payload = {
+    messaging_product: 'whatsapp',
+    recipient_type: 'individual',
+    to: clientid,
+    type: 'interactive',
+    interactive: {
+      type: 'button',
+      header: {
+        type: 'image',
+        image: {
+          link: photoInstructionImageLink,
+        },
+      },
+      body: {
+        text: message,
+      },
+      action: {
+        buttons: [
+          {
+            type: 'reply',
+            reply: {
+              id: 'main menu',
+              title: getTranslation('main menu', language),
+            },
+          },
+        ],
+      },
+    },
+  };
+  const res = await makeRequestToWhatsapp(payload);
+  const whatsappMessageID = res?.messages[0]?.id;
+  if (res) await setSystemMessage(payload, whatsappMessageID);
+}
+
 async function getSubscriptionId(clientid: any) {
   try {
     const response = await fetch(

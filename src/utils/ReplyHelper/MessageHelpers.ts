@@ -5,7 +5,7 @@ import {
 
 import { samplePhotoURLs } from '../constants';
 import { getTranslation, type Language } from '../translations';
-import { setProcessingFlag } from './FirebaseHelpers';
+import { getUserFields, setProcessingFlag } from './FirebaseHelpers';
 
 export async function sendSamplePhotos(clientid: string) {
   let payload: ICreateMessagePayload;
@@ -109,4 +109,45 @@ export async function sendMachineBusy(clientid: string, language: Language) {
     msgBody: message,
   };
   await sendMessageToWhatsapp(payload);
+}
+
+export async function sendPhotoUploadInstruction(
+  clientid: string,
+  language: Language,
+) {
+  const photoInstructionImageLink =
+    'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fphoto_instruction.png?alt=media&token=5982c2d9-8ccf-47c1-8a03-eef5ab61d280';
+  const message = getTranslation('photo upload instruction', language);
+  const payload: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    image: true,
+    imageLink: photoInstructionImageLink,
+    imageCaption: message,
+  };
+  await sendMessageToWhatsapp(payload);
+}
+
+export async function sendUploadedImagesConfirmationUsingTrainingImageURLs(
+  clientid: string,
+  language: Language,
+) {
+  const userFields = await getUserFields(clientid);
+  const { trainingImageURLs } = userFields;
+  let payload: ICreateMessagePayload;
+  let message: string;
+  if (trainingImageURLs.length > 0) {
+    message = `${getTranslation('uploaded images confirmation 1', language)} ${trainingImageURLs.length} ${getTranslation('uploaded images confirmation 2', language)}`;
+    payload = {
+      phoneNumber: clientid,
+      quickReply: true,
+      button1id: 'confirm',
+      button1: getTranslation('confirm', language),
+      button2id: 'delete',
+      button2: getTranslation('delete', language),
+      msgBody: message,
+    };
+    await sendMessageToWhatsapp(payload);
+  } else {
+    await sendPhotoUploadInstruction(clientid, language);
+  }
 }

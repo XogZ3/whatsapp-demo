@@ -14,6 +14,7 @@ import {
   type GenderAndAgeSchemaType,
   getAgeAndGenderFromImageURLUsingOpenAI,
 } from '@/modules/openai';
+import type { State } from '@/modules/xstate/whatsappMachine/messageHandler';
 
 import { getBaseUrl, getLanguageFromPhoneNumber } from '../helpers';
 import { type Language } from '../translations';
@@ -181,6 +182,53 @@ export async function getUserFields(
     paywallSentTimestamp,
     discountSent,
   };
+}
+
+export async function setUserStateValue(
+  stateValue: keyof typeof State,
+  clientid: string,
+): Promise<void> {
+  const wabaId = process.env.WABA_ID;
+
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid);
+
+  try {
+    await firestore.runTransaction(async (transaction) => {
+      const userDoc = await transaction.get(clientDoc);
+
+      if (!userDoc.exists) {
+        throw new Error(`User document not found for clientid: ${clientid}`);
+      }
+
+      const userData = userDoc.data() as UserFieldsFirebase | undefined;
+      if (!userData) {
+        throw new Error(`User data is undefined for clientid: ${clientid}`);
+      }
+
+      let stateObj: any;
+      try {
+        stateObj = userData.state ? JSON.parse(userData.state) : { value: '' };
+      } catch (error) {
+        console.error('Error parsing state JSON:', error);
+        stateObj = { value: '' };
+      }
+
+      stateObj.value = stateValue;
+
+      const updates: Partial<UserFieldsFirebase> = {
+        state: JSON.stringify(stateObj),
+      };
+
+      transaction.update(clientDoc, updates);
+    });
+  } catch (error) {
+    console.error(`Error updating state value for client ${clientid}:`, error);
+    throw error;
+  }
 }
 
 export async function setDefaultUserFields(clientid: string): Promise<void> {
@@ -998,7 +1046,7 @@ export async function getSeedUsingWhatsappMsgID(
   }
 }
 
-export async function setStateKeyValue(
+export async function setStateContextKeyValue(
   clientid: string,
   key: string,
   value: any,
@@ -1121,4 +1169,16 @@ export async function saveAgeAndGender(clientid: string) {
   } catch (error) {
     console.error('Error in saveAgeAndGender:', error);
   }
+}
+
+export async function deleteTrainingImageURLs(clientid: string) {
+  const clientDocRef = firestore
+    .collection('apps')
+    .doc(process.env.WABA_ID as string)
+    .collection('clients')
+    .doc(clientid);
+
+  await clientDocRef.update({
+    trainingImageURLs: [],
+  });
 }

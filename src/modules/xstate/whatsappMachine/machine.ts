@@ -1,6 +1,6 @@
 // machine.ts
 
-import { assign, createMachine } from 'xstate';
+import { assign, createMachine, not } from 'xstate';
 
 import { actionsFactory } from './actions';
 import { guardsFactory } from './guards';
@@ -9,7 +9,7 @@ import type { IMachineConfig, IMachineContext } from './types';
 export const machineFactory = (config: IMachineConfig): any => {
   return createMachine(
     {
-      /** @xstate-layout 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 */
+      /** @xstate-layout N4IgpgJg5mDOIC5QHcAWBDALrdAHXAsugMaoCWAdmAMQCqAcgNL0DyA6vQPoCSAyr7QCiAbQAMAXUShcAe1hlMZGRSkgAHogDsADgB0AJm0BGfQBYArPoCcANhtXzAZisAaEAE9E+k5t3Oj2qY2mjZGjqYhAL6RbmhYOPhEpJRgusoAQjLoAE4QlFDUADIAgvQA4rTFZSISqrLyisqqGgiOmua62oHOxs6i1kambp4I+qJGNroT+uahNvrhRtGxGNh4hCTkVGkUmTl5FAWC5YV8ABJikkgg9QpKKtctjjZ6mqKOJlbWVtqOor-DRABAJTeazbTvGxBGbLEBxNaJTYpHZ7XL5agABRYACUACq0CqCXg1K7SOR3JqPRDPV7vT7fX7-RyAhDTUSgmaaUzchxGSyw+EJDbJbYZLJow7UYrY4rpbgAYUudXJjQeoCeL10bw+1gZfwBHiBpn0+g5pisPwtfKWMThqyFSS2qTF+3RGOxCu45SV11uqua1KsRi1s30mjGJq+7xZYX6UzMVn+NksRlE-NtgvWjuRLolBXxuJx3GKhR9ZIa9wDrSDIfm4f6uujhtZAVN-00PRpEXmAvtWaRot24oOBVoGMKLGKABEyzcVZWqQgbM8pjqIaYuuZtFZmc3vMbdOZRONROHzBbjeZe-F+yLnUPXZKAGIlwrpYryxizv0L9XUvm6FY5oWr84RAdYNgxv8ejvFyzzmhuVjtNeCLCk6uhkAAtugMCwNwFDEDImG4AANmAmA0BiZwsIWnDYoI8qCNwABqggzrUvrzpSf4ICBgGmKejicm8ISaCyYzmL4MzaJYgSppoAQoQ6A6pFhOFwPhhHEWRFGYsUACabCvt+XFquoQJtKaqYfEGEzmOeabiQE7IRtYx5-MEphKbe6FqbhmlEaR5E0C+hRvh+X4ceWFJmS0FpWFMx6iC8W6pu8rjNkYtiOAY-yzMmbRhEB3mIneui4Og7jIOgJEkdQoXhZ+JkVtx5msgpph+Hy5hBOMThpvo4nJTlbymG0djtC8yUlWhyJ+XA8rKAAZmQ2TYaq1Dyiw9BPtw2IEM1MVVuEeh-B8ph8hE4wCUMzYOL48VfPMRgmClM3Zts82wItFArWtWD3Jt227ftwhGKSc4tbF1Ibn4dIXT1byDKIt0jEEnVhkejjbgJKM-FeGZ9qVvnYbhP1-etgNToIhSCLiJLKlDx2w2dgyXUjN0sjokyiEGDmGPMhheYTN7E3NpMLctq2U8o9Wvu+TVRZDR2LgeSXqxr11c7zfgDOe1lCU470qRhEt4QRgU6WAGLoGQECYtRtH0YxLFsYd-qLvYVm89jnnLhCkHNm87IyUlWVBmGRiaMbZVfQF2nBTbdvUNU9CCDK9OcAQLDU6WSs-q1cUHrYMz2FCiHPCyEKmhuL0KclQE9THJPqebWlBRRSf26n6fFJn2e52DEMF9DvFtIBYJl9y26V0HcZcmeyXcqmPzN+Lrfxx31u2-bDUK5Fw+mVWXsGC8IRCUJ4zzCyNjJZ0SUCXX9hCWv2wwFQ2QA4cBAyBAYB1fRXE2J9Lu1-G1MIwQDDjQgZoH48kq6ajMM8Ho54vjPFfqkd+YBP6KG-r-f+cswr71AYXCyK4xphAQrzSwPUuZcimDuYIsDtDLgsPoDB5VUAyEwDIDE2RAq4IKO6FgBAMS4hIaPShegHLLk0OGdoWUWSzE6s-UIjhEYWhsBw3AXCeF8IEeiWgxJODCNEeI-OR9FwQODHBHQY1g68xZNyFRsxrL6ChM8N4WiRaoQ+qkHR3DeH8OIoI6g3BRHYhYKxExkSzESKrD4XwOgwhjBYYMFhgcRhCRUQESSwQuhpgiNo3RQSDGSi2vQemAANXEMSRFiPiVYxw2NOjJM8ZHI8mSvAo0PMYZKyYUaXg7MUwJ+iQnoj3hFRpPFKGTBNMYRMSVNHaBjKmQ8Hwl6DCDNjWwHDiDoAIv-XgABXAARrAYg2QyC4A2vKUojE86HyZoucCE9S62GnowquwZghHhPP0IINC9kHOIEcs5Fyrk3MBrwYoT4GacWeTxV5JdZgfIrl09qHRF7vHUXIyw7xgWHJIic85lzrkbUmYrJ5KskXF0nmimeGLrBYrBNYX4AkoQwlhBQfB8BriZjFlQRmNK2oAFoOiPUlY9FhLJxWASlVK48BMVii1moOVEI5hUex4idOG512bXRRk5C6uU+qGFGrMDhccLYJwolqsBRdTQoqnuipysw4aBETELCC3iVW+JNhVKqNUSL2tIayDxoJtDtGaVGxMTLpghjGtjHqXxzxWrNuTaWANWojyrDoAwxgzCWFsPYWhzYISnVgSYXmIREzY3TRvG1W8u6htHsuSYYQTDrk3DPLmFpOjxX9lCUO7CfHKTKlgnB+Qf5-xDQikVLQwjhkSjZF6yYHLmBZBaHKhgXpHkGOoywvq7Sqr8Zw0ZwSoWHFbQkyyK6sprvsomTdQcAIKTSfZYIQtCWguJeCslUKc2WJ4nBLU7QUZhC6CYawTlgzHjBKGcMHwdDRGiEAA */
       id: 'whatsappMachine',
       initial: 'onBoarding',
       context: {
@@ -69,11 +69,12 @@ export const machineFactory = (config: IMachineConfig): any => {
           },
         },
         imagesIncomplete: {
-          entry: ['sendPhotoUploadInstruction'],
+          entry: ['sendPhotoUploadInstructionWithMenuButton'],
           on: {
             PHOTO_RECEIVED: {
               actions: [assign({ message: () => 'photo received' })],
             },
+            MAIN_MENU: { target: 'onBoarding' },
             PAYWALL: { target: 'paywall' },
             FALLBACK: { actions: 'sendPendingPhotos' },
           },
@@ -82,6 +83,46 @@ export const machineFactory = (config: IMachineConfig): any => {
           entry: ['sendPaywall', 'setPaywallSentTimestamp'],
           on: {
             FALLBACK: { actions: 'sendPaywall' },
+          },
+        },
+        imagesConfirmation: {
+          on: {
+            CONFIRM: [
+              {
+                guard: not('modelAlreadyGenerated'),
+                target: 'generatingModel',
+                actions: ['callStartTrainingAPI', 'saveAgeAndGender'],
+              },
+              {
+                actions: ['notifyModelExists'],
+                target: 'photoPrompting',
+              },
+            ],
+            DELETE: {
+              actions: ['deleteImages'],
+              target: 'imagesIncompletePaid',
+            },
+            FALLBACK: { actions: 'sendUploadedImagesConfirmation' },
+          },
+        },
+        imagesIncompletePaid: {
+          entry: ['sendPhotoUploadInstruction'],
+          on: {
+            PHOTO_RECEIVED: {
+              actions: [assign({ message: () => 'photo received' })],
+            },
+            GENERATE_MODEL: [
+              {
+                guard: not('modelAlreadyGenerated'),
+                target: 'generatingModel',
+                actions: ['callStartTrainingAPI', 'saveAgeAndGender'],
+              },
+              {
+                actions: ['notifyModelExists'],
+                target: 'photoPrompting',
+              },
+            ],
+            FALLBACK: { actions: 'sendPendingPhotos' },
           },
         },
         generatingModel: {

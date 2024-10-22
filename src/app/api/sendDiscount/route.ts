@@ -40,6 +40,7 @@ async function getLanguageForClientidArray(clientidArray: string[]) {
 
 async function sendDiscountMessages(clientidArray: string[]) {
   const clientDataArray = await getLanguageForClientidArray(clientidArray);
+  const successfulClients: string[] = [];
 
   await Promise.all(
     clientDataArray.map(async ({ clientid, language = 'english' }) => {
@@ -64,11 +65,14 @@ async function sendDiscountMessages(clientidArray: string[]) {
         );
         await sendMessageToWhatsapp(paymentConfirmationPayload);
         console.log(`Message sent successfully to ${clientid}`);
+        successfulClients.push(clientid);
       } catch (error) {
         console.error(`Error sending message to ${clientid}:`, error);
       }
     }),
   );
+
+  return successfulClients;
 }
 
 export async function POST(request: NextRequest) {
@@ -134,10 +138,10 @@ export async function POST(request: NextRequest) {
   const eligibleClientidArray = [...missingPaidFieldDocs, ...paidFalseDocs].map(
     (doc) => doc.id,
   );
-  await sendDiscountMessages(eligibleClientidArray);
+  const successfulClients = await sendDiscountMessages(eligibleClientidArray);
 
   const batch = firestore.batch();
-  eligibleClientidArray.forEach((clientid) => {
+  successfulClients.forEach((clientid) => {
     const clientDocRef = clientRef.doc(clientid);
     batch.update(clientDocRef, { discountSent: true });
   });
@@ -146,7 +150,7 @@ export async function POST(request: NextRequest) {
   return new Response(
     JSON.stringify({
       success: true,
-      updatedClients: eligibleClientidArray.length,
+      updatedClients: successfulClients.length,
     }),
     {
       status: 200,

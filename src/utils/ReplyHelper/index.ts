@@ -13,6 +13,7 @@ import {
 import { getLanguageFromPhoneNumber } from '../helpers';
 import {
   addTrainingImageURLandIncreaseCountDecreasePendingUploads,
+  getCountTrainingImageURLs,
   getPendingUploadsCount,
   getPhotoCount,
   getUserFields,
@@ -190,8 +191,13 @@ export async function replyToUser(messageObject: any) {
       messageType !== 'image'
     ) {
       const currentPhotoCount = await getPhotoCount(clientid);
+      const currentTrainingImageCount =
+        await getCountTrainingImageURLs(clientid);
       const currentPendingUploadsCount = await getPendingUploadsCount(clientid);
-      if (currentPhotoCount >= TRAINING_IMAGES_LOWER_LIMIT) {
+      if (
+        currentPhotoCount >= TRAINING_IMAGES_LOWER_LIMIT &&
+        currentTrainingImageCount >= TRAINING_IMAGES_LOWER_LIMIT
+      ) {
         if (currentPendingUploadsCount === 0) {
           message = 'generate model';
         } else {

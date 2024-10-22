@@ -479,6 +479,19 @@ export async function getPhotoCount(clientid: string) {
   return photosUploaded || 0;
 }
 
+export async function getCountTrainingImageURLs(clientid: string) {
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid);
+  const clientData = await clientDoc.get();
+  const { trainingImageURLs } = clientData.data() || {};
+
+  return trainingImageURLs?.length || 0;
+}
+
 export async function getPendingUploadsCount(clientid: string) {
   const wabaId = process.env.WABA_ID;
   const clientDoc = firestore

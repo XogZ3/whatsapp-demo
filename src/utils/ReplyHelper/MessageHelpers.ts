@@ -4,6 +4,7 @@ import {
 } from '@/modules/whatsapp/whatsapp';
 
 import { samplePhotoURLs } from '../constants';
+import { sendMessageToTelegram } from '../telegram';
 import { getTranslation, type Language } from '../translations';
 import { getUserFields, setProcessingFlag } from './FirebaseHelpers';
 
@@ -131,23 +132,39 @@ export async function sendUploadedImagesConfirmationUsingTrainingImageURLs(
   clientid: string,
   language: Language,
 ) {
-  const userFields = await getUserFields(clientid);
-  const { trainingImageURLs } = userFields;
-  let payload: ICreateMessagePayload;
-  let message: string;
-  if (trainingImageURLs.length > 0) {
-    message = `${getTranslation('uploaded images confirmation 1', language)} ${trainingImageURLs.length} ${getTranslation('uploaded images confirmation 2', language)}`;
-    payload = {
-      phoneNumber: clientid,
-      quickReply: true,
-      button1id: 'confirm',
-      button1: getTranslation('confirm', language),
-      button2id: 'delete',
-      button2: getTranslation('delete', language),
-      msgBody: message,
-    };
-    await sendMessageToWhatsapp(payload);
-  } else {
-    await sendPhotoUploadInstruction(clientid, language);
+  try {
+    const userFields = await getUserFields(clientid);
+    const trainingImageURLs = userFields.trainingImageURLs || [];
+
+    let payload: ICreateMessagePayload;
+    let message: string;
+
+    if (trainingImageURLs.length > 0) {
+      message = `${getTranslation('uploaded images confirmation 1', language)} ${trainingImageURLs.length} ${getTranslation('uploaded images confirmation 2', language)}`;
+      payload = {
+        phoneNumber: clientid,
+        quickReply: true,
+        button1id: 'confirm',
+        button1: getTranslation('confirm', language),
+        button2id: 'delete',
+        button2: getTranslation('delete', language),
+        msgBody: message,
+      };
+      console.log(
+        `Sending confirmation message for ${trainingImageURLs.length} images`,
+      );
+      await sendMessageToWhatsapp(payload);
+    } else {
+      console.log('No training images found, sending photo upload instruction');
+      await sendPhotoUploadInstruction(clientid, language);
+    }
+  } catch (error) {
+    console.error(
+      'Error in sendUploadedImagesConfirmationUsingTrainingImageURLs:',
+      error,
+    );
+    await sendMessageToTelegram(
+      `Error in sendUploadedImagesConfirmationUsingTrainingImageURLs: ${error}`,
+    );
   }
 }

@@ -490,6 +490,11 @@ export const actionsFactory = (config: IMachineConfig): any => {
           console.log('Age and gender saved successfully.');
         } else {
           console.warn('Failed to get age and gender from the image.');
+          await Promise.all([
+            setUserAgeAndGender(clientid, 30, 'male'),
+            config.storeInstance.setContext(clientid, 'age', 30),
+            config.storeInstance.setContext(clientid, 'gender', 'male'),
+          ]);
         }
       } catch (error) {
         console.error('Error in saveAgeAndGenderUsingOpenAI:', error);

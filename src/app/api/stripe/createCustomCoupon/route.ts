@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     const couponCode = `FL${clientid}`;
     const promotionCode: Stripe.Response<Stripe.PromotionCode> =
       await stripe.promotionCodes.create({
-        coupon: process.env.STRIPE_HOUR_RETENTION_COUPON_ID || 'kp8mGvpR',
+        coupon: process.env.STRIPE_HOUR_RETENTION_COUPON_ID || 'YHb25kmw',
         code: couponCode,
         max_redemptions: 1,
         expires_at: Math.floor(DateTime.now().plus({ hours: 12 }).toSeconds()),

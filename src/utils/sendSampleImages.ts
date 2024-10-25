@@ -64,14 +64,22 @@ export async function generateAndSendModelImages({
               const arrayBuffer = await response.arrayBuffer();
               const buffer = Buffer.from(arrayBuffer);
 
-              const blurredImageBuffer = await sharp(buffer)
-                .blur(75) // Adjust the blur amount as needed
+              const whiteBlurredImageBuffer = await sharp(buffer)
+                .blur(100) // Increase blur amount
+                .modulate({ brightness: 1.5 }) // Increase brightness
+                .composite([
+                  {
+                    input: Buffer.from([255, 255, 255, 128]), // White with
+                  },
+                ])
                 .toBuffer();
-              const base64Content =
-                Buffer.from(blurredImageBuffer).toString('base64');
+
+              const base64Content = Buffer.from(
+                whiteBlurredImageBuffer,
+              ).toString('base64');
 
               const foldername = 'replicate_images';
-              const filename = `${clientid || 'test'}_${uuidv4()}_blurred.png`;
+              const filename = `${clientid || 'test'}_${uuidv4()}_whiteblurred.png`;
 
               imageToSend = await uploadImageFileToFirebaseWithRetry(
                 base64Content,

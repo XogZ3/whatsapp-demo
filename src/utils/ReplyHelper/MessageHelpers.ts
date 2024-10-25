@@ -208,6 +208,7 @@ export async function sendPromptOrConfirmationMessage(
     } = userFields;
 
     if (isExperiment && loraURL && loraFilename) {
+      await setUserStateValue('photoPrompting', clientid);
       // Send prompt message for experiment users
       const message = getTranslation('prompting instruction', language);
       const payload: ICreateMessagePayload = {

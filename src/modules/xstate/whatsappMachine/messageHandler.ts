@@ -57,7 +57,7 @@ export const handleMessage = async (
       'photo received': 'PHOTO_RECEIVED',
       paywall: 'PAYWALL',
       'main menu': 'MAIN_MENU',
-      experimentFreeImages: 'EXPERIMENT_FREE_IMAGES',
+      'experiment free images': 'EXPERIMENT_FREE_IMAGES',
       fallback: 'FALLBACK',
     },
     [State.generatingModel]: {

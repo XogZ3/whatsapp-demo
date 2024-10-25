@@ -117,19 +117,21 @@ export async function replyToUser(messageObject: any) {
           updatedPhotoCount >= TRAINING_IMAGES_UPPER_LIMIT &&
           updatedPendingUploads === 0
         ) {
+          console.log('[m] imagesIncomplete image - > upper limit reached 1');
           const isExperiment = (await getIsExperimentCount()) < 20;
           if (isExperiment) {
             await setIsExperimentTrue(clientid);
-            message = 'experimentFreeImages';
+            message = 'experiment free images';
           } else {
             message = 'paywall';
           }
         }
       } else if (uploadedPhotosCount >= TRAINING_IMAGES_UPPER_LIMIT) {
+        console.log('[m] imagesIncomplete image - > upper limit reached 2');
         const isExperiment = (await getIsExperimentCount()) < 20;
         if (isExperiment) {
           await setIsExperimentTrue(clientid);
-          message = 'experimentFreeImages';
+          message = 'experiment free images';
         } else {
           message = 'paywall';
         }
@@ -145,7 +147,7 @@ export async function replyToUser(messageObject: any) {
           const isExperiment = (await getIsExperimentCount()) < 20;
           if (isExperiment) {
             await setIsExperimentTrue(clientid);
-            message = 'experimentFreeImages';
+            message = 'experiment free images';
           } else {
             message = 'paywall';
           }

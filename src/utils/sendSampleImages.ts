@@ -18,28 +18,21 @@ async function sendErrorMessage(clientid: string, language: Language) {
   await sendMessageToWhatsapp(payload);
 }
 
-const genericBlurredImageURL =
-  'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fblurred_image.jpeg?alt=media&token=24e93215-e36a-4da2-9d1f-f42dd4bb8de2';
-
 export async function generateAndSendModelImages({
   age,
   gender,
   loraFilename,
   clientid,
   language,
-  isExperiment,
 }: {
   age: number;
   gender: 'male' | 'female';
   loraFilename: string;
   clientid: string;
   language: Language;
-  isExperiment?: boolean;
 }) {
-  let samplePrompts = generateSamplePrompts({ age, gender, loraFilename });
-  if (isExperiment) {
-    samplePrompts = samplePrompts.slice(0, 5);
-  }
+  const samplePrompts = generateSamplePrompts({ age, gender, loraFilename });
+
   try {
     // Generate images for all prompts in parallel
     const imageUrlArrays = await Promise.all(
@@ -49,11 +42,6 @@ export async function generateAndSendModelImages({
     );
     // Flatten the array of arrays into a single array of URLs
     const allImageUrls = imageUrlArrays.flat();
-
-    // if isExperiment is true, add the genericBlurredImageURL to the end of the array
-    if (isExperiment) {
-      allImageUrls.push(genericBlurredImageURL);
-    }
 
     if (allImageUrls.length > 0) {
       // Send images serially

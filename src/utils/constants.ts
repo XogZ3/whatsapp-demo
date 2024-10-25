@@ -33,9 +33,9 @@ export function generateSamplePrompts({
 
     `A serious ${genderManWoman} ${modelName} around ${age} years old, in a tailored suit, posing candidly for a professional realistc photoshoot. The office lobby’s modern architecture is reflected in ${genderHisHer} glasses.`,
 
-    `Realistc editorial avant-garde dramatic action pose of ${genderManWoman} ${modelName}, who is ${age} years old, wearing 60s round wacky sunglasses with gemstones hanging pulling glasses down looking forward, in Italy at sunset with a vibrant illustrated jacket surrounded by illustrations of flowers, smoke, flames, ice cream, sparkles, rock and roll.`,
+    // `Realistc editorial avant-garde dramatic action pose of ${genderManWoman} ${modelName}, who is ${age} years old, wearing 60s round wacky sunglasses with gemstones hanging pulling glasses down looking forward, in Italy at sunset with a vibrant illustrated jacket surrounded by illustrations of flowers, smoke, flames, ice cream, sparkles, rock and roll.`,
 
-    `a beautiful cute joyful and playful ${age} year old ${genderManWoman} ${modelName} view from bottom, dressed in a cozy sherpa jacket over a turtleneck and skinny jeans,in the street of paris at night eiffel tower in background,detailed masterpiece most beautiful artwork in the world Ultrarealistic,Sony A7,Nostalgic lighting`,
+    // `a beautiful cute joyful and playful ${age} year old ${genderManWoman} ${modelName} view from bottom, dressed in a cozy sherpa jacket over a turtleneck and skinny jeans,in the street of paris at night eiffel tower in background,detailed masterpiece most beautiful artwork in the world Ultrarealistic,Sony A7,Nostalgic lighting`,
 
     // Backup Prompts
 

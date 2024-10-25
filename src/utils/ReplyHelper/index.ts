@@ -40,6 +40,13 @@ import {
   isContextImageMessage,
 } from './MessageParsers';
 
+async function getIsExperiment(clientid: string) {
+  const experimentCount = await getIsExperimentCount();
+  const isClientFromUSA = clientid.startsWith('1');
+
+  return experimentCount < 20 && isClientFromUSA;
+}
+
 // eslint-disable-next-line consistent-return
 export async function replyToUser(messageObject: any) {
   let message = extractText(messageObject);
@@ -118,7 +125,7 @@ export async function replyToUser(messageObject: any) {
           updatedPendingUploads === 0
         ) {
           console.log('[m] imagesIncomplete image - > upper limit reached 1');
-          const isExperiment = (await getIsExperimentCount()) < 20;
+          const isExperiment = await getIsExperiment(clientid);
           if (isExperiment) {
             await setIsExperimentTrue(clientid);
             message = 'experiment free images';
@@ -128,7 +135,7 @@ export async function replyToUser(messageObject: any) {
         }
       } else if (uploadedPhotosCount >= TRAINING_IMAGES_UPPER_LIMIT) {
         console.log('[m] imagesIncomplete image - > upper limit reached 2');
-        const isExperiment = (await getIsExperimentCount()) < 20;
+        const isExperiment = await getIsExperiment(clientid);
         if (isExperiment) {
           await setIsExperimentTrue(clientid);
           message = 'experiment free images';
@@ -144,7 +151,7 @@ export async function replyToUser(messageObject: any) {
       const currentPendingUploadsCount = await getPendingUploadsCount(clientid);
       if (currentPhotoCount >= TRAINING_IMAGES_LOWER_LIMIT) {
         if (currentPendingUploadsCount === 0) {
-          const isExperiment = (await getIsExperimentCount()) < 20;
+          const isExperiment = await getIsExperiment(clientid);
           if (isExperiment) {
             await setIsExperimentTrue(clientid);
             message = 'experiment free images';

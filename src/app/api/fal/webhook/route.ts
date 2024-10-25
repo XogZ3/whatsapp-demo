@@ -151,7 +151,6 @@ export async function POST(request: NextRequest) {
         loraFilename: fileName,
         clientid,
         language,
-        isExperiment,
       })
         .then(async () => {
           const message = `${getTranslation('model generated', language)} ${!isExperiment ? getTranslation('prompting instruction', language) : ''}`;

@@ -11,6 +11,7 @@ import {
 import { createReferralPromoCode } from '@/modules/xstate/whatsappMachine/actionsHelper';
 import {
   getUserFields,
+  setUserStateValue,
   uploadLoraFileToFirebase,
   type UserFieldsFirebase,
 } from '@/utils/ReplyHelper/FirebaseHelpers';
@@ -105,7 +106,7 @@ export async function POST(request: NextRequest) {
         `[+] Training job ${request_id} completed. LoRA URL: ${fotolabsLoraURL}`,
       );
 
-      const { age, gender, state, language, isExperiment } =
+      const { age, gender, language, isExperiment } =
         await getUserFields(clientid);
 
       const invoiceQuerySnapshot = await firestore
@@ -119,30 +120,9 @@ export async function POST(request: NextRequest) {
       const couponUsed = invoiceData?.couponUsed || '';
       console.log('[fal webhook] coupon used?: ', couponUsed);
 
-      let stateJSON;
       const stateValue = isExperiment ? 'experimentPaywall' : 'photoPrompting';
 
-      try {
-        stateJSON = state ? JSON.parse(state) : {}; // Handle null or undefined state
-      } catch (error) {
-        console.error('Error parsing state:', error);
-        stateJSON = {
-          status: 'stopped',
-          context: {
-            language: language || 'english',
-            modelGenerated: true,
-            age,
-            gender,
-          },
-          value: stateValue,
-        };
-      }
-
-      // Update or initialize the state fields
-      stateJSON.value = stateValue;
-
       const updates: Partial<UserFieldsFirebase> = {
-        state: JSON.stringify(stateJSON),
         loraURL: fotolabsLoraURL,
         loraFilename: `${fileName}.safetensors`,
         processing: true,
@@ -224,6 +204,7 @@ export async function POST(request: NextRequest) {
           await clientDoc.update({ processing: false });
         });
 
+      await setUserStateValue(stateValue, clientid);
       return NextResponse.json({ status: 200 });
     }
     await sendMessageToTelegram(

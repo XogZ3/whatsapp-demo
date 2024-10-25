@@ -151,6 +151,7 @@ export async function POST(request: NextRequest) {
         loraFilename: fileName,
         clientid,
         language,
+        isExperiment,
       })
         .then(async () => {
           const message = `${getTranslation('model generated', language)} ${!isExperiment ? getTranslation('prompting instruction', language) : ''}`;
@@ -202,9 +203,9 @@ export async function POST(request: NextRequest) {
         })
         .finally(async () => {
           await clientDoc.update({ processing: false });
+          await setUserStateValue(stateValue, clientid);
         });
 
-      await setUserStateValue(stateValue, clientid);
       return NextResponse.json({ status: 200 });
     }
     await sendMessageToTelegram(

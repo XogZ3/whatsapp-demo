@@ -82,7 +82,7 @@ export const machineFactory = (config: IMachineConfig): any => {
               actions: ['callStartTrainingAPI', 'saveAgeAndGender'],
               target: 'generatingModel',
             },
-            PAYWALL: { target: 'experimentPaywall' },
+            PAYWALL: { target: 'paywall' },
             FALLBACK: { actions: 'sendPendingPhotos' },
           },
         },

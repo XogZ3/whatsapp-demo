@@ -134,13 +134,7 @@ export async function replyToUser(messageObject: any) {
       const currentPendingUploadsCount = await getPendingUploadsCount(clientid);
       if (currentPhotoCount >= TRAINING_IMAGES_LOWER_LIMIT) {
         if (currentPendingUploadsCount === 0) {
-          const isExperiment = (await getIsExperimentCount()) < 20;
-          if (isExperiment) {
-            await setIsExperimentTrue(clientid);
-            message = 'experimentFreeImages';
-          } else {
-            message = 'paywall';
-          }
+          message = 'paywall';
         } else {
           // photo upload incomplete, ask user to wait and then click "finish upload"
           await sendWaitForUploadToComplete(clientid, userLanguage);
@@ -234,9 +228,8 @@ export async function replyToUser(messageObject: any) {
       // (await getProcessingFlag(clientid)) === true &&
       userDetails.processing === true
     ) {
-      console.log('[m] photoPrompting machine busy');
       // Inform machine busy
-      console.log('[@] machine busy in replyHelper');
+      console.log('[m] machine busy in replyHelper');
       await sendMachineBusy(clientid, userLanguage);
       return;
     }
@@ -246,6 +239,7 @@ export async function replyToUser(messageObject: any) {
       isContextImageMessage(messageObject)
     ) {
       console.log('[m] photoPrompting context image');
+
       const contextMessageID = messageObject.message.context.id;
       const contextMessageJSON = {
         type: 'context_message',
@@ -258,6 +252,7 @@ export async function replyToUser(messageObject: any) {
     // Handle images in 'photoPrompting' state - derive prompt from image
     else if (currentState === 'photoPrompting' && messageType === 'image') {
       console.log('[m] photoPrompting image');
+
       await sendAnalyzingPhotoAndSetProcessingTrue(clientid, userLanguage);
       const imageID = extractImageID(messageObject);
       const imageURL = await fetchWhatsAppImageAndUploadToFirebase(
@@ -288,12 +283,14 @@ export async function replyToUser(messageObject: any) {
       !['text', 'interactive', 'button'].includes(messageType)
     ) {
       console.log('[m] non-image accepting state with non-text message');
+
       // TODO: handle image generation with image reference
       message = 'FALLBACK';
     }
     // Reject images in all other cases
     else if (messageType === 'image') {
       console.log('[m] image in other states');
+
       const imageID = extractImageID(messageObject);
       const imageURL = await fetchWhatsAppImageAndUploadToFirebase(
         imageID,
@@ -310,20 +307,20 @@ export async function replyToUser(messageObject: any) {
       console.log('[m] default case - extracting text');
       message = extractText(messageObject);
     }
+  }
 
-    const newState = await whatsappStateTransition(
-      { type: 'text', text: message },
-      {
-        age,
-        gender,
-        state,
-        name,
-        clientid,
-        language: userLanguage,
-      } as IUserMetaData,
-    );
-    if (newState && newState !== state) {
-      await setUserState(newState, clientid);
-    }
+  const newState = await whatsappStateTransition(
+    { type: 'text', text: message },
+    {
+      age,
+      gender,
+      state,
+      name,
+      clientid,
+      language: userLanguage,
+    } as IUserMetaData,
+  );
+  if (newState && newState !== state) {
+    await setUserState(newState, clientid);
   }
 }

@@ -268,6 +268,44 @@ export async function createStripeLink(clientid: string) {
   }
 }
 
+export async function createExperimentStripeLink(clientid: string) {
+  try {
+    const response = await fetch(
+      `${getBaseUrl()}/api/stripe/createExperimentPaymentLink`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ clientid }),
+      },
+    );
+
+    const contentType = response.headers.get('Content-Type');
+    if (!response.ok) {
+      let errorMessage = `Failed to create stripe payment link: ${response.statusText}`;
+      if (contentType && contentType.includes('application/json')) {
+        const errorResponse = await response.json();
+        errorMessage = errorResponse.error || errorMessage;
+      }
+      throw new Error(errorMessage);
+    }
+
+    if (contentType && contentType.includes('application/json')) {
+      const result: CreatePaymentLinkResult = await response.json();
+      return result.paymentLink;
+    }
+    const textResponse = await response.text();
+    throw new Error(`Unexpected response format: ${textResponse}`);
+  } catch (error) {
+    let errorMessage = 'An unknown error occurred';
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    return errorMessage;
+  }
+}
+
 export async function createReferralPromoCode(clientid: string) {
   try {
     const response = await fetch(
@@ -463,14 +501,32 @@ export async function checkTrainingJobForClient(clientid: string) {
   console.log(`[I] Checking training job status for client ${clientid}...`);
 
   // Fetch user details from the database
-  const { language, loraFilename, loraURL, retriedModelGenFlag, state } =
-    await getUserFields(clientid);
+  const {
+    language,
+    loraFilename,
+    loraURL,
+    processing,
+    retriedModelGenFlag,
+    state,
+  } = await getUserFields(clientid);
   const stateObj = JSON.parse(state);
   const currentState = stateObj.value;
 
   // Check if the user's state is still 'generatingModel'
   // If not, exit the function (race condition handling)
   if (currentState !== 'generatingModel') return;
+
+  // If processing is true, exit the function (race condition handling)
+  if (processing) {
+    const msg = getTranslation('please wait generating model', language);
+    const payload: ICreateMessagePayload = {
+      phoneNumber: clientid,
+      text: true,
+      msgBody: msg,
+    };
+    await sendMessageToWhatsapp(payload);
+    return;
+  }
 
   // Check if the model already exists
   // If so, update the user's state and exit

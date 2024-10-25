@@ -132,14 +132,33 @@ export async function sendPhotoUploadInstruction(
   await sendMessageToWhatsapp(payload);
 }
 
+export async function sendPromptNowMessageUsingExperimentFlag(
+  clientid: string,
+  language: Language,
+) {
+  const userFields = await getUserFields(clientid);
+  const { isExperiment, loraURL, loraFilename } = userFields;
+  if (!isExperiment || !loraURL || !loraFilename) return;
+
+  const message = getTranslation('prompting instruction', language);
+  const payload: ICreateMessagePayload = {
+    phoneNumber: clientid,
+    text: true,
+    msgBody: message,
+  };
+  await sendMessageToWhatsapp(payload);
+}
+
 export async function sendUploadedImagesConfirmationUsingTrainingImageURLs(
   clientid: string,
   language: Language,
 ) {
   try {
     const userFields = await getUserFields(clientid);
-    const trainingImageURLs = userFields.trainingImageURLs || [];
+    const { isExperiment, loraURL, loraFilename } = userFields;
+    if (isExperiment && loraURL && loraFilename) return;
 
+    const trainingImageURLs = userFields.trainingImageURLs || [];
     let payload: ICreateMessagePayload;
     let message: string;
 
@@ -171,6 +190,70 @@ export async function sendUploadedImagesConfirmationUsingTrainingImageURLs(
     );
     await sendMessageToTelegram(
       `Error in sendUploadedImagesConfirmationUsingTrainingImageURLs: ${error}`,
+    );
+  }
+}
+
+export async function sendPromptOrConfirmationMessage(
+  clientid: string,
+  language: Language,
+) {
+  try {
+    const userFields = await getUserFields(clientid);
+    const {
+      isExperiment,
+      loraURL,
+      loraFilename,
+      trainingImageURLs = [],
+    } = userFields;
+
+    if (isExperiment && loraURL && loraFilename) {
+      await setUserStateValue('photoPrompting', clientid);
+      // Send prompt message for experiment users
+      let message = getTranslation('payment confirmation', language);
+      let payload: ICreateMessagePayload;
+
+      payload = {
+        phoneNumber: clientid,
+        text: true,
+        msgBody: message,
+      };
+      await sendMessageToWhatsapp(payload);
+
+      message = getTranslation('prompting instruction', language);
+      payload = {
+        phoneNumber: clientid,
+        text: true,
+        msgBody: message,
+      };
+      await sendMessageToWhatsapp(payload);
+    } else if (trainingImageURLs.length > 0) {
+      // Send confirmation message for users with uploaded images
+      await setUserStateValue('imagesConfirmation', clientid);
+      const message = `${getTranslation('uploaded images confirmation 1', language)} ${trainingImageURLs.length} ${getTranslation('uploaded images confirmation 2', language)}`;
+      const payload: ICreateMessagePayload = {
+        phoneNumber: clientid,
+        quickReply: true,
+        button1id: 'confirm',
+        button1: getTranslation('confirm', language),
+        button2id: 'delete',
+        button2: getTranslation('delete', language),
+        msgBody: message,
+      };
+      console.log(
+        `Sending confirmation message for ${trainingImageURLs.length} images`,
+      );
+      await sendMessageToWhatsapp(payload);
+    } else {
+      // Send photo upload instruction for users with no images
+      console.log('No training images found, sending photo upload instruction');
+      await setUserStateValue('imagesIncompletePaid', clientid);
+      await sendPhotoUploadInstruction(clientid, language);
+    }
+  } catch (error) {
+    console.error('Error in sendPromptOrConfirmationMessage:', error);
+    await sendMessageToTelegram(
+      `Error in sendPromptOrConfirmationMessage: ${error}`,
     );
   }
 }

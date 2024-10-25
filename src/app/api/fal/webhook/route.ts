@@ -11,6 +11,7 @@ import {
 import { createReferralPromoCode } from '@/modules/xstate/whatsappMachine/actionsHelper';
 import {
   getUserFields,
+  setUserStateValue,
   uploadLoraFileToFirebase,
   type UserFieldsFirebase,
 } from '@/utils/ReplyHelper/FirebaseHelpers';
@@ -105,7 +106,8 @@ export async function POST(request: NextRequest) {
         `[+] Training job ${request_id} completed. LoRA URL: ${fotolabsLoraURL}`,
       );
 
-      const { age, gender, state, language } = await getUserFields(clientid);
+      const { age, gender, language, isExperiment } =
+        await getUserFields(clientid);
 
       const invoiceQuerySnapshot = await firestore
         .collection('invoices')
@@ -118,29 +120,9 @@ export async function POST(request: NextRequest) {
       const couponUsed = invoiceData?.couponUsed || '';
       console.log('[fal webhook] coupon used?: ', couponUsed);
 
-      let stateJSON;
-
-      try {
-        stateJSON = state ? JSON.parse(state) : {}; // Handle null or undefined state
-      } catch (error) {
-        console.error('Error parsing state:', error);
-        stateJSON = {
-          status: 'stopped',
-          context: {
-            language: language || 'english',
-            modelGenerated: true,
-            age,
-            gender,
-          },
-          value: 'photoPrompting',
-        };
-      }
-
-      // Update or initialize the state fields
-      stateJSON.value = 'photoPrompting';
+      const stateValue = isExperiment ? 'experimentPaywall' : 'photoPrompting';
 
       const updates: Partial<UserFieldsFirebase> = {
-        state: JSON.stringify(stateJSON),
         loraURL: fotolabsLoraURL,
         loraFilename: `${fileName}.safetensors`,
         processing: true,
@@ -169,9 +151,10 @@ export async function POST(request: NextRequest) {
         loraFilename: fileName,
         clientid,
         language,
+        isExperiment,
       })
         .then(async () => {
-          const message = getTranslation('model generated', language);
+          const message = `${getTranslation('model generated', language)} ${!isExperiment ? getTranslation('prompting instruction', language) : ''}`;
           const whatsappPayload: ICreateMessagePayload = {
             phoneNumber: clientid,
             text: true,
@@ -180,13 +163,31 @@ export async function POST(request: NextRequest) {
           await sendMessageToWhatsapp(whatsappPayload);
         })
         .then(async () => {
-          if (couponUsed !== 'Referral 1st month free') {
+          if (couponUsed !== 'Referral 1st month free' && !isExperiment) {
             const promoCode = await createReferralPromoCode(clientid);
             const message = `${getTranslation('referral 1', language)} *${promoCode}* ${getTranslation('referral 2', language)}`;
             const whatsappPayload: ICreateMessagePayload = {
               phoneNumber: clientid,
               text: true,
               msgBody: message,
+            };
+            await sendMessageToWhatsapp(whatsappPayload);
+          }
+        })
+        .then(async () => {
+          if (isExperiment) {
+            const message = getTranslation(
+              'experiment paywall message',
+              language,
+            );
+            const whatsappPayload: ICreateMessagePayload = {
+              phoneNumber: clientid,
+              quickReply: true,
+              msgBody: message,
+              button1id: 'yes',
+              button1: getTranslation('yes', language),
+              button2id: 'maybe',
+              button2: getTranslation('maybe', language),
             };
             await sendMessageToWhatsapp(whatsappPayload);
           }
@@ -202,6 +203,7 @@ export async function POST(request: NextRequest) {
         })
         .finally(async () => {
           await clientDoc.update({ processing: false });
+          await setUserStateValue(stateValue, clientid);
         });
 
       return NextResponse.json({ status: 200 });

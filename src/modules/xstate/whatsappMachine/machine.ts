@@ -78,12 +78,23 @@ export const machineFactory = (config: IMachineConfig): any => {
               actions: ['sendIntroMessage'],
               target: 'onBoarding',
             },
+            EXPERIMENT_FREE_IMAGES: {
+              actions: ['callStartTrainingAPI', 'saveAgeAndGender'],
+              target: 'generatingModel',
+            },
             PAYWALL: { target: 'paywall' },
             FALLBACK: { actions: 'sendPendingPhotos' },
           },
         },
+        experimentPaywall: {
+          on: {
+            FALLBACK: {
+              actions: ['sendExperimentPaywall', 'setPaywallSentTimestamp'],
+            },
+          },
+        },
         paywall: {
-          entry: ['sendPaywall', 'setPaywallSentTimestamp'],
+          entry: ['sendPaywall', 'setPaywallSentTimestampDiscountSentFalse'],
           on: {
             FALLBACK: { actions: 'sendPaywall' },
           },

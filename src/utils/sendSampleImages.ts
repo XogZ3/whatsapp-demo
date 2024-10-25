@@ -18,20 +18,28 @@ async function sendErrorMessage(clientid: string, language: Language) {
   await sendMessageToWhatsapp(payload);
 }
 
+const genericBlurredImageURL =
+  'https://firebasestorage.googleapis.com/v0/b/paparazzi-ai.appspot.com/o/sample_images%2Fblurred_image.jpeg?alt=media&token=24e93215-e36a-4da2-9d1f-f42dd4bb8de2';
+
 export async function generateAndSendModelImages({
   age,
   gender,
   loraFilename,
   clientid,
   language,
+  isExperiment,
 }: {
   age: number;
   gender: 'male' | 'female';
   loraFilename: string;
   clientid: string;
   language: Language;
+  isExperiment?: boolean;
 }) {
-  const samplePrompts = generateSamplePrompts({ age, gender, loraFilename });
+  let samplePrompts = generateSamplePrompts({ age, gender, loraFilename });
+  if (isExperiment) {
+    samplePrompts = samplePrompts.slice(0, 5);
+  }
   try {
     // Generate images for all prompts in parallel
     const imageUrlArrays = await Promise.all(
@@ -42,25 +50,25 @@ export async function generateAndSendModelImages({
     // Flatten the array of arrays into a single array of URLs
     const allImageUrls = imageUrlArrays.flat();
 
+    // if isExperiment is true, add the genericBlurredImageURL to the end of the array
+    if (isExperiment) {
+      allImageUrls.push(genericBlurredImageURL);
+    }
+
     if (allImageUrls.length > 0) {
-      // Use promise chaining for sequential execution
-      return await allImageUrls
-        .reduce(async (promise, url) => {
-          return promise.then(async () => {
-            const payload: ICreateMessagePayload = {
-              phoneNumber: clientid,
-              image: true,
-              imageLink: url,
-            };
-            return sendMessageToWhatsapp(payload).then(() => {
-              console.log(`Image sent: ${url}`);
-            });
-          });
-        }, Promise.resolve())
-        .then(async () => {
-          console.log('All sample images sent successfully');
-          return true;
-        });
+      // Send images serially
+      for (const url of allImageUrls) {
+        const payload: ICreateMessagePayload = {
+          phoneNumber: clientid,
+          image: true,
+          imageLink: url,
+        };
+        // eslint-disable-next-line no-await-in-loop
+        await sendMessageToWhatsapp(payload);
+        console.log(`Image sent: ${url}`);
+      }
+      console.log('All sample images sent successfully');
+      return true;
     }
     await sendErrorMessage(clientid, language || 'english');
     return false; // Indicate failure

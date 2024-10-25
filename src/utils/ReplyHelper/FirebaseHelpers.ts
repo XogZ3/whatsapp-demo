@@ -109,6 +109,7 @@ export type UserFieldsFirebase = {
   couponUsed: string;
   paywallSentTimestamp: number;
   discountSent: boolean;
+  isExperiment: boolean;
 };
 
 export async function getUserFields(
@@ -149,6 +150,7 @@ export async function getUserFields(
     couponUsed,
     paywallSentTimestamp,
     discountSent,
+    isExperiment,
   } = clientData.data() || {};
   const userLanguage = language || getLanguageFromPhoneNumber(clientid);
 
@@ -181,6 +183,7 @@ export async function getUserFields(
     couponUsed,
     paywallSentTimestamp,
     discountSent,
+    isExperiment,
   };
 }
 
@@ -272,7 +275,33 @@ export async function setUserAgeAndGender(
   await clientDoc.set(updates, { merge: true });
 }
 
+export async function setDiscountSentTrue(clientid: string) {
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid);
+  await clientDoc.update({
+    discountSent: true,
+  });
+}
+
 export async function setPaywallSentTimestamp(clientid: string) {
+  const wabaId = process.env.WABA_ID;
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId as string)
+    .collection('clients')
+    .doc(clientid);
+  await clientDoc.update({
+    paywallSentTimestamp: DateTime.now().toMillis(),
+  });
+}
+
+export async function setPaywallSentTimestampDiscountSentFalse(
+  clientid: string,
+) {
   const wabaId = process.env.WABA_ID;
   const clientDoc = firestore
     .collection('apps')
@@ -986,6 +1015,44 @@ export async function generateAndSaveShortURLMap(
     console.error('Error in generating and saving short URL:', error);
     return null;
   }
+}
+
+export async function setIsExperimentTrue(clientid: string) {
+  const wabaId = process.env.WABA_ID as string;
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId)
+    .collection('clients')
+    .doc(clientid);
+
+  await clientDoc.update({
+    isExperiment: true,
+  });
+}
+
+export async function getIsExperiment(clientid: string) {
+  const wabaId = process.env.WABA_ID as string;
+  const clientDoc = firestore
+    .collection('apps')
+    .doc(wabaId)
+    .collection('clients')
+    .doc(clientid);
+
+  const snapshot = await clientDoc.get();
+
+  return snapshot.get('isExperiment');
+}
+
+export async function getIsExperimentCount() {
+  const wabaId = process.env.WABA_ID as string;
+  const clientRef = firestore
+    .collection('apps')
+    .doc(wabaId)
+    .collection('clients');
+
+  const snapshot = await clientRef.where('isExperiment', '==', true).get();
+
+  return snapshot.size || 0;
 }
 
 export async function getEligibleClientidArray() {

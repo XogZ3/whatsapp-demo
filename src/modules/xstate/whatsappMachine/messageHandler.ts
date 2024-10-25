@@ -6,6 +6,7 @@ export const State = Object.freeze({
   onBoarding: 'onBoarding',
   imagesIncomplete: 'imagesIncomplete',
   generatingModel: 'generatingModel',
+  experimentPaywall: 'experimentPaywall',
   paywall: 'paywall',
   imagesConfirmation: 'imagesConfirmation',
   imagesIncompletePaid: 'imagesIncompletePaid',
@@ -56,10 +57,14 @@ export const handleMessage = async (
       'photo received': 'PHOTO_RECEIVED',
       paywall: 'PAYWALL',
       'main menu': 'MAIN_MENU',
+      'experiment free images': 'EXPERIMENT_FREE_IMAGES',
       fallback: 'FALLBACK',
     },
     [State.generatingModel]: {
       retry: 'RETRY',
+    },
+    [State.experimentPaywall]: {
+      fallback: 'FALLBACK',
     },
     [State.paywall]: {
       fallback: 'FALLBACK',

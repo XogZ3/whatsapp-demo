@@ -125,6 +125,14 @@ export async function replyToUser(messageObject: any) {
             message = 'paywall';
           }
         }
+      } else if (uploadedPhotosCount >= TRAINING_IMAGES_UPPER_LIMIT) {
+        const isExperiment = (await getIsExperimentCount()) < 20;
+        if (isExperiment) {
+          await setIsExperimentTrue(clientid);
+          message = 'experimentFreeImages';
+        } else {
+          message = 'paywall';
+        }
       }
     }
     // Handle NON-Images in 'imagesIncomplete' state - Cancel or Fallback
@@ -134,7 +142,13 @@ export async function replyToUser(messageObject: any) {
       const currentPendingUploadsCount = await getPendingUploadsCount(clientid);
       if (currentPhotoCount >= TRAINING_IMAGES_LOWER_LIMIT) {
         if (currentPendingUploadsCount === 0) {
-          message = 'paywall';
+          const isExperiment = (await getIsExperimentCount()) < 20;
+          if (isExperiment) {
+            await setIsExperimentTrue(clientid);
+            message = 'experimentFreeImages';
+          } else {
+            message = 'paywall';
+          }
         } else {
           // photo upload incomplete, ask user to wait and then click "finish upload"
           await sendWaitForUploadToComplete(clientid, userLanguage);

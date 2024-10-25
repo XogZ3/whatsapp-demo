@@ -1052,7 +1052,7 @@ export async function getIsExperimentCount() {
 
   const snapshot = await clientRef.where('isExperiment', '==', true).get();
 
-  return snapshot.size;
+  return snapshot.size || 0;
 }
 
 export async function getEligibleClientidArray() {

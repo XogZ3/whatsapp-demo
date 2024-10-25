@@ -18,6 +18,7 @@ import {
   getUserFields,
   incrementCreditsUsedTodayAndSetProcessingFlagFalse,
   setPaywallSentTimestamp,
+  setPaywallSentTimestampDiscountSentFalse,
   setProcessingFlag,
   setRetriedFlag,
   setUserAgeAndGender,
@@ -32,6 +33,7 @@ import {
   callCancelSubscription,
   checkExistingSubscription,
   checkTrainingJobForClient,
+  createExperimentStripeLink,
   createReferralPromoCode,
   createStripeLink,
   getCreditsAvailability,
@@ -616,6 +618,75 @@ export const actionsFactory = (config: IMachineConfig): any => {
           msgBody: message,
         });
       }
+    },
+    sendExperimentPaywall: async (event: any) => {
+      const { clientid, language = event?.context?.language } =
+        config.userMetaData;
+      const { membershipEndDate } = await getUserFields(clientid);
+      const currentTimestamp = DateTime.now();
+
+      // Reject if membership already exists
+      if (currentTimestamp < DateTime.fromMillis(membershipEndDate || 0)) {
+        console.log('[-] Active membership exists, purchase not allowed.');
+
+        await setUserStateAndInform({
+          clientid,
+          language,
+          stateValue: 'photoPrompting',
+          reason: 'active membership',
+        });
+        return;
+      }
+
+      // Allow buying membership
+      let message;
+      let shortenedStripeLink = event?.context?.shortenedStripeLink;
+      if (shortenedStripeLink === '' || !shortenedStripeLink) {
+        createExperimentStripeLink(clientid)
+          .then(async (stripeLink) => {
+            console.log('Created Stripe link:', stripeLink);
+            shortenedStripeLink = await generateAndSaveShortURLMap(
+              stripeLink,
+              clientid,
+            );
+            console.log('Generated and saved short URL:', shortenedStripeLink);
+            return shortenedStripeLink;
+          })
+          .then(async (shortLink) => {
+            await config.storeInstance.setContext(
+              clientid,
+              'shortenedStripeLink',
+              shortLink,
+            );
+
+            message = `${getTranslation('paywall', language)}\n\n${shortLink}`;
+            await config.whatsappInstance.send({
+              phoneNumber: clientid,
+              text: true,
+              msgBody: message,
+            });
+          })
+          .catch(async (error) => {
+            console.error(
+              'Error in creating/sending shortened Stripe link:',
+              error,
+            );
+            await sendMessageToTelegram(
+              `Error in sending intro msg: ${JSON.stringify(error, null, 2)}`,
+            );
+          });
+      } else {
+        message = `${getTranslation('paywall', language)}\n\n${shortenedStripeLink}`;
+        await config.whatsappInstance.send({
+          phoneNumber: clientid,
+          text: true,
+          msgBody: message,
+        });
+      }
+    },
+    setPaywallSentTimestampDiscountSentFalse: async () => {
+      const { clientid } = config.userMetaData;
+      await setPaywallSentTimestampDiscountSentFalse(clientid);
     },
     setPaywallSentTimestamp: async () => {
       const { clientid } = config.userMetaData;

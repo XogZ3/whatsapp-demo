@@ -105,7 +105,8 @@ export async function POST(request: NextRequest) {
         `[+] Training job ${request_id} completed. LoRA URL: ${fotolabsLoraURL}`,
       );
 
-      const { age, gender, state, language } = await getUserFields(clientid);
+      const { age, gender, state, language, isExperiment } =
+        await getUserFields(clientid);
 
       const invoiceQuerySnapshot = await firestore
         .collection('invoices')
@@ -119,6 +120,7 @@ export async function POST(request: NextRequest) {
       console.log('[fal webhook] coupon used?: ', couponUsed);
 
       let stateJSON;
+      const stateValue = isExperiment ? 'experimentPaywall' : 'photoPrompting';
 
       try {
         stateJSON = state ? JSON.parse(state) : {}; // Handle null or undefined state
@@ -132,12 +134,12 @@ export async function POST(request: NextRequest) {
             age,
             gender,
           },
-          value: 'photoPrompting',
+          value: stateValue,
         };
       }
 
       // Update or initialize the state fields
-      stateJSON.value = 'photoPrompting';
+      stateJSON.value = stateValue;
 
       const updates: Partial<UserFieldsFirebase> = {
         state: JSON.stringify(stateJSON),
@@ -180,13 +182,31 @@ export async function POST(request: NextRequest) {
           await sendMessageToWhatsapp(whatsappPayload);
         })
         .then(async () => {
-          if (couponUsed !== 'Referral 1st month free') {
+          if (couponUsed !== 'Referral 1st month free' && !isExperiment) {
             const promoCode = await createReferralPromoCode(clientid);
             const message = `${getTranslation('referral 1', language)} *${promoCode}* ${getTranslation('referral 2', language)}`;
             const whatsappPayload: ICreateMessagePayload = {
               phoneNumber: clientid,
               text: true,
               msgBody: message,
+            };
+            await sendMessageToWhatsapp(whatsappPayload);
+          }
+        })
+        .then(async () => {
+          if (isExperiment) {
+            const message = getTranslation(
+              'experiment paywall message',
+              language,
+            );
+            const whatsappPayload: ICreateMessagePayload = {
+              phoneNumber: clientid,
+              quickReply: true,
+              msgBody: message,
+              button1id: 'yes',
+              button1: getTranslation('yes', language),
+              button2id: 'maybe',
+              button2: getTranslation('maybe', language),
             };
             await sendMessageToWhatsapp(whatsappPayload);
           }

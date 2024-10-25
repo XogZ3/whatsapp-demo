@@ -23,6 +23,7 @@ export type TranslationKeys =
   | 'create photo'
   | 'prompt'
   | 'yes'
+  | 'maybe'
   | 'no'
   | 'retry'
   | 'notify pending photos 1'
@@ -76,6 +77,7 @@ export type TranslationKeys =
   | 'support email'
   | 'payment failed'
   | 'new user paywall'
+  | 'experiment paywall message'
   | 'referral 1'
   | 'referral 2'
   | 'nsfw error';
@@ -124,6 +126,11 @@ export const TRANSLATION_MAP: Record<
     en: 'Yes',
     pt: 'Sim',
     ar: 'نعم',
+  },
+  maybe: {
+    en: 'Maybe',
+    pt: 'Talvez',
+    ar: 'ربما',
   },
   no: {
     en: 'No',
@@ -261,6 +268,11 @@ Clique no botão 'Enviar Fotos' para começar.`,
     pt: `🎉 Seu modelo foi gerado com sucesso! \nEnvie seu prompt agora. 😊`,
     ar: `🎉 تم إنشاء نموذجك بنجاح! \nأرسل موجهك الآن. 😊`,
   },
+  'experiment paywall message': {
+    en: `🚀 Ready to create even more stunning AI photos of yourself?`,
+    pt: `🚀 Pronto para criar fotos de IA ainda mais incríveis de você?`,
+    ar: `🚀 هل أنت مستعد لإنشاء صور ذكاء اصطناعي أكثر إبهارًا لنفسك؟`,
+  },
   'payment instructions': {
     en: 'Please complete payment using this link.',
     pt: 'Por favor, complete o pagamento usando este link.',
@@ -277,9 +289,9 @@ Clique no botão 'Enviar Fotos' para começar.`,
     ar: 'جارٍ تحليل الصورة...',
   },
   'prompting instruction': {
-    en: 'Send your prompt',
-    pt: 'Envie sua solicitação',
-    ar: 'أرسل طلبك',
+    en: '✨ Send your prompt',
+    pt: '✨ Envie sua solicitação',
+    ar: '✨ أرسل طلبك',
   },
   'prompt confirmation': {
     en: `Do you want to generate image with following prompt?`,

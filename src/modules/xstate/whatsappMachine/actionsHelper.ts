@@ -268,6 +268,44 @@ export async function createStripeLink(clientid: string) {
   }
 }
 
+export async function createExperimentStripeLink(clientid: string) {
+  try {
+    const response = await fetch(
+      `${getBaseUrl()}/api/stripe/createExperimentPaymentLink`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ clientid }),
+      },
+    );
+
+    const contentType = response.headers.get('Content-Type');
+    if (!response.ok) {
+      let errorMessage = `Failed to create stripe payment link: ${response.statusText}`;
+      if (contentType && contentType.includes('application/json')) {
+        const errorResponse = await response.json();
+        errorMessage = errorResponse.error || errorMessage;
+      }
+      throw new Error(errorMessage);
+    }
+
+    if (contentType && contentType.includes('application/json')) {
+      const result: CreatePaymentLinkResult = await response.json();
+      return result.paymentLink;
+    }
+    const textResponse = await response.text();
+    throw new Error(`Unexpected response format: ${textResponse}`);
+  } catch (error) {
+    let errorMessage = 'An unknown error occurred';
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    return errorMessage;
+  }
+}
+
 export async function createReferralPromoCode(clientid: string) {
   try {
     const response = await fetch(

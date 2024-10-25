@@ -14,11 +14,13 @@ import { getLanguageFromPhoneNumber } from '../helpers';
 import {
   addTrainingImageURLandIncreaseCountDecreasePendingUploads,
   getCountTrainingImageURLs,
+  getIsExperimentCount,
   getPendingUploadsCount,
   getPhotoCount,
   getUserFields,
   incrementPendingUploads,
   setDefaultUserFields,
+  setIsExperimentTrue,
   setProcessingFlag,
   setUserState,
   updateImageIntoImageMessageFromUser,
@@ -111,8 +113,15 @@ export async function replyToUser(messageObject: any) {
         if (
           updatedPhotoCount >= TRAINING_IMAGES_UPPER_LIMIT &&
           updatedPendingUploads === 0
-        )
-          message = 'paywall';
+        ) {
+          const isExperiment = (await getIsExperimentCount()) < 20;
+          if (isExperiment) {
+            await setIsExperimentTrue(clientid);
+            message = 'experimentFreeImages';
+          } else {
+            message = 'paywall';
+          }
+        }
       }
     }
     // Handle NON-Images in 'imagesIncomplete' state - Cancel or Fallback

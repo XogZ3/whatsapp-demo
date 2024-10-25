@@ -501,14 +501,32 @@ export async function checkTrainingJobForClient(clientid: string) {
   console.log(`[I] Checking training job status for client ${clientid}...`);
 
   // Fetch user details from the database
-  const { language, loraFilename, loraURL, retriedModelGenFlag, state } =
-    await getUserFields(clientid);
+  const {
+    language,
+    loraFilename,
+    loraURL,
+    processing,
+    retriedModelGenFlag,
+    state,
+  } = await getUserFields(clientid);
   const stateObj = JSON.parse(state);
   const currentState = stateObj.value;
 
   // Check if the user's state is still 'generatingModel'
   // If not, exit the function (race condition handling)
   if (currentState !== 'generatingModel') return;
+
+  // If processing is true, exit the function (race condition handling)
+  if (processing) {
+    const msg = getTranslation('please wait generating model', language);
+    const payload: ICreateMessagePayload = {
+      phoneNumber: clientid,
+      text: true,
+      msgBody: msg,
+    };
+    await sendMessageToWhatsapp(payload);
+    return;
+  }
 
   // Check if the model already exists
   // If so, update the user's state and exit

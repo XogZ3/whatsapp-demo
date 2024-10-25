@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
           {
             price:
               process.env.STRIPE_EXPEIMENT_PRICE_ID ||
-              'price_1QDh2xJHS9DkVfWMZriGXGMM',
+              'price_1QDk5cJHS9DkVfWMHlOHIN6j',
             quantity: 1,
           },
         ],

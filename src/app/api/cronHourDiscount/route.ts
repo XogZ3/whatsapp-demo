@@ -5,6 +5,7 @@ import type { NextRequest } from 'next/server';
 import firebase from '@/modules/firebase';
 import { sendMessageToWhatsapp } from '@/modules/whatsapp/whatsapp';
 import { getBaseUrl } from '@/utils/helpers';
+import { sendMessageToTelegram } from '@/utils/telegram';
 import { getTranslation } from '@/utils/translations';
 
 const firestore = firebase.getFirestore();
@@ -139,6 +140,12 @@ export async function POST(request: NextRequest) {
   });
 
   await batch.commit();
+
+  if (clientidArray.length > 0) {
+    await sendMessageToTelegram(
+      `[s] dicount sent to ${clientidArray.length} users`,
+    );
+  }
 
   return new Response(
     JSON.stringify({ success: true, updatedClients: clientidArray.length }),

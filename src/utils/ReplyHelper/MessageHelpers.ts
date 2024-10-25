@@ -210,8 +210,18 @@ export async function sendPromptOrConfirmationMessage(
     if (isExperiment && loraURL && loraFilename) {
       await setUserStateValue('photoPrompting', clientid);
       // Send prompt message for experiment users
-      const message = getTranslation('prompting instruction', language);
-      const payload: ICreateMessagePayload = {
+      let message = getTranslation('payment confirmation', language);
+      let payload: ICreateMessagePayload;
+
+      payload = {
+        phoneNumber: clientid,
+        text: true,
+        msgBody: message,
+      };
+      await sendMessageToWhatsapp(payload);
+
+      message = getTranslation('prompting instruction', language);
+      payload = {
         phoneNumber: clientid,
         text: true,
         msgBody: message,

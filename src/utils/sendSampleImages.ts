@@ -36,7 +36,10 @@ export async function generateAndSendModelImages({
   language: Language;
   isExperiment?: boolean;
 }) {
-  const samplePrompts = generateSamplePrompts({ age, gender, loraFilename });
+  let samplePrompts = generateSamplePrompts({ age, gender, loraFilename });
+  if (isExperiment) {
+    samplePrompts = samplePrompts.slice(0, 5);
+  }
   try {
     // Generate images for all prompts in parallel
     const imageUrlArrays = await Promise.all(

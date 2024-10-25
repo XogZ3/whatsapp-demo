@@ -153,7 +153,7 @@ export async function POST(request: NextRequest) {
         language,
       })
         .then(async () => {
-          const message = `${getTranslation('model generated', language)} ${!isExperiment && getTranslation('prompting instruction', language)}`;
+          const message = `${getTranslation('model generated', language)} ${!isExperiment ? getTranslation('prompting instruction', language) : ''}`;
           const whatsappPayload: ICreateMessagePayload = {
             phoneNumber: clientid,
             text: true,

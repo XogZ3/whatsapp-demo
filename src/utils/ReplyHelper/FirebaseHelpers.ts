@@ -1027,6 +1027,7 @@ export async function setIsExperimentTrue(clientid: string) {
 
   await clientDoc.update({
     isExperiment: true,
+    discountSent: true,
   });
 }
 

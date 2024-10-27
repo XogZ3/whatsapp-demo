@@ -116,6 +116,7 @@ export async function POST(request: NextRequest) {
 
   const formattedDate = format(new Date(requestedAt), 'MMMM d, yyyy');
   console.log(`[s] dailyCRON triggered at ${formattedDate} ${requestedAt}`);
+  console.log(`locationJson: ${JSON.stringify(locationJson, null, 2)}`);
 
   const { location, prompt } = locationJson;
 

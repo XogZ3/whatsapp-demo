@@ -4,7 +4,6 @@ import { DateTime } from 'luxon';
 import type { NextRequest } from 'next/server';
 
 import firebase from '@/modules/firebase';
-import { getCronDailyImagePromptFromGroq } from '@/modules/groq';
 import { generateImagesWithReplicateUploadToFirebase } from '@/modules/replicate';
 import {
   type ICreateMessagePayload,
@@ -40,26 +39,6 @@ async function getAgeGenderForClientidArray(clientidArray: string[]) {
   });
 
   return Promise.all(promises);
-}
-
-function fillPrompt(prompt: string, age: number, gender: 'male' | 'female') {
-  // Replace placeholders with the provided values
-  const genderHeShe = gender === 'male' ? 'he' : 'she';
-  const genderHisHer = gender === 'male' ? 'his' : 'her';
-  const genderManWoman = gender === 'male' ? 'man' : 'woman';
-
-  // Replace placeholders in the prompt
-  return prompt
-    .replace(/PERSON_Age/g, age.toString())
-    .replace(/PERSON_GENDER_HeShe/g, genderHeShe)
-    .replace(/PERSON_GENDER_He/g, genderHeShe)
-    .replace(/PERSON_GENDER_She/g, genderHeShe)
-    .replace(/PERSON_GENDER_HisHer/g, genderHisHer)
-    .replace(/PERSON_GENDER_Her/g, genderHisHer)
-    .replace(/PERSON_GENDER_Her/g, genderHisHer)
-    .replace(/PERSON_GENDER_ManWoman/g, genderManWoman)
-    .replace(/PERSON_GENDER_Woman/g, genderManWoman)
-    .replace(/PERSON_GENDER_Man/g, genderManWoman);
 }
 
 async function sendDailyImageTemplate(
@@ -126,9 +105,9 @@ export async function POST(request: NextRequest) {
 
   const body = await request.text();
   const data = JSON.parse(body);
-  const { requestedAt, location } = data;
+  const { requestedAt, locationJson } = data;
 
-  if (!requestedAt) {
+  if (!requestedAt || !locationJson) {
     return new Response('Missing required fields', {
       status: 400,
       headers: corsHeaders,
@@ -138,16 +117,7 @@ export async function POST(request: NextRequest) {
   const formattedDate = format(new Date(requestedAt), 'MMMM d, yyyy');
   console.log(`[s] dailyCRON triggered at ${formattedDate} ${requestedAt}`);
 
-  let promptTemplate;
-  try {
-    promptTemplate = await getCronDailyImagePromptFromGroq({ location });
-  } catch (error) {
-    console.error('Error fetching prompt template:', error);
-    return new Response('Failed to fetch prompt template', {
-      status: 500,
-      headers: corsHeaders,
-    });
-  }
+  const { location, prompt } = locationJson;
 
   const clientidArray = await getEligibleClientidArray();
   let clientDataArray;
@@ -167,7 +137,7 @@ export async function POST(request: NextRequest) {
   try {
     await Promise.all(
       clientDataArray.map(async ({ clientid, age, gender }) => {
-        const clientPrompt = fillPrompt(promptTemplate, age, gender);
+        const clientPrompt = `a realistic photograph of ${age} year old ${gender}, ${prompt}`;
         const imagesForClient =
           await generateImagesWithReplicateUploadToFirebase(
             clientPrompt,
@@ -192,7 +162,7 @@ export async function POST(request: NextRequest) {
 
   const sendMessages = async () => {
     for (const { clientid, whatsappExpiration } of clientDataArray) {
-      const now = DateTime.now().toMillis(); // Get the current time in milliseconds
+      const now = DateTime.now().toMillis();
 
       for (const url of clientGeneratedImageMap[clientid] || []) {
         const payload: ICreateMessagePayload = {
@@ -203,17 +173,15 @@ export async function POST(request: NextRequest) {
         };
 
         try {
-          // Check if the current time is after the whatsappExpiration
           if (now >= whatsappExpiration) {
-            await sendDailyImageTemplate(clientid, url, location); // Use sendDailyImageTemplate if expired
+            await sendDailyImageTemplate(clientid, url, location);
           } else {
-            await sendMessageToWhatsapp(payload); // Use sendMessageToWhatsapp if not expired
+            await sendMessageToWhatsapp(payload);
           }
         } catch (error) {
           console.error(`Error sending message to ${clientid}:`, error);
         }
 
-        // Wait for the specified delay before sending the next message
         await delay(rateLimit);
       }
     }

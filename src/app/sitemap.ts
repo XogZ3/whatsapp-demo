@@ -20,12 +20,18 @@ export const pages = [
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseURL = getBaseUrl();
 
-  // Generate only canonical entries
+  // Generate entries for all locale + page combinations
   const entries: MetadataRoute.Sitemap = pages.map((page) => ({
     url: `${baseURL}${page ? `/${page}` : ''}`,
     lastModified: new Date(),
     changeFrequency: 'daily' as const,
     priority: page === '' ? 1.0 : 0.8,
+    // Add language alternates directly in the sitemap
+    alternates: {
+      languages: {
+        pt: `${baseURL}/pt${page ? `/${page}` : ''}`,
+      },
+    },
   }));
 
   return entries;

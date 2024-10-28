@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import type { MetadataRoute } from 'next';
 
-import { AppConfig } from '@/utils/appConfig';
 import { getBaseUrl } from '@/utils/helpers';
 
 export const pages = [
@@ -21,33 +20,13 @@ export const pages = [
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseURL = getBaseUrl();
 
-  // Generate localized entries
-  const localizedEntries: MetadataRoute.Sitemap = AppConfig.locales.flatMap(
-    (locale) => {
-      const localePrefix =
-        locale === AppConfig.defaultLocale ? '' : `/${locale}`;
-      return pages.map((page) => ({
-        url: `${baseURL}${localePrefix}${page ? `/${page}` : ''}`,
-        lastModified: new Date(),
-        changeFrequency: 'daily',
-        priority: page === '' ? 1.0 : 0.8,
-      }));
-    },
-  );
-
-  // Generate canonical entries (only for non-default locales)
-  const canonicalEntries: MetadataRoute.Sitemap = pages.map((page) => ({
+  // Generate only canonical entries
+  const entries: MetadataRoute.Sitemap = pages.map((page) => ({
     url: `${baseURL}${page ? `/${page}` : ''}`,
     lastModified: new Date(),
     changeFrequency: 'daily' as const,
     priority: page === '' ? 1.0 : 0.8,
   }));
 
-  // Combine entries, removing duplicates
-  const combinedEntries = [...localizedEntries, ...canonicalEntries];
-  const uniqueEntries = Array.from(
-    new Map(combinedEntries.map((entry) => [entry.url, entry])).values(),
-  );
-
-  return uniqueEntries;
+  return entries;
 }

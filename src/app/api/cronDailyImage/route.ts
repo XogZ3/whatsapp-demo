@@ -5,8 +5,14 @@ import type { NextRequest } from 'next/server';
 
 import firebase from '@/modules/firebase';
 import { generateImagesWithReplicateUploadToFirebase } from '@/modules/replicate';
-import { sendMessageToWhatsapp } from '@/modules/whatsapp/whatsapp';
-import { getEligibleClientidArray } from '@/utils/ReplyHelper/FirebaseHelpers';
+import {
+  makeRequestToWhatsapp,
+  sendMessageToWhatsapp,
+} from '@/modules/whatsapp/whatsapp';
+import {
+  getEligibleClientidArray,
+  setSystemMessage,
+} from '@/utils/ReplyHelper/FirebaseHelpers';
 
 const firestore = firebase.getFirestore();
 const corsHeaders = {
@@ -90,7 +96,9 @@ async function sendDailyImageTemplate(
       ],
     },
   };
-  await sendMessageToWhatsapp(payload);
+  const res = await makeRequestToWhatsapp(payload);
+  const whatsappMessageID = res?.messages[0]?.id;
+  if (res) await setSystemMessage(payload, whatsappMessageID);
 }
 
 export async function POST(request: NextRequest) {

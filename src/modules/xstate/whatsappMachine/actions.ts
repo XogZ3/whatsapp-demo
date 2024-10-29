@@ -97,11 +97,9 @@ export const actionsFactory = (config: IMachineConfig): any => {
       const subscriptionExists = await checkExistingSubscription(config);
       if (subscriptionExists) return;
       try {
-        console.log(
-          '[~] attempting to sendIntroOptionsMessageBasedOnPhoneNumber',
-        );
+        console.log('[~] attempting to sendIntroMessageBasedOnPhoneNumber');
         // use language based on phone number
-        const { clientid, language } = config.userMetaData;
+        const { clientid, language = 'english' } = config.userMetaData;
 
         const languageButtonTextLocale = getTranslation('language', language);
         const finalLanguageButtonText = `Language${languageButtonTextLocale !== 'Language' ? ` | ${languageButtonTextLocale}` : ''}`;
@@ -116,12 +114,9 @@ export const actionsFactory = (config: IMachineConfig): any => {
           getTranslation('tutorial', language),
         );
       } catch (err) {
-        console.error(
-          'Error in sendIntroOptionsMessageBasedOnPhoneNumber:',
-          err,
-        );
+        console.error('Error in sendIntroMessageBasedOnPhoneNumber:', err);
         await sendMessageToTelegram(
-          `Error in sendIntroOptionsMessageBasedOnPhoneNumber: ${JSON.stringify(err, null, 2)}`,
+          `Error in sendIntroMessageBasedOnPhoneNumber: ${err}`,
         );
       }
     },
@@ -131,7 +126,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
 
       try {
         const { clientid } = config.userMetaData;
-        const language = event?.context?.language;
+        const language = event?.context?.language || 'english';
 
         const languageButtonTextLocale = getTranslation('language', language);
         const finalLanguageButtonText = `Language${languageButtonTextLocale !== 'Language' ? ` | ${languageButtonTextLocale}` : ''}`;
@@ -164,7 +159,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
           '[~] attempting to sendIntroOptionsMessageBasedOnPhoneNumber',
         );
         // use language based on phone number
-        const { clientid, language } = config.userMetaData;
+        const { clientid, language = 'english' } = config.userMetaData;
 
         const languageButtonTextLocale = getTranslation('language', language);
         const finalLanguageButtonText = `Language${languageButtonTextLocale !== 'Language' ? ` | ${languageButtonTextLocale}` : ''}`;

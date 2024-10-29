@@ -1,6 +1,7 @@
 import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import Head from 'next/head';
 import { notFound } from 'next/navigation';
 import Script from 'next/script';
 import { NextIntlClientProvider, useMessages } from 'next-intl';
@@ -174,6 +175,14 @@ export default function RootLayout(props: {
   return (
     <ViewTransitions>
       <html lang={props.params.locale} suppressHydrationWarning>
+        <Head>
+          <link
+            rel="preload"
+            href="/assets/images/hero_man_ai.webp"
+            as="image"
+            type="image/webp"
+          />
+        </Head>
         <body className={inter.className}>
           <script
             type="application/ld+json"

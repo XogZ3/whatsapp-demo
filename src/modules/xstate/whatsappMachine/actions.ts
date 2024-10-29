@@ -806,10 +806,6 @@ export const actionsFactory = (config: IMachineConfig): any => {
         age,
         gender,
       } = config.userMetaData;
-      // console.log(
-      //   '[+] sendImprovedPromptConfirmationAndSetContext: ',
-      //   JSON.stringify(event, null, 2),
-      // );
       const prompt: string = event?.context?.latestPrompt;
       async function getImprovedPromptSetItInContext() {
         await setProcessingFlag(clientid, true);
@@ -957,7 +953,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
                 });
               } else if (!hasValidMembership) {
                 // hard transition xstate to paywall
-                message = getTranslation('paywall', language);
+                message = getTranslation('membership expired', language);
                 const stateJSON = JSON.parse(clientData.state);
                 stateJSON.value = 'paywall';
 
@@ -1161,7 +1157,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
                 });
               } else if (!hasValidMembership) {
                 // hard transition xstate to paywall
-                message = getTranslation('paywall', language);
+                message = getTranslation('membership expired', language);
                 const stateJSON = JSON.parse(clientData.state);
                 stateJSON.value = 'paywall';
 

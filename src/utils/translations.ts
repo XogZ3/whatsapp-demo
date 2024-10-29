@@ -78,6 +78,7 @@ export type TranslationKeys =
   | 'payment failed'
   | 'new user paywall'
   | 'experiment paywall message'
+  | 'membership expired'
   | 'referral 1'
   | 'referral 2'
   | 'nsfw error';
@@ -454,7 +455,11 @@ Experimente o FotoLabs AI para criar fotos incríveis de IA suas no WhatsApp. Us
     pt: `para o seu *primeiro mês GRATUITO*! Basta enviar uma mensagem para https://wa.me/971505072100`,
     ar: `للحصول على *الشهر الأول مجانًا*! فقط أرسل رسالة إلى https://wa.me/971505072100`,
   },
-
+  'membership expired': {
+    en: 'Your membership has expired. Please contact us for support: hello@fotolabs.ai',
+    pt: 'Sua assinatura expirou. Por favor, entre em contato conosco para suporte: hello@fotolabs.ai',
+    ar: 'تم انتهاء اشتراكك. يرجى الاتصال بنا للدعم: hello@fotolabs.ai',
+  },
   'nsfw error': {
     en: `Uh-oh. Unsafe content detected 🚫. Please try a different prompt.`,
     pt: `Ops. Conteúdo inseguro detectado 🚫. Tente um prompt diferente.`,

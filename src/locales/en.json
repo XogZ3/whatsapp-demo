@@ -823,6 +823,8 @@
     "next_step": "Click below to continue generating awesome images!"
   },
   "CancelSubscription": {
+    "meta_title": "Cancel Subscription",
+    "meta_description": "Cancel your subscription",
     "header": "Cancel Subscription",
     "danger": "Danger Zone!",
     "instruction": "You can cancel your subscription at any time. Please enter the WhatsApp number you are using with FotoLabs AI",

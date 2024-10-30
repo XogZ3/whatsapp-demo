@@ -525,6 +525,8 @@
     "next_step": "Clique abaixo para continuar gerando imagens incríveis!"
   },
   "CancelSubscription": {
+    "meta_title": "Cancelar Assinatura",
+    "meta_description": "Cancelar sua assinatura",
     "header": "Cancelar Assinatura",
     "danger": "Zona de Perigo!",
     "instruction": "Você pode cancelar sua assinatura a qualquer momento. Por favor, insira o número do WhatsApp que você está usando com o FotoLabs AI",

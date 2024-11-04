@@ -124,12 +124,14 @@ export async function POST(request: NextRequest) {
     });
   }
 
-  const clientidArray = snapshot.docs.map((doc) => {
-    console.log(
-      `Client ID: ${doc.id}, paywallSentTimestamp: ${doc.data().paywallSentTimestamp}, discountSent: ${doc.data().discountSent}`,
-    );
-    return doc.id;
-  });
+  const clientidArray = snapshot.docs
+    .filter((doc) => doc.data().subscriptionStatus !== 'active')
+    .map((doc) => {
+      console.log(
+        `Client ID: ${doc.id}, paywallSentTimestamp: ${doc.data().paywallSentTimestamp}, discountSent: ${doc.data().discountSent}, subscriptionStatus: ${doc.data().subscriptionStatus}`,
+      );
+      return doc.id;
+    });
 
   await sendDiscountMessages(clientidArray);
 
@@ -142,9 +144,7 @@ export async function POST(request: NextRequest) {
   await batch.commit();
 
   if (clientidArray.length > 0) {
-    await sendMessageToTelegram(
-      `[s] dicount sent to ${clientidArray.length} users`,
-    );
+    await sendMessageToTelegram(`[s] dicount sent to users: ${clientidArray}`);
   }
 
   return new Response(

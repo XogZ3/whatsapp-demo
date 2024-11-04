@@ -93,7 +93,7 @@ async function handleSubscriptionEvent(event: Stripe.Event) {
       }
 
       if (event.type === 'customer.subscription.created') {
-        stateJSON.value = 'generatingModel';
+        stateJSON.value = 'imagesIncompletePaid';
         stateJSON.context.shortenedStripeLink = '';
       } else if (event.type === 'customer.subscription.deleted') {
         stateJSON.value = 'paywall';
@@ -233,7 +233,7 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
       stateJSON = {};
     }
 
-    stateJSON.value = 'generatingModel';
+    stateJSON.value = 'imagesIncompletePaid';
 
     const updates: Partial<UserFieldsFirebase> = {
       customerId,

@@ -25,11 +25,23 @@ async function sendDiscountMessages(
 
   for (const { id: clientid, language = 'english' } of clientDataArray) {
     try {
-      const languageCode = language === 'portuguese' ? 'pt_BR' : 'en';
-      const templateName =
-        languageCode === 'pt_BR'
-          ? 'fotolabs_retireve_newusers_pt'
-          : 'fotolabs_retireve_newusers_en';
+      // const languageCode = language === 'portuguese' ? 'pt_BR' : 'en';
+      let languageCode: string;
+      let templateName: string;
+      switch (language) {
+        case 'portuguese':
+          languageCode = 'pt_BR';
+          templateName = 'fotolabs_retireve_newusers_pt';
+          break;
+        case 'malay':
+          languageCode = 'ms';
+          templateName = 'fotolabs_retireve_newusers_ms';
+          break;
+        default:
+          languageCode = 'en';
+          templateName = 'fotolabs_retireve_newusers_en';
+          break;
+      }
 
       const paymentConfirmationPayload: ICreateMessagePayload = {
         phoneNumber: clientid,

@@ -29,12 +29,21 @@ async function sendConfirmCancellationTemplate(
 ) {
   const languageCode = getLanguageCode(language);
   let finalLanguageCode: any;
-  if (languageCode === 'pt') finalLanguageCode = 'pt_BR';
-  else finalLanguageCode = languageCode;
-
   let templateName: string;
-  if (languageCode === 'pt') templateName = 'fotolabs_cancellation_pt';
-  else templateName = 'fotolabs_cancellation';
+  switch (languageCode) {
+    case 'pt':
+      finalLanguageCode = 'pt_BR';
+      templateName = 'fotolabs_cancellation_pt';
+      break;
+    case 'ms':
+      finalLanguageCode = 'ms';
+      templateName = 'fotolabs_cancellation_ms';
+      break;
+    default:
+      finalLanguageCode = 'en';
+      templateName = 'fotolabs_cancellation';
+      break;
+  }
 
   const payload: ICreateMessagePayload = {
     phoneNumber: clientid,

@@ -325,10 +325,10 @@ export const actionsFactory = (config: IMachineConfig): any => {
         quickReply: true,
         button1id: 'english',
         button2id: 'portuguese',
-        button3id: 'arabic',
+        button3id: 'malay',
         button1: 'English',
         button2: 'Português',
-        button3: 'عربي',
+        button3: 'Melayu',
         msgBody: message,
       };
       await config.whatsappInstance.send(payload);

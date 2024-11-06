@@ -43,6 +43,7 @@ const countryCodeToLanguage: { [key: string]: Language } = {
   '971': 'arabic', // UAE - Arabic
   '966': 'arabic', // KSA - Arabic
   '55': 'portuguese', // Brazil - Portuguese
+  '60': 'malay', // Malaysia - Malay
   // Add more mappings here
 };
 

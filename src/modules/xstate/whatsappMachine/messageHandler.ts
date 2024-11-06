@@ -46,11 +46,13 @@ export const handleMessage = async (
       upload: 'UPLOAD',
       'upload photos': 'UPLOAD',
       'carregar fotos': 'UPLOAD',
+      'Muat Naik Foto': 'UPLOAD',
       pricing: 'PRICING',
       language: 'LANGUAGE',
       english: 'ENGLISH',
       portuguese: 'PORTUGUESE',
       arabic: 'ARABIC',
+      malay: 'MALAY',
       tutorial: 'TUTORIAL',
     },
     [State.imagesIncomplete]: {
@@ -92,6 +94,8 @@ export const handleMessage = async (
       'back to safety': 'SAFE',
       'Cancelar assinatura': 'CANCEL',
       'Voltar seguro': 'SAFE',
+      'Batalkan langganan': 'CANCEL',
+      'Kembali selamat': 'SAFE',
     },
   };
 

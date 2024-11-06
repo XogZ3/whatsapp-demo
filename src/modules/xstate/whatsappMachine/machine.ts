@@ -60,6 +60,15 @@ export const machineFactory = (config: IMachineConfig): any => {
                 'sendIntroMessage',
               ],
             },
+            MALAY: {
+              actions: [
+                'assignMessage',
+                'assignLanguage',
+                'setLanguageInFirebase',
+                'sendSelectedLanguage',
+                'sendIntroMessage',
+              ],
+            },
             PRICING: { actions: ['assignMessage', 'sendPricing'] },
             TUTORIAL: { actions: ['assignMessage', 'sendTutorial'] },
             UPLOAD: { actions: ['assignMessage'], target: 'imagesIncomplete' },

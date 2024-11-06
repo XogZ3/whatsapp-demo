@@ -374,10 +374,6 @@ We're super excited about the potential of your AI model!
 ✨ Your personal activation link is ready
 ⚡ Complete payment to start generating incredible photos
 
-→ Complete & Start Generating Now 🚀
-[Payment Button: $19.99]
-💎 Regular price: $29.99 ✨ Save $10
-
 📱 Generate unlimited AI photos in WhatsApp for 30 days:
 •⁠  ⁠🎯 Create in just 3 minutes with 5-15 selfies
 •⁠  ⁠🔄 Unlimited high-quality AI photo generation
@@ -404,16 +400,14 @@ We're super excited about the potential of your AI model!
 1.⁠ ⁠💳 Complete payment now
 2.⁠ ⁠🎨 Start generating unlimited photos immediately!
 
-⏰ Secure link expires in 24 hours`,
+→ Complete & Start Generating Now 🚀
+💎 Regular price: $29.99
+✨ Save $10 now using this secure link, expires in 24 hours`,
 
     pt: `🎉 UAU! Suas Fotos Estão Incríveis! 🌟
 Estamos super empolgados com o potencial do seu modelo de IA!
 ✨ Seu link de ativação pessoal está pronto
 ⚡ Complete o pagamento para começar a gerar fotos incríveis
-
-→ Complete & Comece a Gerar Agora 🚀
-[Botão de Pagamento: R$ 19,99]
-💎 Preço regular: R$ 29,99 ✨ Economize R$ 10
 
 📱 Gere fotos ilimitadas de IA no WhatsApp por 30 dias:
 •⁠  ⁠🎯 Crie em apenas 3 minutos com 5-15 selfies
@@ -441,7 +435,9 @@ Estamos super empolgados com o potencial do seu modelo de IA!
 1.⁠ ⁠💳 Complete o pagamento agora
 2.⁠ ⁠🎨 Comece a gerar fotos ilimitadas imediatamente!
 
-⏰ O link seguro expira em 24 horas`,
+→ Complete e Comece a Gerar Agora 🚀
+💎 Preço normal: $29,99
+✨ Economize $10 agora usando este link seguro, expira em 24 horas`,
 
     ar: `🎉 واو! صورك تبدو مذهلة! 🌟
 نحن متحمسون جدًا لإمكانيات نموذج الذكاء الاصطناعي الخاص بك!
@@ -478,7 +474,9 @@ Estamos super empolgados com o potencial do seu modelo de IA!
 1.⁠ ⁠💳 أكمل الدفع الآن
 2.⁠ ⁠🎨 ابدأ توليد الصور غير المحدودة فورًا!
 
-⏰ الرابط الآمن ينتهي بعد 24 ساعة`,
+→ أكمل وابدأ التوليد الآن 🚀
+💎 السعر العادي: $29.99
+✨ وفر $10 الآن باستخدام هذا الرابط الآمن، ينتهي خلال 24 ساعة`,
   },
   'active membership': {
     en: 'You already have an existing membership. Send your prompt now. :)',

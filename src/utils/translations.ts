@@ -221,7 +221,7 @@ export const TRANSLATION_MAP: Record<
     en: 'English selected',
     pt: 'Português selecionado',
     ar: 'العربية المختارة',
-    ms: 'Arab selecionado',
+    ms: 'Bahasa Malaysia dipilih',
   },
   'generating model': {
     en: "Generating model... Will send a message once it's ready. It will only take 2-3 minutes. ⚡",

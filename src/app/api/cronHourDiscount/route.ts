@@ -125,7 +125,11 @@ export async function POST(request: NextRequest) {
   }
 
   const clientidArray = snapshot.docs
-    .filter((doc) => doc.data().subscriptionStatus !== 'active')
+    .filter(
+      (doc) =>
+        doc.data().subscriptionStatus &&
+        doc.data().subscriptionStatus !== 'active',
+    )
     .map((doc) => {
       console.log(
         `Client ID: ${doc.id}, paywallSentTimestamp: ${doc.data().paywallSentTimestamp}, discountSent: ${doc.data().discountSent}, subscriptionStatus: ${doc.data().subscriptionStatus}`,

@@ -576,7 +576,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
               'shortenedStripeLink',
               shortLink,
             );
-            message = `${getTranslation('new paywall message 1', language)}\n${shortLink}\n${getTranslation('new paywall message 2', language)}`;
+            message = `${getTranslation('new paywall message 1', language)}\n${shortLink}\n${getTranslation('new paywall message 2', language)}\n\n${shortLink}`;
             await config.whatsappInstance.send({
               phoneNumber: clientid,
               text: true,
@@ -593,7 +593,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
             );
           });
       } else {
-        message = `${getTranslation('new paywall message 1', language)}\n${shortenedStripeLink}\n${getTranslation('new paywall message 2', language)}`;
+        message = `${getTranslation('new paywall message 1', language)}\n${shortenedStripeLink}\n${getTranslation('new paywall message 2', language)}\n\n${shortenedStripeLink}`;
         await config.whatsappInstance.send({
           phoneNumber: clientid,
           text: true,
@@ -641,7 +641,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
               shortLink,
             );
 
-            message = `${getTranslation('new paywall message 1', language)}\n${shortLink}\n${getTranslation('new paywall message 2', language)}`;
+            message = `${getTranslation('new paywall message 1', language)}\n${shortLink}\n${getTranslation('new paywall message 2', language)}\n\n${shortLink}`;
             await config.whatsappInstance.send({
               phoneNumber: clientid,
               text: true,
@@ -658,7 +658,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
             );
           });
       } else {
-        message = `${getTranslation('new paywall message 1', language)}\n${shortenedStripeLink}\n${getTranslation('new paywall message 2', language)}`;
+        message = `${getTranslation('new paywall message 1', language)}\n${shortenedStripeLink}\n${getTranslation('new paywall message 2', language)}\n\n${shortenedStripeLink}`;
         await config.whatsappInstance.send({
           phoneNumber: clientid,
           text: true,
@@ -965,7 +965,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
                         'shortenedStripeLink',
                         shortLink,
                       );
-                      message = `${getTranslation('new paywall message 1', language)}\n${shortLink}\n${getTranslation('new paywall message 2', language)}`;
+                      message = `${getTranslation('new paywall message 1', language)}\n${shortLink}\n${getTranslation('new paywall message 2', language)}\n\n${shortLink}`;
                       await config.whatsappInstance.send({
                         phoneNumber: clientid,
                         text: true,
@@ -982,7 +982,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
                       );
                     });
                 } else {
-                  message = `${getTranslation('new paywall message 1', language)}\n${shortenedStripeLink}\n${getTranslation('new paywall message 2', language)}`;
+                  message = `${getTranslation('new paywall message 1', language)}\n${shortenedStripeLink}\n${getTranslation('new paywall message 2', language)}\n\n${shortenedStripeLink}`;
                   await config.whatsappInstance.send({
                     phoneNumber: clientid,
                     text: true,
@@ -1156,7 +1156,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
                         'shortenedStripeLink',
                         shortLink,
                       );
-                      message = `${getTranslation('new paywall message 1', language)}\n${shortLink}\n${getTranslation('new paywall message 2', language)}`;
+                      message = `${getTranslation('new paywall message 1', language)}\n${shortLink}\n${getTranslation('new paywall message 2', language)}\n\n${shortLink}`;
                       await config.whatsappInstance.send({
                         phoneNumber: clientid,
                         text: true,
@@ -1173,7 +1173,7 @@ export const actionsFactory = (config: IMachineConfig): any => {
                       );
                     });
                 } else {
-                  message = `${getTranslation('new paywall message 1', language)}\n${shortenedStripeLink}\n${getTranslation('new paywall message 2', language)}`;
+                  message = `${getTranslation('new paywall message 1', language)}\n${shortenedStripeLink}\n${getTranslation('new paywall message 2', language)}\n\n${shortenedStripeLink}`;
                   await config.whatsappInstance.send({
                     phoneNumber: clientid,
                     text: true,

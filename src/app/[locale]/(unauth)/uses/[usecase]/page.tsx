@@ -308,6 +308,7 @@ export async function generateMetadata(props: {
       canonical: `${baseUrl}/uses/${props.params.usecase}`,
       languages: {
         pt: `${baseUrl}/pt/uses/${props.params.usecase}`,
+        ms: `${baseUrl}/ms/uses/${props.params.usecase}`,
       },
     },
     robots: {

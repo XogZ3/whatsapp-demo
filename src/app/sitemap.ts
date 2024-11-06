@@ -30,6 +30,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     alternates: {
       languages: {
         pt: `${baseURL}/pt${page ? `/${page}` : ''}`,
+        ms: `${baseURL}/ms${page ? `/${page}` : ''}`,
       },
     },
   }));

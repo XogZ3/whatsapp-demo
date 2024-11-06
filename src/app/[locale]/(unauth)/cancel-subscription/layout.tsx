@@ -27,6 +27,7 @@ export async function generateMetadata(props: {
       canonical: `${baseUrl}/cancel-subscription`,
       languages: {
         pt: `${baseUrl}/pt/cancel-subscription`,
+        ms: `${baseUrl}/ms/cancel-subscription`,
       },
     },
     robots: {

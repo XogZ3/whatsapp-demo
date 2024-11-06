@@ -79,6 +79,7 @@ export async function generateMetadata(props: {
       canonical: `${baseUrl}`,
       languages: {
         pt: `${baseUrl}/pt`,
+        ms: `${baseUrl}/ms`,
       },
     },
     keywords: [

@@ -369,9 +369,116 @@ Agradecemos seu entendimento e apoio! 🙏💖`,
     ar: 'للحصول على 50% من الخطة الشهرية الخاصة بك! 🚨 استخدم هذا الرمز خلال 12 ساعة للحصول على FotoLabs AI بسعر $9.99 فقط.',
   },
   paywall: {
-    en: 'To continue enjoying FotoLabs AI, please complete your payment using the link below. 💳',
-    pt: 'Para continuar desfrutando do FotoLabs AI, por favor, efetue o pagamento usando o link abaixo. 💳',
-    ar: 'للاستمرار في الاستمتاع بـ FotoLabs AI، يرجى إكمال الدفع باستخدام الرابط أدناه. 💳',
+    en: `🎉 WOW! Your Photos Look Amazing! 🌟
+We're super excited about the potential of your AI model!
+✨ Your personal activation link is ready
+⚡ Complete payment to start generating incredible photos
+
+→ Complete & Start Generating Now 🚀
+[Payment Button: $19.99]
+💎 Regular price: $29.99 ✨ Save $10
+
+📱 Generate unlimited AI photos in WhatsApp for 30 days:
+•⁠  ⁠🎯 Create in just 3 minutes with 5-15 selfies
+•⁠  ⁠🔄 Unlimited high-quality AI photo generation
+•⁠  ⁠⚡ Super-fast results directly in WhatsApp
+•⁠  ⁠✅ High resemblance & photorealism guaranteed
+
+🌟 Everything You Can Create:
+•⁠  ⁠👔 Professional LinkedIn headshots
+•⁠  ⁠💝 Stunning dating profile photos
+•⁠  ⁠🌴 Instagram-worthy travel pictures
+•⁠  ⁠👗 Virtual outfit try-ons before shopping
+•⁠  ⁠💇‍♀️ Custom hairstyle transformations
+•⁠  ⁠🌎 Photos in any location worldwide
+•⁠  ⁠🎭 Personalized AI model that looks like you
+
+🏆 Why FotoLabs AI is Better:
+•⁠  ⁠💫 Higher resemblance than Midjourney
+•⁠  ⁠🎯 Easier than ComfyUI - no tech skills needed
+•⁠  ⁠📱 Works right in WhatsApp - no apps needed
+•⁠  ⁠⚡ Super fast generation - get photos instantly
+•⁠  ⁠📸 Professional quality without photographers
+
+🎯 You're just one step away:
+1.⁠ ⁠💳 Complete payment now
+2.⁠ ⁠🎨 Start generating unlimited photos immediately!
+
+⏰ Secure link expires in 24 hours`,
+
+    pt: `🎉 UAU! Suas Fotos Estão Incríveis! 🌟
+Estamos super empolgados com o potencial do seu modelo de IA!
+✨ Seu link de ativação pessoal está pronto
+⚡ Complete o pagamento para começar a gerar fotos incríveis
+
+→ Complete & Comece a Gerar Agora 🚀
+[Botão de Pagamento: R$ 19,99]
+💎 Preço regular: R$ 29,99 ✨ Economize R$ 10
+
+📱 Gere fotos ilimitadas de IA no WhatsApp por 30 dias:
+•⁠  ⁠🎯 Crie em apenas 3 minutos com 5-15 selfies
+•⁠  ⁠🔄 Geração ilimitada de fotos de alta qualidade
+•⁠  ⁠⚡ Resultados super rápidos diretamente no WhatsApp
+•⁠  ⁠✅ Garantia de alta semelhança e fotorrealismo
+
+🌟 Tudo o que Você Pode Criar:
+•⁠  ⁠👔 Fotos profissionais para o LinkedIn
+•⁠  ⁠💝 Fotos impressionantes para perfis de namoro
+•⁠  ⁠🌴 Fotos dignas de Instagram em locais paradisíacos
+•⁠  ⁠👗 Experimentação virtual de roupas antes de comprar
+•⁠  ⁠💇‍♀️ Transformações personalizadas de penteado
+•⁠  ⁠🌎 Fotos em qualquer lugar do mundo
+•⁠  ⁠🎭 Modelo de IA personalizado que parece com você
+
+🏆 Por que o FotoLabs AI é Melhor:
+•⁠  ⁠💫 Semelhança maior que o Midjourney
+•⁠  ⁠🎯 Mais fácil que o ComfyUI - sem necessidade de habilidades técnicas
+•⁠  ⁠📱 Funciona direto no WhatsApp - sem aplicativos necessários
+•⁠  ⁠⚡ Geração super rápida - obtenha fotos instantaneamente
+•⁠  ⁠📸 Qualidade profissional sem precisar de fotógrafos
+
+🎯 Você está a um passo:
+1.⁠ ⁠💳 Complete o pagamento agora
+2.⁠ ⁠🎨 Comece a gerar fotos ilimitadas imediatamente!
+
+⏰ O link seguro expira em 24 horas`,
+
+    ar: `🎉 واو! صورك تبدو مذهلة! 🌟
+نحن متحمسون جدًا لإمكانيات نموذج الذكاء الاصطناعي الخاص بك!
+✨ رابط التفعيل الشخصي جاهز
+⚡ أكمل الدفع لبدء توليد الصور الرائعة
+
+→ أكمل وابدأ التوليد الآن 🚀
+[زر الدفع: $19.99]
+💎 السعر العادي: $29.99 ✨ وفر $10
+
+📱 توليد صور غير محدودة للذكاء الاصطناعي على WhatsApp لمدة 30 يومًا:
+•⁠  ⁠🎯 أنشئ في 3 دقائق فقط باستخدام 5-15 صورة شخصية
+•⁠  ⁠🔄 توليد صور AI عالية الجودة بدون حدود
+•⁠  ⁠⚡ نتائج فائقة السرعة مباشرةً على WhatsApp
+•⁠  ⁠✅ ضمان التشابه العالي والواقعية
+
+🌟 كل ما يمكنك إنشاؤه:
+•⁠  ⁠👔 صور احترافية لرأس LinkedIn
+•⁠  ⁠💝 صور رائعة لملفات المواعدة الشخصية
+•⁠  ⁠🌴 صور جذابة على إنستغرام لمواقع سياحية
+•⁠  ⁠👗 تجريب افتراضي للأزياء قبل الشراء
+•⁠  ⁠💇‍♀️ تحولات مخصصة للشعر
+•⁠  ⁠🌎 صور في أي موقع حول العالم
+•⁠  ⁠🎭 نموذج ذكاء اصطناعي شخصي يشبهك
+
+🏆 لماذا FotoLabs AI أفضل:
+•⁠  ⁠💫 تشابه أعلى من Midjourney
+•⁠  ⁠🎯 أسهل من ComfyUI - لا حاجة لمهارات تقنية
+•⁠  ⁠📱 يعمل مباشرةً على WhatsApp - لا حاجة للتطبيقات
+•⁠  ⁠⚡ توليد سريع جدًا - احصل على الصور فورًا
+•⁠  ⁠📸 جودة احترافية بدون مصورين
+
+🎯 أنت على بعد خطوة واحدة:
+1.⁠ ⁠💳 أكمل الدفع الآن
+2.⁠ ⁠🎨 ابدأ توليد الصور غير المحدودة فورًا!
+
+⏰ الرابط الآمن ينتهي بعد 24 ساعة`,
   },
   'active membership': {
     en: 'You already have an existing membership. Send your prompt now. :)',

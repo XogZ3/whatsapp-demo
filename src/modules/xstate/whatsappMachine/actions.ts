@@ -576,13 +576,6 @@ export const actionsFactory = (config: IMachineConfig): any => {
               'shortenedStripeLink',
               shortLink,
             );
-
-            message = getTranslation('new user paywall', language);
-            await config.whatsappInstance.send({
-              phoneNumber: clientid,
-              text: true,
-              msgBody: message,
-            });
             message = `${getTranslation('paywall', language)}\n\n${shortLink}`;
             await config.whatsappInstance.send({
               phoneNumber: clientid,
@@ -600,12 +593,6 @@ export const actionsFactory = (config: IMachineConfig): any => {
             );
           });
       } else {
-        message = getTranslation('new user paywall', language);
-        await config.whatsappInstance.send({
-          phoneNumber: clientid,
-          text: true,
-          msgBody: message,
-        });
         message = `${getTranslation('paywall', language)}\n\n${shortenedStripeLink}`;
         await config.whatsappInstance.send({
           phoneNumber: clientid,
@@ -978,13 +965,6 @@ export const actionsFactory = (config: IMachineConfig): any => {
                         'shortenedStripeLink',
                         shortLink,
                       );
-
-                      message = getTranslation('new user paywall', language);
-                      await config.whatsappInstance.send({
-                        phoneNumber: clientid,
-                        text: true,
-                        msgBody: message,
-                      });
                       message = `${getTranslation('paywall', language)}\n\n${shortLink}`;
                       await config.whatsappInstance.send({
                         phoneNumber: clientid,
@@ -1002,12 +982,6 @@ export const actionsFactory = (config: IMachineConfig): any => {
                       );
                     });
                 } else {
-                  message = getTranslation('new user paywall', language);
-                  await config.whatsappInstance.send({
-                    phoneNumber: clientid,
-                    text: true,
-                    msgBody: message,
-                  });
                   message = `${getTranslation('paywall', language)}\n\n${shortenedStripeLink}`;
                   await config.whatsappInstance.send({
                     phoneNumber: clientid,
@@ -1182,13 +1156,6 @@ export const actionsFactory = (config: IMachineConfig): any => {
                         'shortenedStripeLink',
                         shortLink,
                       );
-
-                      message = getTranslation('new user paywall', language);
-                      await config.whatsappInstance.send({
-                        phoneNumber: clientid,
-                        text: true,
-                        msgBody: message,
-                      });
                       message = `${getTranslation('paywall', language)}\n\n${shortLink}`;
                       await config.whatsappInstance.send({
                         phoneNumber: clientid,
@@ -1206,12 +1173,6 @@ export const actionsFactory = (config: IMachineConfig): any => {
                       );
                     });
                 } else {
-                  message = getTranslation('new user paywall', language);
-                  await config.whatsappInstance.send({
-                    phoneNumber: clientid,
-                    text: true,
-                    msgBody: message,
-                  });
                   message = `${getTranslation('paywall', language)}\n\n${shortenedStripeLink}`;
                   await config.whatsappInstance.send({
                     phoneNumber: clientid,

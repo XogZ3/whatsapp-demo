@@ -671,11 +671,12 @@ export async function sendIntroTemplateMessage(
   langauge: Language,
   stripeLink: string,
 ) {
-  let whatsappLanguageCode: 'en' | 'pt_br' | 'ar';
+  let whatsappLanguageCode: 'en' | 'pt_br' | 'ar' | 'ms';
   let whatsappTemplateName:
     | 'fotolabs_intro_en'
     | 'fotolabs_intro_pt_br'
-    | 'fotolabs_intro_ar';
+    | 'fotolabs_intro_ar'
+    | 'fotolabs_intro_ms';
   switch (langauge) {
     case 'english':
       whatsappLanguageCode = 'en';
@@ -684,6 +685,10 @@ export async function sendIntroTemplateMessage(
     case 'arabic':
       whatsappLanguageCode = 'ar';
       whatsappTemplateName = 'fotolabs_intro_ar';
+      break;
+    case 'malay':
+      whatsappLanguageCode = 'ms';
+      whatsappTemplateName = 'fotolabs_intro_ms';
       break;
     case 'portuguese':
       whatsappLanguageCode = 'pt_br';

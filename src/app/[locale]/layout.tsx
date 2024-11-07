@@ -33,19 +33,19 @@ export async function generateMetadata(props: {
   return {
     metadataBase: new URL(baseUrl),
     title: {
-      default: t('meta_title', { appName: AppConfig.name }) as string,
-      template: `%s - ${t('meta_title', { appName: AppConfig.name }) as string}`,
+      default: t('meta_title'),
+      template: `%s - ${t('meta_title')}`,
     },
-    description: t('meta_description', { appName: AppConfig.name }) as string,
+    description: t('meta_description'),
     twitter: {
       card: 'summary_large_image',
     },
     openGraph: {
       title: {
-        default: t('meta_title', { appName: AppConfig.name }) as string,
-        template: `%s - ${t('meta_title', { appName: AppConfig.name }) as string}`,
+        default: t('meta_title'),
+        template: `%s - ${t('meta_title')}`,
       },
-      description: t('meta_description', { appName: AppConfig.name }) as string,
+      description: t('meta_description'),
       type: 'website',
       images: [
         {

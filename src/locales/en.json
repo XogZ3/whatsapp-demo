@@ -292,7 +292,7 @@
     }
   },
   "Terms": {
-    "meta_title": "FotoLabs AI - Terms",
+    "meta_title": "Terms",
     "meta_description": "Here are the terms of FotoLabs AI service for your reference.",
     "title": "TERMS OF USE",
     "agreement_intro": "Agreement Between You and Oddbit Technology LLC",
@@ -599,7 +599,7 @@
     }
   },
   "Privacy": {
-    "meta_title": "FotoLabs AI - Privacy Policy",
+    "meta_title": "Privacy Policy",
     "meta_description": "Here is the Privacy Policy of FotoLabs AI service for your reference.",
     "title": "Privacy Policy",
     "intro": "Odd Bit Technology LLC (\"fotolabs\") provides this Privacy Policy to inform you of our policies and procedures regarding the collection, use and disclosure of Personally Identifiable Information that we may obtain through the use of the fotolabs and access to https://fotolabs.ai, referred to as the \"website\". The use of information provided through our Platform is limited to the purpose of providing you the service for which the customer is using the fotolabs. By using our Site and Applications you acknowledge that you have reviewed and agree to the terms of this Privacy Policy. If you have questions or concerns regarding this Privacy Policy, please contact us at hello@fotolabs.ai.",
@@ -950,5 +950,13 @@
     "ai_generated": "AI generated",
     "last_section_header_1": "Elevate Your Professional Presence with AI-Powered Headshots",
     "last_section_subheader": "Make a lasting impression in your career with high-quality, AI-generated headshots tailored to your industry and personal brand"
+  },
+  "SuccessPage": {
+    "meta_title": "Success",
+    "meta_description": "You've successfully purchased a FotoLabs AI subscription. Click below to continue generating awesome images!"
+  },
+  "BuyPage": {
+    "meta_title": "Buy",
+    "meta_description": "Buy a FotoLabs AI subscription"
   }
 }

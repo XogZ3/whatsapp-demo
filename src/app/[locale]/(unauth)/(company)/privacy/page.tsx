@@ -12,16 +12,24 @@ export async function generateMetadata(props: {
     locale: props.params.locale,
     namespace: 'Privacy',
   });
+  const baseUrl = getBaseUrl();
 
   return {
-    metadataBase: new URL(getBaseUrl()),
-    title: t('meta_title', { appName: AppConfig.name }),
-    description: t('meta_description', { appName: AppConfig.name }),
+    metadataBase: new URL(baseUrl),
+    title: t('meta_title'),
+    description: t('meta_description'),
     openGraph: {
       title: {
-        absolute: t('meta_title', { appName: AppConfig.name }) as string,
+        absolute: t('meta_title'),
       },
-      description: t('meta_description', { appName: AppConfig.name }) as string,
+      description: t('meta_description'),
+    },
+    alternates: {
+      canonical: `${baseUrl}/privacy`,
+      languages: {
+        pt: `${baseUrl}/pt/privacy`,
+        ms: `${baseUrl}/ms/privacy`,
+      },
     },
   };
 }

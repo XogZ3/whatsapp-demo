@@ -2,7 +2,6 @@ import type { Metadata, NextPage } from 'next';
 import { getTranslations } from 'next-intl/server';
 
 import TnC from '@/components/(Company)/TnC';
-import { AppConfig } from '@/utils/appConfig';
 import { getBaseUrl } from '@/utils/helpers';
 
 export async function generateMetadata(props: {
@@ -13,15 +12,24 @@ export async function generateMetadata(props: {
     namespace: 'Terms',
   });
 
+  const baseUrl = getBaseUrl();
+
   return {
-    metadataBase: new URL(getBaseUrl()),
-    title: t('meta_title', { appName: AppConfig.name }),
-    description: t('meta_description', { appName: AppConfig.name }),
+    metadataBase: new URL(baseUrl),
+    title: t('meta_title'),
+    description: t('meta_description'),
     openGraph: {
       title: {
-        absolute: t('meta_title', { appName: AppConfig.name }),
+        absolute: t('meta_title'),
       },
-      description: t('meta_description', { appName: AppConfig.name }),
+      description: t('meta_description'),
+    },
+    alternates: {
+      canonical: `${baseUrl}/terms-and-conditions`,
+      languages: {
+        pt: `${baseUrl}/pt/terms-and-conditions`,
+        ms: `${baseUrl}/ms/terms-and-conditions`,
+      },
     },
   };
 }

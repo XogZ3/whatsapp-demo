@@ -4,11 +4,11 @@ import { getTranslations } from 'next-intl/server';
 import { getBaseUrl } from '@/utils/helpers';
 
 export async function generateMetadata(props: {
-  params: { locale: string };
+  params: { locale: string; shortCode: string };
 }): Promise<Metadata> {
   const t = await getTranslations({
     locale: props.params.locale,
-    namespace: 'CancelSubscription',
+    namespace: 'BuyPage',
   });
   const baseUrl = getBaseUrl();
 
@@ -24,18 +24,18 @@ export async function generateMetadata(props: {
       description: t('meta_description'),
     },
     alternates: {
-      canonical: `${baseUrl}/cancel-subscription`,
+      canonical: `${baseUrl}/buy/${props.params.shortCode}`,
       languages: {
-        pt: `${baseUrl}/pt/cancel-subscription`,
-        ms: `${baseUrl}/ms/cancel-subscription`,
+        pt: `${baseUrl}/pt/buy/${props.params.shortCode}`,
+        ms: `${baseUrl}/ms/buy/${props.params.shortCode}`,
       },
     },
     robots: {
-      index: true,
-      follow: true,
+      index: false,
+      follow: false,
     },
   };
 }
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function BuyLayout({ children }: { children: React.ReactNode }) {
   return children;
 }

@@ -652,5 +652,13 @@
     "ai_generated": "Gerado por IA",
     "last_section_header_1": "Eleve Sua Presença Profissional com Fotos de Perfil Geradas por IA",
     "last_section_subheader": "Cause uma impressão duradoura em sua carreira com fotos de perfil de alta qualidade geradas por IA, adaptadas à sua indústria e marca pessoal"
+  },
+  "SuccessPage": {
+    "meta_title": "Sucesso",
+    "meta_description": "Você comprou com sucesso uma assinatura FotoLabs AI. Clique abaixo para continuar gerando fotos incríveis!"
+  },
+  "BuyPage": {
+    "meta_title": "Comprar",
+    "meta_description": "Comprar uma assinatura FotoLabs AI"
   }
 }

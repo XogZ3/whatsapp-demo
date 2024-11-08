@@ -27,7 +27,7 @@ export default function HeroSection() {
           <h1 className="flex flex-col text-center text-5xl font-normal tracking-normal sm:text-left sm:text-6xl">
             <span>{t('header_1')}</span>
             <Link
-              href="https://wa.me/971505072100"
+              href="https://api.whatsapp.com/send?phone=971505072100&text=Hi,%20I%27d%20like%20to%20try%20FotoLabs%20AI."
               target="_blank"
               rel="noopener noreferrer"
               className="py-0 font-medium underline decoration-red-500 decoration-4 underline-offset-4 transition-all duration-200 ease-in-out sm:hover:text-opacity-80 sm:hover:underline-offset-8"
@@ -55,7 +55,7 @@ export default function HeroSection() {
           </ul>
           <ButtonFancy
             text={t('web_cta')}
-            href="https://wa.me/971505072100"
+            href="https://api.whatsapp.com/send?phone=971505072100&text=Hi,%20I%27d%20like%20to%20try%20FotoLabs%20AI."
             className="w-fit min-w-64"
             onClick={() =>
               sendGAEvent('event', 'conversion', {

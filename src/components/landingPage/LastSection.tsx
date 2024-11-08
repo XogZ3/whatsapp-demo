@@ -26,7 +26,7 @@ export default function LastSection() {
             <p className="gap-x-2 text-5xl sm:text-6xl">
               {t('conjunction')}{' '}
               <Link
-                href="https://wa.me/971505072100"
+                href="https://api.whatsapp.com/send?phone=971505072100&text=Hi,%20I%27d%20like%20to%20try%20FotoLabs%20AI."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-medium underline decoration-red-500 decoration-4 underline-offset-4 transition-all duration-200 ease-in-out hover:text-opacity-80 hover:underline-offset-8"
@@ -54,7 +54,7 @@ export default function LastSection() {
             </ul>
             <ButtonFancy
               text={t('web_cta')}
-              href="https://wa.me/971505072100"
+              href="https://api.whatsapp.com/send?phone=971505072100&text=Hi,%20I%27d%20like%20to%20try%20FotoLabs%20AI."
               className="w-fit min-w-64"
               onClick={() =>
                 sendGAEvent('event', 'conversion', {

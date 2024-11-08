@@ -7,7 +7,7 @@ const socialLinks = [
   {
     id: 'whatsapp',
     icon: FaWhatsapp,
-    href: `https://wa.me/?text=${encodeURIComponent(`Check out ${AppConfig.name}: ${AppConfig.url}`)}`,
+    href: `https://wa.me/971505072100?text=${encodeURIComponent(`I'd like to try FotoLabs AI.`)}`,
     ariaLabel: 'Share on WhatsApp',
   },
   // {

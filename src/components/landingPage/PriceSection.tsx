@@ -64,7 +64,7 @@ export default function PriceSection() {
             <CardFooter className="w-full">
               <ButtonFancy
                 text={t('web_cta')}
-                href="https://wa.me/971505072100"
+                href="https://api.whatsapp.com/send?phone=971505072100&text=Hi,%20I%27d%20like%20to%20try%20FotoLabs%20AI."
                 className="w-full"
                 onClick={() =>
                   sendGAEvent('event', 'conversion', {

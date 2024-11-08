@@ -98,7 +98,7 @@ export default function CancelSubscriptionPage() {
             >
               <MessagesSquareIcon size={96} />
               <p>{t('confirm_message')}</p>
-              <Link href="https://wa.me/971505072100">
+              <Link href="https://api.whatsapp.com/send?phone=971505072100&text=Hi,%20I%27d%20like%20to%20try%20FotoLabs%20AI.">
                 <Button
                   variant="default"
                   className="min-w-[185px] text-sm font-semibold sm:text-lg"
@@ -120,7 +120,7 @@ export default function CancelSubscriptionPage() {
             >
               <AlertOctagonIcon size={96} />
               <p>{t('too_frequent')}</p>
-              <Link href="https://wa.me/971505072100">
+              <Link href="https://api.whatsapp.com/send?phone=971505072100&text=Hi,%20I%27d%20like%20to%20try%20FotoLabs%20AI.">
                 <Button
                   variant="default"
                   className="min-w-[185px] text-sm font-semibold sm:text-lg"

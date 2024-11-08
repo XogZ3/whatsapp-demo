@@ -93,7 +93,7 @@ const TryNowButton = () => {
           className="relative overflow-hidden rounded-md"
         >
           <Link
-            href="https://wa.me/971505072100"
+            href="https://api.whatsapp.com/send?phone=971505072100&text=Hi,%20I%27d%20like%20to%20try%20FotoLabs%20AI."
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center px-4 py-2 text-xl font-semibold text-white transition duration-300 hover:bg-gradient-to-tl hover:ring-1 hover:ring-slate-700/90 hover:ring-offset-2 dark:from-red-600 dark:to-amber-600 dark:hover:ring-slate-300/90"

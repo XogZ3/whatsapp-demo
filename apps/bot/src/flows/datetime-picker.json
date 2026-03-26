@@ -1,0 +1,39 @@
+{
+  "version": "6.2",
+  "screens": [
+    {
+      "id": "SELECT_DATETIME",
+      "title": "Pick a time",
+      "data": {},
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "DatePicker",
+            "name": "date",
+            "label": "Date",
+            "min-date": "${today}",
+            "max-date": "${today_plus_30}"
+          },
+          {
+            "type": "RadioButtonsGroup",
+            "name": "time_slot",
+            "label": "Available times",
+            "data-source": "${available_slots}"
+          },
+          {
+            "type": "Footer",
+            "label": "Book this slot",
+            "on-click-action": {
+              "name": "complete",
+              "payload": {
+                "date": "${form.date}",
+                "time": "${form.time_slot}"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

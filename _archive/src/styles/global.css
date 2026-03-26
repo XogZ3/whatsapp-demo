@@ -1,0 +1,126 @@
+@tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+
+  @layer base {
+    :root {
+      --background: 0 100% 0%;
+      --foreground: 0 0% 98%;
+
+      --card: 240 10% 3.9%;
+      --card-foreground: 0 0% 98%;
+
+      --popover: 240 10% 3.9%;
+      --popover-foreground: 0 0% 98%;
+
+      --primary: 0 0% 98%;
+      --primary-foreground: 240 5.9% 10%;
+
+      --secondary: 240 3.7% 15.9%;
+      --secondary-foreground: 0 0% 98%;
+
+      --muted: 240 3.7% 15.9%;
+      --muted-foreground: 240 5% 64.9%;
+
+      --accent: 240 3.7% 15.9%;
+      --accent-foreground: 0 0% 98%;
+
+      --destructive: 0 62.8% 30.6%;
+      --destructive-foreground: 0 0% 98%;
+
+      --border: 240 3.7% 15.9%;
+      --input: 240 3.7% 15.9%;
+      --ring: 240 4.9% 83.9%;
+
+      --radius: 0.5rem;
+    }
+
+    .dark {
+      --background: 0 100% 0%;
+      --foreground: 0 0% 98%;
+
+      --card: 240 10% 3.9%;
+      --card-foreground: 0 0% 98%;
+
+      --popover: 240 10% 3.9%;
+      --popover-foreground: 0 0% 98%;
+
+      --primary: 0 0% 98%;
+      --primary-foreground: 240 5.9% 10%;
+
+      --secondary: 240 3.7% 15.9%;
+      --secondary-foreground: 0 0% 98%;
+
+      --muted: 240 3.7% 15.9%;
+      --muted-foreground: 240 5% 64.9%;
+
+      --accent: 240 3.7% 15.9%;
+      --accent-foreground: 0 0% 98%;
+
+      --destructive: 0 62.8% 30.6%;
+      --destructive-foreground: 0 0% 98%;
+
+      --border: 240 3.7% 15.9%;
+      --input: 240 3.7% 15.9%;
+      --ring: 240 4.9% 83.9%;
+    }
+  }
+
+  @layer base {
+    * {
+      @apply border-border;
+    }
+    body {
+      @apply bg-background text-foreground;
+    }
+    /* #region  /**=========== Typography =========== */
+    .h0 {
+      @apply text-3xl font-bold md:text-5xl;
+    }
+
+    h1,
+    .h1 {
+      @apply text-3xl font-bold md:text-6xl;
+    }
+
+    h2,
+    .h2 {
+      @apply text-xl font-bold md:text-3xl;
+    }
+
+    h3,
+    .h3 {
+      @apply text-lg font-bold md:text-2xl;
+    }
+
+    h4,
+    .h4 {
+      @apply text-base font-bold md:text-lg;
+    }
+
+    body,
+    .p {
+      @apply text-sm md:text-base;
+    }
+    /* #endregion  /**======== Typography =========== */
+  }
+  
+  @media (min-width: 768px) {
+    .min-h-screen-minus-14 {
+      min-height: calc(100vh - 14px);
+    }
+  }
+  
+  @media (max-width: 768px) and (-webkit-min-device-pixel-ratio:0) {
+    input {
+      font-size: 16px;
+    }
+  }
+
+  .text-secondary {
+    color: #00973d
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }

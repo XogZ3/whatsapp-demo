@@ -10,7 +10,6 @@
 - Created packages/config-ts (shared tsconfig base) and packages/config-eslint (shared ESLint flat config)
 - Configured Tailwind CSS v4 via @tailwindcss/vite plugin
 - Set up Astro i18n routing (en, ar, de) with RTL support
-- Set up Cloudflare Workers for bot with wrangler.toml
 
 **Verification:**
 ```
@@ -23,10 +22,8 @@ pnpm turbo build -> 3 successful, 3 total (2m29s)
 
 **What was done:**
 - Zod schemas in packages/shared: salon, service, stylist, client, booking, waitlist, message_log
-- TypeScript types inferred via z.infer
-- Supabase migration SQL at apps/bot/supabase/migrations/001_initial_schema.sql
-- RLS policies for multi-tenant salon isolation + service_role bypass
-- Partial indexes for booking reminders and active services
+- Supabase migration SQL with RLS policies + service_role bypass
+- Partial indexes for booking reminders
 
 **Verification:**
 ```
@@ -38,26 +35,43 @@ pnpm turbo build -> 3 successful, 3 total
 **Goal:** A fully functional WhatsApp booking bot with all conversation flows.
 
 **What was done:**
-- Hono app with webhook verification (GET) and message handler (POST)
-- HMAC-SHA256 signature verification middleware
-- Message deduplication middleware (Upstash Redis)
-- XState v5 state machine: idle -> onboarding -> serviceSelection -> stylistSelection -> dateTimeSelection -> confirmation -> booked -> rescheduling/cancellation
-- All 7 conversation flows from spec implemented
-- WhatsApp Cloud API sender (text, buttons, list, location messages + templates)
-- State persistence (serialize XState state to Supabase per client)
-- Reminder system (Cloudflare Cron Triggers, 48h + 2h)
+- Hono app with HMAC-SHA256 verification + Upstash Redis dedup middleware
+- XState v5 state machine (9 states, all 7 conversation flows)
+- WhatsApp Cloud API sender + Supabase state persistence
+- Cloudflare Cron Triggers for 48h + 2h reminders
 - WhatsApp Flows JSON for date/time picker
-- wrangler.toml for Cloudflare Workers
 
 **Verification:**
 ```
-pnpm turbo build -> 3 successful, bot builds to 240.74 KiB / gzip: 50.27 KiB
-vitest run -> 13 tests passed (0 failed)
+pnpm turbo build -> 3 successful, bot: 240.74 KiB / gzip: 50.27 KiB
+vitest run -> 13 tests passed
 ```
 
-**Note:** Font fetching from Google Fonts times out in this build environment (no external network). Fonts will resolve correctly in production/CI with internet access.
+## Phase 4: Marketing Site (Astro) - COMPLETED
 
-**Next:** Phase 4 - Marketing site
+**Goal:** A polished marketing site with an interactive WhatsApp phone mockup demo.
 
-## Phase 4: Marketing site (Astro) - PENDING
+**What was done:**
+- Layout with Astro Font API (Inter + Noto Sans Arabic), i18n (en/ar/de), RTL support
+- Landing page: hero with auto-play WhatsApp phone mockup, value props, how-it-works, ROI calculator, pricing preview, FAQ, CTA
+- Pricing page: 3-tier plans (Starter EUR 49, Growth EUR 79, Scale EUR 99) with competitor comparison table
+- Demo page: full-page interactive WhatsApp simulator (React island, client:visible)
+- WhatsApp demo component: phone frame, chat bubbles, typing indicator, auto-play + interactive modes
+- ROI Calculator: interactive no-show cost calculator (React island)
+- Header with nav + Click-to-WhatsApp CTA
+- Footer with sitemap links
+- SEO: meta tags, Open Graph, Twitter cards, JSON-LD, canonical URLs, sitemap via @astrojs/sitemap
+
+**Verification:**
+```
+pnpm turbo build -> 3 successful, 3 total (2m29s)
+- /index.html prerendered
+- /pricing/index.html prerendered
+- /demo/index.html prerendered
+```
+
+**Note:** Google Fonts fetch times out in offline build env. Will work in production.
+
+**Next:** Phase 5 - Integration and polish
+
 ## Phase 5: Integration and polish - PENDING

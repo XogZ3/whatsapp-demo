@@ -1,11 +1,12 @@
+import type { SnapshotFrom } from "xstate";
 import { createActor } from "xstate";
 
 import type { BookingContext } from "../machine/context";
 import type { BookingEvent } from "../machine/events";
 import { bookingMachine } from "../machine/machine";
 import type { SupabaseClient } from "../services/supabase";
-import type { OutgoingMessage, WhatsAppSender } from "../whatsapp/sender";
 import type { IncomingMessage, WebhookPayload } from "../types";
+import type { OutgoingMessage, WhatsAppSender } from "../whatsapp/sender";
 
 interface HandleMessageDeps {
   db: SupabaseClient;
@@ -24,7 +25,7 @@ export async function handleMessage(
   if (!value?.messages?.length) return;
 
   const message = value.messages[0];
-  const contactName = value.contacts?.[0]?.profile?.name ?? null;
+  const contactName = value.contacts?.[0]?.profile?.name ?? undefined;
   const from = message.from;
 
   // Get or create client
@@ -50,7 +51,7 @@ export async function handleMessage(
   });
 
   // Rehydrate state machine
-  const snapshot = client!.state_snapshot as Record<string, unknown> | null;
+  const snapshot = client!.state_snapshot as SnapshotFrom<typeof bookingMachine> | null;
   const actor = createActor(bookingMachine, {
     snapshot: snapshot ?? undefined,
     input: undefined,

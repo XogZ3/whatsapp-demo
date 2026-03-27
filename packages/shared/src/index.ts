@@ -1,7 +1,7 @@
-export { bookingSchema, type Booking } from "./schemas/booking";
-export { clientSchema, type Client } from "./schemas/client";
-export { messageLogSchema, type MessageLog } from "./schemas/message-log";
-export { salonSchema, type Salon } from "./schemas/salon";
-export { serviceSchema, type Service } from "./schemas/service";
-export { stylistSchema, type Stylist } from "./schemas/stylist";
-export { waitlistSchema, type Waitlist } from "./schemas/waitlist";
+export { type Booking,bookingSchema } from "./schemas/booking";
+export { type Client,clientSchema } from "./schemas/client";
+export { type MessageLog,messageLogSchema } from "./schemas/message-log";
+export { type Salon,salonSchema } from "./schemas/salon";
+export { type Service,serviceSchema } from "./schemas/service";
+export { type Stylist,stylistSchema } from "./schemas/stylist";
+export { type Waitlist,waitlistSchema } from "./schemas/waitlist";

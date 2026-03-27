@@ -17,7 +17,7 @@ export async function verifyWebhook(c: Context<AppEnv>, next: Next) {
   }
 
   // Store raw body so downstream handlers can parse it
-  c.set("rawBody" as never, body);
+  c.set("rawBody", body);
   await next();
 }
 

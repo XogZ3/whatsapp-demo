@@ -106,7 +106,7 @@ export default function WhatsAppDemo({ interactive = false }: Props) {
   const [scriptIndex, setScriptIndex] = useState(0);
   const [waitingForChoice, setWaitingForChoice] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const scrollToBottom = useCallback(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });

@@ -12,6 +12,7 @@ export type Bindings = {
 
 export type Variables = {
   salonId: string;
+  rawBody: string;
 };
 
 export type AppEnv = {

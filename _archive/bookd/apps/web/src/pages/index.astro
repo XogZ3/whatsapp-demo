@@ -1,0 +1,252 @@
+---
+import Layout from "../layouts/Layout.astro";
+import WhatsAppDemo from "../components/WhatsAppDemo.tsx";
+import ROICalculator from "../components/ROICalculator.tsx";
+---
+
+<Layout title="Bookd - WhatsApp Salon Booking" description="Turn WhatsApp messages into confirmed appointments. Zero commission booking for salons in UAE and Germany.">
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden bg-gradient-to-b from-emerald-50 to-white">
+    <div class="mx-auto flex max-w-7xl flex-col items-center gap-12 px-4 py-20 sm:px-6 lg:flex-row lg:px-8 lg:py-28">
+      <div class="flex-1 text-center lg:text-left">
+        <div class="mb-4 inline-flex items-center rounded-full bg-emerald-100 px-4 py-1.5 text-sm font-medium text-emerald-700">
+          WhatsApp-native booking
+        </div>
+        <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
+          Your customers already message you on WhatsApp.
+          <span class="text-emerald-600"> Turn those messages into confirmed appointments.</span>
+        </h1>
+        <p class="mt-6 text-lg text-gray-600 sm:text-xl">
+          Bookd handles booking, reminders, rescheduling, and cancellations — all inside WhatsApp. Zero commission. Setup in minutes.
+        </p>
+        <div class="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center lg:justify-start">
+          <a
+            href="https://wa.me/1234567890?text=Hi"
+            class="inline-flex items-center justify-center gap-2 rounded-full bg-emerald-600 px-8 py-4 text-lg font-semibold text-white shadow-lg shadow-emerald-600/25 transition-all hover:bg-emerald-700 hover:shadow-xl"
+          >
+            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+            </svg>
+            Try the Demo
+          </a>
+          <a
+            href="/demo"
+            class="inline-flex items-center justify-center rounded-full border border-gray-300 bg-white px-8 py-4 text-lg font-semibold text-gray-700 transition-all hover:bg-gray-50"
+          >
+            See interactive demo
+          </a>
+        </div>
+      </div>
+      <div class="flex-shrink-0">
+        <WhatsAppDemo client:visible />
+      </div>
+    </div>
+  </section>
+
+  <!-- Value Props -->
+  <section class="py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">Why salons choose Bookd</h2>
+        <p class="mx-auto mt-4 max-w-2xl text-lg text-gray-500">
+          Everything happens inside WhatsApp — where your customers already are.
+        </p>
+      </div>
+
+      <div class="mt-16 grid gap-8 md:grid-cols-3">
+        <div class="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm">
+          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 text-2xl">
+            0%
+          </div>
+          <h3 class="mt-4 text-xl font-semibold text-gray-900">Zero Commission</h3>
+          <p class="mt-2 text-gray-500">
+            Unlike Treatwell (up to 35%) or Fresha, Bookd charges a flat monthly fee. Every booking dollar stays with you.
+          </p>
+        </div>
+
+        <div class="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm">
+          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 text-2xl">
+            60%
+          </div>
+          <h3 class="mt-4 text-xl font-semibold text-gray-900">Fewer No-Shows</h3>
+          <p class="mt-2 text-gray-500">
+            Automated WhatsApp reminders at 48h and 2h before appointments. Clients confirm, reschedule, or cancel with one tap.
+          </p>
+        </div>
+
+        <div class="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm">
+          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 text-2xl">
+            30s
+          </div>
+          <h3 class="mt-4 text-xl font-semibold text-gray-900">30-Second Booking</h3>
+          <p class="mt-2 text-gray-500">
+            No app downloads, no logins, no forms. Customers book in the same WhatsApp chat they already use to message you.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="bg-gray-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">How it works</h2>
+      </div>
+
+      <div class="mt-16 grid gap-8 md:grid-cols-4">
+        {[
+          { step: "1", title: "Customer messages you", desc: "They send a WhatsApp message to your business number." },
+          { step: "2", title: "Bookd takes over", desc: "Our bot presents services, stylists, and available times." },
+          { step: "3", title: "Booking confirmed", desc: "One tap to confirm. Calendar entry created automatically." },
+          { step: "4", title: "Reminders sent", desc: "48h and 2h reminders reduce no-shows by up to 60%." },
+        ].map((item) => (
+          <div class="text-center">
+            <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-600 text-lg font-bold text-white">
+              {item.step}
+            </div>
+            <h3 class="mt-4 text-lg font-semibold text-gray-900">{item.title}</h3>
+            <p class="mt-2 text-sm text-gray-500">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ROI Calculator -->
+  <section class="py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">
+            No-shows are costing you thousands
+          </h2>
+          <p class="mt-4 text-lg text-gray-500">
+            The average salon loses 20% of bookings to no-shows. With automated WhatsApp reminders, Bookd customers see a 60% reduction in no-shows.
+          </p>
+          <ul class="mt-6 space-y-3">
+            {[
+              "48-hour advance reminder with confirm/reschedule/cancel",
+              "2-hour reminder with location pin",
+              "Cancelled slots automatically offered to waitlist",
+              "No-show tracking and analytics (coming soon)",
+            ].map((item) => (
+              <li class="flex items-start gap-3">
+                <svg class="mt-1 h-5 w-5 flex-shrink-0 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                <span class="text-gray-600">{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <ROICalculator client:visible />
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Preview -->
+  <section class="bg-gray-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">Simple, transparent pricing</h2>
+      <p class="mx-auto mt-4 max-w-xl text-lg text-gray-500">
+        No commission. No per-booking fees. Just a flat monthly rate.
+      </p>
+
+      <div class="mt-12 grid gap-8 md:grid-cols-3">
+        {[
+          { name: "Starter", price: "49", desc: "For solo stylists", features: ["1 stylist", "Up to 100 bookings/mo", "WhatsApp booking", "Automated reminders"] },
+          { name: "Growth", price: "79", desc: "For small salons", features: ["Up to 5 stylists", "Unlimited bookings", "WhatsApp booking", "Automated reminders", "Returning customer memory", "Priority support"], popular: true },
+          { name: "Scale", price: "99", desc: "For multi-location", features: ["Unlimited stylists", "Unlimited bookings", "WhatsApp booking", "Automated reminders", "Multi-language (EN/AR/DE)", "Dedicated account manager"] },
+        ].map((plan) => (
+          <div class={`rounded-2xl border bg-white p-8 text-left shadow-sm ${plan.popular ? "border-emerald-500 ring-2 ring-emerald-500" : "border-gray-200"}`}>
+            {plan.popular && (
+              <div class="mb-4 inline-flex rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+                Most popular
+              </div>
+            )}
+            <h3 class="text-xl font-bold text-gray-900">{plan.name}</h3>
+            <p class="text-sm text-gray-500">{plan.desc}</p>
+            <div class="mt-4">
+              <span class="text-4xl font-bold text-gray-900">EUR {plan.price}</span>
+              <span class="text-gray-500">/mo</span>
+            </div>
+            <ul class="mt-6 space-y-3">
+              {plan.features.map((f: string) => (
+                <li class="flex items-center gap-2 text-sm text-gray-600">
+                  <svg class="h-4 w-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  {f}
+                </li>
+              ))}
+            </ul>
+            <a
+              href="https://wa.me/1234567890?text=Hi"
+              class={`mt-8 block w-full rounded-full py-3 text-center text-sm font-semibold transition-colors ${
+                plan.popular
+                  ? "bg-emerald-600 text-white hover:bg-emerald-700"
+                  : "border border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+              }`}
+            >
+              Get started
+            </a>
+          </div>
+        ))}
+      </div>
+
+      <a href="/pricing" class="mt-8 inline-block text-sm font-medium text-emerald-600 hover:underline">
+        See full pricing comparison &rarr;
+      </a>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-center text-3xl font-bold text-gray-900 sm:text-4xl">Frequently asked questions</h2>
+      <div class="mt-12 space-y-6">
+        {[
+          { q: "Do my customers need to install an app?", a: "No. Bookd works entirely inside WhatsApp, which your customers already have." },
+          { q: "Do you charge commission on bookings?", a: "Never. Bookd charges a flat monthly fee. Zero commission on every booking." },
+          { q: "How do reminders work?", a: "Bookd automatically sends WhatsApp reminders 48 hours and 2 hours before each appointment. Clients can confirm, reschedule, or cancel with one tap." },
+          { q: "Can customers reschedule or cancel?", a: "Yes. They simply message the bot and can reschedule or cancel in a few taps." },
+          { q: "What languages do you support?", a: "Currently English. Arabic and German support coming in Q2 2026." },
+          { q: "Can I try before I commit?", a: "Absolutely. Send a WhatsApp message to our demo number and experience a full booking flow." },
+        ].map((faq) => (
+          <details class="group rounded-xl border border-gray-200 bg-white">
+            <summary class="flex cursor-pointer items-center justify-between px-6 py-4 text-left text-lg font-medium text-gray-900">
+              {faq.q}
+              <svg class="h-5 w-5 flex-shrink-0 text-gray-400 transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </summary>
+            <p class="px-6 pb-4 text-gray-500">{faq.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bg-emerald-600 py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-white sm:text-4xl">
+        Ready to stop losing bookings?
+      </h2>
+      <p class="mx-auto mt-4 max-w-xl text-lg text-emerald-100">
+        Join salons that have cut no-shows by 60% and never miss a booking again.
+      </p>
+      <a
+        href="https://wa.me/1234567890?text=Hi"
+        class="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-lg font-semibold text-emerald-700 shadow-lg transition-all hover:bg-emerald-50"
+      >
+        <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+        </svg>
+        Start your free trial on WhatsApp
+      </a>
+    </div>
+  </section>
+</Layout>

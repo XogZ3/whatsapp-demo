@@ -1,0 +1,21 @@
+name = "savi-whatsapp-bot"
+main = "src/index.ts"
+compatibility_date = "2025-06-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Paid plan required — free tier 10ms CPU limit kills LLM calls
+# Usage model is set at account level; this comment is a reminder
+
+[vars]
+WHATSAPP_PHONE_NUMBER_ID = ""
+NOTIFICATION_EMAIL = ""
+
+# Secrets (set via `wrangler secret put`):
+# WHATSAPP_TOKEN
+# WHATSAPP_VERIFY_TOKEN
+# WHATSAPP_APP_SECRET
+# ANTHROPIC_API_KEY
+# SUPABASE_URL
+# SUPABASE_SERVICE_KEY
+# FIRECRAWL_API_KEY
+# RESEND_API_KEY

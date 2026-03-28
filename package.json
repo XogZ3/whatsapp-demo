@@ -1,28 +1,28 @@
 {
-  "name": "bookd",
+  "name": "savi-whatsapp-bot",
+  "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "check-types": "turbo run check-types",
-    "test": "turbo run test",
-    "format": "prettier --write \"**/*.{ts,tsx,astro,json,md}\""
+    "dev": "wrangler dev",
+    "build": "wrangler deploy --dry-run",
+    "deploy": "wrangler deploy",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.80.0",
+    "hono": "^4.12.9",
+    "resend": "^6.9.4",
+    "zod": "^3.24.0"
   },
   "devDependencies": {
-    "eslint": "^9.39.4",
-    "prettier": "^3.5.3",
-    "turbo": "^2.8.0"
+    "@cloudflare/workers-types": "^4.20250620.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4",
+    "wrangler": "^4.78.0"
   },
-  "packageManager": "pnpm@10.29.3",
   "engines": {
     "node": ">=22"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "workerd",
-      "sharp"
-    ]
   }
 }

@@ -1,87 +1,88 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code when working with code in this repository.
 
-## What is Bookd
+## What this is
 
-Bookd is a WhatsApp-native salon booking bot built by Savi agency. It handles the full booking lifecycle inside WhatsApp: service selection, stylist choice, date/time booking, reminders, rescheduling, and cancellation. The product has two surfaces: a WhatsApp bot (Hono on Cloudflare Workers) and a marketing site (Astro).
+Savi AI Product Advisor Bot: a WhatsApp bot that prospects text to experience Savi agency's AI capabilities. The bot runs product discovery conversations, scrapes prospect websites, generates scope summaries with pricing, and captures leads for follow-up proposals. The bot itself is the portfolio piece.
 
-## Monorepo structure
+Previous project (Bookd salon booking bot) is archived in `_archive/bookd/`.
+
+## Project structure
 
 ```
-bookd/
-  apps/
-    web/                  # Astro marketing site + interactive demo
-    bot/                  # Hono WhatsApp bot backend
-  packages/
-    shared/               # Zod schemas, types
-    config-ts/            # Shared tsconfig base
-    config-eslint/        # Shared ESLint config
-  turbo.json
-  pnpm-workspace.yaml
+src/
+  index.ts              # Hono app, webhook routes
+  middleware/
+    verify.ts           # HMAC-SHA256 signature verification
+    dedup.ts            # wamid deduplication via Supabase
+  handlers/
+    message.ts          # Main message handler orchestration
+  services/
+    conversation.ts     # Load, save, cap enforcement, timeout logic
+    ai.ts               # System prompt, Claude API calls, tool definitions
+    security.ts         # Input pre-screen, output validation
+    scraper.ts          # Firecrawl integration, content sandboxing
+    whatsapp.ts         # Send messages, format buttons/lists
+    email.ts            # Resend integration for lead notifications
+    supabase.ts         # Database client and queries
+  config/
+    prompts.ts          # System prompt, refusal templates
+    constants.ts        # Message cap, timeout duration
+  types.ts              # Shared types
+supabase/
+  migrations/           # Postgres schema
+wrangler.toml
 ```
 
 ## Commands
 
 ```bash
-# Root (runs across all packages via Turborepo)
-pnpm turbo build         # Build all packages
-pnpm turbo dev           # Start all dev servers
-pnpm turbo lint          # Lint all packages
-pnpm turbo check-types   # TypeScript type checking
-pnpm turbo test          # Run all tests
-
-# Bot-specific
-cd apps/bot
-pnpm vitest run          # Run bot tests
-pnpm wrangler dev        # Local dev server
-
-# Web-specific
-cd apps/web
-pnpm astro dev           # Local dev server (localhost:4321)
-pnpm astro build         # Production build
+pnpm install             # Install dependencies
+pnpm dev                 # Local dev server (wrangler)
+pnpm build               # Production build
+pnpm test                # Run tests (Vitest)
+pnpm typecheck           # TypeScript type checking
 ```
+
+## Tech stack
+
+- **Runtime**: Cloudflare Workers + Hono (TypeScript)
+- **LLM**: Claude Haiku 4.5 via `@anthropic-ai/sdk`
+- **Database**: Supabase (Postgres via PostgREST, raw fetch)
+- **Scraping**: Firecrawl `/v2/scrape` API
+- **Email**: Resend
+- **WhatsApp**: Cloud API (direct fetch)
+- **Package manager**: pnpm
+- **Tests**: Vitest
 
 ## Architecture
 
-### WhatsApp bot (`apps/bot/`)
-
-Hono app deployed to Cloudflare Workers. Messages flow through:
+Messages flow through:
 
 1. **Webhook** (`src/index.ts`) - GET for Meta verification, POST for messages
-2. **Middleware** - HMAC-SHA256 signature verification (`middleware/verify.ts`) + Upstash Redis deduplication (`middleware/dedup.ts`)
-3. **Message handler** (`handlers/message.ts`) - parses incoming WhatsApp messages, rehydrates XState machine, sends events, builds response messages
-4. **XState state machine** (`machine/machine.ts`) - states: idle → onboarding → serviceSelection → stylistSelection → dateTimeSelection → confirmation → booked → rescheduling/cancellation
-5. **WhatsApp sender** (`whatsapp/sender.ts`) - sends text, buttons, list, location messages and templates via Cloud API
-6. **Supabase service** (`services/supabase.ts`) - client state persistence, booking CRUD, reminder queries
-7. **Reminders** (`handlers/reminders.ts`) - 48h + 2h booking reminders via Cloudflare Cron Triggers
+2. **Middleware** - HMAC-SHA256 verify + wamid dedup
+3. **Message handler** - loads conversation, checks cap, routes to AI
+4. **AI service** - Claude Haiku 4.5 with tool calling (scrape_website, generate_scope_summary, capture_lead)
+5. **Security** - 5-layer prompt protection (hardening, pre-screen, XML separation, output validation, content sandboxing)
+6. **WhatsApp sender** - text + interactive button messages via Cloud API
+7. **Lead pipeline** - email capture, Supabase storage, Resend notification to Gokul
 
-State is persisted as serialized JSON in Supabase per client (`state_snapshot` field).
-
-### Marketing site (`apps/web/`)
-
-Astro with Tailwind CSS v4, React islands, Cloudflare adapter.
-
-- **Landing page** (`/`) - hero with auto-play WhatsApp phone mockup, value props, ROI calculator, pricing, FAQ
-- **Pricing** (`/pricing`) - 3-tier plans with competitor comparison
-- **Demo** (`/demo`) - interactive WhatsApp booking simulator
-- **i18n** - en (default, no prefix), ar (RTL), de
-
-### Shared package (`packages/shared/`)
-
-Zod schemas for: salon, service, stylist, client, booking, waitlist, message_log. TypeScript types inferred via `z.infer`.
-
-### Database
-
-Supabase (Postgres) with migration at `apps/bot/supabase/migrations/001_initial_schema.sql`. RLS policies for multi-tenant salon isolation.
+No state machine. LLM-driven conversation flow via system prompt.
 
 ## Key conventions
 
-- **Package manager**: pnpm with workspaces
-- **Build orchestration**: Turborepo
-- **TypeScript**: strict mode everywhere
-- **Imports**: `eslint-plugin-simple-import-sort` enforces sorted imports; use `import type` for type-only imports
-- **Tests**: Colocated with source (e.g., `machine.test.ts` next to `machine.ts`), Vitest
+- **TypeScript**: strict mode, `import type` for type-only imports
+- **Validation**: Zod at system boundaries
+- **Tests**: colocated with source, Vitest
 - **Commits**: Conventional Commits
-- **Deploy target**: Cloudflare Workers (both apps)
-- **State serialization**: XState machine state is stored as JSON in Supabase and rehydrated on each webhook call
+- **Deploy target**: Cloudflare Workers
+- **No monorepo**: single app, no Turborepo
+
+## Design spec
+
+Full design spec at `docs/superpowers/specs/2026-03-28-whatsapp-ai-advisor-design.md`
+
+## Planning
+
+GSD planning docs at `.planning/` (PROJECT.md, ROADMAP.md, REQUIREMENTS.md, research/)

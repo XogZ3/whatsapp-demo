@@ -96,8 +96,13 @@ export async function handleMessage(
   // Build messages for Claude (existing history + new user message)
   const messagesForClaude = [...conversation.messages, userMsg];
 
-  // 7. Call Claude
-  const { response } = await callClaude(env, messagesForClaude, extraContext);
+  // 7. Call Claude with tools
+  const { response } = await callClaude(
+    env,
+    messagesForClaude,
+    extraContext,
+    conversation,
+  );
 
   // 8. Security Layer 4: Output validation
   const { sanitized } = validateOutput(response);

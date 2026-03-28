@@ -16,11 +16,13 @@ import {
   GREETING_TEXT,
   GREETING_BUTTONS,
   CAP_REACHED_MESSAGE,
+  SOFT_WARNING_MESSAGE,
   REFUSAL_RESPONSE,
   HUMAN_ESCALATION_MESSAGE,
   BROWSING_RESPONSE,
   TIMEOUT_RESUME_PREFIX,
 } from "../config/prompts";
+import { SOFT_WARNING_AT } from "../config/constants";
 
 /**
  * Main message handler — orchestrates the full pipeline.
@@ -167,7 +169,12 @@ export async function handleMessage(
   // 11. Send response to WhatsApp
   await sendTextMessage(env, senderPhone, sanitized);
 
-  // 12. Save assistant message
+  // 12. Soft warning at 15 messages
+  if (conversation.message_count === SOFT_WARNING_AT) {
+    await sendTextMessage(env, senderPhone, SOFT_WARNING_MESSAGE);
+  }
+
+  // 13. Save assistant message
   const assistantMsg: ConversationMessage = {
     role: "assistant",
     content: sanitized,

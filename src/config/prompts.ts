@@ -78,6 +78,9 @@ export const GREETING_BUTTONS = [
 export const REFUSAL_RESPONSE =
   "I'm here to help you scope a product idea. What are you building?";
 
+export const SOFT_WARNING_MESSAGE =
+  "Quick heads up — you've got 5 messages left in this session. Want to wrap up with a scope summary? Or drop your email and I'll send a detailed proposal.";
+
 export const CAP_REACHED_MESSAGE =
   "That's a wrap for the AI advisor! You've used all your messages.\n\nTwo ways to continue:\n1. Drop your email and I'll send a detailed proposal within 24 hours\n2. Type \"human\" to talk to Gokul directly";
 

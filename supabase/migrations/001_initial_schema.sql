@@ -77,3 +77,14 @@ RETURNS TABLE(
     conversations.created_at,
     conversations.updated_at;
 $$ LANGUAGE sql;
+
+-- Function to append a message to conversation JSONB (atomic, no read-modify-write)
+CREATE OR REPLACE FUNCTION append_conversation_message(
+  p_conversation_id uuid,
+  p_message jsonb
+) RETURNS void AS $$
+  UPDATE conversations
+  SET messages = messages || jsonb_build_array(p_message),
+      updated_at = now()
+  WHERE id = p_conversation_id;
+$$ LANGUAGE sql;

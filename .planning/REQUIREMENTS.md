@@ -120,55 +120,55 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| HOOK-01 | — | Pending |
-| HOOK-02 | — | Pending |
-| HOOK-03 | — | Pending |
-| HOOK-04 | — | Pending |
-| HOOK-05 | — | Pending |
-| CONV-01 | — | Pending |
-| CONV-02 | — | Pending |
-| CONV-03 | — | Pending |
-| CONV-04 | — | Pending |
-| CONV-05 | — | Pending |
-| CONV-06 | — | Pending |
-| WARM-01 | — | Pending |
-| WARM-02 | — | Pending |
-| WARM-03 | — | Pending |
-| WARM-04 | — | Pending |
-| COLD-01 | — | Pending |
-| COLD-02 | — | Pending |
-| COLD-03 | — | Pending |
-| COLD-04 | — | Pending |
-| COLD-05 | — | Pending |
-| BROW-01 | — | Pending |
-| BROW-02 | — | Pending |
-| BROW-03 | — | Pending |
-| LEAD-01 | — | Pending |
-| LEAD-02 | — | Pending |
-| LEAD-03 | — | Pending |
-| LEAD-04 | — | Pending |
-| LEAD-05 | — | Pending |
-| LEAD-06 | — | Pending |
-| BUDG-01 | — | Pending |
-| BUDG-02 | — | Pending |
-| BUDG-03 | — | Pending |
-| BUDG-04 | — | Pending |
-| BUDG-05 | — | Pending |
-| SEC-01 | — | Pending |
-| SEC-02 | — | Pending |
-| SEC-03 | — | Pending |
-| SEC-04 | — | Pending |
-| SEC-05 | — | Pending |
-| SEC-06 | — | Pending |
-| HUMN-01 | — | Pending |
-| HUMN-02 | — | Pending |
-| HUMN-03 | — | Pending |
+| HOOK-01 | Phase 1 | Pending |
+| HOOK-02 | Phase 1 | Pending |
+| HOOK-03 | Phase 1 | Pending |
+| HOOK-04 | Phase 1 | Pending |
+| HOOK-05 | Phase 1 | Pending |
+| CONV-01 | Phase 2 | Pending |
+| CONV-02 | Phase 2 | Pending |
+| CONV-03 | Phase 2 | Pending |
+| CONV-04 | Phase 2 | Pending |
+| CONV-05 | Phase 2 | Pending |
+| CONV-06 | Phase 2 | Pending |
+| WARM-01 | Phase 5 | Pending |
+| WARM-02 | Phase 5 | Pending |
+| WARM-03 | Phase 5 | Pending |
+| WARM-04 | Phase 5 | Pending |
+| COLD-01 | Phase 4 | Pending |
+| COLD-02 | Phase 4 | Pending |
+| COLD-03 | Phase 4 | Pending |
+| COLD-04 | Phase 4 | Pending |
+| COLD-05 | Phase 4 | Pending |
+| BROW-01 | Phase 5 | Pending |
+| BROW-02 | Phase 5 | Pending |
+| BROW-03 | Phase 5 | Pending |
+| LEAD-01 | Phase 5 | Pending |
+| LEAD-02 | Phase 5 | Pending |
+| LEAD-03 | Phase 5 | Pending |
+| LEAD-04 | Phase 5 | Pending |
+| LEAD-05 | Phase 5 | Pending |
+| LEAD-06 | Phase 5 | Pending |
+| BUDG-01 | Phase 2 | Pending |
+| BUDG-02 | Phase 2 | Pending |
+| BUDG-03 | Phase 6 | Pending |
+| BUDG-04 | Phase 6 | Pending |
+| BUDG-05 | Phase 4 | Pending |
+| SEC-01 | Phase 3 | Pending |
+| SEC-02 | Phase 3 | Pending |
+| SEC-03 | Phase 3 | Pending |
+| SEC-04 | Phase 3 | Pending |
+| SEC-05 | Phase 3 | Pending |
+| SEC-06 | Phase 3 | Pending |
+| HUMN-01 | Phase 5 | Pending |
+| HUMN-02 | Phase 5 | Pending |
+| HUMN-03 | Phase 5 | Pending |
 
 **Coverage:**
-- v1 requirements: 42 total
-- Mapped to phases: 0
-- Unmapped: 42
+- v1 requirements: 43 total
+- Mapped to phases: 43
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-28*
-*Last updated: 2026-03-28 after initial definition*
+*Last updated: 2026-03-28 after roadmap creation*

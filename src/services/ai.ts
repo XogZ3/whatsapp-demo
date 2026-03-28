@@ -11,6 +11,10 @@ import { buildSystemPrompt } from "../config/prompts";
 import { MAX_RESPONSE_TOKENS, MAX_TOOL_ITERATIONS } from "../config/constants";
 import { scrapeWebsite } from "./scraper";
 import { updateConversation } from "./conversation";
+import { supabaseQuery } from "./supabase";
+import { sendLeadNotification } from "./email";
+import { sendTextMessage } from "./whatsapp";
+import { META_CLOSE_MESSAGE } from "../config/prompts";
 
 /** Tool definitions for Claude */
 const TOOLS: Tool[] = [
@@ -241,9 +245,51 @@ async function executeToolCall(
     }
 
     case "capture_lead": {
-      // This is a stub — full implementation in Phase 5
       const email = input.email as string;
-      return `Lead capture will be processed for ${email}. Confirm to the prospect.`;
+
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        return `Invalid email format: "${email}". Ask the prospect to provide a valid email address.`;
+      }
+
+      if (!conversation) {
+        return "No conversation context available for lead capture.";
+      }
+
+      // Save email to conversation
+      await updateConversation(env, conversation.id, {
+        email,
+        state: "converted",
+      });
+
+      // Create lead record in Supabase
+      await supabaseQuery(env, "leads", {
+        method: "POST",
+        body: {
+          conversation_id: conversation.id,
+          email,
+          phone: conversation.phone,
+          company_url: conversation.scraped_url,
+          scope_summary: conversation.scope_summary ?? "Discovery in progress",
+        },
+      });
+
+      // Send notification email to Gokul (fire and forget)
+      sendLeadNotification(env, {
+        phone: conversation.phone,
+        email,
+        companyUrl: conversation.scraped_url,
+        scopeSummary: conversation.scope_summary,
+        messages: conversation.messages,
+      }).catch((err) => console.error("Lead notification failed:", err));
+
+      // Send meta-close message after a brief delay
+      sendTextMessage(env, conversation.phone, META_CLOSE_MESSAGE).catch(
+        (err) => console.error("Meta-close send failed:", err),
+      );
+
+      return `Lead captured for ${email}. Confirm to the prospect that Gokul will send a proposal within 24 hours.`;
     }
 
     default:

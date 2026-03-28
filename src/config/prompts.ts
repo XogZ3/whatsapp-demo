@@ -81,6 +81,15 @@ export const REFUSAL_RESPONSE =
 export const CAP_REACHED_MESSAGE =
   "That's a wrap for the AI advisor! You've used all your messages.\n\nTwo ways to continue:\n1. Drop your email and I'll send a detailed proposal within 24 hours\n2. Type \"human\" to talk to Gokul directly";
 
+export const BROWSING_RESPONSE =
+  "No pressure! Here's what Savi does: we're a 3-person engineering studio that builds custom web apps, mobile apps, and AI products. Starting at $4K.\n\n" +
+  "Some things we've built:\n" +
+  "- Crypto investment platform ($12M+ in assets managed)\n" +
+  "- Multi-tenant taxi booking SaaS\n" +
+  "- AI app builder with 50K+ users\n\n" +
+  'If you ever have a product idea, text us back. This number\'s always on.\n\n' +
+  'Or type "human" to talk to Gokul directly.';
+
 export const HUMAN_ESCALATION_MESSAGE =
   'Connecting you to Gokul. He\'ll message you here on WhatsApp within a few hours. If it\'s urgent, email hello@savibm.com.';
 

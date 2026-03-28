@@ -5,16 +5,20 @@ import {
   createConversation,
   incrementAndLoad,
   appendMessage,
+  updateConversation,
   checkTimeout,
   truncateMessages,
 } from "../services/conversation";
 import { callClaude } from "../services/ai";
 import { preScreenMessage, validateOutput } from "../services/security";
+import { sendHumanEscalation } from "../services/email";
 import {
   GREETING_TEXT,
   GREETING_BUTTONS,
   CAP_REACHED_MESSAGE,
   REFUSAL_RESPONSE,
+  HUMAN_ESCALATION_MESSAGE,
+  BROWSING_RESPONSE,
   TIMEOUT_RESUME_PREFIX,
 } from "../config/prompts";
 
@@ -41,7 +45,32 @@ export async function handleMessage(
     }
   }
 
-  // 2. First-time greeting with 3-path buttons
+  // 2. Human escalation — works at ANY point, regardless of cap or state
+  if (text.toLowerCase().trim() === "human") {
+    await sendTextMessage(env, senderPhone, HUMAN_ESCALATION_MESSAGE);
+    // Fire notification to Gokul
+    sendHumanEscalation(env, {
+      phone: senderPhone,
+      messages: conversation.messages,
+    }).catch((err) => console.error("Human escalation email failed:", err));
+
+    const userMsg: ConversationMessage = {
+      role: "user",
+      content: text,
+      timestamp: new Date().toISOString(),
+    };
+    await appendMessage(env, conversation.id, userMsg);
+
+    const assistantMsg: ConversationMessage = {
+      role: "assistant",
+      content: HUMAN_ESCALATION_MESSAGE,
+      timestamp: new Date().toISOString(),
+    };
+    await appendMessage(env, conversation.id, assistantMsg);
+    return;
+  }
+
+  // 3. First-time greeting with 3-path buttons
   if (isFirstTime) {
     await sendButtonMessage(env, senderPhone, GREETING_TEXT, GREETING_BUTTONS);
 
@@ -54,20 +83,49 @@ export async function handleMessage(
     return;
   }
 
-  // 3. Atomic cap check + increment
+  // 4. Browsing path — static response, minimal AI budget
+  const buttonId = message.interactive?.button_reply?.id;
+  if (buttonId === "path_browsing") {
+    await sendTextMessage(env, senderPhone, BROWSING_RESPONSE);
+    await updateConversation(env, conversation.id, { path: "browsing" });
+
+    const userMsg: ConversationMessage = {
+      role: "user",
+      content: text,
+      timestamp: new Date().toISOString(),
+    };
+    await appendMessage(env, conversation.id, userMsg);
+
+    const assistantMsg: ConversationMessage = {
+      role: "assistant",
+      content: BROWSING_RESPONSE,
+      timestamp: new Date().toISOString(),
+    };
+    await appendMessage(env, conversation.id, assistantMsg);
+    return;
+  }
+
+  // Set path from button selection if applicable
+  if (buttonId === "path_warm" && !conversation.path) {
+    await updateConversation(env, conversation.id, { path: "warm" });
+    conversation.path = "warm";
+  } else if (buttonId === "path_cold" && !conversation.path) {
+    await updateConversation(env, conversation.id, { path: "cold" });
+    conversation.path = "cold";
+  }
+
+  // 5. Atomic cap check + increment
   const updated = await incrementAndLoad(env, senderPhone);
   if (!updated) {
-    // Cap reached
     await sendTextMessage(env, senderPhone, CAP_REACHED_MESSAGE);
     return;
   }
   conversation = updated;
 
-  // 4. Check 24h timeout
+  // 6. Check 24h timeout
   let extraContext: string | undefined;
   const { isTimedOut, previousTopic } = checkTimeout(conversation);
   if (isTimedOut) {
-    // Truncate to last 3 messages for context
     const truncated = await truncateMessages(
       env,
       conversation.id,
@@ -78,14 +136,14 @@ export async function handleMessage(
     extraContext = TIMEOUT_RESUME_PREFIX(previousTopic);
   }
 
-  // 5. Security Layer 2: Pre-screen input
+  // 7. Security Layer 2: Pre-screen input
   const { safe } = await preScreenMessage(env, text);
   if (!safe) {
     await sendTextMessage(env, senderPhone, REFUSAL_RESPONSE);
     return;
   }
 
-  // 6. Add user message to history
+  // 8. Add user message to history
   const userMsg: ConversationMessage = {
     role: "user",
     content: text,
@@ -93,10 +151,9 @@ export async function handleMessage(
   };
   await appendMessage(env, conversation.id, userMsg);
 
-  // Build messages for Claude (existing history + new user message)
   const messagesForClaude = [...conversation.messages, userMsg];
 
-  // 7. Call Claude with tools
+  // 9. Call Claude with tools
   const { response } = await callClaude(
     env,
     messagesForClaude,
@@ -104,13 +161,13 @@ export async function handleMessage(
     conversation,
   );
 
-  // 8. Security Layer 4: Output validation
+  // 10. Security Layer 4: Output validation
   const { sanitized } = validateOutput(response);
 
-  // 9. Send response to WhatsApp
+  // 11. Send response to WhatsApp
   await sendTextMessage(env, senderPhone, sanitized);
 
-  // 10. Save assistant message
+  // 12. Save assistant message
   const assistantMsg: ConversationMessage = {
     role: "assistant",
     content: sanitized,

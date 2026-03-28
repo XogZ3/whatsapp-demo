@@ -9,10 +9,12 @@ import {
   truncateMessages,
 } from "../services/conversation";
 import { callClaude } from "../services/ai";
+import { preScreenMessage, validateOutput } from "../services/security";
 import {
   GREETING_TEXT,
   GREETING_BUTTONS,
   CAP_REACHED_MESSAGE,
+  REFUSAL_RESPONSE,
   TIMEOUT_RESUME_PREFIX,
 } from "../config/prompts";
 
@@ -76,7 +78,14 @@ export async function handleMessage(
     extraContext = TIMEOUT_RESUME_PREFIX(previousTopic);
   }
 
-  // 5. Add user message to history
+  // 5. Security Layer 2: Pre-screen input
+  const { safe } = await preScreenMessage(env, text);
+  if (!safe) {
+    await sendTextMessage(env, senderPhone, REFUSAL_RESPONSE);
+    return;
+  }
+
+  // 6. Add user message to history
   const userMsg: ConversationMessage = {
     role: "user",
     content: text,
@@ -87,16 +96,19 @@ export async function handleMessage(
   // Build messages for Claude (existing history + new user message)
   const messagesForClaude = [...conversation.messages, userMsg];
 
-  // 6. Call Claude
+  // 7. Call Claude
   const { response } = await callClaude(env, messagesForClaude, extraContext);
 
-  // 7. Send response to WhatsApp
-  await sendTextMessage(env, senderPhone, response);
+  // 8. Security Layer 4: Output validation
+  const { sanitized } = validateOutput(response);
 
-  // 8. Save assistant message
+  // 9. Send response to WhatsApp
+  await sendTextMessage(env, senderPhone, sanitized);
+
+  // 10. Save assistant message
   const assistantMsg: ConversationMessage = {
     role: "assistant",
-    content: response,
+    content: sanitized,
     timestamp: new Date().toISOString(),
   };
   await appendMessage(env, conversation.id, assistantMsg);

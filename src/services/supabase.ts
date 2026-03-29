@@ -39,7 +39,9 @@ export async function supabaseQuery<T>(
     return { data: null, error: errorText };
   }
 
-  const data = (await res.json()) as T;
+  const text = await res.text();
+  if (!text) return { data: null, error: null };
+  const data = JSON.parse(text) as T;
   return { data, error: null };
 }
 
@@ -66,6 +68,8 @@ export async function supabaseRpc<T>(
     return { data: null, error: errorText };
   }
 
-  const data = (await res.json()) as T;
+  const text = await res.text();
+  if (!text) return { data: null, error: null };
+  const data = JSON.parse(text) as T;
   return { data, error: null };
 }

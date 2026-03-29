@@ -12,12 +12,12 @@ Six phases deliver a complete WhatsApp lead-generation bot: infrastructure first
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Webhook Foundation** - Working, verified webhook with HMAC auth, wamid dedup, and compliance skeleton
-- [ ] **Phase 2: Conversation Core** - Full Claude conversation loop with Supabase persistence, atomic message cap, and 24h timeout
-- [ ] **Phase 3: Security Hardening** - 5-layer prompt protection wrapping the AI service before any tools are added
-- [ ] **Phase 4: Scraper + Cold Path** - Firecrawl integration with XML sandboxing, scrape caching, and cold path activation
-- [ ] **Phase 5: Full Funnel** - All three conversation paths (warm, cold, browsing), lead capture, human escalation, and notifications
-- [ ] **Phase 6: Budget Polish** - Soft warning at 15 messages, graceful hard-cap UX, and response token limits
+- [x] **Phase 1: Webhook Foundation** - Working, verified webhook with HMAC auth, wamid dedup, and compliance skeleton
+- [x] **Phase 2: Conversation Core** - Full Claude conversation loop with Supabase persistence, atomic message cap, and 24h timeout
+- [x] **Phase 3: Security Hardening** - 5-layer prompt protection wrapping the AI service before any tools are added
+- [x] **Phase 4: Scraper + Cold Path** - Firecrawl integration with XML sandboxing, scrape caching, and cold path activation
+- [x] **Phase 5: Full Funnel** - All three conversation paths (warm, cold, browsing), lead capture, human escalation, and notifications
+- [x] **Phase 6: Budget Polish** - Soft warning at 15 messages, graceful hard-cap UX, and response token limits
 
 ## Phase Details
 
@@ -95,11 +95,13 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Execution Order:**
 Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
-| Phase | Plans Complete | Status | Completed |
-|-------|----------------|--------|-----------|
-| 1. Webhook Foundation | 0/TBD | Not started | - |
-| 2. Conversation Core | 0/TBD | Not started | - |
-| 3. Security Hardening | 0/TBD | Not started | - |
-| 4. Scraper + Cold Path | 0/TBD | Not started | - |
-| 5. Full Funnel | 0/TBD | Not started | - |
-| 6. Budget Polish | 0/TBD | Not started | - |
+| Phase | Status | Completed |
+|-------|--------|-----------|
+| 1. Webhook Foundation | Complete | 2026-03-28 |
+| 2. Conversation Core | Complete | 2026-03-28 |
+| 3. Security Hardening | Complete | 2026-03-28 |
+| 4. Scraper + Cold Path | Complete | 2026-03-28 |
+| 5. Full Funnel | Complete | 2026-03-28 |
+| 6. Budget Polish | Complete | 2026-03-28 |
+
+All 6 phases complete. Bot deployed and live at https://savi-whatsapp-bot.saravanangokult.workers.dev

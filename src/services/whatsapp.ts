@@ -1,6 +1,7 @@
 import type { Env } from "../types";
+import { WHATSAPP_API_VERSION } from "../config/constants";
 
-const WHATSAPP_API = "https://graph.facebook.com/v21.0";
+const WHATSAPP_API = `https://graph.facebook.com/${WHATSAPP_API_VERSION}`;
 
 export async function sendTextMessage(
   env: Env,

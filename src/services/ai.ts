@@ -23,8 +23,8 @@ export interface ToolCall {
 export async function callClaude(
   env: Env,
   conversationMessages: ConversationMessage[],
-  extraContext?: string,
-  conversation?: Conversation,
+  extraContext: string | undefined,
+  conversation: Conversation,
 ): Promise<{ response: string; toolCalls: ToolCall[] }> {
   const client = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY });
 
@@ -48,12 +48,17 @@ export async function callClaude(
   let currentMessages = cleaned;
   let finalResponse = "";
 
+  const pathContext = conversation?.path
+    ? `\n\n<user_context>The user selected the ${conversation.path} path.</user_context>`
+    : "";
+  const systemPrompt = buildSystemPrompt() + pathContext;
+
   // Agentic loop: process tool calls until end_turn
   for (let iteration = 0; iteration < MAX_TOOL_ITERATIONS; iteration++) {
     const result = await client.messages.create({
       model: "claude-haiku-4-5-20241022",
       max_tokens: MAX_RESPONSE_TOKENS,
-      system: buildSystemPrompt(),
+      system: systemPrompt,
       messages: currentMessages,
       tools: TOOLS,
     });
@@ -110,7 +115,7 @@ export async function callClaude(
 
 /**
  * Ensure messages alternate between user and assistant roles.
- * Merges consecutive same-role messages.
+ * Merges consecutive same-role messages, preserving all content block types.
  */
 function ensureAlternatingRoles(messages: MessageParam[]): MessageParam[] {
   if (messages.length === 0) return [];
@@ -122,28 +127,18 @@ function ensureAlternatingRoles(messages: MessageParam[]): MessageParam[] {
     const curr = messages[i];
 
     if (prev.role === curr.role) {
-      const prevText =
+      const prevBlocks: ContentBlockParam[] =
         typeof prev.content === "string"
-          ? prev.content
-          : prev.content
-              .filter(
-                (b): b is { type: "text"; text: string } => b.type === "text",
-              )
-              .map((b) => b.text)
-              .join("\n");
-      const currText =
+          ? [{ type: "text", text: prev.content }]
+          : (prev.content as ContentBlockParam[]);
+      const currBlocks: ContentBlockParam[] =
         typeof curr.content === "string"
-          ? curr.content
-          : curr.content
-              .filter(
-                (b): b is { type: "text"; text: string } => b.type === "text",
-              )
-              .map((b) => b.text)
-              .join("\n");
+          ? [{ type: "text", text: curr.content }]
+          : (curr.content as ContentBlockParam[]);
 
       result[result.length - 1] = {
         role: prev.role,
-        content: `${prevText}\n\n${currText}`,
+        content: [...prevBlocks, ...currBlocks],
       };
     } else {
       result.push(curr);

@@ -16,7 +16,9 @@ export async function loadConversation(
   );
 
   if (data && data.length > 0) {
-    return data[0];
+    const conversation = data[0];
+    conversation.messages = conversation.messages ?? [];
+    return conversation;
   }
   return null;
 }

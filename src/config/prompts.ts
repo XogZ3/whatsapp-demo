@@ -70,7 +70,7 @@ export const GREETING_TEXT =
   "Hey! I'm Savi's AI product advisor. I help people figure out what to build and how much it costs.\n\nWhat brings you here?";
 
 export const GREETING_BUTTONS = [
-  { id: "path_warm", title: "I have a product idea" },
+  { id: "path_warm", title: "Have a product idea" },
   { id: "path_cold", title: "What can you build?" },
   { id: "path_browsing", title: "Just browsing" },
 ];

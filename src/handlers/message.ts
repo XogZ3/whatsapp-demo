@@ -21,11 +21,12 @@ import {
   HUMAN_ESCALATION_MESSAGE,
   BROWSING_RESPONSE,
   TIMEOUT_RESUME_PREFIX,
+  META_CLOSE_MESSAGE,
 } from "../config/prompts";
 import { SOFT_WARNING_AT } from "../config/constants";
 
 /**
- * Main message handler — orchestrates the full pipeline.
+ * Main message handler -- orchestrates the full pipeline.
  */
 export async function handleMessage(
   env: Env,
@@ -47,10 +48,9 @@ export async function handleMessage(
     }
   }
 
-  // 2. Human escalation — works at ANY point, regardless of cap or state
+  // 2. Human escalation -- works at ANY point, regardless of cap or state
   if (text.toLowerCase().trim() === "human") {
     await sendTextMessage(env, senderPhone, HUMAN_ESCALATION_MESSAGE);
-    // Fire notification to Gokul
     sendHumanEscalation(env, {
       phone: senderPhone,
       messages: conversation.messages,
@@ -85,7 +85,16 @@ export async function handleMessage(
     return;
   }
 
-  // 4. Browsing path — static response, minimal AI budget
+  // 4. Atomic cap check + increment (before any path/state checks)
+  const updated = await incrementAndLoad(env, senderPhone);
+  if (!updated) {
+    await updateConversation(env, conversation.id, { state: "capped" });
+    await sendTextMessage(env, senderPhone, CAP_REACHED_MESSAGE);
+    return;
+  }
+  conversation = updated;
+
+  // 5. Browsing path -- static response, minimal AI budget
   const buttonId = message.interactive?.button_reply?.id;
   if (buttonId === "path_browsing") {
     await sendTextMessage(env, senderPhone, BROWSING_RESPONSE);
@@ -116,18 +125,13 @@ export async function handleMessage(
     conversation.path = "cold";
   }
 
-  // 5. Atomic cap check + increment
-  const updated = await incrementAndLoad(env, senderPhone);
-  if (!updated) {
-    await sendTextMessage(env, senderPhone, CAP_REACHED_MESSAGE);
-    return;
-  }
-  conversation = updated;
-
   // 6. Check 24h timeout
   let extraContext: string | undefined;
   const { isTimedOut, previousTopic } = checkTimeout(conversation);
   if (isTimedOut) {
+    const resumeMessage = TIMEOUT_RESUME_PREFIX(previousTopic);
+    await sendTextMessage(env, senderPhone, resumeMessage);
+
     const truncated = await truncateMessages(
       env,
       conversation.id,
@@ -135,7 +139,7 @@ export async function handleMessage(
       3,
     );
     conversation.messages = truncated;
-    extraContext = TIMEOUT_RESUME_PREFIX(previousTopic);
+    extraContext = resumeMessage;
   }
 
   // 7. Security Layer 2: Pre-screen input
@@ -145,7 +149,12 @@ export async function handleMessage(
     return;
   }
 
-  // 8. Add user message to history
+  // 8. Soft warning BEFORE Claude call
+  if (conversation.message_count === SOFT_WARNING_AT) {
+    await sendTextMessage(env, senderPhone, SOFT_WARNING_MESSAGE);
+  }
+
+  // 9. Add user message to history
   const userMsg: ConversationMessage = {
     role: "user",
     content: text,
@@ -155,7 +164,7 @@ export async function handleMessage(
 
   const messagesForClaude = [...conversation.messages, userMsg];
 
-  // 9. Call Claude with tools
+  // 10. Call Claude with tools
   const { response } = await callClaude(
     env,
     messagesForClaude,
@@ -163,18 +172,18 @@ export async function handleMessage(
     conversation,
   );
 
-  // 10. Security Layer 4: Output validation
+  // 11. Security Layer 4: Output validation
   const { sanitized } = validateOutput(response);
 
-  // 11. Send response to WhatsApp
+  // 12. Send response to WhatsApp
   await sendTextMessage(env, senderPhone, sanitized);
 
-  // 12. Soft warning at 15 messages
-  if (conversation.message_count === SOFT_WARNING_AT) {
-    await sendTextMessage(env, senderPhone, SOFT_WARNING_MESSAGE);
+  // 13. Send META_CLOSE after Claude response if lead was captured
+  if (conversation.state === "converted") {
+    await sendTextMessage(env, senderPhone, META_CLOSE_MESSAGE);
   }
 
-  // 13. Save assistant message
+  // 14. Save assistant message
   const assistantMsg: ConversationMessage = {
     role: "assistant",
     content: sanitized,

@@ -88,3 +88,12 @@ CREATE OR REPLACE FUNCTION append_conversation_message(
       updated_at = now()
   WHERE id = p_conversation_id;
 $$ LANGUAGE sql;
+
+-- Row Level Security
+ALTER TABLE conversations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE leads ENABLE ROW LEVEL SECURITY;
+ALTER TABLE message_log ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Service role full access on conversations" ON conversations FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Service role full access on leads" ON leads FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Service role full access on message_log" ON message_log FOR ALL USING (true) WITH CHECK (true);

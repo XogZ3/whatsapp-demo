@@ -4,8 +4,6 @@ import { scrapeWebsite } from "./scraper";
 import { updateConversation } from "./conversation";
 import { supabaseQuery } from "./supabase";
 import { sendLeadNotification } from "./email";
-import { sendTextMessage } from "./whatsapp";
-import { META_CLOSE_MESSAGE } from "../config/prompts";
 
 /** Tool definitions for Claude */
 export const TOOLS: Tool[] = [
@@ -96,13 +94,13 @@ export async function executeToolCall(
   env: Env,
   name: string,
   input: Record<string, unknown>,
-  conversation?: Conversation,
+  conversation: Conversation,
 ): Promise<string> {
   switch (name) {
     case "scrape_website": {
       const url = input.url as string;
 
-      if (conversation?.scraped_url) {
+      if (conversation.scraped_url) {
         return `Already scraped ${conversation.scraped_url} for this conversation. Use the existing scraped content to help the prospect.`;
       }
 
@@ -111,26 +109,22 @@ export async function executeToolCall(
         return result.error ?? "Failed to scrape the website.";
       }
 
-      if (conversation) {
-        await updateConversation(env, conversation.id, {
-          scraped_url: url,
-          scraped_content: result.content,
-          path: "cold",
-        });
-        conversation.scraped_url = url;
-        conversation.scraped_content = result.content;
-      }
+      await updateConversation(env, conversation.id, {
+        scraped_url: url,
+        scraped_content: result.content,
+        path: "cold",
+      });
+      conversation.scraped_url = url;
+      conversation.scraped_content = result.content;
 
       return `Successfully scraped "${result.title}" (${url}).\n\nHere is the website content:\n\n${result.content}`;
     }
 
     case "generate_scope_summary": {
       const summary = formatScopeSummary(input);
-      if (conversation) {
-        await updateConversation(env, conversation.id, {
-          scope_summary: summary,
-        });
-      }
+      await updateConversation(env, conversation.id, {
+        scope_summary: summary,
+      });
       return `Scope summary generated. Present this to the prospect and ask for their email:\n\n${summary}`;
     }
 
@@ -142,14 +136,11 @@ export async function executeToolCall(
         return `Invalid email format: "${email}". Ask the prospect to provide a valid email address.`;
       }
 
-      if (!conversation) {
-        return "No conversation context available for lead capture.";
-      }
-
       await updateConversation(env, conversation.id, {
         email,
         state: "converted",
       });
+      conversation.state = "converted";
 
       await supabaseQuery(env, "leads", {
         method: "POST",
@@ -169,10 +160,6 @@ export async function executeToolCall(
         scopeSummary: conversation.scope_summary,
         messages: conversation.messages,
       }).catch((err) => console.error("Lead notification failed:", err));
-
-      sendTextMessage(env, conversation.phone, META_CLOSE_MESSAGE).catch(
-        (err) => console.error("Meta-close send failed:", err),
-      );
 
       return `Lead captured for ${email}. Confirm to the prospect that Gokul will send a proposal within 24 hours.`;
     }

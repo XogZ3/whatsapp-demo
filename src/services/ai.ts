@@ -56,7 +56,7 @@ export async function callClaude(
   // Agentic loop: process tool calls until end_turn
   for (let iteration = 0; iteration < MAX_TOOL_ITERATIONS; iteration++) {
     const result = await client.messages.create({
-      model: "claude-haiku-4-5-20241022",
+      model: "claude-haiku-4-5-20251001",
       max_tokens: MAX_RESPONSE_TOKENS,
       system: systemPrompt,
       messages: currentMessages,

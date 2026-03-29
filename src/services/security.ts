@@ -15,7 +15,7 @@ export async function preScreenMessage(
 
   try {
     const result = await client.messages.create({
-      model: "claude-haiku-4-5-20241022",
+      model: "claude-haiku-4-5-20251001",
       max_tokens: 10,
       system:
         "You are a security classifier for a product advisory chatbot. " +

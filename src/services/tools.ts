@@ -142,7 +142,7 @@ export async function executeToolCall(
       });
       conversation.state = "converted";
 
-      await supabaseQuery(env, "leads", {
+      await supabaseQuery(env, "wa_leads", {
         method: "POST",
         body: {
           conversation_id: conversation.id,

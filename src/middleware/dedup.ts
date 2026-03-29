@@ -14,7 +14,7 @@ export async function checkDedup(
 ): Promise<boolean> {
   const { data, error } = await supabaseQuery<Array<{ wamid: string }>>(
     env,
-    "message_log",
+    "wa_message_log",
     {
       method: "POST",
       body: { wamid, phone },

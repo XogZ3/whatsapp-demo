@@ -12,7 +12,7 @@ export async function loadConversation(
 ): Promise<Conversation | null> {
   const { data } = await supabaseQuery<Conversation[]>(
     env,
-    `conversations?phone=eq.${encodeURIComponent(phone)}&limit=1`,
+    `wa_conversations?phone=eq.${encodeURIComponent(phone)}&limit=1`,
   );
 
   if (data && data.length > 0) {
@@ -30,7 +30,7 @@ export async function createConversation(
   env: Env,
   phone: string,
 ): Promise<Conversation | null> {
-  const { data } = await supabaseQuery<Conversation[]>(env, "conversations", {
+  const { data } = await supabaseQuery<Conversation[]>(env, "wa_conversations", {
     method: "POST",
     body: { phone },
     headers: {
@@ -102,7 +102,7 @@ export async function updateConversation(
     >
   >,
 ): Promise<void> {
-  await supabaseQuery(env, `conversations?id=eq.${conversationId}`, {
+  await supabaseQuery(env, `wa_conversations?id=eq.${conversationId}`, {
     method: "PATCH",
     body: { ...fields, updated_at: new Date().toISOString() },
   });
@@ -142,7 +142,7 @@ export async function truncateMessages(
 ): Promise<ConversationMessage[]> {
   const truncated = messages.slice(-keepLast);
 
-  await supabaseQuery(env, `conversations?id=eq.${conversationId}`, {
+  await supabaseQuery(env, `wa_conversations?id=eq.${conversationId}`, {
     method: "PATCH",
     body: {
       messages: truncated,

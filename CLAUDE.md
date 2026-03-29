@@ -8,7 +8,16 @@ Savi AI Product Advisor Bot: a WhatsApp bot that prospects text to experience Sa
 
 Previous project (Bookd salon booking bot) is archived in `_archive/bookd/`.
 
+## Deployment
+
+- **Worker name**: `savi-whatsapp-bot`
+- **Live URL**: https://savi-whatsapp-bot.saravanangokult.workers.dev
+- **Cloudflare account**: `edb9abae1487e607d31cb63b05ec67d3`
+- **Supabase project**: `scgeoxhmjhaaohdafasy`
+
 ## Project structure
+
+Single flat app (no monorepo, no Turborepo, no pnpm workspaces).
 
 ```
 src/
@@ -20,18 +29,21 @@ src/
     message.ts          # Main message handler orchestration
   services/
     conversation.ts     # Load, save, cap enforcement, timeout logic
-    ai.ts               # System prompt, Claude API calls, tool definitions
+    ai.ts               # System prompt, Claude API calls
+    tools.ts            # Tool definitions (scrape_website, generate_scope_summary, capture_lead)
     security.ts         # Input pre-screen, output validation
     scraper.ts          # Firecrawl integration, content sandboxing
     whatsapp.ts         # Send messages, format buttons/lists
     email.ts            # Resend integration for lead notifications
-    supabase.ts         # Database client and queries
+    supabase.ts         # Database client and queries (wa_-prefixed tables)
   config/
     prompts.ts          # System prompt, refusal templates
     constants.ts        # Message cap, timeout duration
   types.ts              # Shared types
 supabase/
-  migrations/           # Postgres schema
+  migrations/
+    001_initial_schema.sql
+    002_wa_prefix_schema.sql
 wrangler.toml
 ```
 
@@ -39,34 +51,45 @@ wrangler.toml
 
 ```bash
 pnpm install             # Install dependencies
-pnpm dev                 # Local dev server (wrangler)
-pnpm build               # Production build
-pnpm test                # Run tests (Vitest)
+pnpm dev                 # Local dev server (wrangler dev)
+pnpm build               # Build (wrangler deploy)
+pnpm test                # Run tests (vitest)
 pnpm typecheck           # TypeScript type checking
 ```
 
 ## Tech stack
 
 - **Runtime**: Cloudflare Workers + Hono (TypeScript)
-- **LLM**: Claude Haiku 4.5 via `@anthropic-ai/sdk`
-- **Database**: Supabase (Postgres via PostgREST, raw fetch)
+- **LLM**: Claude Haiku 4.5 (`claude-haiku-4-5-20251001`) via `@anthropic-ai/sdk`
+- **Database**: Supabase (Postgres via PostgREST, raw fetch, all tables `wa_`-prefixed)
 - **Scraping**: Firecrawl `/v2/scrape` API
 - **Email**: Resend
 - **WhatsApp**: Cloud API (direct fetch)
 - **Package manager**: pnpm
 - **Tests**: Vitest
 
+## Database tables
+
+All tables use the `wa_` prefix:
+
+- `wa_conversations` - conversation state, message history, message count, path tracking
+- `wa_leads` - captured leads with email, scope summary, proposal status
+- `wa_message_log` - wamid deduplication
+
+RLS policies enforce service-role-only access. No client-side queries.
+
 ## Architecture
 
 Messages flow through:
 
 1. **Webhook** (`src/index.ts`) - GET for Meta verification, POST for messages
-2. **Middleware** - HMAC-SHA256 verify + wamid dedup
-3. **Message handler** - loads conversation, checks cap, routes to AI
-4. **AI service** - Claude Haiku 4.5 with tool calling (scrape_website, generate_scope_summary, capture_lead)
+2. **Middleware** - HMAC-SHA256 verify + wamid dedup (against `wa_message_log`)
+3. **Message handler** - loads conversation from `wa_conversations`, checks cap atomically, routes to AI
+4. **AI service** - Claude Haiku 4.5 (`claude-haiku-4-5-20251001`) with tool calling (scrape_website, generate_scope_summary, capture_lead)
 5. **Security** - 5-layer prompt protection (hardening, pre-screen, XML separation, output validation, content sandboxing)
-6. **WhatsApp sender** - text + interactive button messages via Cloud API
-7. **Lead pipeline** - email capture, Supabase storage, Resend notification to Gokul
+6. **WhatsApp sender** - text + interactive button messages via Cloud API; META_CLOSE sent after email capture confirmation
+7. **Lead pipeline** - email capture into `wa_leads`, Resend notification to Gokul
+8. **Conversation persistence** - conversation path tracked, state saved back to `wa_conversations`
 
 No state machine. LLM-driven conversation flow via system prompt.
 
@@ -77,7 +100,9 @@ No state machine. LLM-driven conversation flow via system prompt.
 - **Tests**: colocated with source, Vitest
 - **Commits**: Conventional Commits
 - **Deploy target**: Cloudflare Workers
-- **No monorepo**: single app, no Turborepo
+- **Single app**: no monorepo, no Turborepo, no pnpm workspaces
+- **Atomic cap**: message count incremented via SQL `UPDATE...RETURNING` to prevent race conditions
+- **Conversation path**: tracked in `wa_conversations.path` and passed to Claude for context
 
 ## Design spec
 

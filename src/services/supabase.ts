@@ -35,6 +35,7 @@ export async function supabaseQuery<T>(
 
   if (!res.ok) {
     const errorText = await res.text();
+    console.error(`Supabase ${method} ${path} failed:`, res.status, errorText);
     return { data: null, error: errorText };
   }
 
@@ -61,6 +62,7 @@ export async function supabaseRpc<T>(
 
   if (!res.ok) {
     const errorText = await res.text();
+    console.error(`Supabase RPC ${fnName} failed:`, res.status, errorText);
     return { data: null, error: errorText };
   }
 

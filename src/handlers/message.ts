@@ -34,6 +34,7 @@ export async function handleMessage(
   senderPhone: string,
 ): Promise<void> {
   const text = extractText(message);
+  console.log(`[msg] from=${senderPhone} type=${message.type} text="${text?.slice(0, 50)}"`);
   if (!text) return;
 
   // 1. Load or create conversation
@@ -86,7 +87,9 @@ export async function handleMessage(
   }
 
   // 4. Atomic cap check + increment (before any path/state checks)
+  console.log(`[msg] incrementAndLoad for ${senderPhone}, current count=${conversation.message_count}`);
   const updated = await incrementAndLoad(env, senderPhone);
+  console.log(`[msg] incrementAndLoad result:`, updated ? `count=${updated.message_count}` : "null (capped or error)");
   if (!updated) {
     await updateConversation(env, conversation.id, { state: "capped" });
     await sendTextMessage(env, senderPhone, CAP_REACHED_MESSAGE);
@@ -165,6 +168,7 @@ export async function handleMessage(
   const messagesForClaude = [...conversation.messages, userMsg];
 
   // 10. Call Claude with tools
+  console.log(`[msg] calling Claude, history=${messagesForClaude.length} msgs, path=${conversation.path}`);
   const { response } = await callClaude(
     env,
     messagesForClaude,
